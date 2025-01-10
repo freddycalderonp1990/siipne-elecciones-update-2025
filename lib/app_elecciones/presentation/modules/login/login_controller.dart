@@ -91,6 +91,7 @@ class LoginController extends GetxController {
       String nameRed = 'namered';
 
       try {
+
         peticionServerState(true);
         //Encryptamos la clave
         String cedula = _user.substring(4);
@@ -123,20 +124,31 @@ class LoginController extends GetxController {
           this.user.value = userResponse;
           this.user.refresh();
           if (isUserTestApp) {
-            InciarPantalla(false);
+            InciarPantalla();
             return;
           }
 
-          await setBiometrico(actualizarApp: false, foto: userResponse.foto);
+          await setBiometrico( foto: userResponse.foto);
         } else {
           DialogosAwesome.getError(
               descripcion: 'Usuario  y/o Contraseña Incorrectos');
           peticionServerState(false);
         }
-      } on ServerException catch (e) {
+      } on UpdateApp catch (e) {
+        peticionServerState(false);
+        mensajeActualizarApp();
+      }
+
+      on ServerException catch (e) {
+        print("jajajaj");
         peticionServerState(false);
         DialogosAwesome.getError(descripcion: e.cause);
       }
+      catch (e){
+        peticionServerState(false);
+        DialogosAwesome.getError(descripcion: "Error Inesperado");
+      }
+
     } else {
       DialogosAwesome.getError(
           descripcion: "No Existe Conexión a Internet", title: 'Advertencia');
@@ -202,7 +214,7 @@ class LoginController extends GetxController {
     }
   }
 
-  setBiometrico({bool actualizarApp = false, required String foto}) async {
+  setBiometrico({ required String foto}) async {
     print("userResponse.setbione");
 
     //_UserProvider.setUser = datosUser;
@@ -227,7 +239,7 @@ class LoginController extends GetxController {
             _localStoreImpl.setConfigHuella(false);
             _localStoreImpl.setFoto('');
             Get.back();
-            InciarPantalla(actualizarApp);
+            InciarPantalla();
           },
           btnOkOnPress: () async {
             bool resultHuella = await BiometricUtil.biometrico();
@@ -241,7 +253,7 @@ class LoginController extends GetxController {
                     _localStoreImpl.setLoginInit(true);
                     _localStoreImpl.setConfigHuella(true);
                     _localStoreImpl.setFoto(foto);
-                    InciarPantalla(actualizarApp);
+                    InciarPantalla();
                   });
             } else {
               DialogosAwesome.getError(
@@ -251,38 +263,38 @@ class LoginController extends GetxController {
                     _localStoreImpl.setConfigHuella(false);
                     _localStoreImpl.setFoto('');
                     Get.back();
-                    InciarPantalla(actualizarApp);
+                    InciarPantalla();
                   });
             }
           },
         );
       } else {
-        InciarPantalla(actualizarApp);
+        InciarPantalla();
       }
     } else {
-      InciarPantalla(actualizarApp);
+      InciarPantalla();
     }
   }
 
-  InciarPantalla(bool actualizarApp) async {
-    if (actualizarApp) {
-      DialogosAwesome.getWarning(
-          title: "ACTUALIZAR LA APP",
-          descripcion: MensajesString.msjNuevaVersionApp,
-          btnOkOnPress: () {
-            Get.back();
-            if (GetPlatform.isAndroid) {
-              UtilidadesUtil.abrirUrl(SiipneConfig.linkAppAndroid);
-              print('App Android');
-            } else {
-              UtilidadesUtil.abrirUrl(SiipneConfig.linkAppIos);
-              print('App Ios');
-            }
-          });
-    } else {
+  mensajeActualizarApp(){
+    DialogosAwesome.getWarning(
+        title: "ACTUALIZAR LA APP",
+        descripcion: MensajesString.msjNuevaVersionApp,
+        btnOkOnPress: () {
+          Get.back();
+          if (GetPlatform.isAndroid) {
+            UtilidadesUtil.abrirUrl(SiipneConfig.linkAppAndroid);
+            print('App Android');
+          } else {
+            UtilidadesUtil.abrirUrl(SiipneConfig.linkAppIos);
+            print('App Ios');
+          }
+        });
+  }
+
+  InciarPantalla() async {
       _localStoreImpl.setLoginInit(true);
       Get.offAllNamed(SiipneRoutes.MENU_APP);
-    }
   }
 
   getPantalla() async {

@@ -38,6 +38,8 @@ class UrlApiProviderApp {
       Object? body,
       required String url,
       bool isLogin = false}) async {
+
+    late final response ;
     try {
       http.Client client = http.Client();
 
@@ -50,7 +52,7 @@ class UrlApiProviderApp {
 
       String _tag=tag+" POST ";
       PrintsMsj.myLog(tag:_tag , title: "uri:", detalle: uri.toString());
-      final response = await client
+       response = await client
           .post(uri,
               body: jsonEncode(body), headers: getheaders(token: this.token))
           .timeout(Duration(seconds: this.secondsTimeout));
@@ -58,6 +60,9 @@ class UrlApiProviderApp {
       PrintsMsj.myLog(tag:_tag ,title: "body-request:", detalle: body.toString());
       PrintsMsj.myLog(tag:_tag ,title: "statusCode:", detalle: response.statusCode.toString());
       PrintsMsj.myLog(tag:_tag ,title: "body-response:", detalle: response.body.toString());
+    } catch (e) {
+      throw ExceptionHelper.captureError(e);
+    }
 
       if (response.statusCode == 200) {
         return response.body.toString();
@@ -68,15 +73,17 @@ class UrlApiProviderApp {
         CabeceraJsonModel data = CabeceraJsonModel.fromJson(json);
         throw ServerException(cause: data.message);
 
-      } else {
+      }else if (response.statusCode== 426){
         String json = response.body.toString();
         CabeceraJsonModel data = CabeceraJsonModel.fromJson(json);
-
+        throw UpdateApp(message: data.message);
+      }
+      else {
+        String json = response.body.toString();
+        CabeceraJsonModel data = CabeceraJsonModel.fromJson(json);
         throw ServerException.StatusCode(statusCode: response.statusCode,msjException: data.message);
       }
-    } catch (e) {
-      throw ExceptionHelper.captureError(e);
-    }
+
   }
 
   Future<String> get({

@@ -7,9 +7,17 @@ class AuthApiImpl extends AuthRepository {
   @override
   Future<DataUser> auth(AuthRequest authRequest) async {
     try {
-      return await _authApiProviderImpl.auth(authRequest);
-    }catch (e) {
 
+      return await _authApiProviderImpl.auth(authRequest);
+
+  }
+    on ParseJsonException catch (e) {
+      throw ParseJsonException(message: e.message);
+    }
+  on UpdateApp catch (e) {
+  throw UpdateApp(message: e.message);
+  }
+    catch (e) {
       if(AppConfig.activarMocks){
         try {
           final json = await rootBundle.rootBundle.loadString(AppMocks.auth);

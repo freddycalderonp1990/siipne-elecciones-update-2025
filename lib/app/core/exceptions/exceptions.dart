@@ -13,6 +13,29 @@ abstract class Failure implements Exception {
 
 }
 
+
+class  UpdateApp implements Exception {
+  final String message;
+
+  UpdateApp({
+    required this.message,
+  });
+
+  get msj=>message;
+
+}
+
+class  ParseJsonException implements Exception {
+  final String message;
+
+  ParseJsonException({
+    required this.message,
+  });
+
+  get msj=>message;
+
+}
+
 class ServerException implements Exception {
   final String cause;
 
@@ -29,6 +52,8 @@ class ServerException implements Exception {
 
     return ServerException(cause:mesage);
   }
+
+  get msj=>cause;
 
   factory ServerException.StatusCode(
       {int statusCode = 0,
@@ -61,6 +86,12 @@ class ServerException implements Exception {
         mesage = 'Problema con el servidor'
             '\n\nProceso no completado - vuelve a ejecutar la acción. '
             'Si el problema persiste contacte con el administrador.  ';
+        break;
+
+      case 426: //HTTP_No_autorizado
+        mesage = 'Actualizacion Disponible'
+            '\n\nExiste una nueva versión disponible. Para continuar, es necesario que actualice la aplicación.'
+            ;
         break;
 
       default:

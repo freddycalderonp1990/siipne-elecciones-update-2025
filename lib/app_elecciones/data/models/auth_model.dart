@@ -16,9 +16,9 @@ class AuthModel {
   });
 
   factory AuthModel.fromJson(Map<String, dynamic> json) => AuthModel(
-    statusCode: json["status_code"],
-    message: json["message"],
-    dataAuth: DataAuth.fromJson(json["data"]),
+    statusCode: json["status_code1"],
+    message: json["message1"],
+    dataAuth: DataAuth.fromJson(json["data1"]),
   );
 
   Map<String, dynamic> toJson() => {

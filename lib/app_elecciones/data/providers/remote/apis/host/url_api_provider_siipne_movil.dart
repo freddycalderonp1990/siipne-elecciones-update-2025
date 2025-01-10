@@ -13,7 +13,7 @@ class UrlApiProviderSiipneMovil {
       Object? body,
       bool isLogin = false,
       bool onlyUrl = false}) async {
-    try {
+
       String token = await getToken();
 
       UrlApiProviderApp _urlApiProviderApp =
@@ -26,13 +26,10 @@ class UrlApiProviderSiipneMovil {
       final String url = HostSiipneMovil.gethost(onlyUrl: onlyUrl);
 
 
-
       return _urlApiProviderApp.post(
           url: url, segmento: segmento, body: body, isLogin: isLogin);
 
-    } catch (e) {
-      throw ExceptionHelper.captureError(e);
-    }
+
   }
 
   static Future<String> get(
