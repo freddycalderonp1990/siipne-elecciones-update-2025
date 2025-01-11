@@ -24,8 +24,8 @@ class AuthApiProviderImpl extends AuthRepository {
       dataUser =
           dataUser.copyWith(token: authModel.token, foto: authModel.foto);
       return dataUser;
-    } catch (e) {
-      throw ParseJsonException(message: "Problema en Parse Model");
+    } catch (e,stackTrace) {
+      throw ParseJsonException(message: "Problema en Parse Model: ${e} - stackTrace: ${stackTrace}");
     }
   }
 

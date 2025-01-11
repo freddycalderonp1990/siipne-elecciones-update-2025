@@ -50,7 +50,7 @@ class WgLogin extends StatefulWidget {
 class _WgLoginState extends State<WgLogin> {
   @override
   void initState() {
-    createTutorial();
+   // createTutorial();
 
     super.initState();
   }

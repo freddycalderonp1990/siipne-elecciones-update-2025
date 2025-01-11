@@ -11,6 +11,7 @@ import 'package:get/state_manager.dart';
 import 'package:siipnelecciones3/app_elecciones//core/values/tutorial_app_strings.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:siipnelecciones3/app_elecciones/core/values/siipne_images.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:geolocator/geolocator.dart' as myGeolocator;
 

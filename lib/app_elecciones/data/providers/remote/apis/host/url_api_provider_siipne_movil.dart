@@ -34,7 +34,7 @@ class UrlApiProviderSiipneMovil {
 
   static Future<String> get(
       {required String segmento, bool onlyUrl = false}) async {
-    try {
+
       String token = await getToken();
       UrlApiProviderApp _urlApiProviderApp =
       UrlApiProviderApp(secondsTimeout: _secondsTimeout, token: token);
@@ -43,9 +43,7 @@ class UrlApiProviderSiipneMovil {
 
       return _urlApiProviderApp.get(
           url: url, segmento: segmento,);
-    } catch (e) {
-      throw ExceptionHelper.captureError(e);
-    }
+
   }
 
 
@@ -54,20 +52,16 @@ class UrlApiProviderSiipneMovil {
         Object? body
 
       }) async {
-    try {
+
       String token = await getToken();
 
       UrlApiProviderApp _urlApiProviderApp =
       UrlApiProviderApp(secondsTimeout: _secondsTimeout, token: token);
       final String url = HostSiipneMovil.gethost();
 
-
-
       return _urlApiProviderApp.patch(
           url: url, segmento: segmento, body: body);
 
-    } catch (e) {
-      throw ExceptionHelper.captureError(e);
-    }
+
   }
 }

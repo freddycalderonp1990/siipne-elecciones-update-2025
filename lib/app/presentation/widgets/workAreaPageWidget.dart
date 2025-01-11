@@ -74,8 +74,35 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
   }
 
 
+  Widget getDesingImgProceso(){
+    final responsive = ResponsiveUtil();
+   return Obx(() {
+      if (SiipneImages.imgCabeceraProceso.value.length>10) {
+        print("tengo que dibujar");
+        var   imgMemory = PhotoHelper.convertStringToUint8List(SiipneImages.imgCabeceraProceso.value);
+        // Puedes procesar imgCabeceraProceso y convertirla a un widget
+        return  imgMemory!=null?  Positioned(
+            right: 5,
+            top: 5,
+            child:Container(
+                height: responsive.isHorizontal()
+                    ? responsive.altoP(24)
+                    : responsive.altoP(12),
+                width: responsive.isHorizontal()
+                    ? responsive.anchoP(50)
+                    : responsive.anchoP(48),
+                child: Center(
+                  child: Image.memory(imgMemory, fit: BoxFit.contain),
+                ))):Container();
+      } else {
+        return Container();
+      }
+    });
+  }
   Widget getDersingPage() {
     final responsive = ResponsiveUtil();
+
+
 
     return Scaffold(
         backgroundColor:
@@ -88,13 +115,9 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
               child: Stack(
                 children: [
                   getImgFondo(),
-
+                  getDesingImgProceso(),
                   Column(
                     children: [
-                      Image.asset(
-                        AppImages.cabecera,
-                        fit: BoxFit.fill,
-                      ),
                       Expanded(
                         child: Column(
                           children: [

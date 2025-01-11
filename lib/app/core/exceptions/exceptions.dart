@@ -1,5 +1,6 @@
 import '../../../app_elecciones//domain/enums/enums.dart';
 import '../../core/app_config.dart';
+import 'exception_helper.dart';
 
 abstract class Failure implements Exception {
   final String message;
@@ -8,20 +9,31 @@ abstract class Failure implements Exception {
     required this.message,
   });
 
-  get msj=>message;
+  get msj{
+    return ExceptionHelper.setMensaje(msjException: this.message);
+  }
 
 
 }
 
 
-class  UpdateApp implements Exception {
+
+
+class  UpdateAppException implements Exception {
   final String message;
 
-  UpdateApp({
+  UpdateAppException({
     required this.message,
   });
 
-  get msj=>message;
+  get msj{
+   String mesage = 'Actualizacion Disponible'
+        '\n\nExiste una nueva versión disponible. Para continuar, es necesario que actualice la aplicación.'
+    ;
+    return ExceptionHelper.setMensaje(
+      mensaje: mesage,
+        msjException: this.message);
+  }
 
 }
 
@@ -32,35 +44,31 @@ class  ParseJsonException implements Exception {
     required this.message,
   });
 
-  get msj=>message;
+  get msj{
+    String mensaje='Parse Model\n\n'
+        "Ocurrió un problema. Intente nuevamente o contacte al administrador.";
+
+    return ExceptionHelper.setMensaje(
+      mensaje: mensaje,
+        msjException: this.message);
+  }
 
 }
 
 class ServerException implements Exception {
-  final String cause;
+  final String message;
 
-  ServerException({ required this.cause});
+  ServerException({ required this.message});
 
 
-  factory ServerException.msj(msjException
-   ) {
-    String mesage = 'No es posible conectar con el servidor. Contacte con el administrador';
 
-    if (AppConfig.AmbienteUrl != Ambiente.produccion) {
-      mesage = mesage + ' Exception: ' + msjException;
-    }
-
-    return ServerException(cause:mesage);
-  }
-
-  get msj=>cause;
 
   factory ServerException.StatusCode(
       {int statusCode = 0,
-
       String msjException = ''}) {
+
     String mesage = 'No definido';
-    print("jajajajajaj");
+
 
     switch (statusCode) {
       case 404: //HTTP_NOT_FOUND
@@ -89,9 +97,9 @@ class ServerException implements Exception {
         break;
 
       case 426: //HTTP_No_autorizado
-        mesage = 'Actualizacion Disponible'
-            '\n\nExiste una nueva versión disponible. Para continuar, es necesario que actualice la aplicación.'
-            ;
+        mesage = 'Actualizacion Disponible';
+        throw UpdateAppException(message: msjException);
+
         break;
 
       default:
@@ -101,12 +109,19 @@ class ServerException implements Exception {
         break;
     }
 
-    if (AppConfig.AmbienteUrl != Ambiente.produccion) {
+
+
+    if (AppConfig.AmbienteUrl.toString() != Ambiente.produccion.toString()) {
       mesage = mesage + '\n\nException: ' + msjException;
+      print("aaaaaaa222 ${mesage}");
+      print(AppConfig.AmbienteUrl);
+      print(Ambiente.produccion);
     }
 
+    print("aaaaaaa ${mesage}");
+    print("aaaaaaa ${AppConfig.AmbienteUrl}");
 
-    return ServerException(cause:mesage);
+    return ServerException(message:mesage);
   }
 }
 

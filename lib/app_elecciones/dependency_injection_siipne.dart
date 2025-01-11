@@ -24,8 +24,7 @@ class DependencyInjectionSiipne extends Bindings{
 
     //Domain
     Get.lazyPut<AuthApiImpl> (() => AuthApiImpl(AuthApiProviderImpl()), fenix: true);
-    Get.lazyPut<BeneficiosApiImpl> (() => BeneficiosApiImpl(BeneficiosApiProviderImpl()), fenix: true);
-    Get.lazyPut<EmpresaApiImpl> (() => EmpresaApiImpl(EmpresaApiProviderImpl()), fenix: true);
+    Get.lazyPut<ProcesosEleccionesApiImpl> (() => ProcesosEleccionesApiImpl(ProcesosEleccionesApiProviderImpl()), fenix: true);
 
     //Providers
     Get.lazyPut<LocalStorageRepository> (() => LocalStoreImpl(LocalStoreProviderImpl()), fenix: true);

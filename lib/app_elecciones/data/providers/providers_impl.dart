@@ -37,12 +37,13 @@ import '../../domain/request/request.dart';
 
 part 'remote/apis/host/host_siipne_movil.dart';
 
+part 'remote/apis/procesos_elecciones_api_provider.dart';
+
 
 part 'remote/apis/host/url_api_provider_siipne_movil.dart';
 
 part 'remote/apis/auth_api_provider.dart';
-part 'remote/apis/beneficios_api_provider.dart';
-part 'remote/apis/empresa_api_provider.dart';
+
 
 
 
