@@ -111,7 +111,7 @@ class SplashController extends GetxController {
 
         peticionServerState(false);
       } on ServerException catch (e) {
-        PrintsMsj.myLog(tag: tag, title: "ServerException", detalle: e.cause);
+        PrintsMsj.myLog(tag: tag, title: "ServerException", detalle: e.message);
 
         peticionServerState(false);
         await vericarIdAppPublic();

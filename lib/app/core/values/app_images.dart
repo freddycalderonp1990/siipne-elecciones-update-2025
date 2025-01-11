@@ -6,7 +6,7 @@ class AppImages{
 
   //-*********************** IMAGENES *******************************
   static const imgFondoDefault = _rutaImg + "fondo_default.png";
-  static const imgFondoDefault1 = _rutaImg + "fondo_default1.png";
+  static const imgFondoDefault1 = _rutaImg + "fondo_default.png";
   static const escudopolicia = _rutaImg + "escudo_policia.png";
   static const cabecera = _rutaImg + "cabecera.png";
   static const splash = _rutaImg + "splash.png";

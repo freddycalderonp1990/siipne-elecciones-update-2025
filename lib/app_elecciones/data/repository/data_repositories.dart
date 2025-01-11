@@ -18,8 +18,8 @@ import '../../domain/request/request.dart';
 
 
 part 'remote/apis/auth_api_impl.dart';
-part 'remote/apis/beneficios_api_impl.dart';
-part 'remote/apis/empresa_api_impl.dart';
+
+part 'remote/apis/procesos_elecciones_api_impl.dart';
 
 
 

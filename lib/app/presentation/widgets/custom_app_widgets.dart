@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 import 'package:get/get.dart';
+import 'package:siipnelecciones3/app_elecciones/core/values/siipne_images.dart';
 
 
 

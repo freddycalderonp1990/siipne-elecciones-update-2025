@@ -5,6 +5,7 @@ import 'dart:developer';
 
 import 'dart:typed_data';
 
+import 'package:siipnelecciones3/app/core/utils/parse_model.dart';
 import 'package:siipnelecciones3/app_elecciones/data/providers/remote/apis/api_constantes.dart';
 import 'package:http/http.dart' as http;
 
@@ -16,6 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 import '../../../app/core/app_config.dart';
+import '../../../app/core/exceptions/exceptions.dart';
 import '../../../app/data/provider/providers_impl_app.dart';
 
 
@@ -35,12 +37,13 @@ import '../../domain/request/request.dart';
 
 part 'remote/apis/host/host_siipne_movil.dart';
 
+part 'remote/apis/procesos_elecciones_api_provider.dart';
+
 
 part 'remote/apis/host/url_api_provider_siipne_movil.dart';
 
 part 'remote/apis/auth_api_provider.dart';
-part 'remote/apis/beneficios_api_provider.dart';
-part 'remote/apis/empresa_api_provider.dart';
+
 
 
 

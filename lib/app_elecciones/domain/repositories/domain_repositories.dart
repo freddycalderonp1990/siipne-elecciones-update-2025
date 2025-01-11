@@ -11,9 +11,10 @@ import '../request/request.dart';
 
 part 'local/local_storage_repository.dart';
 
+part 'remote/apis/procesos_elecciones_repository.dart';
 
 part 'remote/apis/auth_repository.dart';
 part 'remote/apis/config_app.dart';
-part 'remote/apis/beneficios_repository.dart';
-part 'remote/apis/empresa_repository.dart';
+
+
 

@@ -8,9 +8,14 @@ class AuthApiImpl extends AuthRepository {
   Future<DataUser> auth(AuthRequest authRequest) async {
     try {
       return await _authApiProviderImpl.auth(authRequest);
-    }catch (e) {
-
-      if(AppConfig.activarMocks){
+    } on ParseJsonException catch (e) {
+      throw ParseJsonException(message: e.message);
+    } on UpdateAppException catch (e) {
+      throw UpdateAppException(message: e.message);
+    } on ServerException catch (e) {
+      throw ServerException(message: e.message);
+    } catch (e,t) {
+      if (AppConfig.activarMocks) {
         try {
           final json = await rootBundle.rootBundle.loadString(AppMocks.auth);
           DataAuth authModel = authModelFromJson(json).dataAuth;
@@ -20,13 +25,12 @@ class AuthApiImpl extends AuthRepository {
               dataUser.copyWith(token: authModel.token, foto: authModel.foto);
 
           return dataUser;
-        }
-        catch(e){
-          throw ExceptionHelper.captureError(e);
+        } catch (e,t) {
+          throw ExceptionHelper.captureError(e,t);
         }
       }
 
-      throw ExceptionHelper.captureError(e);
+      throw ExceptionHelper.captureError(e,t);
     }
   }
 
@@ -35,7 +39,4 @@ class AuthApiImpl extends AuthRepository {
     // TODO: implement logout
     throw UnimplementedError();
   }
-
-
-
 }

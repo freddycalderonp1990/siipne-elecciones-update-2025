@@ -99,7 +99,7 @@ if (status==ConnectionStatus.online){
 
     } on ServerException catch (e) {
 
-      DialogosAwesome.getError(descripcion: e.cause);
+      DialogosAwesome.getError(descripcion: e.message);
 
       peticionServerState(false);
 
