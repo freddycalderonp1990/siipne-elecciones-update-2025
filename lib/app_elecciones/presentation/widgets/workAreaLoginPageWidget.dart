@@ -108,6 +108,9 @@ class _WorkAreaLoginPageWidgetState extends State<WorkAreaLoginPageWidget> {
                     : responsive.anchoP(widget.sizeTittle)),
           )
               : Container(),
+
+
+
           widget.mostrarVersion
               ? Text(
             'Versión: ' + version,

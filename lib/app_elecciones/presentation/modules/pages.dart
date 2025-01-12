@@ -27,6 +27,8 @@ import '../../../app_elecciones//presentation/widgets/customWidgets.dart';
 import 'package:get/get.dart';
 
 
+import '../../core/values/siipne_images.dart';
+import '../../core/values/siipne_strings.dart';
 import '../../data/models/models.dart';
 import '../../domain/enums/enums.dart';
 import 'controllers.dart';
@@ -38,5 +40,7 @@ import 'login/local_widgets/desingBtn.dart';
 part 'login/login_page.dart';
 part 'login/inicio_rapido/inicio_rapido_page.dart';
 part 'menu/menu_app_page.dart';
+part 'menu_recintos_electorales/menu_recintos_electorales_page.dart';
+part 'menu_unidades_policiales/menu_unidades_policiales_page.dart';
 
 

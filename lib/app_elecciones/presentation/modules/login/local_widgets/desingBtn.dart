@@ -23,8 +23,7 @@ class DesingBtn extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BtnMenuWidget(
-      mostrarLine: false,
-      imgLocal: imgLocal,
+
       img: img,
       title: this.title,
       horizontal: false,

@@ -80,8 +80,7 @@ class _WorkAreaPageLoginWidgetState extends State<WorkAreaPageLoginWidget> {
 
                     Expanded(
                         child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: responsive.anchoP(7)),
+
                             child: Center(
                               child: SingleChildScrollView(
                                 child: Column(
@@ -140,14 +139,14 @@ class _WorkAreaPageLoginWidgetState extends State<WorkAreaPageLoginWidget> {
   Widget getTitle() {
     final responsive = ResponsiveUtil();
 
-return Container();
+
 
     return widget.title != ''
         ? TextSombrasWidget(
             colorTexto: Colors.white,
             colorSombra: Colors.black,
             title: widget.title,
-            size: responsive.diagonalP(AppConfig.tamTextoTitulo),
+            size: responsive.diagonalP(AppConfig.tamTextoTitulo+0.5),
           )
         : Container();
   }

@@ -5,9 +5,10 @@ class SiipneRoutes{
   static const LOGIN="/login";
 
   static const MENU_APP="/menu_app";
-  static const CATALOGO="/catalogo";
-  static const CATALOGO_DETALLE="/catalogo_detalle";
-  static const DETALLE_INFO="/detalle_info";
+
+  static const MENU_RECINTOS_ELECTORALES="/menu_recintos_electorales";
+  static const MENU_UNIDADES_POLICIALES="/menu_unidades_policiales";
+
 
 
 

@@ -4,7 +4,7 @@ part of '../../domain_repositories.dart';
 
 
 
-abstract class ProcesosEleccionesRepository {
+abstract class EleccionesProcesosRepository {
   //Se define que cosas quiero hacer
   //se definen los contartos
 

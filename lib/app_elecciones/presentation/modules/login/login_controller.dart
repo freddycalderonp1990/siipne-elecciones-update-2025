@@ -108,9 +108,7 @@ class LoginController extends GetxController {
 
     return null;
   }
-  void sumarNumeros(dynamic a, dynamic b) {
-    var resultado = a + b;
-  }
+
 
   Future<void> login() async {
     if (status == ConnectionStatus.online) {
@@ -132,7 +130,6 @@ class LoginController extends GetxController {
       peticionServerState(true);
     await ExceptionHelper.manejarErrores(() async {
 
-      sumarNumeros(1,null);
         DataUser? userResponse = await authApp(
             user: _user, pass: _pass, localStoreImpl: _localStoreImpl);
         if (userResponse != null) {
