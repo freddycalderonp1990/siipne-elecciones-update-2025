@@ -46,9 +46,13 @@ import '../../../app/core/utils/utilidadesUtil.dart';
 import '../../presentation/routes/siipne_routes.dart';
 import '../../../app/core/utils/biometricUtil.dart';
 import '../../presentation/widgets/customWidgets.dart';
+
+
 part '../gps/my_gps_controller.dart';
 part 'login/login_controller.dart';
 part 'login/inicio_rapido/inicio_rapido_controller.dart';
 part 'menu/menu_app_controller.dart';
+part 'menu_recintos_electorales/menu_recintos_electorales_controller.dart';
+part 'menu_unidades_policiales/menu_unidades_policiales_controller.dart';
 
 

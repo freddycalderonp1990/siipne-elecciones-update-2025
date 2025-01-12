@@ -1,4 +1,16 @@
 class ApiConstantes {
+
+  //VariablesUtil
+  static const String varMsj = "msj";
+  static const String varDatos = "datos";
+
+  static const String varTrue = "true";
+  static const String varFalse = "false";
+  static const String varExiste = "existe";
+  static const String varNoExiste = "noExiste";
+  static const String varDuplicado = "Duplicado";
+
+
   static const String MODULO = "app-elecciones";
   static const String AUTH = "v1-auth";
 

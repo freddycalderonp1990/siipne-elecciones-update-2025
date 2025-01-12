@@ -24,7 +24,7 @@ class ExceptionHelper {
       DialogosAwesome.getError(descripcion: e.message);
     } catch (e,t) {
       String msj= ExceptionHelper.setMensaje(
-          mensaje: "Error Inesperado",
+          mensaje: "Error Inesperado.\nIntente nuevamente o contacte al administrador.",
           msjException: "Error: ${e} - Linea: ${t}");
 
       DialogosAwesome.getError(descripcion: msj);

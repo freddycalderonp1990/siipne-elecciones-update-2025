@@ -19,7 +19,8 @@ import '../../domain/request/request.dart';
 
 part 'remote/apis/auth_api_impl.dart';
 
-part 'remote/apis/procesos_elecciones_api_impl.dart';
+part 'remote/apis/elecciones_procesos_api_impl.dart';
+part 'remote/apis/elecciones_recintos_api_impl.dart';
 
 
 

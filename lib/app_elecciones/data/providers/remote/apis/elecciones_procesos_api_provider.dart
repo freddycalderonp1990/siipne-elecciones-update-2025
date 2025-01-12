@@ -1,6 +1,6 @@
 part of '../../providers_impl.dart';
 
-class ProcesosEleccionesApiProviderImpl extends ProcesosEleccionesRepository {
+class EleccionesProcesosApiProviderImpl extends EleccionesProcesosRepository {
   @override
   Future<List<DatosProcesoImg>> getProcesoActivoImgs() async {
     Object? body = {

@@ -24,5 +24,16 @@ class SiipnePages {
         page: () => MenuAppPage(),
         binding: MenuAppBinding()),
 
+    AppPages.getPageConfig(
+        name: SiipneRoutes.MENU_RECINTOS_ELECTORALES,
+        page: () => MenuRecintosElectoralesPage(),
+        binding: MenuRecintosElectoralesBinding()),
+
+
+    AppPages.getPageConfig(
+        name: SiipneRoutes.MENU_UNIDADES_POLICIALES,
+        page: () => MenuUnidadesPolicialesPage(),
+        binding: MenuUnidadesPolicialesBinding()),
+
   ];
 }
