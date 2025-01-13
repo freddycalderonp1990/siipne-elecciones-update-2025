@@ -6,7 +6,6 @@ class SelectProcesoOperativoPage extends GetView<SelectProcesoOperativoControlle
 
 
 
-
   @override
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
@@ -86,18 +85,18 @@ class SelectProcesoOperativoPage extends GetView<SelectProcesoOperativoControlle
   Widget getComboProcesosRecintos() {
    double paddingContenido = 10.0;
 
-   return      Container(
-     width: double.infinity,
-     height: 400,child: ComboConBusqueda(
+   return  ComboBusqueda(
+
      showClearButton: false,
      datos: ["uno","dos"],
      searchHint: "Clientes",
      complete: (value) {
        //controller.getIdCliente(value);
+       print(value);
      },
-     textSeleccioneUndato: "Seleccione un cliente",
-     imgString: AppImages.icon,
-   ),);
+     textSeleccioneUndato: "Seleccione un Proceso",
+
+   );
 
 
   }
