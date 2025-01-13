@@ -76,12 +76,9 @@ class MenuAppPage extends GetView<MenuAppController> {
             img: SiipneImages.icon_abrir_rec_elec,
             title: SiipneStrings.CREARCODIGO,
             onTap: () {
-            controller.verificarperAsignadoRecElectoral();
-            /*  Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => VerificarGpsPage(
-                          msj: "", pantalla: selectProcesosOperativosPage())));*/
+              Get.toNamed(SiipneRoutes.SELECT_PROCESO_OPERATIVOS);
+
+
             }),
         SizedBox(
           height: responsive.altoP(separacionBtnMenu),

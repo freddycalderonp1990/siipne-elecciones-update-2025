@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:card_swiper/card_swiper.dart';
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -47,3 +48,6 @@ part 'text_sobras_widget.dart';
 part 'workAreaPageWidgetAndroid.dart';
 part 'workAreaPageWidget.dart';
 part 'workAreaPageLoginWidget.dart';
+
+part 'combos/comboConBusqueda.dart';
+part 'combos/combo_busqueda.dart';

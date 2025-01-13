@@ -25,6 +25,11 @@ class SiipnePages {
         binding: MenuAppBinding()),
 
     AppPages.getPageConfig(
+        name: SiipneRoutes.SELECT_PROCESO_OPERATIVOS,
+        page: () => SelectProcesoOperativoPage(),
+        binding: SelectProcesoOperativoBinding()),
+
+    AppPages.getPageConfig(
         name: SiipneRoutes.MENU_RECINTOS_ELECTORALES,
         page: () => MenuRecintosElectoralesPage(),
         binding: MenuRecintosElectoralesBinding()),

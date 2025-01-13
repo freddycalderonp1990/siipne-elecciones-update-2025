@@ -1,24 +1,26 @@
 class SiipneRoutes{
+  static const name="elecciones_";
 
-  static const SPLASH="/splash";
-  static const HOME="/home";
-  static const LOGIN="/login";
+  static const SPLASH="/${name}splash";
+  static const HOME="/${name}home";
+  static const LOGIN="/${name}login";
 
-  static const MENU_APP="/menu_app";
+  static const MENU_APP="/${name}menu_app";
+  static const SELECT_PROCESO_OPERATIVOS="/${name}select_proceso_operativo";
 
-  static const MENU_RECINTOS_ELECTORALES="/menu_recintos_electorales";
-  static const MENU_UNIDADES_POLICIALES="/menu_unidades_policiales";
-
-
-
-
-  static const LOGIN_RAPIDO="/login_rapido";
-
-  static const CONFIG_APP="/config_app";
+  static const MENU_RECINTOS_ELECTORALES="/${name}menu_recintos_electorales";
+  static const MENU_UNIDADES_POLICIALES="/${name}menu_unidades_policiales";
 
 
 
 
+  static const LOGIN_RAPIDO="/${name}login_rapido";
 
-  static const GPS_VERIFICATE="/gps_verificate";
+  static const CONFIG_APP="/${name}config_app";
+
+
+
+
+
+  static const GPS_VERIFICATE="/${name}gps_verificate";
 }
