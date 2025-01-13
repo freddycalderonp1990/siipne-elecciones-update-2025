@@ -47,17 +47,15 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
       compareFn: (item, selectedItem) => item == selectedItem,
       validator: (v) => v == null ? "EL ${widget.title} Es requerido" : null,
       key: widget.openDropDownProgKey,
-
-      popupProps: PopupPropsMultiSelection.modalBottomSheet(
+      popupProps: PopupPropsMultiSelection.dialog(
         showSelectedItems: true,
-        disableFilter: true,
+        disableFilter: false,
         itemBuilder: (context, item, isSelected,l) => _customDropDownExample(context, item, isSelected,l),
         showSearchBox: true,
         searchFieldProps: getBusquedaPopup(),
       ),
-
       dropdownBuilder: (context, selectedItem) => _customDropDownExample(context, selectedItem, false,false),
-      items: (filter, infiniteScrollProps) => widget.datos,
+      items: (filter, infiniteScrollProps) =>widget.datos,
 
       onChanged: (value) {
         if (widget.complete != null) {
@@ -71,6 +69,7 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
 
     return wgComboBusqueda;
   }
+
 
   TextFieldProps getBusquedaPopup() {
     return TextFieldProps(
