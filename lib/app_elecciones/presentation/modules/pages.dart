@@ -1,6 +1,7 @@
 
 
 
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:siipnelecciones3/app/core/utils/utilidadesUtil.dart';
 
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:siipnelecciones3/app/core/values/app_colors.dart';
 
 import 'package:siipnelecciones3/app/presentation/widgets/custom_app_widgets.dart';
 import 'package:flutter/rendering.dart';
+
 import 'package:siipnelecciones3/app_elecciones/presentation/routes/siipne_routes.dart';
 
 
@@ -21,6 +23,8 @@ import '../../../app/core/utils/photo_helper.dart';
 import '../../../app/core/values/app_images.dart';
 
 
+import '../../../app/presentation/blocs/calculadora/calculadora_bloc.dart';
+import '../../../app/presentation/blocs/gps/gps_bloc.dart';
 import '../../../app_elecciones//presentation/widgets/customWidgets.dart';
 
 
@@ -36,6 +40,7 @@ import 'controllers.dart';
 import '../../presentation/modules/login/local_widgets/wgLogin.dart';
 import '../../../app/core/utils/responsiveUtil.dart';
 import 'login/local_widgets/desingBtn.dart';
+import 'menu/gps_access_screen.dart';
 
 
 part 'login/login_page.dart';

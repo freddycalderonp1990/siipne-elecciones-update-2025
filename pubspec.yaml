@@ -54,26 +54,34 @@ dependencies:
   card_swiper: ^3.0.1 #carusel de imagenes slider/swiper
   flutter_pdfview: ^1.3.4 #Visaulizar PDF
   device_info_plus: ^11.2.0 #Informacion del cell,Version Sistema Operatvivo
-  #GPS - MAPAS
-  permission_handler: ^11.3.1 # Solicita Permisos del dispositivo al usuario (Ubicacion,Galeria.....)
+
   network_info_plus: ^6.0.1 #Obtener ip del celular (se deben asiganr permisos para IOS)
 
   share_plus: ^10.0.2 # Compartir archivos
   image_picker: ^1.1.2 #Obtener img de la camara o galeria
 
   tutorial_coach_mark: ^1.2.11 #Tour app
-  geolocator: ^11.0.0 #ubicacion Gps, del dispositivo #error en la actualizacion 8.0.1 No named parameter with the name 'desiredAccuracy'.
 
   dropdown_search: ^6.0.1 #combo-lista con busqueda
 
 
 
+  #GPS - MAPAS
+  permission_handler: ^11.3.1 # Solicita Permisos del dispositivo al usuario (Ubicacion,Galeria.....)
+  geolocator: ^13.0.2 #ubicacion Gps, del dispositivo #error en la actualizacion 8.0.1 No named parameter with the name 'desiredAccuracy'.
+  flutter_bloc: ^9.0.0 #Mapas
+  bloc: ^9.0.0
+  equatable: ^2.0.7
+  provider: ^6.1.2
+
+
+
   #elecciones
-  flutter_bloc: ^8.1.6 #6.0.1 #paton bloc
+
   flutter_map: ^7.0.2 #0.9.0 #mapas openstreetmap
-  latlong2: any
+
   intl: ^0.19.0 #da formato a las fechas
-  equatable: ^2.0.7 #para compara objetos inicializados
+
   app_mi_upc:
     git:
       url: https://github.com/freddycalderonp1990/app_mi_upc.git
