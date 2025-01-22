@@ -7,6 +7,7 @@ class SelectProcesoOperativoPage
   @override
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
+      title:"OPERATIVOS" ,
       mostrarBtnAtras: true,
       contenido: GpsAccessScreen(contenido: getContenido()),
       peticionServer: controller.peticionServerState,
@@ -18,7 +19,6 @@ class SelectProcesoOperativoPage
 
     String Bienvenido =
         controller.user.sexo == 'HOMBRE' ? "BIENVENIDO: " : "BIENVENIDA: ";
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -33,11 +33,10 @@ class SelectProcesoOperativoPage
                 )
               : Container(),
         ),
-        TextSombrasWidget(
-          colorTexto: Colors.white,
-          colorSombra: Colors.black,
-          title: "OPERATIVOS",
-          size: responsive.diagonalP(AppConfig.tamTextoTitulo),
+
+        imgPerfilRedonda(
+          size: 28,
+          img:       controller.user.foto,
         ),
         SizedBox(
           height: 10,
@@ -63,14 +62,16 @@ class SelectProcesoOperativoPage
               SizedBox(
                 height: responsive.altoP(1),
               ),
-              BtnIconWidget(
-                colorBtn: AppColors.colorBotones,
-                colorIcon: Colors.white,
-                colorTxt: Colors.white,
-                icon: Icons.exit_to_app,
-                titulo: "CONTINUAR",
-                onPressed: () {},
-              ),
+              Obx(() => controller.listProcesosOperativo.length > 0
+                  ? BtnIconWidget(
+                      colorBtn: AppColors.colorBotones,
+                      colorIcon: Colors.white,
+                      colorTxt: Colors.white,
+                      icon: Icons.exit_to_app,
+                      titulo: "CONTINUAR",
+                      onPressed: () => controller.goToPageTipoServicio(),
+                    )
+                  : Container()),
               SizedBox(
                 height: responsive.altoP(4),
               ),
@@ -82,19 +83,17 @@ class SelectProcesoOperativoPage
   }
 
   Widget getComboProcesosRecintos() {
-
-
-
     return ComboBusqueda(
       icon: Icons.select_all_sharp,
 
       showClearButton: false,
       datos: controller.listProcesosOperativo,
-      displayField: (item) => item.descProcElecc, // Aquí decides mostrar "nombres"
+      displayField: (item) =>
+          item.descProcElecc, // Aquí decides mostrar "nombres"
       searchHint: "Proceso",
       complete: (value) {
         //controller.getIdCliente(value);
-        print(value.descProcElecc);
+        controller.procesosOperativo=value;
       },
       textSeleccioneUndato: "Seleccione un Proceso",
     );

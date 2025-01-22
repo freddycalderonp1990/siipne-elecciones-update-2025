@@ -39,6 +39,7 @@ part 'remote/apis/host/host_siipne_movil.dart';
 
 part 'remote/apis/elecciones_procesos_api_provider.dart';
 part 'remote/apis/elecciones_recintos_api_provider.dart';
+part 'remote/apis/elecciones_tipo_ejes_api_provider.dart';
 
 
 part 'remote/apis/host/url_api_provider_siipne_movil.dart';

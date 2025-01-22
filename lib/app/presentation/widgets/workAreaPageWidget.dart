@@ -13,7 +13,7 @@ class WorkAreaPageWidget extends StatefulWidget {
 
   final bool mostrarVersion;
   final bool mostrarBtnHome;
-  final bool mostrarAnuncio;
+
   final bool mostrarBtnAtras;
 
 
@@ -28,7 +28,7 @@ class WorkAreaPageWidget extends StatefulWidget {
       this.title,
       this.mostrarBtnHome = false,
       this.onPressedBtnHome,
-      this.mostrarAnuncio = false,
+
       this.mostrarBtnAtras = false,
       this.onChangedBusqueda, });
 
@@ -121,16 +121,7 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
                       Expanded(
                         child: Column(
                           children: [
-                            SearchWidget(
-                              onChangedisSearching: (value) {
-                                _isSearching = value;
-                                setState(() {
-                                });
-                              },
-                              title: widget.title,
-                              onChangedBusqueda: widget.onChangedBusqueda,
-                              isSearching: _isSearching,
-                            ),
+
 
 
                             Expanded(
@@ -140,7 +131,20 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: responsive.anchoP(7)),
                                   child:  widget.contenido != null
-                                      ? widget.contenido
+                                      ? widget.title!=null? Column(children: [
+                                    SizedBox(
+                                      height: responsive.altoP(15),
+                                    ),
+
+                                    TextSombrasWidget(
+                                      colorTexto: Colors.white,
+                                      colorSombra: Colors.black,
+                                      title: widget.title!,
+                                      size: responsive.diagonalP(AppConfig.tamTextoTitulo),
+                                    ),
+
+                                    widget.contenido
+                                  ],):widget.contenido
                                       : Container(),
                                 )),
                             

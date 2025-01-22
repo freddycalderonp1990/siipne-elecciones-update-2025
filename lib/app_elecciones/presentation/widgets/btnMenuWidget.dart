@@ -1,39 +1,41 @@
-
 part of 'customWidgets.dart';
 
-class BtnMenuWidget  extends StatefulWidget {
-
+class BtnMenuWidget extends StatefulWidget {
   final img;
-  final String? title;
+  final String title;
   final String? descripcion;
   final GestureTapCallback? onTap;
   final bool horizontal;
   final Color colorTexto;
   final Color colorFondo;
 
-
-  const BtnMenuWidget( {this.img=null,this.title='',this.descripcion='', this.onTap, this.horizontal=true,this.colorTexto=Colors.black, this.colorFondo=Colors.white}) ;
+  const BtnMenuWidget(
+      {this.img = null,
+      this.title = '',
+      this.descripcion = '',
+      this.onTap,
+      this.horizontal = true,
+      this.colorTexto = Colors.black,
+      this.colorFondo = Colors.white});
 
   @override
   _BtnMenuWidgetState createState() => _BtnMenuWidgetState();
 }
-
-
 
 class _BtnMenuWidgetState extends State<BtnMenuWidget> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     final responsive = ResponsiveUtil();
-
-
+    final fontSize= responsive
+        .diagonalP(AppConfig.tamTexto);
 
     Widget horizontal= Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppConfig.radioBordecajas),
           boxShadow: [
             BoxShadow(
-                color: AppColors.colorBordecajas,
+                color: SiipneColors.colorBordecajas,
                 blurRadius: AppConfig.sobraBordecajas)
           ]),
       child: Material(
@@ -46,74 +48,49 @@ class _BtnMenuWidgetState extends State<BtnMenuWidget> {
           // handle your onTap here
           child: Container(
 
-
-            padding: EdgeInsets.only(left: 10.0, right: 10.0),
             margin:
-            EdgeInsets.only(left: 5.0, right: 5.0),
-            width: responsive.anchoP(42),
-
-
-
-            child: Container(
-              height: responsive.altoP(25),
-
-              child: SingleChildScrollView(child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  SizedBox(height: responsive.altoP(1),),
-                  Container(
-                    width: responsive.anchoP(15),
-                    height: responsive.anchoP(15),
-                    child: widget.img!=null? Image.asset(
-                      widget.img,
-                    ):Image.asset(
-                      AppImages.iconNoImg,
-                    ),
+            EdgeInsets.only(left: 20.0, right: 20.0),
+            width: responsive.anchoP(70),
+            height: responsive.anchoP(17),
+            child: Row(
+              crossAxisAlignment:
+              CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Container(
+                  width: responsive.anchoP(15),
+                  height: responsive.anchoP(15),
+                  child: widget.img!=null? Image.asset(
+                    widget.img,
+                  ):Image.asset(
+                    SiipneImages.iconNoImg,
                   ),
+                ),
+                SizedBox(
+                  width: responsive.altoP(1),
+                ),
+                Expanded(
+                    child: Text(
+                      widget.title,
+                      textAlign: TextAlign.center,
 
-
-
-                  Text(
-                    widget.title!,
-                    textAlign: TextAlign.center,
-
-                    style:TextStyle(
-                        color: widget.colorTexto!=null? widget.colorTexto:Colors.black87,
-                        fontWeight: FontWeight.bold,
-                        fontSize: responsive
-                            .diagonalP(AppConfig.tamTexto)),
-                  ),
-
-                  Text(
-                    widget.descripcion!,
-                    textAlign: TextAlign.justify,
-
-                    style:TextStyle(
-                        color: widget.colorTexto!=null? widget.colorTexto:Colors.black87,
-
-                        fontSize: responsive
-                            .anchoP(AppConfig.tamTexto)),
-                  ),
-
-                  SizedBox(
-                    height: responsive.altoP(1),
-                  ),
-
-                ],
-              ),),),
+                      style: TextStyle(
+                          color: widget.colorTexto!=null? widget.colorTexto:Colors.black87,
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontSize),
+                    )),
+              ],
+            ),
           ),
         ),
       ),
     );
-
-
-
     Widget vertical= Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppConfig.radioBordecajas),
           boxShadow: [
             BoxShadow(
-                color: AppColors.colorBordecajas,
+                color: SiipneColors.colorBordecajas,
                 blurRadius: AppConfig.sobraBordecajas)
           ]),
       child: Material(
@@ -137,12 +114,12 @@ class _BtnMenuWidgetState extends State<BtnMenuWidget> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  width: responsive.anchoP(18),
-                  height: responsive.anchoP(18),
+                  width: responsive.anchoP(12),
+                  height: responsive.anchoP(12),
                   child: widget.img!=null? Image.asset(
                     widget.img,
                   ):Image.asset(
-                    AppImages.iconNoImg,
+                    SiipneImages.iconNoImg,
                   ),
                 ),
                 SizedBox(
@@ -150,13 +127,12 @@ class _BtnMenuWidgetState extends State<BtnMenuWidget> {
                 ),
                 Container(
                     child: Text(
-                      widget.title!,
+                      widget.title,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: widget.colorTexto!=null? widget.colorTexto:Colors.black87,
                           fontWeight: FontWeight.bold,
-                          fontSize: responsive
-                              .diagonalP(AppConfig.tamTexto)),
+                          fontSize: fontSize),
                     )),
               ],
             ),
@@ -164,14 +140,8 @@ class _BtnMenuWidgetState extends State<BtnMenuWidget> {
         ),
       ),
     );
-    return  widget.horizontal?horizontal :vertical;
 
 
-
-
-
-
-
+    return widget.horizontal ? horizontal : vertical;
   }
-
 }

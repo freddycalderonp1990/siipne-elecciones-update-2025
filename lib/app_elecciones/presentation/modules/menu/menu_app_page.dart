@@ -6,14 +6,12 @@ class MenuAppPage extends GetView<MenuAppController> {
   @override
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
-      mostrarAnuncio: true,
+
       contenido: Container(
           child:  getContenido()),
       peticionServer: controller.peticionServerState,
     );
   }
-
-
 
 
 
@@ -24,11 +22,11 @@ class MenuAppPage extends GetView<MenuAppController> {
         ? "BIENVENIDO: "
         : "BIENVENIDA: ";
 
-    return Column(
+    return SingleChildScrollView(child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-
+        SizedBox(height: responsive.altoP(15),),
         TextSombrasWidget(
           colorTexto: Colors.white,
           colorSombra: Colors.black,
@@ -67,7 +65,7 @@ class MenuAppPage extends GetView<MenuAppController> {
         ),
 
       ],
-    );
+    ),);
   }
 
 
@@ -76,7 +74,6 @@ class MenuAppPage extends GetView<MenuAppController> {
     return Column(
       children: [
         BtnMenuWidget(
-
           horizontal: false,
             colorFondo: Colors.white,
             img: SiipneImages.icon_abrir_rec_elec,

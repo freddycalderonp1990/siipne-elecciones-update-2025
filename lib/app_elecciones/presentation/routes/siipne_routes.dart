@@ -7,6 +7,7 @@ class SiipneRoutes{
 
   static const MENU_APP="/${name}menu_app";
   static const SELECT_PROCESO_OPERATIVOS="/${name}select_proceso_operativo";
+  static const TIPOS_SERVICIOS_EJES="/${name}tipos_servicios_ejes";
 
   static const MENU_RECINTOS_ELECTORALES="/${name}menu_recintos_electorales";
   static const MENU_UNIDADES_POLICIALES="/${name}menu_unidades_policiales";

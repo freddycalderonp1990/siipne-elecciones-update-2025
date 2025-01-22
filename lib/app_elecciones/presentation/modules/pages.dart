@@ -49,6 +49,7 @@ part 'login/login_page.dart';
 part 'login/inicio_rapido/inicio_rapido_page.dart';
 part 'menu/menu_app_page.dart';
 part 'select_proceso_operativo/select_proceso_operativo_page.dart';
+part 'tipos_servicios_ejes/tipos_servicios_ejes_page.dart';
 part 'menu_recintos_electorales/menu_recintos_electorales_page.dart';
 part 'menu_unidades_policiales/menu_unidades_policiales_page.dart';
 

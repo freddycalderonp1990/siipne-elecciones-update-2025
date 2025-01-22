@@ -7,7 +7,7 @@ class MenuRecintosElectoralesPage extends GetView<MenuRecintosElectoralesControl
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
 
-      mostrarAnuncio: true,
+
 
       contenido: getContenido(),
       peticionServer: controller.peticionServerState,

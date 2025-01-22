@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DesingBtn extends StatelessWidget {
-  final String? title;
+  final String title;
   final String? img;
   final double ancho;
   final GestureTapCallback? onTap;
@@ -13,7 +13,7 @@ class DesingBtn extends StatelessWidget {
 
   const DesingBtn(
       {Key? key,
-      this.title,
+      this.title="",
       this.img,
       this.ancho = 60.0,
       this.onTap,
