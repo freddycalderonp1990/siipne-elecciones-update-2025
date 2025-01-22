@@ -86,6 +86,8 @@ class SelectProcesoOperativoPage
 
 
     return ComboBusqueda(
+      icon: Icons.select_all_sharp,
+
       showClearButton: false,
       datos: controller.listProcesosOperativo,
       displayField: (item) => item.descProcElecc, // Aquí decides mostrar "nombres"

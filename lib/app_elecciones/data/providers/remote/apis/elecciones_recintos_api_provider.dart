@@ -11,7 +11,7 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
     };
 
     String json = await UrlApiProviderSiipneMovil.post(
-      isLogin: true,
+
       body: body,
     );
 

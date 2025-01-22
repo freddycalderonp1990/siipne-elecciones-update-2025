@@ -7,7 +7,7 @@ class ComboBusqueda<T> extends StatefulWidget {
   final String hint;
   final String searchHint;
   final T? selectValue;
-  final String imgString;
+  final IconData? icon;
   final String? imgUrl;
   final bool showClearButton;
   final GlobalKey? openDropDownProgKey;
@@ -32,7 +32,7 @@ class ComboBusqueda<T> extends StatefulWidget {
     this.hint = 'Seleccione...',
     required this.searchHint,
     this.selectValue,
-    this.imgString = '',
+    this.icon ,
     this.showClearButton = true,
     this.openDropDownProgKey,
     this.textSeleccioneUndato,
@@ -55,18 +55,40 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
   Widget build(BuildContext context) {
     Widget wgComboBusqueda = DropdownSearch<T>(
       selectedItem: widget.selectValue,
+
       compareFn: (item, selectedItem) => item == selectedItem,
       validator: (v) => v == null ? "EL ${widget.title} Es requerido" : null,
       key: widget.openDropDownProgKey,
       popupProps: PopupPropsMultiSelection.dialog(
         showSelectedItems: true,
+
         disableFilter: false,
         itemBuilder: (context, item, isSelected,l) => _customDropDownExample(context, item, isSelected,l),
         showSearchBox: true,
         searchFieldProps: getBusquedaPopup(),
+        dialogProps: DialogProps(
+          backgroundColor: Colors.white,
+          barrierDismissible: true, // Permite cerrar tocando fuera
+          insetPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20), // Márgenes del diálogo
+          actionsAlignment: MainAxisAlignment.end, // Alinea la acción a la derecha
+          actionsPadding: EdgeInsets.only(top: 10, right: 10), // Posiciona el botón arriba a la derecha
+          actions: [
+            IconButton(
+              icon: Icon(
+                Icons.close,
+                color: Colors.red, // Cambia el color a rojo
+              ),
+              onPressed: () {
+                Navigator.of(context).pop(); // Cierra el diálogo
+              },
+            ),
+          ],
+        ),
+
+
       ),
       itemAsString: (item) {
-        print("jajzajazja");
+
         // Usa el callback displayField para obtener el texto dinámico
         if (item != null && widget. displayField != null) {
 
@@ -93,14 +115,26 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
 
 
   TextFieldProps getBusquedaPopup() {
+
     return TextFieldProps(
       controller: _userEditTextController,
       decoration: InputDecoration(
-        suffixIcon: IconButton(
-          icon: Icon(Icons.clear),
-          onPressed: () {
-            _userEditTextController.clear();
-          },
+        suffixIcon: Row(
+          mainAxisSize: MainAxisSize.min, // Ajusta el tamaño para evitar expandir
+          children: [
+            IconButton(
+              icon: Icon(Icons.clear),
+              onPressed: () {
+                _userEditTextController.clear(); // Limpia el campo de texto
+              },
+            ),
+            IconButton(
+              icon: Icon(Icons.close, color: Colors.red), // Botón "X" para cerrar
+              onPressed: () {
+                Navigator.of(context).pop(); // Cierra el diálogo
+              },
+            ),
+          ],
         ),
         border: OutlineInputBorder(),
         contentPadding: EdgeInsets.fromLTRB(12, 12, 8, 0),
@@ -133,25 +167,25 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
       )
           : getDesing(
         titulo:widget.displayField!(item) ,
-        iconString: widget.imgString,
+        icon: widget.icon,
         iconUrl: widget.imgUrl,
       ),
     );
   }
 
   Widget getDesing({
-    String iconString = '',
+    IconData? icon,
     String titulo = '',
     bool selected = false,
     String? iconUrl,
   }) {
     final responsive = ResponsiveUtil();
-    Widget icon = getIcon(iconString: iconString);
+    Widget _icon = getIcon(icon: icon);
 
     return ListTile(
       selected: selected,
       contentPadding: EdgeInsets.all(0),
-      leading: icon,
+      leading: _icon,
       title: Text(
         titulo,
         style: TextStyle(fontSize: responsive.diagonalP(1.5)),
@@ -159,7 +193,7 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
     );
   }
 
-  getIcon({String iconString = '', bool isNull = false}) {
+  getIcon({IconData? icon, bool isNull = false}) {
     if (isNull) {
       return Icon(
         Icons.cancel,
@@ -169,8 +203,11 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
 
     return CircleAvatar(
       backgroundColor: isNull ? Colors.red : Colors.transparent,
-      child: iconString != ''
-          ? Image.asset(iconString)
+      child: icon != null
+          ? Icon(
+        icon,
+        color: AppColors.colorBotones,
+      )
           : Icon(
         Icons.article_outlined,
         color: AppColors.colorBotones,

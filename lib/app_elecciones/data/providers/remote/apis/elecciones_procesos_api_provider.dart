@@ -9,7 +9,6 @@ class EleccionesProcesosApiProviderImpl extends EleccionesProcesosRepository {
     };
 
     String json = await UrlApiProviderSiipneMovil.post(
-      isLogin: true,
       body: body,
     );
 
@@ -34,7 +33,7 @@ class EleccionesProcesosApiProviderImpl extends EleccionesProcesosRepository {
     };
 
     String json = await UrlApiProviderSiipneMovil.post(
-      isLogin: true,
+
       body: body,
     );
 

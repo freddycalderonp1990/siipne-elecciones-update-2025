@@ -25,6 +25,7 @@ import '../../../app/core/values/app_images.dart';
 
 import '../../../app/presentation/blocs/calculadora/calculadora_bloc.dart';
 import '../../../app/presentation/blocs/gps/gps_bloc.dart';
+import '../../../app/presentation/widgets/img_perfil_redonda.dart';
 import '../../../app_elecciones//presentation/widgets/customWidgets.dart';
 
 

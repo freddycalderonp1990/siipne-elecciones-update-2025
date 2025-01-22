@@ -48,12 +48,24 @@ class SelectProcesoOperativoController extends GetxController {
       listProcesosOperativo.value =
           await _eleccionesProcesosApiImpl.getProcesosOperativos(
               latitud: position.latitude, longitud: position.longitude);
+      if(listProcesosOperativo.length==0){
+        DialogosAwesome.getInformation(descripcion: "Actualmente no hay procesos activos disponibles. Por favor, inténtelo más tarde.");
+     return;
+      }
+
+      if(listProcesosOperativo.length==1){
+
+      }
+
 
 
     });
 
+
+
     peticionServerState(false);
-    print("finnnn");
+
+
 
   }
 }

@@ -51,6 +51,6 @@ part 'workAreaPageWidgetAndroid.dart';
 part 'workAreaPageWidget.dart';
 part 'workAreaPageLoginWidget.dart';
 
-part 'combos/comboConBusqueda.dart';
+
 part 'combos/combo_busqueda.dart';
 part 'my_ubicacion_widget.dart';

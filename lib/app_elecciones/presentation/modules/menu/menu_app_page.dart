@@ -34,6 +34,10 @@ class MenuAppPage extends GetView<MenuAppController> {
           colorSombra: Colors.black,
           title:  "MENÚ PRINCIPAL",size: responsive.diagonalP(AppConfig.tamTextoTitulo),),
         SizedBox(height: 10,),
+        imgPerfilRedonda(
+          size: 28,
+          img:       controller.user.foto,
+        ),
         TextSombrasWidget(title:  Bienvenido + controller.user.nombres,),
         Container(
           padding: EdgeInsets.all(5),
