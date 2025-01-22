@@ -36,11 +36,12 @@ import '../../core/values/siipne_images.dart';
 import '../../core/values/siipne_strings.dart';
 import '../../data/models/models.dart';
 import '../../domain/enums/enums.dart';
+import '../widgets/gps_access_screen.dart';
 import 'controllers.dart';
 import '../../presentation/modules/login/local_widgets/wgLogin.dart';
 import '../../../app/core/utils/responsiveUtil.dart';
 import 'login/local_widgets/desingBtn.dart';
-import 'menu/gps_access_screen.dart';
+
 
 
 part 'login/login_page.dart';

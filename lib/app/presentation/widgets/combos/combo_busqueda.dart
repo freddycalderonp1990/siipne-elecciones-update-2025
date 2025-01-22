@@ -10,8 +10,19 @@ class ComboBusqueda<T> extends StatefulWidget {
   final String imgString;
   final String? imgUrl;
   final bool showClearButton;
-  final openDropDownProgKey;
+  final GlobalKey? openDropDownProgKey;
   final String? textSeleccioneUndato;
+
+
+
+
+  final String? Function(T?)? validator;
+  final String Function(T)? displayField; // Callback para determinar qué mostrar
+  final void Function(T)? onChanged;
+
+
+
+
 
   const ComboBusqueda({
     Key? key,
@@ -25,7 +36,7 @@ class ComboBusqueda<T> extends StatefulWidget {
     this.showClearButton = true,
     this.openDropDownProgKey,
     this.textSeleccioneUndato,
-    this.imgUrl,
+    this.imgUrl, this.validator, this.displayField, this.onChanged,
   }) : super(key: key);
 
   @override
@@ -54,6 +65,16 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
         showSearchBox: true,
         searchFieldProps: getBusquedaPopup(),
       ),
+      itemAsString: (item) {
+        print("jajzajazja");
+        // Usa el callback displayField para obtener el texto dinámico
+        if (item != null && widget. displayField != null) {
+
+          return widget.displayField!(item);
+        }
+        return '';
+      },
+
       dropdownBuilder: (context, selectedItem) => _customDropDownExample(context, selectedItem, false,false),
       items: (filter, infiniteScrollProps) =>widget.datos,
 
@@ -111,7 +132,7 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
         ),
       )
           : getDesing(
-        titulo: item.toString(),
+        titulo:widget.displayField!(item) ,
         iconString: widget.imgString,
         iconUrl: widget.imgUrl,
       ),

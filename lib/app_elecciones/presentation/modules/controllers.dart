@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
@@ -29,6 +30,7 @@ import '../../../app/core/utils/device_info.dart';
 import '../../../app/core/utils/encriptar_util.dart';
 
 import '../../../app/data/provider/providers_impl_app.dart';
+import '../../../app/presentation/blocs/location/location_bloc.dart';
 import '../../../app/presentation/routes/app_routes.dart';
 
 

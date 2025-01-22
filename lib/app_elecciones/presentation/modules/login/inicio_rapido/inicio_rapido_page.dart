@@ -38,10 +38,6 @@ class InicioRapidoPage extends GetView<InicioRapidoController> {
         ),
         wgHuella(),
 
-        SizedBox(
-          height: responsive.altoP(2),
-        ),
-
         wgOtroUsuario(responsive)
       ],
     );

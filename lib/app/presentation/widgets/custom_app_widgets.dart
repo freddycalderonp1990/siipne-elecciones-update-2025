@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:get/get.dart';
 import 'package:siipnelecciones3/app_elecciones/core/values/siipne_images.dart';
@@ -24,6 +25,7 @@ import '../../core/values/app_colors.dart';
 import '../../core/values/app_images.dart';
 
 
+import '../blocs/location/location_bloc.dart';
 import 'img_perfil_redonda.dart';
 
 
@@ -51,3 +53,4 @@ part 'workAreaPageLoginWidget.dart';
 
 part 'combos/comboConBusqueda.dart';
 part 'combos/combo_busqueda.dart';
+part 'my_ubicacion_widget.dart';

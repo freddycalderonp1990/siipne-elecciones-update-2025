@@ -6,14 +6,9 @@ class MenuAppPage extends GetView<MenuAppController> {
   @override
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
-
       mostrarAnuncio: true,
-
       contenido: Container(
-
-
-
-          child: getContenido()),
+          child:  getContenido()),
       peticionServer: controller.peticionServerState,
     );
   }
@@ -24,35 +19,6 @@ class MenuAppPage extends GetView<MenuAppController> {
 
   Widget getContenido() {
     final responsive = ResponsiveUtil();
-
-    return       Column(children: [
-      BlocBuilder<CalculadoraBloc, CalculadoraState>(
-        builder: (context, state) {
-
-          return Text(
-            'Resultado: ${state.resultado}',
-            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          );
-        },
-      ),
-
-      BotonesWidget(
-        iconData: Icons.navigate_next,
-        padding: EdgeInsets.symmetric(horizontal: 10),
-        title: "Continuar",
-        onPressed: ()  {
-
-
-          final calculadoraBloc = BlocProvider.of<CalculadoraBloc>(Get.context!);
-
-          calculadoraBloc.add(SumarEvent(num1: 1,num2: 2));
-
-
-          // gpsBloc.askGpsAccess();
-        },
-      )
-    ],);
-
 
     String Bienvenido =  controller.user.sexo == 'HOMBRE'
         ? "BIENVENIDO: "

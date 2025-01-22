@@ -3,29 +3,28 @@ part of '../controllers.dart';
 class SelectProcesoOperativoController extends GetxController {
   final loginController = Get.find<LoginController>();
 
+  RxBool cargaInicial=false.obs;
 
-  final EleccionesRecintosApiImpl _eleccionesRecintosApiImpl =
-      Get.find<EleccionesRecintosApiImpl>();
+  final EleccionesProcesosApiImpl _eleccionesProcesosApiImpl =
+      Get.find<EleccionesProcesosApiImpl>();
 
-  RxList<DatosProcesoImg> listDatosProcesoImg = <DatosProcesoImg>[].obs;
-
- RecintosElectoralesAbiertos recintosElectoralesAbiertos =
-      RecintosElectoralesAbiertos.empty();
+  RxList<ProcesosOperativo> listProcesosOperativo = <ProcesosOperativo>[].obs;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  late DataUser  user;
+  late DataUser user;
 
   RxBool peticionServerState = false.obs;
   @override
   void onInit() async {
-    user=loginController.user.value;
+    user = loginController.user.value;
     super.onInit();
   }
 
   @override
   void onReady() {
     // TODO: Donde la vista ya se presento
+
     super.onReady();
   }
 
@@ -36,9 +35,25 @@ class SelectProcesoOperativoController extends GetxController {
     super.onClose();
   }
 
+  Future<void> getProcesoOperativos() async {
+    print("consultando");
+
+    peticionServerState(true);
+    cargaInicial.value=true;
+
+    await ExceptionHelper.manejarErrores(() async {
+      final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
+      LatLng position = await locationBloc.getCurrentPosition();
+
+      listProcesosOperativo.value =
+          await _eleccionesProcesosApiImpl.getProcesosOperativos(
+              latitud: position.latitude, longitud: position.longitude);
 
 
-  cerrarSession() {
-    Get.toNamed(AppRoutes.SPLASH_APP);
+    });
+
+    peticionServerState(false);
+    print("finnnn");
+
   }
 }

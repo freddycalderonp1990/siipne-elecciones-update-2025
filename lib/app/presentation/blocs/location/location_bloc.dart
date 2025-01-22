@@ -33,10 +33,13 @@ class LocationBloc extends Bloc<LocationEvent, LocationState> {
 
   }
 
-
-  Future getCurrentPosition() async {
+  Future<LatLng> getCurrentPosition() async {
+    print("Obteniendo coordenadas");
     final position = await Geolocator.getCurrentPosition();
-    add( OnNewUserLocationEvent( LatLng( position.latitude, position.longitude ) ) );
+    LatLng latLog=LatLng( position.latitude, position.longitude );
+    print("Obteniendo coordenadas ok $latLog");
+    add( OnNewUserLocationEvent( latLog ) );
+    return latLog;
   }
 
   void startFollowingUser() {

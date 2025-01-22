@@ -20,6 +20,10 @@ part 'auth_model.dart';
 part 'msjServerModel.dart';
 part 'getDatosModel.dart';
 
+
+//SIIPNE ELECCIONES
+part 'procesos_operativos_model.dart';
+
 //SISTEMA RECINTO ELECTORAL
 part 'recintoElectoral/recintos_electorales_model.dart';
 part 'recintoElectoral/abrirRecintoElectoralModel.dart';
