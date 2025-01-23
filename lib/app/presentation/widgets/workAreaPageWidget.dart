@@ -78,7 +78,7 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
     final responsive = ResponsiveUtil();
    return Obx(() {
       if (SiipneImages.imgCabeceraProceso.value.length>10) {
-        print("tengo que dibujar");
+
         var   imgMemory = PhotoHelper.convertStringToUint8List(SiipneImages.imgCabeceraProceso.value);
         // Puedes procesar imgCabeceraProceso y convertirla a un widget
         return  imgMemory!=null?  Positioned(

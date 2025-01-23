@@ -1,10 +1,10 @@
-part of '../bindings.dart';
+part of '../../bindings.dart';
 
-class TiposServiciosEjesBinding extends Bindings {
+class RecintosCrearCodigoBinding extends Bindings {
   @override
   void dependencies() {
     //Inyeccion de dependencias
-    Get.lazyPut(() => TiposServiciosEjesController(), fenix: true);
+    Get.lazyPut(() => RecintosCrearCodigoController(), fenix: true);
 
 
   }

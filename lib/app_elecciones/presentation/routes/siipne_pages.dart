@@ -36,6 +36,11 @@ class SiipnePages {
         binding: TiposServiciosEjesBinding()),
 
     AppPages.getPageConfig(
+        name: SiipneRoutes.RECINTOS_CREAR_CODIGO,
+        page: () => RecintosCrearCodigoPage(),
+        binding: RecintosCrearCodigoBinding()),
+
+    AppPages.getPageConfig(
         name: SiipneRoutes.MENU_RECINTOS_ELECTORALES,
         page: () => MenuRecintosElectoralesPage(),
         binding: MenuRecintosElectoralesBinding()),

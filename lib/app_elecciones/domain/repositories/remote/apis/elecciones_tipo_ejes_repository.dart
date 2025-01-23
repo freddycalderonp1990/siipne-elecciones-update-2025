@@ -6,4 +6,8 @@ abstract class EleccionesTipoEjesRepository {
 
   Future<TipoEjesActivos> getTipoEjesActivosEnProcesoOperativos(
       {required int usuario, required int idDgoProcElec});
+
+
+  Future<  List<UnidadesPoliciale>> getUnidadesPoliciales({required int usuario});
+  Future<  List<UnidadesPoliciale>> getTipoEjePorIdPadre({required int usuario,required int idDgoTipoEje});
 }

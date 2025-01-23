@@ -57,6 +57,8 @@ part 'menu/menu_app_controller.dart';
 part 'select_proceso_operativo/select_proceso_operativo_controller.dart';
 part 'tipos_servicios_ejes/tipos_servicios_ejes_controller.dart';
 
+part '1_RecintoElectoral/rec_crear_codigo/rec_crear_codigo_controller.dart';
+
 part 'menu_recintos_electorales/menu_recintos_electorales_controller.dart';
 part 'menu_unidades_policiales/menu_unidades_policiales_controller.dart';
 

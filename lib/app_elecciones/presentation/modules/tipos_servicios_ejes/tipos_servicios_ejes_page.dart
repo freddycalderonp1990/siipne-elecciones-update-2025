@@ -66,7 +66,7 @@ class TiposServiciosEjesPage extends GetView<TiposServiciosEjesController> {
             img: SiipneImages.icon_abrir_rec_elec,
             title: 'SERVICIO EN RECINTOS',
             onTap: () {
-              Get.toNamed(SiipneRoutes.SELECT_PROCESO_OPERATIVOS);
+              Get.toNamed(SiipneRoutes.RECINTOS_CREAR_CODIGO);
             })
             : Container(),
         SizedBox(

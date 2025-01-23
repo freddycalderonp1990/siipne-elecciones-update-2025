@@ -27,7 +27,8 @@ class SelectProcesoOperativoPage
           () => controller.cargaInicial == false
               ? MyUbicacionWidget(
                   callback: (_) {
-                    print("ingresoo");
+                    print("ingresoo jajajaja");
+
                     controller.getProcesoOperativos();
                   },
                 )

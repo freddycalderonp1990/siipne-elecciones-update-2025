@@ -2,10 +2,11 @@ part of 'custom_app_widgets.dart';
 
 class MyUbicacionWidget extends StatefulWidget {
   final FrameCallback? callback;
+
   final bool mostraUbicacion;
 
   const MyUbicacionWidget(
-      {super.key, this.callback, this.mostraUbicacion = false});
+      {super.key, this.callback, this.mostraUbicacion = false, });
 
   @override
   State<MyUbicacionWidget> createState() => _MyUbicacionWidgetState();

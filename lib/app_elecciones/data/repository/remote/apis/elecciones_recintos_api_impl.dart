@@ -11,4 +11,18 @@ class EleccionesRecintosApiImpl extends EleccionesRecintosRepository {
     return await _EleccionesRecintosApiProviderImpl
         .verificarperAsignadoRecElectoral(idGenPersona: idGenPersona);
   }
+
+  @override
+  Future<List<RecintosElectoral>> getRecintosElectoralesCercanos(
+      {required double latitud,
+      required double longitud,
+      required int idDgoProcElec,
+      required int idDgoTipoEje}) async {
+    return await _EleccionesRecintosApiProviderImpl
+        .getRecintosElectoralesCercanos(
+            latitud: latitud,
+            longitud: longitud,
+            idDgoProcElec: idDgoProcElec,
+            idDgoTipoEje: idDgoTipoEje);
+  }
 }

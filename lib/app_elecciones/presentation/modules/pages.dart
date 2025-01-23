@@ -13,7 +13,7 @@ import 'package:siipnelecciones3/app/presentation/widgets/custom_app_widgets.dar
 import 'package:flutter/rendering.dart';
 
 import 'package:siipnelecciones3/app_elecciones/presentation/routes/siipne_routes.dart';
-
+import 'package:latlong2/latlong.dart' show LatLng;
 
 import '../../../app/core/app_config.dart';
 
@@ -54,3 +54,4 @@ part 'menu_recintos_electorales/menu_recintos_electorales_page.dart';
 part 'menu_unidades_policiales/menu_unidades_policiales_page.dart';
 
 
+part '1_RecintoElectoral/rec_crear_codigo/rec_crear_codigo_page.dart';

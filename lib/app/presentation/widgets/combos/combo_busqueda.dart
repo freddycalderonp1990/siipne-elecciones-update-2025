@@ -62,7 +62,8 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
       popupProps: PopupPropsMultiSelection.dialog(
         showSelectedItems: true,
 
-        disableFilter: false,
+
+        disableFilter: true,
         itemBuilder: (context, item, isSelected,l) => _customDropDownExample(context, item, isSelected,l),
         showSearchBox: true,
         searchFieldProps: getBusquedaPopup(),
@@ -162,7 +163,7 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
         title: Text(
           widget.textSeleccioneUndato ?? "Seleccione un dato",
           style: TextStyle(
-              color: Colors.red, fontSize: responsive.diagonalP(1.5)),
+              color: Colors.red, fontSize: responsive.diagonalP(1)),
         ),
       )
           : getDesing(
@@ -188,7 +189,7 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
       leading: _icon,
       title: Text(
         titulo,
-        style: TextStyle(fontSize: responsive.diagonalP(1.5)),
+        style: TextStyle(fontSize: responsive.diagonalP(1)),
       ),
     );
   }
