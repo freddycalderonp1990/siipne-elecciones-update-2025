@@ -33,7 +33,7 @@ class TituloDetalleTextWidget extends StatelessWidget {
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize:
-                    responsive.diagonalP(AppConfig.tamTextoTitulo ))),
+                    responsive.diagonalP(AppConfig.tamTexto ))),
             SizedBox(
               width: responsive.altoP(1),
             ),
@@ -41,7 +41,7 @@ class TituloDetalleTextWidget extends StatelessWidget {
               child: Text(detalle,
                   style: TextStyle(
                       fontSize: responsive
-                          .diagonalP(AppConfig.tamTextoTitulo ))),
+                          .diagonalP(AppConfig.tamTexto ))),
             ),
           ],
         ));

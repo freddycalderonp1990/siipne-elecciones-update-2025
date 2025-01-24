@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:siipnelecciones3/app/core/utils/responsiveUtil.dart';
+import 'package:siipnelecciones3/app/core/values/app_colors.dart';
 import 'package:siipnelecciones3/app/presentation/blocs/calculadora/calculadora_bloc.dart';
 import 'package:siipnelecciones3/app/presentation/blocs/location/location_bloc.dart';
+import 'package:siipnelecciones3/app_elecciones/core/values/siipne_colors.dart';
 import 'package:siipnelecciones3/app_elecciones/core/values/siipne_images.dart';
+import 'package:siipnelecciones3/app_elecciones/presentation/widgets/customWidgets.dart';
 
 import '../../../../app/presentation/blocs/gps/gps_bloc.dart';
 import '../../../../app/presentation/widgets/custom_app_widgets.dart';
@@ -83,9 +86,14 @@ class MensajePermisoGps extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final responsive = ResponsiveUtil();
+
+
+
+
     return Container(
-      margin: EdgeInsets.only(top: responsive.altoP(13)),
-      height: responsive.alto,
+      margin: EdgeInsets.only(top: 50),
+
+
       width: responsive.ancho,
       child: ContenedorDesingWidget(
           margin: EdgeInsets.all(5),
@@ -114,10 +122,13 @@ class MensajePermisoGps extends StatelessWidget {
                     height: 5,
                   ),
                   onPressed != null
-                      ? BotonesWidget(
-                          iconData: Icons.navigate_next,
-                          padding: EdgeInsets.symmetric(horizontal: 10),
-                          title: "Continuar",
+                      ? BtnIconWidget(
+                    colorBtn: SiipneColors.colorBotonesWidget,
+                          colorIcon: Colors.white,
+                          colorTxt: Colors.white,
+                          icon: Icons.navigate_next,
+
+                          titulo: "Continuar",
                           onPressed: onPressed,
                         )
                       : Container()
@@ -130,8 +141,11 @@ class MensajePermisoGps extends StatelessWidget {
 
   Widget getWdMsjElecciones() {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         TituloDetalleTextWidget(
+
           title: "1)",
           detalle: "Verificar los operativos abiertos cercanos a tu ubicación.",
         ),

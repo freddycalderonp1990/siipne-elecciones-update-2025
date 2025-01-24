@@ -42,7 +42,7 @@ class TiposServiciosEjesController extends GetxController {
           _eleccionesTipoEjesApiImpl.getTipoEjesActivosEnProcesoOperativos(
               usuario: user.idGenUsuario,
               idDgoProcElec: selectProcesoOperativoController
-                  .procesosOperativo.idDgoProcElec);
+                  .selectProcesosOperativo.value.idDgoProcElec);
     });
     peticionServerState(false);
 

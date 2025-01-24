@@ -6,9 +6,10 @@ class MenuAppPage extends GetView<MenuAppController> {
   @override
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
+      title: "MENÚ PRINCIPAL",
 
       contenido: Container(
-          child:  getContenido()),
+          child: Center(child:  getContenido())),
       peticionServer: controller.peticionServerState,
     );
   }
@@ -16,7 +17,10 @@ class MenuAppPage extends GetView<MenuAppController> {
 
 
   Widget getContenido() {
+
     final responsive = ResponsiveUtil();
+
+
 
     String Bienvenido =  controller.user.sexo == 'HOMBRE'
         ? "BIENVENIDO: "
@@ -26,12 +30,9 @@ class MenuAppPage extends GetView<MenuAppController> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(height: responsive.altoP(15),),
-        TextSombrasWidget(
-          colorTexto: Colors.white,
-          colorSombra: Colors.black,
-          title:  "MENÚ PRINCIPAL",size: responsive.diagonalP(AppConfig.tamTextoTitulo),),
-        SizedBox(height: 10,),
+
+
+
         imgPerfilRedonda(
           size: 28,
           img:       controller.user.foto,
@@ -46,7 +47,8 @@ class MenuAppPage extends GetView<MenuAppController> {
               SizedBox(
                 height: responsive.altoP(2),
               ),
-              _getMenu(responsive)
+              _getMenu(responsive),
+
             ],
           ),
         ),

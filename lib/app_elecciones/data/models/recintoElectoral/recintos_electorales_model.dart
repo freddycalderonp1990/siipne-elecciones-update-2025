@@ -45,9 +45,9 @@ class RecintosElectoral {
     this.direcRecintoElec = '',
     this.latitud = '',
     this.longitud = '',
-    this.usuario = '',
+    this.usuario = 0,
     this.fecha = '',
-    this.idDgoTipoEje = '',
+    this.idDgoTipoEje = 0,
     this.ip = '',
     this.distance = '0',
   });
@@ -63,8 +63,8 @@ class RecintosElectoral {
   String direcRecintoElec;
   String latitud;
   String longitud;
-  String usuario;
-  String idDgoTipoEje;
+  int usuario;
+  int idDgoTipoEje;
   String fecha;
   String ip;
   String distance;
@@ -75,6 +75,7 @@ class RecintosElectoral {
 
     String dist = ParseModel.parseToString(json["distance"]) == null ? '' : "\nDistancia:" + ParseModel.parseToString(json["distance"])+ "m";
 
+    print("dis=${ParseModel.parseToInt(json["distance"])}");
     nomRecinto = nomRecinto + dist;
 
     return RecintosElectoral(
@@ -89,10 +90,10 @@ class RecintosElectoral {
       direcRecintoElec: ParseModel.parseToString(json["direcRecintoElec"] ),
       latitud: ParseModel.parseToString(json["latitud"] ),
       longitud: ParseModel.parseToString(json["longitud"] ),
-      usuario: ParseModel.parseToString(json["usuario"]),
+      usuario: ParseModel.parseToInt(json["usuario"]),
       fecha: ParseModel.parseToString(json["fecha"]),
       ip: ParseModel.parseToString(json["ip"] ),
-      idDgoTipoEje:  ParseModel.parseToString(json["idDgoTipoEje"]),
+      idDgoTipoEje:  ParseModel.parseToInt(json["idDgoTipoEje"]),
       distance:  ParseModel.parseToString(json["distance"]),
     );
   }

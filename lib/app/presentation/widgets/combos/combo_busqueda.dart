@@ -2,7 +2,7 @@ part of '../custom_app_widgets.dart';
 
 class ComboBusqueda<T> extends StatefulWidget {
   final String title;
-  final ValueChanged<T>? complete;
+  final ValueChanged<T?>? complete;
   final List<T> datos;
   final String hint;
   final String searchHint;
@@ -14,15 +14,10 @@ class ComboBusqueda<T> extends StatefulWidget {
   final String? textSeleccioneUndato;
 
 
-
-
   final String? Function(T?)? validator;
-  final String Function(T)? displayField; // Callback para determinar qué mostrar
+  final String Function(T)?
+      displayField; // Callback para determinar qué mostrar
   final void Function(T)? onChanged;
-
-
-
-
 
   const ComboBusqueda({
     Key? key,
@@ -32,11 +27,14 @@ class ComboBusqueda<T> extends StatefulWidget {
     this.hint = 'Seleccione...',
     required this.searchHint,
     this.selectValue,
-    this.icon ,
+    this.icon,
     this.showClearButton = true,
     this.openDropDownProgKey,
     this.textSeleccioneUndato,
-    this.imgUrl, this.validator, this.displayField, this.onChanged,
+    this.imgUrl,
+    this.validator,
+    this.displayField,
+    this.onChanged,
   }) : super(key: key);
 
   @override
@@ -55,57 +53,57 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
   Widget build(BuildContext context) {
     Widget wgComboBusqueda = DropdownSearch<T>(
       selectedItem: widget.selectValue,
-
       compareFn: (item, selectedItem) => item == selectedItem,
-      validator: (v) => v == null ? "EL ${widget.title} Es requerido" : null,
+      validator: (v) {
+        print("haolala");
+       return v == null ? "EL ${widget.title} Es requerido" : null;
+
+      } ,
       key: widget.openDropDownProgKey,
+      suffixProps: DropdownSuffixProps(
+
+        clearButtonProps: ClearButtonProps(isVisible: true,
+          color: Colors.red
+
+        ),
+        //lo paso en falkse xq ya esta diseñado xq no encontraba formada de captuyra el evento de limpiar
+        // lo que fue seleccionado
+      ),
       popupProps: PopupPropsMultiSelection.dialog(
+
         showSelectedItems: true,
-
-
-        disableFilter: true,
-        itemBuilder: (context, item, isSelected,l) => _customDropDownExample(context, item, isSelected,l),
+        disableFilter: false,
+        itemBuilder: (context, item, isSelected, l) =>
+            _customDesingDataPopop(context, item, isSelected, l),
         showSearchBox: true,
         searchFieldProps: getBusquedaPopup(),
         dialogProps: DialogProps(
           backgroundColor: Colors.white,
           barrierDismissible: true, // Permite cerrar tocando fuera
-          insetPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20), // Márgenes del diálogo
-          actionsAlignment: MainAxisAlignment.end, // Alinea la acción a la derecha
-          actionsPadding: EdgeInsets.only(top: 10, right: 10), // Posiciona el botón arriba a la derecha
-          actions: [
-            IconButton(
-              icon: Icon(
-                Icons.close,
-                color: Colors.red, // Cambia el color a rojo
-              ),
-              onPressed: () {
-                Navigator.of(context).pop(); // Cierra el diálogo
-              },
-            ),
-          ],
+          insetPadding: EdgeInsets.symmetric(
+              horizontal: 20, vertical: 20), // Márgenes del diálogo
+          actionsAlignment:
+              MainAxisAlignment.end, // Alinea la acción a la derecha
+          actionsPadding: EdgeInsets.only(
+              top: 10, right: 10), // Posiciona el botón arriba a la derecha
+
         ),
-
-
       ),
       itemAsString: (item) {
-
         // Usa el callback displayField para obtener el texto dinámico
-        if (item != null && widget. displayField != null) {
-
+        if (item != null && widget.displayField != null) {
           return widget.displayField!(item);
         }
         return '';
       },
-
-      dropdownBuilder: (context, selectedItem) => _customDropDownExample(context, selectedItem, false,false),
-      items: (filter, infiniteScrollProps) =>widget.datos,
-
+      dropdownBuilder: (context, selectedItem) =>
+          _customDropDownExample(context, selectedItem),
+      items: (filter, infiniteScrollProps) => widget.datos,
       onChanged: (value) {
+        print("cambiaa");
         if (widget.complete != null) {
-          if(value!=null){
+
             widget.complete!(value);
-          }
 
         }
       },
@@ -114,14 +112,13 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
     return wgComboBusqueda;
   }
 
-
   TextFieldProps getBusquedaPopup() {
-
     return TextFieldProps(
       controller: _userEditTextController,
       decoration: InputDecoration(
         suffixIcon: Row(
-          mainAxisSize: MainAxisSize.min, // Ajusta el tamaño para evitar expandir
+          mainAxisSize:
+              MainAxisSize.min, // Ajusta el tamaño para evitar expandir
           children: [
             IconButton(
               icon: Icon(Icons.clear),
@@ -130,7 +127,8 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
               },
             ),
             IconButton(
-              icon: Icon(Icons.close, color: Colors.red), // Botón "X" para cerrar
+              icon:
+                  Icon(Icons.close, color: Colors.red), // Botón "X" para cerrar
               onPressed: () {
                 Navigator.of(context).pop(); // Cierra el diálogo
               },
@@ -144,30 +142,47 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
     );
   }
 
-  Widget _customDropDownExample(BuildContext context, T? item, bool isSelected,bool b) {
+  Widget _customDropDownExample(
+      BuildContext context, T? item) {
+
+
+
+   return _customDesingDataPopop(context, item, false, false);
+  }
+
+
+  Widget _customDesingDataPopop(
+      BuildContext context, T? item, bool v, bool isSelected) {
     final responsive = ResponsiveUtil();
+
+    print("isSelected ${isSelected} ybb= ${v}");
+
+    Widget msjSelectDato =
+    ListTile(
+      contentPadding: EdgeInsets.all(0),
+      leading: getIcon(isNull: true),
+      title: Text(
+        widget.textSeleccioneUndato ?? "Seleccione un dato",
+        style: TextStyle(color: Colors.red, fontSize: responsive.diagonalP(1)),
+      ),
+    );
 
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 8),
       decoration: !isSelected
           ? null
           : BoxDecoration(
-        border: Border.all(color: Theme.of(context).primaryColor),
+        border: Border.all(color: Colors.black),
         borderRadius: BorderRadius.circular(5),
-        color: Colors.white,
+        color: AppColors.colorAzul_80,
       ),
       child: (item == null)
-          ? ListTile(
-        contentPadding: EdgeInsets.all(0),
-        leading: getIcon(isNull: true),
-        title: Text(
-          widget.textSeleccioneUndato ?? "Seleccione un dato",
-          style: TextStyle(
-              color: Colors.red, fontSize: responsive.diagonalP(1)),
-        ),
-      )
+          ? msjSelectDato
+          : widget.displayField!(item).length == 0
+          ? msjSelectDato
           : getDesing(
-        titulo:widget.displayField!(item) ,
+     colorTexto: isSelected?Colors.white:Colors.black,
+        titulo: widget.displayField!(item),
         icon: widget.icon,
         iconUrl: widget.imgUrl,
       ),
@@ -179,9 +194,11 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
     String titulo = '',
     bool selected = false,
     String? iconUrl,
+    Color colorTexto=Colors.black
   }) {
     final responsive = ResponsiveUtil();
     Widget _icon = getIcon(icon: icon);
+
 
     return ListTile(
       selected: selected,
@@ -189,7 +206,7 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
       leading: _icon,
       title: Text(
         titulo,
-        style: TextStyle(fontSize: responsive.diagonalP(1)),
+        style: TextStyle(fontSize: responsive.diagonalP(1),color: colorTexto),
       ),
     );
   }
@@ -206,14 +223,13 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
       backgroundColor: isNull ? Colors.red : Colors.transparent,
       child: icon != null
           ? Icon(
-        icon,
-        color: AppColors.colorBotones,
-      )
+              icon,
+              color: AppColors.colorBotones,
+            )
           : Icon(
-        Icons.article_outlined,
-        color: AppColors.colorBotones,
-      ),
+              Icons.article_outlined,
+              color: AppColors.colorBotones,
+            ),
     );
   }
 }
-

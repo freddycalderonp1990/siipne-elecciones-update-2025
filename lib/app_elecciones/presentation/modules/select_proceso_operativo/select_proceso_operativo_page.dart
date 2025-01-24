@@ -9,7 +9,7 @@ class SelectProcesoOperativoPage
     return WorkAreaPageWidget(
       title:"OPERATIVOS" ,
       mostrarBtnAtras: true,
-      contenido: GpsAccessScreen(contenido: getContenido()),
+      contenido: Center(child:  GpsAccessScreen(contenido: getContenido())),
       peticionServer: controller.peticionServerState,
     );
   }
@@ -19,10 +19,13 @@ class SelectProcesoOperativoPage
 
     String Bienvenido =
         controller.user.sexo == 'HOMBRE' ? "BIENVENIDO: " : "BIENVENIDA: ";
-    return Column(
+
+
+    return SingleChildScrollView(child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+
         Obx(
           () => controller.cargaInicial == false
               ? MyUbicacionWidget(
@@ -63,7 +66,7 @@ class SelectProcesoOperativoPage
               SizedBox(
                 height: responsive.altoP(1),
               ),
-              Obx(() => controller.listProcesosOperativo.length > 0
+              Obx(() => controller.selectProcesosOperativo.value.idDgoProcElec > 0
                   ? BtnIconWidget(
                       colorBtn: AppColors.colorBotones,
                       colorIcon: Colors.white,
@@ -80,23 +83,28 @@ class SelectProcesoOperativoPage
           ),
         ),
       ],
-    );
+    ));
   }
 
   Widget getComboProcesosRecintos() {
-    return ComboBusqueda(
-      icon: Icons.select_all_sharp,
+    return Obx(()=>ComboBusqueda(
 
+      icon: Icons.select_all_sharp,
+selectValue:  controller.selectProcesosOperativo.value,
       showClearButton: false,
-      datos: controller.listProcesosOperativo,
+      datos: controller.listProcesosOperativo.value,
       displayField: (item) =>
-          item.descProcElecc, // Aquí decides mostrar "nombres"
+      item.descProcElecc, // Aquí decides mostrar "nombres"
       searchHint: "Proceso",
       complete: (value) {
-        //controller.getIdCliente(value);
-        controller.procesosOperativo=value;
+        if(value!=null) {
+          controller.selectProcesosOperativo.value = value;
+        }
+        else{
+          controller.selectProcesosOperativo.value = ProcesosOperativo.empty();
+        }
       },
       textSeleccioneUndato: "Seleccione un Proceso",
-    );
+    ));
   }
 }

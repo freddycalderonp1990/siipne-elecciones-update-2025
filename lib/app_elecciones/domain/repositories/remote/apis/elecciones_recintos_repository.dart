@@ -14,4 +14,18 @@ abstract class EleccionesRecintosRepository {
       required int idDgoTipoEje,
 
       });
+
+
+  Future<AbrirRecintoElectoral> crearCodigo({
+    required int usuario,
+    required  int idGenPersona,
+    required int  idDgoReciElect,
+    required double latitud,
+    required double longitud,
+    required int idDgoProcElec,
+    required int idDgoReciUnidadPolicial,
+    required String telefono,
+    required String ip,
+    required int idDgoTipoEje,
+  });
 }

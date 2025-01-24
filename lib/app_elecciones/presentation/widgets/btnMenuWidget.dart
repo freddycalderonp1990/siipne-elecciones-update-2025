@@ -30,6 +30,7 @@ class _BtnMenuWidgetState extends State<BtnMenuWidget> {
     final fontSize= responsive
         .diagonalP(AppConfig.tamTexto);
 
+
     Widget horizontal= Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(AppConfig.radioBordecajas),

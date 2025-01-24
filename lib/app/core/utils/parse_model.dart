@@ -17,7 +17,7 @@ class ParseModel {
         ? ""
         : value is String
             ? value
-            : "";
+            : value.toString();
   }
 
   static String parseToStringFecha(var value) {

@@ -9,7 +9,8 @@ class SelectProcesoOperativoController extends GetxController {
       Get.find<EleccionesProcesosApiImpl>();
 
   RxList<ProcesosOperativo> listProcesosOperativo = <ProcesosOperativo>[].obs;
-  late ProcesosOperativo procesosOperativo;
+
+  Rx<ProcesosOperativo> selectProcesosOperativo=ProcesosOperativo.empty().obs;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -55,10 +56,9 @@ class SelectProcesoOperativoController extends GetxController {
       }
 
       if(listProcesosOperativo.length==1){
-        procesosOperativo=listProcesosOperativo[0];
+        selectProcesosOperativo.value=listProcesosOperativo[0];
         goToPageTipoServicio();
       }
-
 
 
     });
