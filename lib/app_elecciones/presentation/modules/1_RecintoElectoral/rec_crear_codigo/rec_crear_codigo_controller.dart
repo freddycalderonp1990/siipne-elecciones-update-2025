@@ -147,9 +147,55 @@ class RecintosCrearCodigoController extends GetxController {
     print('Función 3 completada con resultados: $resultado1 y $resultado2');*/
   }
 
+
+
+  msjCrearCodigo({required VoidCallback? onPressed}){
+    bool isValid = formKey.currentState!.validate();
+    if (!isValid) return;
+    String msj=
+        "\nRecuerde crear el código si se encuentra de servicio en el recinto electoral, para prevenir el mal uso todo será registrado."
+        "\n \nUtilice la aplicación con responsabilidad.";
+    final responsive = ResponsiveUtil();
+
+    DialogosDesingWidget.getDialogoX(title: "Crear Código",contenido: Column(children: [
+
+      Icon(Icons.warning,color: Colors.amber,size: 50,),
+      TituloTextWidget(title: "¿Usted es la persona encargada o jefe designada a este recinto electoral?"),
+
+      DetalleTextWidget(detalle: msj,todoElAncho: true,),
+      SizedBox(height: 40,),
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+        children: [
+          Expanded(child: BtnIconWidget(
+            colorBtn: AppColors.colorBotones,
+            icon: Icons.check_circle_outline,
+            titulo: "SI",
+            onPressed: onPressed,
+          )),
+          SizedBox(width: responsive.anchoP(5),),
+          Expanded(child: BtnIconWidget(
+            colorBtn: Colors.red.shade300,
+            icon: Icons.cancel_outlined,
+            titulo: "NO",
+            onPressed: (){
+              Get.back();
+            },
+          ))
+        ],)
+
+    ],));
+
+
+  }
+
   Future<void> crearCodigo() async {
     bool isValid = formKey.currentState!.validate();
     if (!isValid) return;
+
+
+
     peticionServerState(true);
 
    late  AbrirRecintoElectoral _abrirRecintoElectoral;
@@ -186,6 +232,7 @@ class RecintosCrearCodigoController extends GetxController {
           DialogosAwesome.getWarning(descripcion: msj,);
 
       } else {
+      /*
 
       DialogosWidget.alert(context,
           title: "CÓDIGO",
@@ -197,10 +244,12 @@ class RecintosCrearCodigoController extends GetxController {
 
             /* Navigator.pushReplacementNamed(
               context, AppConfig.pantallaMenuRecintoElectoral);*/
-          });
+          });*/
     }
     peticionServerState(false);
   }
+
+
 
   goToPage(String name) {
     Get.offNamed(name);

@@ -68,9 +68,8 @@ class SelectProcesoOperativoPage
               ),
               Obx(() => controller.selectProcesosOperativo.value.idDgoProcElec > 0
                   ? BtnIconWidget(
-                      colorBtn: AppColors.colorBotones,
-                      colorIcon: Colors.white,
-                      colorTxt: Colors.white,
+
+
                       icon: Icons.exit_to_app,
                       titulo: "CONTINUAR",
                       onPressed: () => controller.goToPageTipoServicio(),

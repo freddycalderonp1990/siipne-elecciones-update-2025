@@ -160,7 +160,7 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
     Widget msjSelectDato =
     ListTile(
       contentPadding: EdgeInsets.all(0),
-      leading: getIcon(isNull: true),
+
       title: Text(
         widget.textSeleccioneUndato ?? "Seleccione un dato",
         style: TextStyle(color: Colors.red, fontSize: responsive.diagonalP(1)),
@@ -174,7 +174,7 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
           : BoxDecoration(
         border: Border.all(color: Colors.black),
         borderRadius: BorderRadius.circular(5),
-        color: AppColors.colorAzul_80,
+        color: AppColors.colorAzulHex,
       ),
       child: (item == null)
           ? msjSelectDato
@@ -185,11 +185,13 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
         titulo: widget.displayField!(item),
         icon: widget.icon,
         iconUrl: widget.imgUrl,
+        isSelect: isSelected
       ),
     );
   }
 
   Widget getDesing({
+    bool isSelect=false,
     IconData? icon,
     String titulo = '',
     bool selected = false,
@@ -197,7 +199,7 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
     Color colorTexto=Colors.black
   }) {
     final responsive = ResponsiveUtil();
-    Widget _icon = getIcon(icon: icon);
+    Widget _icon = getIcon(icon: icon,isSelecc: isSelect);
 
 
     return ListTile(
@@ -206,16 +208,17 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
       leading: _icon,
       title: Text(
         titulo,
-        style: TextStyle(fontSize: responsive.diagonalP(1),color: colorTexto),
+        style: TextStyle(fontSize: responsive.diagonalP(1.2),color: colorTexto,),
       ),
     );
   }
 
-  getIcon({IconData? icon, bool isNull = false}) {
-    if (isNull) {
+  getIcon({IconData? icon, bool isSelecc = false}) {
+    if (isSelecc) {
+
       return Icon(
-        Icons.cancel,
-        color: Colors.red,
+        Icons.check_circle,
+        color: Colors.white,
       );
     }
 

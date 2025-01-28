@@ -31,69 +31,81 @@ class _BtnMenuWidgetState extends State<BtnMenuWidget> {
         .diagonalP(AppConfig.tamTexto);
 
 
-    Widget horizontal= Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppConfig.radioBordecajas),
-          boxShadow: [
-            BoxShadow(
-                color: SiipneColors.colorBordecajas,
-                blurRadius: AppConfig.sobraBordecajas)
-          ]),
-      child: Material(
-        color:widget. colorFondo!=null?widget. colorFondo: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        elevation: 2,
-        child: InkWell(
-          borderRadius: BorderRadius.circular(20),
-          onTap:widget.onTap,
-          // handle your onTap here
-          child: Container(
 
-            margin:
-            EdgeInsets.only(left: 20.0, right: 20.0),
-            width: responsive.anchoP(70),
-            height: responsive.anchoP(17),
-            child: Row(
-              crossAxisAlignment:
-              CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  width: responsive.anchoP(15),
-                  height: responsive.anchoP(15),
-                  child: widget.img!=null? Image.asset(
-                    widget.img,
-                  ):Image.asset(
-                    SiipneImages.iconNoImg,
-                  ),
-                ),
-                SizedBox(
-                  width: responsive.altoP(1),
-                ),
-                Expanded(
-                    child: Text(
-                      widget.title,
-                      textAlign: TextAlign.center,
-
-                      style: TextStyle(
-                          color: widget.colorTexto!=null? widget.colorTexto:Colors.black87,
-                          fontWeight: FontWeight.bold,
-                          fontSize: fontSize),
-                    )),
-              ],
-            ),
+    Widget horizontal= desing(wg: Row(
+      crossAxisAlignment:
+      CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          width: responsive.anchoP(15),
+          height: responsive.anchoP(15),
+          child: widget.img!=null? Image.asset(
+            widget.img,
+          ):Image.asset(
+            SiipneImages.iconNoImg,
           ),
         ),
-      ),
-    );
-    Widget vertical= Container(
+        SizedBox(
+          width: responsive.altoP(1),
+        ),
+        Expanded(
+            child: Text(
+              widget.title,
+              textAlign: TextAlign.center,
+
+              style: TextStyle(
+                  color: widget.colorTexto!=null? widget.colorTexto:Colors.black87,
+                  fontWeight: FontWeight.bold,
+                  fontSize: fontSize),
+            )),
+      ],
+    ));
+
+
+
+
+    Widget vertical= desing(wg: Column(
+      crossAxisAlignment:
+      CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          width: responsive.anchoP(12),
+          height: responsive.anchoP(12),
+          child: widget.img!=null? Image.asset(
+            widget.img,
+          ):Image.asset(
+            SiipneImages.iconNoImg,
+          ),
+        ),
+        SizedBox(
+          width: responsive.altoP(1),
+        ),
+        Container(
+            child: Text(
+              widget.title,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  color: widget.colorTexto!=null? widget.colorTexto:Colors.black87,
+                  fontWeight: FontWeight.bold,
+                  fontSize: fontSize),
+            )),
+      ],
+    ));
+
+
+    return widget.horizontal ? horizontal : vertical;
+  }
+
+  Widget desing({required Widget wg}){
+    final responsive = ResponsiveUtil();
+    final fontSize= responsive
+        .diagonalP(AppConfig.tamTexto);
+    return  Container(
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(AppConfig.radioBordecajas),
-          boxShadow: [
-            BoxShadow(
-                color: SiipneColors.colorBordecajas,
-                blurRadius: AppConfig.sobraBordecajas)
-          ]),
+        borderRadius: BorderRadius.circular(AppConfig.radioBordecajas),
+      ),
       child: Material(
         shadowColor: widget. colorFondo!=null?widget. colorFondo:Colors.white,
         color:widget. colorFondo!=null?widget. colorFondo:Colors.white,
@@ -109,40 +121,10 @@ class _BtnMenuWidgetState extends State<BtnMenuWidget> {
             EdgeInsets.only(left: 20.0, right: 20.0,bottom: 10.0,top: 10),
             width: responsive.anchoP(70),
 
-            child: Column(
-              crossAxisAlignment:
-              CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                  width: responsive.anchoP(12),
-                  height: responsive.anchoP(12),
-                  child: widget.img!=null? Image.asset(
-                    widget.img,
-                  ):Image.asset(
-                    SiipneImages.iconNoImg,
-                  ),
-                ),
-                SizedBox(
-                  width: responsive.altoP(1),
-                ),
-                Container(
-                    child: Text(
-                      widget.title,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: widget.colorTexto!=null? widget.colorTexto:Colors.black87,
-                          fontWeight: FontWeight.bold,
-                          fontSize: fontSize),
-                    )),
-              ],
-            ),
+            child: wg,
           ),
         ),
       ),
     );
-
-
-    return widget.horizontal ? horizontal : vertical;
   }
 }

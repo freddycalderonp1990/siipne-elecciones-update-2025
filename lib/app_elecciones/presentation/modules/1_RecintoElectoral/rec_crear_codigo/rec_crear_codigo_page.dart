@@ -234,15 +234,16 @@ class RecintosCrearCodigoPage extends GetView<RecintosCrearCodigoController> {
   }
 
   Widget btnCrear() {
+
     return Obx(() => controller.selectUnidadPolicial.value.idDgoTipoEje > 0
-        ? BtnIconWidget(
-            colorBtn: AppColors.colorBotones,
-            colorIcon: Colors.white,
-            colorTxt: Colors.white,
+        ? controller.selectRecintosElectoral.value.idDgoTipoEje>0? BtnIconWidget(
             icon: Icons.open_in_browser_outlined,
             titulo: "CREAR CÓDIGO",
-            onPressed: () => controller.crearCodigo(),
-          )
+            onPressed:()=>  controller.msjCrearCodigo(onPressed: ()=>controller.crearCodigo())
+            ,
+          ):Container()
         : Container());
   }
+
+
 }

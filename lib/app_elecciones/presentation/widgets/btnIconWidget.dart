@@ -17,11 +17,11 @@ class BtnIconWidget extends StatelessWidget {
       this.titulo = '',
       this.select = false,
       required this.onPressed,
-      this.colorTxt = Colors.black,
-      this.colorLineas = AppColors.colorAzul,
+      this.colorTxt = Colors.white,
+      this.colorLineas = Colors.black,
       this.icon,
-      this.colorIcon = AppColors.colorAzul,
-       this.colorBtn=Colors.transparent})
+      this.colorIcon = Colors.white,
+       this.colorBtn=AppColors.colorBotones})
       : super(key: key);
 
   @override

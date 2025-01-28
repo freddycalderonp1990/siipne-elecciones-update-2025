@@ -8,6 +8,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/state_manager.dart';
+import 'package:siipnelecciones3/app/core/values/app_colors.dart';
 
 import 'package:siipnelecciones3/app_elecciones//core/values/tutorial_app_strings.dart';
 import 'package:latlong2/latlong.dart';
@@ -24,6 +25,7 @@ import '../../../app/core/exceptions/exceptions.dart';
 
 import '../../../app/core/utils/check_internet_conexion.dart';
 import '../../../app/core/utils/my_gps.dart';
+import '../../../app/core/utils/responsiveUtil.dart';
 import '../../../app/core/utils/tutorial_utils.dart';
 
 import '../../../app/core/utils/device_info.dart';

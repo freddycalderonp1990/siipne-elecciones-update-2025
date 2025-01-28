@@ -123,9 +123,7 @@ class MensajePermisoGps extends StatelessWidget {
                   ),
                   onPressed != null
                       ? BtnIconWidget(
-                    colorBtn: SiipneColors.colorBotonesWidget,
-                          colorIcon: Colors.white,
-                          colorTxt: Colors.white,
+
                           icon: Icons.navigate_next,
 
                           titulo: "Continuar",

@@ -56,6 +56,7 @@ class MenuAppPage extends GetView<MenuAppController> {
           width: responsive.anchoP(30),
           child: BtnIconWidget(
 
+
             icon: Icons.exit_to_app,
             titulo: "SALIR",
 
@@ -76,15 +77,11 @@ class MenuAppPage extends GetView<MenuAppController> {
     return Column(
       children: [
         BtnMenuWidget(
-          horizontal: false,
+horizontal: false,
             colorFondo: Colors.white,
             img: SiipneImages.icon_abrir_rec_elec,
             title: SiipneStrings.CREARCODIGO,
-            onTap: () {
-              Get.toNamed(SiipneRoutes.SELECT_PROCESO_OPERATIVOS);
-
-
-            }),
+            onTap: () =>Get.toNamed(SiipneRoutes.SELECT_PROCESO_OPERATIVOS)),
         SizedBox(
           height: responsive.altoP(separacionBtnMenu),
         ),

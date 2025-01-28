@@ -51,6 +51,7 @@ class TiposServiciosEjesPage extends GetView<TiposServiciosEjesController> {
           children: [
             controller.tipoEjesActivos.value.tipoEjeRecintos
                 ? BtnMenuWidget(
+                    horizontal: false,
                     colorFondo: Colors.white,
                     img: SiipneImages.icon_abrir_rec_elec,
                     title: 'SERVICIO EN RECINTOS',
@@ -63,6 +64,7 @@ class TiposServiciosEjesPage extends GetView<TiposServiciosEjesController> {
             ),
             controller.tipoEjesActivos.value.tipoEjeUnidadesPoliciales
                 ? BtnMenuWidget(
+                    horizontal: false,
                     img: SiipneImages.icon_agregar_personal,
                     title: SiipneStrings.UNIDADESPOLICIALES,
                     onTap: () {},
