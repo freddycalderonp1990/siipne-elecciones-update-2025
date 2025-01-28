@@ -11,7 +11,6 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
     };
 
     String json = await UrlApiProviderSiipneMovil.post(
-      isLogin: true,
       body: body,
     );
 
@@ -31,6 +30,101 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
       }
       // En caso de respuesta no válida, devolver un modelo vacío
       return RecintosElectoralesAbiertos.empty();
+    } catch (e, stackTrace) {
+      // Manejo centralizado de excepciones
+      throw ParseJsonException(
+          message: "Problema en Parse Model: ${e} - stackTrace: ${stackTrace}");
+    }
+  }
+
+  @override
+  Future<List<RecintosElectoral>> getRecintosElectoralesCercanos({
+    required double latitud,
+    required double longitud,
+    required int idDgoProcElec,
+    required int idDgoTipoEje,
+  }) async {
+    Object? body = {
+      "modulo": ApiConstantes.MODULO,
+      "uri": ApiConstantes.ELECCIONES_RECINTOS_ELECTORALES,
+      "latitud": latitud,
+      "longitud": longitud,
+      "idDgoProcElec": idDgoProcElec,
+      "idDgoTipoEje": idDgoTipoEje
+    };
+
+    String json = await UrlApiProviderSiipneMovil.post(
+      body: body,
+    );
+
+    String titleJson = "recintosElectorales";
+
+    try {
+      // Validar la respuesta del servidor
+      String msj =
+          ResponseApi.validateConsultas(json: json, titleJson: titleJson);
+      // Si la respuesta es válida
+      if (msj == ApiConstantes.varTrue) {
+        // Obtener los datos del modelo en formato String
+        String datosJson = getDatosModelFromString(json, titleJson);
+        // Parsear y retornar el modelo correspondiente
+        return RecintosElectoralsModelFromJson(datosJson).RecintosElectorals;
+      }
+      // En caso de respuesta no válida, devolver un modelo vacío
+      return [];
+    } catch (e, stackTrace) {
+      // Manejo centralizado de excepciones
+      throw ParseJsonException(
+          message: "Problema en Parse Model: ${e} - stackTrace: ${stackTrace}");
+    }
+  }
+
+  @override
+  Future<AbrirRecintoElectoral> crearCodigo(
+      {required int usuario,
+      required int idGenPersona,
+      required int idDgoReciElect,
+      required double latitud,
+      required double longitud,
+      required int idDgoProcElec,
+      required int idDgoReciUnidadPolicial,
+      required String telefono,
+        required String ip,
+      required int idDgoTipoEje}) async{
+    Object? body = {
+      "modulo": ApiConstantes.MODULO,
+      "uri": ApiConstantes.ELECCIONES_RECINTOS_ELECTORALES,
+      "idDgoReciElect": idDgoReciElect,
+      "usuario": usuario,
+      "idGenPersona": idGenPersona,
+      "idDgoProcElec": idDgoProcElec,
+      "latitud": latitud,
+      "longitud": longitud,
+      "ip": ip,
+      "idDgoReciUnidadPolicial": idDgoReciUnidadPolicial,
+      "telefono": telefono,
+      "idDgoTipoEje":idDgoTipoEje
+    };
+
+    String json = await UrlApiProviderSiipneMovil.post(
+      body: body,
+    );
+
+    String titleJson = "AbrirRecintoElectoral";
+
+    try {
+      // Validar la respuesta del servidor
+      String msj =
+      ResponseApi.validateConsultas(json: json, titleJson: titleJson);
+      // Si la respuesta es válida
+      if (msj == ApiConstantes.varTrue) {
+        // Obtener los datos del modelo en formato String
+        String datosJson = getDatosModelFromString(json, titleJson);
+        // Parsear y retornar el modelo correspondiente
+        return  abrirRecintoElectoralModelFromJson(datosJson).abrirRecintoElectoral;
+      }
+      // En caso de respuesta no válida, devolver un modelo vacío
+      return AbrirRecintoElectoral.empty();
     } catch (e, stackTrace) {
       // Manejo centralizado de excepciones
       throw ParseJsonException(

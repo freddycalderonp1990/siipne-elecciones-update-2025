@@ -20,6 +20,12 @@ part 'auth_model.dart';
 part 'msjServerModel.dart';
 part 'getDatosModel.dart';
 
+
+//SIIPNE ELECCIONES
+part 'procesos_operativos_model.dart';
+part 'tipo_ejes_activos_model.dart';
+part 'unidades_policiales_model.dart';
+
 //SISTEMA RECINTO ELECTORAL
 part 'recintoElectoral/recintos_electorales_model.dart';
 part 'recintoElectoral/abrirRecintoElectoralModel.dart';
@@ -31,6 +37,7 @@ part 'recintoElectoral/personal_recinto_electoral_model.dart';
 part 'recintoElectoral/novedadesElectoralesDetalleModel.dart';
 part 'recintoElectoral/observacion_model.dart';
 part 'recintoElectoral/finalizar_proceso_electoral_model.dart';
+
 
 
 

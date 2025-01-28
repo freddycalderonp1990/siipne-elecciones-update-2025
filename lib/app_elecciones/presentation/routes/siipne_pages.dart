@@ -29,6 +29,17 @@ class SiipnePages {
         page: () => SelectProcesoOperativoPage(),
         binding: SelectProcesoOperativoBinding()),
 
+
+    AppPages.getPageConfig(
+        name: SiipneRoutes.TIPOS_SERVICIOS_EJES,
+        page: () => TiposServiciosEjesPage(),
+        binding: TiposServiciosEjesBinding()),
+
+    AppPages.getPageConfig(
+        name: SiipneRoutes.RECINTOS_CREAR_CODIGO,
+        page: () => RecintosCrearCodigoPage(),
+        binding: RecintosCrearCodigoBinding()),
+
     AppPages.getPageConfig(
         name: SiipneRoutes.MENU_RECINTOS_ELECTORALES,
         page: () => MenuRecintosElectoralesPage(),

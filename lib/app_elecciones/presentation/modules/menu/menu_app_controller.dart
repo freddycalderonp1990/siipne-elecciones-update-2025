@@ -8,7 +8,7 @@ class MenuAppController extends GetxController {
   final EleccionesRecintosApiImpl _eleccionesRecintosApiImpl =
       Get.find<EleccionesRecintosApiImpl>();
 
-  RxList<DatosProcesoImg> listDatosProcesoImg = <DatosProcesoImg>[].obs;
+
 
  RecintosElectoralesAbiertos recintosElectoralesAbiertos =
       RecintosElectoralesAbiertos.empty();
@@ -71,8 +71,10 @@ class MenuAppController extends GetxController {
 
   Future<void> getImgProceso() async {
     peticionServerState(true);
+
+    List<DatosProcesoImg> listDatosProcesoImg = <DatosProcesoImg>[];
     await ExceptionHelper.manejarErrores(() async {
-      listDatosProcesoImg.value =
+      listDatosProcesoImg =
           await _eleccionesProcesosApiImpl.getProcesoActivoImgs();
     });
 

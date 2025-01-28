@@ -3,29 +3,30 @@ part of '../controllers.dart';
 class SelectProcesoOperativoController extends GetxController {
   final loginController = Get.find<LoginController>();
 
+  RxBool cargaInicial=false.obs;
 
-  final EleccionesRecintosApiImpl _eleccionesRecintosApiImpl =
-      Get.find<EleccionesRecintosApiImpl>();
+  final EleccionesProcesosApiImpl _eleccionesProcesosApiImpl =
+      Get.find<EleccionesProcesosApiImpl>();
 
-  RxList<DatosProcesoImg> listDatosProcesoImg = <DatosProcesoImg>[].obs;
+  RxList<ProcesosOperativo> listProcesosOperativo = <ProcesosOperativo>[].obs;
 
- RecintosElectoralesAbiertos recintosElectoralesAbiertos =
-      RecintosElectoralesAbiertos.empty();
+  Rx<ProcesosOperativo> selectProcesosOperativo=ProcesosOperativo.empty().obs;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  late DataUser  user;
+  late DataUser user;
 
   RxBool peticionServerState = false.obs;
   @override
   void onInit() async {
-    user=loginController.user.value;
+    user = loginController.user.value;
     super.onInit();
   }
 
   @override
   void onReady() {
     // TODO: Donde la vista ya se presento
+
     super.onReady();
   }
 
@@ -36,9 +37,42 @@ class SelectProcesoOperativoController extends GetxController {
     super.onClose();
   }
 
+  Future<void> getProcesoOperativos() async {
+    print("consultando");
+
+    peticionServerState(true);
+    cargaInicial.value=true;
+
+    await ExceptionHelper.manejarErrores(() async {
+      final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
+      LatLng position = await locationBloc.getCurrentPosition();
+
+      listProcesosOperativo.value =
+          await _eleccionesProcesosApiImpl.getProcesosOperativos(
+              latitud: position.latitude, longitud: position.longitude);
+      if(listProcesosOperativo.length==0){
+        DialogosAwesome.getInformation(descripcion: "Actualmente no hay procesos activos disponibles. Por favor, inténtelo más tarde.");
+     return;
+      }
+
+      if(listProcesosOperativo.length==1){
+        selectProcesosOperativo.value=listProcesosOperativo[0];
+        goToPageTipoServicio();
+      }
 
 
-  cerrarSession() {
-    Get.toNamed(AppRoutes.SPLASH_APP);
+    });
+
+
+
+    peticionServerState(false);
+
+
+
+  }
+
+
+  goToPageTipoServicio(){
+    Get.toNamed(SiipneRoutes.TIPOS_SERVICIOS_EJES);
   }
 }

@@ -1,17 +1,15 @@
 part of '../pages.dart';
 
-class SelectProcesoOperativoPage extends GetView<SelectProcesoOperativoController> {
+class SelectProcesoOperativoPage
+    extends GetView<SelectProcesoOperativoController> {
   const SelectProcesoOperativoPage({Key? key}) : super(key: key);
-
-
-
 
   @override
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
+      title:"OPERATIVOS" ,
       mostrarBtnAtras: true,
-
-      contenido: getContenido(),
+      contenido: Center(child:  GpsAccessScreen(contenido: getContenido())),
       peticionServer: controller.peticionServerState,
     );
   }
@@ -19,89 +17,93 @@ class SelectProcesoOperativoPage extends GetView<SelectProcesoOperativoControlle
   Widget getContenido() {
     final responsive = ResponsiveUtil();
 
+    String Bienvenido =
+        controller.user.sexo == 'HOMBRE' ? "BIENVENIDO: " : "BIENVENIDA: ";
 
-    String Bienvenido =  controller.user.sexo == 'HOMBRE'
-        ? "BIENVENIDO: "
-        : "BIENVENIDA: ";
 
-    return Column(
+    return SingleChildScrollView(child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
 
-        TextSombrasWidget(
-          colorTexto: Colors.white,
-          colorSombra: Colors.black,
-          title:  "OPERATIVOS",size: responsive.diagonalP(AppConfig.tamTextoTitulo),),
-        SizedBox(height: 10,),
+        Obx(
+          () => controller.cargaInicial == false
+              ? MyUbicacionWidget(
+                  callback: (_) {
+                    print("ingresoo jajajaja");
 
-        TextSombrasWidget(title:  Bienvenido + controller.user.nombres,),
+                    controller.getProcesoOperativos();
+                  },
+                )
+              : Container(),
+        ),
+
+        imgPerfilRedonda(
+          size: 28,
+          img:       controller.user.foto,
+        ),
+        SizedBox(
+          height: 10,
+        ),
+        TextSombrasWidget(
+          title: Bienvenido + controller.user.nombres,
+        ),
         Container(
           padding: EdgeInsets.all(5),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-
               SizedBox(
                 height: responsive.altoP(2),
               ),
-             /* MyUbicacionWidget(
-                callback: (_) {
-                  _getProcesosOperativos();
-                },
-              ),*/
               SizedBox(
                 height: responsive.altoP(1),
               ),
-              getComboProcesosRecintos(),
+              ContenedorDesingWidget(
+                paddin: EdgeInsets.all(5),
+                child: getComboProcesosRecintos(),
+              ),
               SizedBox(
                 height: responsive.altoP(1),
               ),
+              Obx(() => controller.selectProcesosOperativo.value.idDgoProcElec > 0
+                  ? BtnIconWidget(
 
 
-              BtnIconWidget(
-                colorBtn: AppColors.colorBotones,
-                colorIcon: Colors.white,
-                colorTxt: Colors.white,
-
-                icon: Icons.exit_to_app,
-                titulo: "CONTINUAR",
-
-                onPressed: () => controller.cerrarSession(),
-              ),
+                      icon: Icons.exit_to_app,
+                      titulo: "CONTINUAR",
+                      onPressed: () => controller.goToPageTipoServicio(),
+                    )
+                  : Container()),
               SizedBox(
                 height: responsive.altoP(4),
               ),
             ],
           ),
         ),
-
-
       ],
-    );
+    ));
   }
-
 
   Widget getComboProcesosRecintos() {
-   double paddingContenido = 10.0;
+    return Obx(()=>ComboBusqueda(
 
-   return  ComboBusqueda(
-
-     showClearButton: false,
-     datos: ["uno","dos"],
-     searchHint: "Clientes",
-     complete: (value) {
-       //controller.getIdCliente(value);
-       print(value);
-     },
-     textSeleccioneUndato: "Seleccione un Proceso",
-
-   );
-
-
+      icon: Icons.select_all_sharp,
+selectValue:  controller.selectProcesosOperativo.value,
+      showClearButton: false,
+      datos: controller.listProcesosOperativo.value,
+      displayField: (item) =>
+      item.descProcElecc, // Aquí decides mostrar "nombres"
+      searchHint: "Proceso",
+      complete: (value) {
+        if(value!=null) {
+          controller.selectProcesosOperativo.value = value;
+        }
+        else{
+          controller.selectProcesosOperativo.value = ProcesosOperativo.empty();
+        }
+      },
+      textSeleccioneUndato: "Seleccione un Proceso",
+    ));
   }
-
-
-
-
 }

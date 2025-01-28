@@ -6,32 +6,37 @@ class MenuAppPage extends GetView<MenuAppController> {
   @override
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
+      title: "MENÚ PRINCIPAL",
 
-      mostrarAnuncio: true,
-
-      contenido: getContenido(),
+      contenido: Container(
+          child: Center(child:  getContenido())),
       peticionServer: controller.peticionServerState,
     );
   }
 
+
+
   Widget getContenido() {
+
     final responsive = ResponsiveUtil();
+
 
 
     String Bienvenido =  controller.user.sexo == 'HOMBRE'
         ? "BIENVENIDO: "
         : "BIENVENIDA: ";
 
-    return Column(
+    return SingleChildScrollView(child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
 
-        TextSombrasWidget(
-          colorTexto: Colors.white,
-          colorSombra: Colors.black,
-          title:  "MENÚ PRINCIPAL",size: responsive.diagonalP(AppConfig.tamTextoTitulo),),
-        SizedBox(height: 10,),
+
+
+        imgPerfilRedonda(
+          size: 28,
+          img:       controller.user.foto,
+        ),
         TextSombrasWidget(title:  Bienvenido + controller.user.nombres,),
         Container(
           padding: EdgeInsets.all(5),
@@ -42,13 +47,15 @@ class MenuAppPage extends GetView<MenuAppController> {
               SizedBox(
                 height: responsive.altoP(2),
               ),
-              _getMenu(responsive)
+              _getMenu(responsive),
+
             ],
           ),
         ),
         Container(
           width: responsive.anchoP(30),
           child: BtnIconWidget(
+
 
             icon: Icons.exit_to_app,
             titulo: "SALIR",
@@ -61,7 +68,7 @@ class MenuAppPage extends GetView<MenuAppController> {
         ),
 
       ],
-    );
+    ),);
   }
 
 
@@ -70,16 +77,11 @@ class MenuAppPage extends GetView<MenuAppController> {
     return Column(
       children: [
         BtnMenuWidget(
-
-          horizontal: false,
+horizontal: false,
             colorFondo: Colors.white,
             img: SiipneImages.icon_abrir_rec_elec,
             title: SiipneStrings.CREARCODIGO,
-            onTap: () {
-              Get.toNamed(SiipneRoutes.SELECT_PROCESO_OPERATIVOS);
-
-
-            }),
+            onTap: () =>Get.toNamed(SiipneRoutes.SELECT_PROCESO_OPERATIVOS)),
         SizedBox(
           height: responsive.altoP(separacionBtnMenu),
         ),

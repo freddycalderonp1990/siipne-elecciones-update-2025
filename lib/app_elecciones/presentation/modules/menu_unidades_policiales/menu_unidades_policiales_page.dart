@@ -7,7 +7,7 @@ class MenuUnidadesPolicialesPage extends GetView<MenuUnidadesPolicialesControlle
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
 
-      mostrarAnuncio: true,
+
 
       contenido: getContenido(),
       peticionServer: controller.peticionServerState,

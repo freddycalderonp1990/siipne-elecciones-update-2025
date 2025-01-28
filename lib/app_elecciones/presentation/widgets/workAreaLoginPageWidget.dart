@@ -68,15 +68,11 @@ class _WorkAreaLoginPageWidgetState extends State<WorkAreaLoginPageWidget> {
 
     Widget wgImgPerfil = Center(
       child: Column(
+
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-      Container(
-      height: responsive.altoP(18),
-      child: Column(children: [
-        Image.asset(
-          AppImages.cabecera,
-          fit: BoxFit.fill,
-        ),
-      ],),),
+
       widget.imgPerfil != null
               ? imgPerfilRedonda(
             size: 28,

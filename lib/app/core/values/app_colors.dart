@@ -15,7 +15,7 @@ class AppColors{
   static const Color colorBordeBotones = Colors.blueAccent;
 
 
-  static const Color colorBordecajas = colorAzul;
+  static const Color colorBordecajas = Colors.black38;
   static const Color colorBotones = AppColors.colorAzul_1;
 
   static const Color colorFondo = colorAzul_1;
@@ -28,6 +28,7 @@ class AppColors{
 
   //hexadecimal #164987
   static const int rAzul = 22, gAzul = 73, bAzul = 135;
+  static const Color colorAzulHex = Color(0xFFF164987);
   static const Color colorAzul = Color.fromRGBO(rAzul, gAzul, bAzul, 100);
   static const Color colorAzul_80 = Color.fromRGBO(rAzul, gAzul, bAzul, 80);
   static const Color colorAzul_60 = Color.fromRGBO(rAzul, gAzul, bAzul, 60);

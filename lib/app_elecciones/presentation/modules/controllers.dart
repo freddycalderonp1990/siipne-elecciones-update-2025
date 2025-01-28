@@ -3,10 +3,12 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/state_manager.dart';
+import 'package:siipnelecciones3/app/core/values/app_colors.dart';
 
 import 'package:siipnelecciones3/app_elecciones//core/values/tutorial_app_strings.dart';
 import 'package:latlong2/latlong.dart';
@@ -23,12 +25,14 @@ import '../../../app/core/exceptions/exceptions.dart';
 
 import '../../../app/core/utils/check_internet_conexion.dart';
 import '../../../app/core/utils/my_gps.dart';
+import '../../../app/core/utils/responsiveUtil.dart';
 import '../../../app/core/utils/tutorial_utils.dart';
 
 import '../../../app/core/utils/device_info.dart';
 import '../../../app/core/utils/encriptar_util.dart';
 
 import '../../../app/data/provider/providers_impl_app.dart';
+import '../../../app/presentation/blocs/location/location_bloc.dart';
 import '../../../app/presentation/routes/app_routes.dart';
 
 
@@ -53,6 +57,10 @@ part 'login/login_controller.dart';
 part 'login/inicio_rapido/inicio_rapido_controller.dart';
 part 'menu/menu_app_controller.dart';
 part 'select_proceso_operativo/select_proceso_operativo_controller.dart';
+part 'tipos_servicios_ejes/tipos_servicios_ejes_controller.dart';
+
+part '1_RecintoElectoral/rec_crear_codigo/rec_crear_codigo_controller.dart';
+
 part 'menu_recintos_electorales/menu_recintos_electorales_controller.dart';
 part 'menu_unidades_policiales/menu_unidades_policiales_controller.dart';
 

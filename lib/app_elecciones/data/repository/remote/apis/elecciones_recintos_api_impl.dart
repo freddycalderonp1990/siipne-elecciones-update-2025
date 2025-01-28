@@ -11,4 +11,43 @@ class EleccionesRecintosApiImpl extends EleccionesRecintosRepository {
     return await _EleccionesRecintosApiProviderImpl
         .verificarperAsignadoRecElectoral(idGenPersona: idGenPersona);
   }
+
+  @override
+  Future<List<RecintosElectoral>> getRecintosElectoralesCercanos(
+      {required double latitud,
+      required double longitud,
+      required int idDgoProcElec,
+      required int idDgoTipoEje}) async {
+    return await _EleccionesRecintosApiProviderImpl
+        .getRecintosElectoralesCercanos(
+            latitud: latitud,
+            longitud: longitud,
+            idDgoProcElec: idDgoProcElec,
+            idDgoTipoEje: idDgoTipoEje);
+  }
+
+  @override
+  Future<AbrirRecintoElectoral> crearCodigo(
+      {required int usuario,
+      required int idGenPersona,
+      required int idDgoReciElect,
+      required double latitud,
+      required double longitud,
+      required int idDgoProcElec,
+      required int idDgoReciUnidadPolicial,
+      required String telefono,
+      required String ip,
+      required int idDgoTipoEje}) async {
+    return await _EleccionesRecintosApiProviderImpl.crearCodigo(
+        usuario: usuario,
+        idGenPersona: idGenPersona,
+        idDgoReciElect: idDgoReciElect,
+        latitud: latitud,
+        longitud: longitud,
+        idDgoProcElec: idDgoProcElec,
+        idDgoReciUnidadPolicial: idDgoReciUnidadPolicial,
+        telefono: telefono,
+        ip: ip,
+        idDgoTipoEje: idDgoTipoEje);
+  }
 }
