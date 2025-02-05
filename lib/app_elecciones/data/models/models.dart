@@ -25,6 +25,7 @@ part 'getDatosModel.dart';
 part 'procesos_operativos_model.dart';
 part 'tipo_ejes_activos_model.dart';
 part 'unidades_policiales_model.dart';
+part 'person_model.dart';
 
 //SISTEMA RECINTO ELECTORAL
 part 'recintoElectoral/recintos_electorales_model.dart';

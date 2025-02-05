@@ -51,5 +51,11 @@ class SiipnePages {
         page: () => MenuUnidadesPolicialesPage(),
         binding: MenuUnidadesPolicialesBinding()),
 
+
+    AppPages.getPageConfig(
+        name: SiipneRoutes.ADD_PERSONAL,
+        page: () => AddPersonPage(),
+        binding: AddPersonBinding()),
+
   ];
 }

@@ -30,12 +30,11 @@ class _MyUbicacionWidgetState extends State<MyUbicacionWidget> {
 
   Widget getUbicacion(ResponsiveUtil responsive, LocationState state) {
 
-
     if (state.lastKnownLocation == null)
       return ContenedorDesingWidget(
-
           anchoPorce: anchoContenedor,
           child:Center(child: Text('Obteniendo Ubicación...')));
+
 
     if (widget.callback != null) {
       WidgetsBinding.instance.addPostFrameCallback(widget.callback!);

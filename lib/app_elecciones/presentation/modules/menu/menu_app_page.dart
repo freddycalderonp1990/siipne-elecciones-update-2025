@@ -7,81 +7,64 @@ class MenuAppPage extends GetView<MenuAppController> {
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
       title: "MENÚ PRINCIPAL",
-
-      contenido: Container(
-          child: Center(child:  getContenido())),
+      contenido: Container(child: Center(child: getContenido())),
       peticionServer: controller.peticionServerState,
     );
   }
 
-
-
   Widget getContenido() {
-
     final responsive = ResponsiveUtil();
 
+    String Bienvenido =
+        controller.user.sexo == 'HOMBRE' ? "BIENVENIDO: " : "BIENVENIDA: ";
 
-
-    String Bienvenido =  controller.user.sexo == 'HOMBRE'
-        ? "BIENVENIDO: "
-        : "BIENVENIDA: ";
-
-    return SingleChildScrollView(child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-
-
-
-        imgPerfilRedonda(
-          size: 28,
-          img:       controller.user.foto,
-        ),
-        TextSombrasWidget(title:  Bienvenido + controller.user.nombres,),
-        Container(
-          padding: EdgeInsets.all(5),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-
-              SizedBox(
-                height: responsive.altoP(2),
-              ),
-              _getMenu(responsive),
-
-            ],
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          imgPerfilRedonda(
+            size: 25,
+            img: controller.user.foto,
           ),
-        ),
-        Container(
-          width: responsive.anchoP(30),
-          child: BtnIconWidget(
 
-
-            icon: Icons.exit_to_app,
-            titulo: "SALIR",
-
-            onPressed: () => controller.cerrarSession(),
+          DesingTextNameUser(data:  Bienvenido + controller.user.nombres),
+          Container(
+            padding: EdgeInsets.all(5),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  height: responsive.altoP(2),
+                ),
+                _getMenu(responsive),
+              ],
+            ),
           ),
-        ),
-        SizedBox(
-          height: responsive.altoP(3.5),
-        ),
+         BtnIconWidget(
+              icon: Icons.exit_to_app,
+              titulo: "SALIR",
+              onPressed: () => controller.cerrarSession(),
+            ),
 
-      ],
-    ),);
+          SizedBox(
+            height: responsive.altoP(3.5),
+          ),
+        ],
+      ),
+    );
   }
-
 
   _getMenu(ResponsiveUtil responsive) {
     double separacionBtnMenu = 1.5;
     return Column(
       children: [
         BtnMenuWidget(
-horizontal: false,
+            horizontal: false,
             colorFondo: Colors.white,
             img: SiipneImages.icon_abrir_rec_elec,
             title: SiipneStrings.CREARCODIGO,
-            onTap: () =>Get.toNamed(SiipneRoutes.SELECT_PROCESO_OPERATIVOS)),
+            onTap: () => Get.toNamed(SiipneRoutes.SELECT_PROCESO_OPERATIVOS)),
         SizedBox(
           height: responsive.altoP(separacionBtnMenu),
         ),
@@ -91,7 +74,7 @@ horizontal: false,
             img: SiipneImages.icon_registrarse_rec_elect,
             title: SiipneStrings.ANEXARSE,
             onTap: () {
-             /* Navigator.push(
+              /* Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
@@ -100,11 +83,9 @@ horizontal: false,
         SizedBox(
           height: responsive.altoP(separacionBtnMenu),
         ),
-
       ],
     );
   }
-
-
-
 }
+
+

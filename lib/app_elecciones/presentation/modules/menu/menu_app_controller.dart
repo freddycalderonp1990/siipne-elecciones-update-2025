@@ -9,7 +9,6 @@ class MenuAppController extends GetxController {
       Get.find<EleccionesRecintosApiImpl>();
 
 
-
  RecintosElectoralesAbiertos recintosElectoralesAbiertos =
       RecintosElectoralesAbiertos.empty();
 
@@ -60,7 +59,7 @@ class MenuAppController extends GetxController {
       if (recintosElectoralesAbiertos.isRecinto) {
         //Menu Recintos Electorales
         print('Menu Recintos Electorales');
-        goToPage(SiipneRoutes.MENU_RECINTOS_ELECTORALES);
+        goToPage(SiipneRoutes.MENU_RECINTOS_ELECTORALES,);
 
       } else {
         //Menu Unidades Policiales u Otros
@@ -87,8 +86,9 @@ class MenuAppController extends GetxController {
 
 
   goToPage(String name){
+    Get.offNamed(name,arguments:{"recintosElectoralesAbiertos":recintosElectoralesAbiertos} );
 
-    Get.offNamed(name);
+
   }
 
 

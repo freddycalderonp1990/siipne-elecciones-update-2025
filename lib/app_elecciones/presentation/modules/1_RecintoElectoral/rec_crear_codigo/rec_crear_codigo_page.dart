@@ -239,7 +239,11 @@ class RecintosCrearCodigoPage extends GetView<RecintosCrearCodigoController> {
         ? controller.selectRecintosElectoral.value.idDgoTipoEje>0? BtnIconWidget(
             icon: Icons.open_in_browser_outlined,
             titulo: "CREAR CÓDIGO",
-            onPressed:()=>  controller.msjCrearCodigo(onPressed: ()=>controller.crearCodigo())
+            onPressed:()=>  controller.msjCrearCodigo(onPressed: (){
+              Get.back();
+              controller.crearCodigo();
+
+            })
             ,
           ):Container()
         : Container());

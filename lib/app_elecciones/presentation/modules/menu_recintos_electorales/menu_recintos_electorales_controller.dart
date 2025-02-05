@@ -2,11 +2,7 @@ part of '../controllers.dart';
 
 class MenuRecintosElectoralesController extends GetxController {
   final loginController = Get.find<LoginController>();
-  final EleccionesProcesosApiImpl _eleccionesProcesosApiImpl =
-      Get.find<EleccionesProcesosApiImpl>();
 
-  final EleccionesRecintosApiImpl _eleccionesRecintosApiImpl =
-      Get.find<EleccionesRecintosApiImpl>();
 
   RxList<DatosProcesoImg> listDatosProcesoImg = <DatosProcesoImg>[].obs;
 
@@ -22,6 +18,7 @@ class MenuRecintosElectoralesController extends GetxController {
   void onInit() async {
 
     user=loginController.user.value;
+    getDataToPage();
     super.onInit();
   }
 
@@ -38,7 +35,25 @@ class MenuRecintosElectoralesController extends GetxController {
     super.onClose();
   }
 
+  getDataToPage() async{
 
+    // Recibe los argumentos
+    final arguments = Get.arguments as Map<String, dynamic>?;
+
+    // Verifica que los argumentos no sean nulos y que contengan la clave 'data'
+    if (arguments != null && arguments.containsKey('recintosElectoralesAbiertos')) {
+
+      try {
+        recintosElectoralesAbiertos = arguments['recintosElectoralesAbiertos'] as RecintosElectoralesAbiertos;
+
+      } catch (e) {
+        DialogosAwesome.getError(descripcion: "No existe data valida");
+      }
+    } else {
+      DialogosAwesome.getError(descripcion: "No existe data valida");
+    }
+
+  }
 
 
   cerrarSession() {

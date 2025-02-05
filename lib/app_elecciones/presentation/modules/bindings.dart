@@ -15,4 +15,6 @@ part '1_RecintoElectoral/rec_crear_codigo/rec_crear_codigo_binding.dart';
 part 'menu_recintos_electorales/menu_recintos_electorales_binding.dart';
 part 'menu_unidades_policiales/menu_unidades_policiales_binding.dart';
 
+part 'personal/add/add_person_binding.dart';
+
 

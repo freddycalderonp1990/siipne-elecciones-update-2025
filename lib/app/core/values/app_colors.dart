@@ -84,6 +84,7 @@ class AppColors{
   static const Color colorRojo_10 = Color.fromRGBO(rRojo, gRojo, bRojo, 10);
 
   //VERDE
+  static const Color colorVerdeHex = Color(0xFF00833E);
   static const int rVerde = 0, gVerde = 131, bVerde = 62;
   static const Color colorVerde = Color.fromRGBO(rVerde, gVerde, bVerde, 100);
   static const Color colorVerde_80 = Color.fromRGBO(rVerde, gVerde, bVerde, 80);

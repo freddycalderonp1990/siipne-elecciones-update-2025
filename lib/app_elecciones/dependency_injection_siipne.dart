@@ -25,6 +25,7 @@ class DependencyInjectionSiipne extends Bindings{
     Get.lazyPut<EleccionesProcesosApiImpl> (() => EleccionesProcesosApiImpl(EleccionesProcesosApiProviderImpl()), fenix: true);
     Get.lazyPut<EleccionesRecintosApiImpl> (() => EleccionesRecintosApiImpl(EleccionesRecintosApiProviderImpl()), fenix: true);
     Get.lazyPut<EleccionesTipoEjesApiImpl> (() => EleccionesTipoEjesApiImpl(EleccionesTipoEjesApiProviderImpl()), fenix: true);
+    Get.lazyPut<PersonaApiImpl> (() => PersonaApiImpl(PersonaApiProviderImpl()), fenix: true);
 
     //Providers
     Get.lazyPut<LocalStorageRepository> (() => LocalStoreImpl(LocalStoreProviderImpl()), fenix: true);

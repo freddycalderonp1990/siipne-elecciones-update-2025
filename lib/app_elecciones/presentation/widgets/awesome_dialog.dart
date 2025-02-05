@@ -1,79 +1,14 @@
 part of 'customWidgets.dart';
 
 class DialogosAwesome {
-  static getConTextImput(
-      {String title = 'ERROR', required String descripcion}) {
-    late AwesomeDialog dialog;
-    dialog = AwesomeDialog(
-      dismissOnTouchOutside: false,
-      dismissOnBackKeyPress: false,
-      context: Get.context!,
-      animType: AnimType.scale,
-      dialogType: DialogType.info,
-      keyboardAware: true,
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          children: <Widget>[
-            Text(
-              'Form Data',
 
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Material(
-              elevation: 0,
-              color: Colors.blueGrey.withAlpha(40),
-              child: TextFormField(
-                autofocus: true,
-                minLines: 1,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  labelText: 'Title',
-                  prefixIcon: Icon(Icons.text_fields),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Material(
-              elevation: 0,
-              color: Colors.blueGrey.withAlpha(40),
-              child: TextFormField(
-                autofocus: true,
-                keyboardType: TextInputType.multiline,
-
-                minLines: 2,
-                maxLines: null,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  labelText: 'Description',
-                  prefixIcon: Icon(Icons.text_fields),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            AnimatedButton(
-                isFixedHeight: false,
-                text: 'Close',
-                pressEvent: () {
-                  dialog.dismiss();
-                })
-          ],
-        ),
-      ),
-    )..show();
-  }
 
   static getError(
       {String title = 'ERROR',
         required String descripcion,
         Function()? btnOkOnPress}) {
     AwesomeDialog(
+
         dismissOnTouchOutside: false,
         dismissOnBackKeyPress: false,
         context: Get.context!,
@@ -166,6 +101,7 @@ class DialogosAwesome {
   static getInformation(
       {String title = 'Información', required String descripcion,  Function()? btnOkOnPress,}) {
     AwesomeDialog(
+
         dismissOnTouchOutside: false,
         dismissOnBackKeyPress: false,
         context: Get.context!,

@@ -14,7 +14,7 @@ class SiipneRoutes{
   static const MENU_RECINTOS_ELECTORALES="/${name}menu_recintos_electorales";
   static const MENU_UNIDADES_POLICIALES="/${name}menu_unidades_policiales";
 
-
+  static const ADD_PERSONAL="/${name}add_personal";
 
 
   static const LOGIN_RAPIDO="/${name}login_rapido";

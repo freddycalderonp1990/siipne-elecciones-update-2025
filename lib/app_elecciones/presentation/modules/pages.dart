@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import 'package:siipnelecciones3/app/core/values/app_colors.dart';
+import 'package:siipnelecciones3/app/presentation/routes/app_routes.dart';
 
 import 'package:siipnelecciones3/app/presentation/widgets/custom_app_widgets.dart';
 import 'package:flutter/rendering.dart';
@@ -55,3 +56,5 @@ part 'menu_unidades_policiales/menu_unidades_policiales_page.dart';
 
 
 part '1_RecintoElectoral/rec_crear_codigo/rec_crear_codigo_page.dart';
+
+part 'personal/add/add_person_page.dart';

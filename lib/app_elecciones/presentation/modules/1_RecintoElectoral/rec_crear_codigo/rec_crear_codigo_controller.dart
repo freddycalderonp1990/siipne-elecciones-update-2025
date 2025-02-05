@@ -140,116 +140,193 @@ class RecintosCrearCodigoController extends GetxController {
     ]);
     peticionServerState(false);
 
-    /* // Usa los resultados de ambas funciones
-    int resultado1 = resultados[0];
-    String resultado2 = resultados[1];
 
-    print('Función 3 completada con resultados: $resultado1 y $resultado2');*/
   }
 
-
-
-  msjCrearCodigo({required VoidCallback? onPressed}){
+  msjCrearCodigo({required VoidCallback? onPressed}) {
     bool isValid = formKey.currentState!.validate();
     if (!isValid) return;
-    String msj=
+    String msj =
         "\nRecuerde crear el código si se encuentra de servicio en el recinto electoral, para prevenir el mal uso todo será registrado."
         "\n \nUtilice la aplicación con responsabilidad.";
     final responsive = ResponsiveUtil();
 
-    DialogosDesingWidget.getDialogoX(title: "Crear Código",contenido: Column(children: [
-
-      Icon(Icons.warning,color: Colors.amber,size: 50,),
-      TituloTextWidget(title: "¿Usted es la persona encargada o jefe designada a este recinto electoral?"),
-
-      DetalleTextWidget(detalle: msj,todoElAncho: true,),
-      SizedBox(height: 40,),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-        children: [
-          Expanded(child: BtnIconWidget(
-            colorBtn: AppColors.colorBotones,
-            icon: Icons.check_circle_outline,
-            titulo: "SI",
-            onPressed: onPressed,
-          )),
-          SizedBox(width: responsive.anchoP(5),),
-          Expanded(child: BtnIconWidget(
-            colorBtn: Colors.red.shade300,
-            icon: Icons.cancel_outlined,
-            titulo: "NO",
-            onPressed: (){
-              Get.back();
-            },
-          ))
-        ],)
-
-    ],));
-
-
+    DialogosDesingWidget.getDialogoX(
+        title: "Crear Código",
+        contenido: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.warning,
+              color: Colors.amber,
+              size: 50,
+            ),
+            TituloTextWidget(
+                title:
+                    "¿Usted es la persona encargada o jefe designada a este recinto electoral?"),
+            DetalleTextWidget(
+              detalle: msj,
+              todoElAncho: true,
+            ),
+            SizedBox(
+              height: 40,
+            ),
+            TituloTextWidget(title: "¿Desea Continuar?"),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                    child: BtnIconWidget(
+                  colorBtn: AppColors.colorBotones,
+                  icon: Icons.check_circle_outline,
+                  titulo: "SI",
+                  onPressed: onPressed,
+                )),
+                SizedBox(
+                  width: responsive.anchoP(5),
+                ),
+                Expanded(
+                    child: BtnIconWidget(
+                  colorBtn: Colors.red.shade300,
+                  icon: Icons.cancel_outlined,
+                  titulo: "NO",
+                  onPressed: () {
+                    Get.back();
+                  },
+                ))
+              ],
+            )
+          ],
+        ));
   }
 
   Future<void> crearCodigo() async {
     bool isValid = formKey.currentState!.validate();
     if (!isValid) return;
 
-
-
     peticionServerState(true);
 
-   late  AbrirRecintoElectoral _abrirRecintoElectoral;
+    late AbrirRecintoElectoral _abrirRecintoElectoral;
 
     await ExceptionHelper.manejarErrores(() async {
       final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
       LatLng position = await locationBloc.getCurrentPosition();
 
-      String ip=await DeviceInfo.getIp;
+      String ip = await DeviceInfo.getIp;
 
-      _abrirRecintoElectoral=await  _eleccionesRecintosApiImpl.crearCodigo(
+      _abrirRecintoElectoral = await _eleccionesRecintosApiImpl.crearCodigo(
           usuario: user.idGenUsuario,
-          idGenPersona: user.idGenPersona,
+          idGenPersona:user.idGenPersona,
           idDgoReciElect: selectRecintosElectoral.value.idDgoReciElect,
           latitud: position.latitude,
           longitud: position.longitude,
-          idDgoProcElec:selectProcesoOperativoController.selectProcesosOperativo.value. idDgoProcElec,
+          idDgoProcElec: selectProcesoOperativoController
+              .selectProcesosOperativo.value.idDgoProcElec,
           idDgoReciUnidadPolicial: selectRecintosElectoral.value.idDgoReciElect,
           telefono: controllerTelefono.text,
           ip: ip,
           idDgoTipoEje: selectUnidadPolicial.value.idDgoTipoEje);
     });
-
-
+    peticionServerState(false);
+    
+    if(_abrirRecintoElectoral.idDgoCreaOpReci==0){
+      DialogosAwesome.getWarning(descripcion: "No se pudo completar la acción. Por favor, inténtelo nuevamente.",btnOkOnPress: (){});
+      return;
+    }
 
     if (_abrirRecintoElectoral.estado == "A") {
-      String msj= _abrirRecintoElectoral.apenom +
-          "\nYa existe un Código asignado ${_abrirRecintoElectoral.idDgoCreaOpReci} a esta Unidad Policial \n\n" +
+      String msj = user.nombres+
+          "\n\nYa existe un Código asignado ${_abrirRecintoElectoral.idDgoCreaOpReci} a esta Unidad Policial \n\n" +
           selectRecintosElectoral.value.nomRecintoElec +
           "\nFECHA INICIO: " +
           _abrirRecintoElectoral.fechaIni +
           "\n\nSi usted necesita abrir la misma Unidad Policial el encargado [${_abrirRecintoElectoral.apenom}] debe eliminarla o finalizarlo.";
 
-          DialogosAwesome.getWarning(descripcion: msj,);
 
-      } else {
-      /*
+      return Get.dialog(
+        PopScope(
+          canPop:  false, // Evita que se cierre con el botón de retroceso
+          child: AlertDialog(
+            title: Text("Información"),
+            content: Text(msj),
+            actions: [
+              BtnIconWidget(
+                  colorBtn: Colors.red.shade300,
+                  icon: Icons.close,
+                  titulo: "Cerrar",
+                  onPressed: (){
+                    Get.back();
 
-      DialogosWidget.alert(context,
-          title: "CÓDIGO",
-          message: "El Código para que el personal se anexe es: " +
-              _abrirRecintoElectoral.idDgoCreaOpReci, onTap: () {
-            UtilidadesUtil.pantallasAbrirNuevaCerrarTodas(
-                context: context,
-                pantalla: AppConfig.pantallaVerificarOperativoRecintoAbierto);
+                  }),
 
-            /* Navigator.pushReplacementNamed(
-              context, AppConfig.pantallaMenuRecintoElectoral);*/
-          });*/
+              BtnIconWidget(
+                colorBtn: AppColors.colorVerdeHex,
+                  icon: Icons.call,
+                  titulo: "Llamar",
+                  onPressed: (){
+                  UtilidadesUtil.lanzarLlamada(_abrirRecintoElectoral.telefono);
+                    Get.back();
+
+
+                  })
+
+
+            ],
+          ),
+        ),
+        barrierDismissible: false, // Evita que se cierre al tocar fuera del diálogo
+      );
+
+
+
+    } else {
+      final responsive = ResponsiveUtil();
+
+      return Get.dialog(
+        PopScope(
+          canPop:  false, // Evita que se cierre con el botón de retroceso
+          child: AlertDialog(
+            title: Text("Información"),
+            content: SingleChildScrollView( // Permite que el contenido se ajuste automáticamente
+              child: Column(
+                mainAxisSize: MainAxisSize.min, // Ajusta el tamaño del diálogo al contenido
+                children: [
+                  DetalleTextWidget(
+                    todoElAncho: true,
+                    detalle: "El Código para que el personal se anexe es:",
+                  ),
+                  Text(
+                    "${_abrirRecintoElectoral.idDgoCreaOpReci}",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: responsive.diagonalP(AppConfig.tamTextoTitulo + 1.5),
+                    ),
+                  ),
+
+                  SizedBox(height: responsive.altoP(2),),
+                  BtnIconWidget(
+
+                      icon: Icons.check_circle,
+                      titulo: "Aceptar",
+                      onPressed: (){
+                        Get.offAllNamed(SiipneRoutes.MENU_APP );
+
+                      })
+                ],
+              ),
+            ),
+          
+          ),
+        ),
+        barrierDismissible: false, // Evita que se cierre al tocar fuera del diálogo
+      );
+      
     }
-    peticionServerState(false);
   }
-
-
 
   goToPage(String name) {
     Get.offNamed(name);

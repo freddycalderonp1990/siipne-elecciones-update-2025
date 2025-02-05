@@ -14,7 +14,7 @@ class BtnMenuWidget extends StatefulWidget {
       this.title = '',
       this.descripcion = '',
       this.onTap,
-      this.horizontal = true,
+      this.horizontal = false,
       this.colorTexto = Colors.black,
       this.colorFondo = Colors.white});
 

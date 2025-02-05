@@ -7,7 +7,7 @@ class SelectProcesoOperativoPage
   @override
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
-      title:"OPERATIVOS" ,
+      title:"OPERATIVOS 3" ,
       mostrarBtnAtras: true,
       contenido: Center(child:  GpsAccessScreen(contenido: getContenido())),
       peticionServer: controller.peticionServerState,
@@ -45,9 +45,7 @@ class SelectProcesoOperativoPage
         SizedBox(
           height: 10,
         ),
-        TextSombrasWidget(
-          title: Bienvenido + controller.user.nombres,
-        ),
+        DesingTextNameUser(data:  Bienvenido + controller.user.nombres),
         Container(
           padding: EdgeInsets.all(5),
           child: Column(

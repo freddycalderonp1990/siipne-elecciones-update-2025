@@ -15,13 +15,20 @@ class TiposServiciosEjesPage extends GetView<TiposServiciosEjesController> {
   }
 
   Widget getContenido() {
+    String Bienvenido =
+    controller.user.sexo == 'HOMBRE' ? "BIENVENIDO: " : "BIENVENIDA: ";
     final responsive = ResponsiveUtil();
     return SingleChildScrollView(
       child: Column(
         children: [
           SizedBox(
-            height: responsive.altoP(4),
+            height: responsive.altoP(2),
           ),
+          DesingTextNameUser(data:  Bienvenido + controller.user.nombres),
+          SizedBox(
+            height: responsive.altoP(2),
+          ),
+
           TextSombrasWidget(
             title: "Seleccione el servicio al que fue designado. ",
             size: responsive.diagonalP(AppConfig.tamTexto),

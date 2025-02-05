@@ -48,6 +48,7 @@ part 'btnMenuWidget.dart';
 part 'btnIconWidget.dart';
 part 'awesome_dialog.dart';
 part 'workAreaLoginPageWidget.dart';
+part 'desing_text_name_user.dart';
 
 
 

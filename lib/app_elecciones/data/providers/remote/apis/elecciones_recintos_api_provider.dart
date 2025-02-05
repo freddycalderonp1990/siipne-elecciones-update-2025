@@ -93,7 +93,7 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
       required int idDgoTipoEje}) async{
     Object? body = {
       "modulo": ApiConstantes.MODULO,
-      "uri": ApiConstantes.ELECCIONES_RECINTOS_ELECTORALES,
+      "uri": ApiConstantes.ELECCIONES_CREAR_CODIGO,
       "idDgoReciElect": idDgoReciElect,
       "usuario": usuario,
       "idGenPersona": idGenPersona,

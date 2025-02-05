@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -64,4 +65,4 @@ part '1_RecintoElectoral/rec_crear_codigo/rec_crear_codigo_controller.dart';
 part 'menu_recintos_electorales/menu_recintos_electorales_controller.dart';
 part 'menu_unidades_policiales/menu_unidades_policiales_controller.dart';
 
-
+part 'personal/add/add_person_controller.dart';
