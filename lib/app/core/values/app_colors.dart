@@ -16,78 +16,85 @@ class AppColors{
 
 
   static const Color colorBordecajas = colorAzul;
-  static const Color colorBotones = AppColors.colorAzul_1;
+  static const Color colorBotones = AppColors.colorAzul;
 
-  static const Color colorFondo = colorAzul_1;
+  static const Color colorFondo = colorAzul;
 
-  static const Color colorIcons = colorAzul_1;
-
-
-  //AZUL INSTITUCIONAL
+  static const Color colorIcons = colorAzul;
 
 
   //hexadecimal #164987
-  static const int rAzul = 22, gAzul = 73, bAzul = 135;
-  static const Color colorAzul = Color.fromRGBO(rAzul, gAzul, bAzul, 100);
-  static const Color colorAzul_80 = Color.fromRGBO(rAzul, gAzul, bAzul, 80);
-  static const Color colorAzul_60 = Color.fromRGBO(rAzul, gAzul, bAzul, 60);
-  static const Color colorAzul_40 = Color.fromRGBO(rAzul, gAzul, bAzul, 40);
-  static const Color colorAzul_20 = Color.fromRGBO(rAzul, gAzul, bAzul, 20);
-  static const Color colorAzul_10 = Color.fromRGBO(rAzul, gAzul, bAzul, 10);
-  static const Color colorAzul_1 = Color.fromRGBO(rAzul, gAzul, bAzul, 1);
+  static const int _baseAzul = 0x164987; // Definimos el color base sin opacidad
+  static const Color colorAzul = Color(0xFF000000 | _baseAzul);
+  static const Color colorAzul_80 = Color(0xCC000000 | _baseAzul);
+  static const Color colorAzul_60 = Color(0x99000000 | _baseAzul);
+  static const Color colorAzul_40 = Color(0x66000000 | _baseAzul);
+  static const Color colorAzul_20 = Color(0x33000000 | _baseAzul);
+  static const Color colorAzul_10 = Color(0x1A000000 | _baseAzul);
+  static const Color colorAzul_1 = Color(0x03000000 | _baseAzul);
 
   //AZUL INSTITUCIONAL SECUNDARIO
-  static const int rAzulSecond = 26, gAzulSecond = 70, bAzulSecond = 141;
-  static const Color colorAzulSecond =
-  Color.fromRGBO(rAzulSecond, gAzulSecond, bAzulSecond, 100);
-  static const Color colorAzulSecond_80 =
-  Color.fromRGBO(rAzulSecond, gAzulSecond, bAzulSecond, 80);
-  static const Color colorAzulSecond_60 =
-  Color.fromRGBO(rAzulSecond, gAzulSecond, bAzulSecond, 60);
-  static const Color colorAzulSecond_40 =
-  Color.fromRGBO(rAzulSecond, gAzulSecond, bAzulSecond, 40);
-  static const Color colorAzulSecond_20 =
-  Color.fromRGBO(rAzulSecond, gAzulSecond, bAzulSecond, 20);
+
+
+  static const int _baseAzulSecond = 0x1A468D; // Definimos el color base sin opacidad
+
+  static const Color colorAzulSecond = Color(0xFF000000 | _baseAzulSecond);
+  static const Color colorAzulSecond_80 = Color(0xCC000000 | _baseAzulSecond);
+  static const Color colorAzulSecond_60 = Color(0x99000000 | _baseAzulSecond);
+  static const Color colorAzulSecond_40 = Color(0x66000000 | _baseAzulSecond);
+  static const Color colorAzulSecond_20 = Color(0x33000000 | _baseAzulSecond);
+
 
   //PLOMO INSTITUCIONAL
 
-  static const int rPlomo = 167, gPlomo = 169, bPlomo = 172;
-  static const Color colorPlomo = Color.fromRGBO(rPlomo, gPlomo, bPlomo, 40);
-  static const Color colorPlomo_100 = Color.fromRGBO(rPlomo, gPlomo, bPlomo, 100);
-  static const Color colorPlomo_80 = Color.fromRGBO(rPlomo, gPlomo, bPlomo, 80);
-  static const Color colorPlomo_60 = Color.fromRGBO(rPlomo, gPlomo, bPlomo, 60);
-  static const Color colorPlomo_20 = Color.fromRGBO(rPlomo, gPlomo, bPlomo, 20);
-  static const Color colorPlomo_10 = Color.fromRGBO(rPlomo, gPlomo, bPlomo, 10);
-  static const Color colorPlomo_1 = Color.fromRGBO(rPlomo, gPlomo, bPlomo, 1);
 
-  static const Color colorContenedores = Color.fromRGBO(167, 169, 172, 40);
+  static const int _basePlomo = 0xA7A9AC; // Color base sin opacidad
+
+  static const Color colorPlomo = Color(0xFF000000 | _basePlomo);
+  static const Color colorPlomo_80 = Color(0xCC000000 | _basePlomo);
+  static const Color colorPlomo_60 = Color(0x99000000 | _basePlomo);
+  static const Color colorPlomo_40 = Color(0x66000000 | _basePlomo);
+  static const Color colorPlomo_20 = Color(0x33000000 | _basePlomo);
+  static const Color colorPlomo_10 = Color(0x1A000000 | _basePlomo);
+  static const Color colorPlomo_1 = Color(0x03000000 | _basePlomo);
+
+//El valor 0x66 representa la opacidad del 40% (equivalente a 40 en el rango de 0-100).
+// El valor A7A9AC corresponde al color RGB (167, 169, 172).
+  static const Color colorContenedores = Color(0x66A7A9AC);
+
 
   //AMARILLO
-  static const int rAmarillo = 255, gAmarillo = 211, bAmarillo = 0;
-  static const Color colorAmarillo = Color.fromRGBO(rAmarillo, gAmarillo, bAmarillo, 100);
-  static const Color colorAmarillo_80 = Color.fromRGBO(rAmarillo, gAmarillo, bAmarillo, 80);
-  static const Color colorAmarillo_60 = Color.fromRGBO(rAmarillo, gAmarillo, bAmarillo, 60);
-  static const Color colorAmarillo_40 = Color.fromRGBO(rAmarillo, gAmarillo, bAmarillo, 40);
-  static const Color colorAmarillo_20 = Color.fromRGBO(rAmarillo, gAmarillo, bAmarillo, 20);
-  static const Color colorAmarillo_10 = Color.fromRGBO(rAmarillo, gAmarillo, bAmarillo, 10);
 
-  static const Color colorAmarillo_Title = Color.fromRGBO(247, 203, 81, 100);
+  static const int _baseAmarillo = 0xFFD300; // Color base sin opacidad
+
+  static const Color colorAmarillo = Color(0xFF000000 | _baseAmarillo);
+  static const Color colorAmarillo_80 = Color(0xCC000000 | _baseAmarillo);
+  static const Color colorAmarillo_60 = Color(0x99000000 | _baseAmarillo);
+  static const Color colorAmarillo_40 = Color(0x66000000 | _baseAmarillo);
+  static const Color colorAmarillo_20 = Color(0x33000000 | _baseAmarillo);
+  static const Color colorAmarillo_10 = Color(0x1A000000 | _baseAmarillo);
+
 
   //ROJO
-  static const int rRojo = 337, gRojo = 28, bRojo = 36;
-  static const Color colorRojo = Color.fromRGBO(rRojo, gRojo, bRojo, 100);
-  static const Color colorRojo_80 = Color.fromRGBO(rRojo, gRojo, bRojo, 80);
-  static const Color colorRojo_60 = Color.fromRGBO(rRojo, gRojo, bRojo, 60);
-  static const Color colorRojo_40 = Color.fromRGBO(rRojo, gRojo, bRojo, 40);
-  static const Color colorRojo_20 = Color.fromRGBO(rRojo, gRojo, bRojo, 20);
-  static const Color colorRojo_10 = Color.fromRGBO(rRojo, gRojo, bRojo, 10);
+
+  static const int baseRojo = 0xED1C24; // Color base sin opacidad
+
+  static const Color colorRojo = Color(0xFF000000 | baseRojo);
+  static const Color colorRojo_80 = Color(0xCC000000 | baseRojo);
+  static const Color colorRojo_60 = Color(0x99000000 | baseRojo);
+  static const Color colorRojo_40 = Color(0x66000000 | baseRojo);
+  static const Color colorRojo_20 = Color(0x33000000 | baseRojo);
+  static const Color colorRojo_10 = Color(0x1A000000 | baseRojo);
 
   //VERDE
-  static const int rVerde = 0, gVerde = 131, bVerde = 62;
-  static const Color colorVerde = Color.fromRGBO(rVerde, gVerde, bVerde, 100);
-  static const Color colorVerde_80 = Color.fromRGBO(rVerde, gVerde, bVerde, 80);
-  static const Color colorVerde_60 = Color.fromRGBO(rVerde, gVerde, bVerde, 60);
-  static const Color colorVerde_40 = Color.fromRGBO(rVerde, gVerde, bVerde, 40);
-  static const Color colorVerde_20 = Color.fromRGBO(rVerde, gVerde, bVerde, 20);
+
+
+  static const int baseVerde = 0x00833E; // Color base sin opacidad
+
+  static const Color colorVerde = Color(0xFF000000 | baseVerde);
+  static const Color colorVerde_80 = Color(0xCC000000 | baseVerde);
+  static const Color colorVerde_60 = Color(0x99000000 | baseVerde);
+  static const Color colorVerde_40 = Color(0x66000000 | baseVerde);
+  static const Color colorVerde_20 = Color(0x33000000 | baseVerde);
 
 }

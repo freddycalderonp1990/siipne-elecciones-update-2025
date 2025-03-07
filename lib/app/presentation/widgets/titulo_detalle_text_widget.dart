@@ -24,7 +24,7 @@ class TituloDetalleTextWidget extends StatelessWidget {
             color:color,
             borderRadius: BorderRadius.circular(5),
             boxShadow: [
-              BoxShadow(color: AppColors.colorBordecajas, blurRadius: 1)
+              BoxShadow(color: AppColors.colorBordecajas, blurRadius: 0.5)
             ]),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -33,7 +33,7 @@ class TituloDetalleTextWidget extends StatelessWidget {
                 style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize:
-                    responsive.diagonalP(AppConfig.tamTextoTitulo ))),
+                    responsive.diagonalP(AppConfig.tamTexto ))),
             SizedBox(
               width: responsive.altoP(1),
             ),
@@ -41,7 +41,7 @@ class TituloDetalleTextWidget extends StatelessWidget {
               child: Text(detalle,
                   style: TextStyle(
                       fontSize: responsive
-                          .diagonalP(AppConfig.tamTextoTitulo ))),
+                          .diagonalP(AppConfig.tamTexto ))),
             ),
           ],
         ));

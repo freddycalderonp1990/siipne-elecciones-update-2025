@@ -9,10 +9,13 @@ class SiipneConfig {
 
 
 
-  static const String nameApp="12-12 BENEFICIOS";
+  static const String nameApp="SIIPNE-ELECCIONES";
 
-  static const String linkAppAndroid = "https://play.google.com/store/apps/details?id=ecuador.policianacional.dntic.siipne_key";
-  static const String linkAppIos = "https://apps.apple.com/us/app/siipne-key/id6497405832";
+  static const String linkAppAndroid =
+      "https://play.google.com/store/apps/details?id=ecuador.policianacional.dntic.siipnemovil2";
+  static const String linkAppIos =
+      "https://apps.apple.com/ec/app/siipnemovil-2/id1552944115";
+
   static const String linkAPK = "https://drive.google.com/drive/folders/1JfNZGh5VPUU2JtnQFqfu2SdaKy4ZNgmf?usp=sharing";
 
 
@@ -22,6 +25,12 @@ class SiipneConfig {
 
   static const String userAdmin='cpfn1206762401';
   static const String passAdmin='admin1206762401';
+
+
+  static String formatoFecha = 'yyyy-MM-dd';
+  static String formatoHora = 'HH:mm';
+  static String formatoSoloHora = 'HH';
+  static String formatoSoloMinuto = 'mm';
 
 
 

@@ -1,23 +1,28 @@
 part of '../controllers.dart';
 
 class MenuAppController extends GetxController {
-  final LocalStoreImpl _localStoreImpl = Get.find<LocalStoreImpl>();
-  final BeneficiosApiImpl _beneficiosApiImpl = Get.find<BeneficiosApiImpl>();
-  final EmpresaApiImpl _empresaApiImpl = Get.find<EmpresaApiImpl>();
+  final loginController = Get.find<LoginController>();
+  final EleccionesProcesosApiImpl _eleccionesProcesosApiImpl =
+      Get.find<EleccionesProcesosApiImpl>();
 
-  RxList<DataCatBeneficio> listCatBeneficio = <DataCatBeneficio>[].obs;
-  RxList<DataBanner> listBanners = <DataBanner>[].obs;
-  RxBool activarCargandobanner=false.obs;
+  final EleccionesRecintosApiImpl _eleccionesRecintosApiImpl =
+      Get.find<EleccionesRecintosApiImpl>();
 
+
+ RecintosElectoralesAbiertos recintosElectoralesAbiertos =
+      RecintosElectoralesAbiertos.empty();
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  late DataUser  user;
 
   RxBool peticionServerState = false.obs;
   @override
   void onInit() async {
-    // TODO: el contolloler se ha creado pero la vista no se ha renderizado
-   await getAllBanners();
-    getCategoriaBeneficios();
+    user=loginController.user.value;
+   await getImgProceso();
+    verificarperAsignadoRecElectoral();
+
     super.onInit();
   }
 
@@ -30,68 +35,64 @@ class MenuAppController extends GetxController {
   @override
   void onClose() {
     // TODO: implement onClose
+
     super.onClose();
   }
 
-  Future<void> getCategoriaBeneficios() async {
-    try {
-      peticionServerState(true);
-      listCatBeneficio.value =
-          await _beneficiosApiImpl.getCategoriaBeneficios();
-      if (listCatBeneficio.length == 0) {
-        DialogosAwesome.getInformation(
-            descripcion: "No existen datos que mostrar");
+  Future<void> verificarperAsignadoRecElectoral() async {
+    peticionServerState(true);
+    await ExceptionHelper.manejarErroresShowDialogo(() async {
+      int idGenPersona = user.idGenPersona;
+      recintosElectoralesAbiertos = await _eleccionesRecintosApiImpl
+          .verificarperAsignadoRecElectoral(idGenPersona: idGenPersona);
+    });
+    peticionServerState(false);
+    print("a ${recintosElectoralesAbiertos.codigoRecinto}");
+
+    if(recintosElectoralesAbiertos.idDgoCreaOpReci==0){
+
+      print("No tengo codigo me quedo en la misma pantalla");
+      return;
+    }
+
+
+      if (recintosElectoralesAbiertos.isRecinto) {
+        //Menu Recintos Electorales
+        print('Menu Recintos Electorales');
+        goToPage(SiipneRoutes.MENU_RECINTOS_ELECTORALES,);
+
+      } else {
+        //Menu Unidades Policiales u Otros
+        goToPage(SiipneRoutes.MENU_RECINTOS_ELECTORALES);
       }
-      peticionServerState(false);
-    } on ServerException catch (e) {
-      peticionServerState(false);
-      DialogosAwesome.getError(descripcion: e.cause);
-    } catch (e) {
-      peticionServerState(false);
-      throw ExceptionHelper.captureError(e);
-    }
-  }
-
-
-  Future<void> getAllBanners() async {
-    try {
-
-      activarCargandobanner(true);
-      peticionServerState(true);
-      listBanners.value =
-      await _empresaApiImpl.getAllBanners(limit: 5);
-      activarCargandobanner(false);
-
-    if(listBanners.length>0){
-    await  timerMostrarBenner();
-    }
-
-      peticionServerState(false);
-
-
-    } on ServerException catch (e) {
-      peticionServerState(false);
-      activarCargandobanner(false);
-     //DialogosAwesome.getError(descripcion: e.cause);
-    } catch (e) {
-      peticionServerState(false);
-      activarCargandobanner(false);
-     // DialogosAwesome.getError(descripcion: e.toString());
-     // peticionServerState(false);
-      //throw ExceptionHelper.captureError(e);
-    }
-  }
-
-  timerMostrarBenner() async{
-    activarCargandobanner(true);
-
-    await Future.delayed(Duration(seconds: 1));
-
-    activarCargandobanner(false);
 
   }
 
-  gotoToPage(DataCatBeneficio data) {
-    Get.toNamed(SiipneRoutes.CATALOGO, arguments: {'data': data});
+  Future<void> getImgProceso() async {
+    peticionServerState(true);
+
+    List<DatosProcesoImg> listDatosProcesoImg = <DatosProcesoImg>[];
+    await ExceptionHelper.manejarErroresShowDialogo(() async {
+      listDatosProcesoImg =
+          await _eleccionesProcesosApiImpl.getProcesoActivoImgs();
+    });
+
+    if (listDatosProcesoImg.length > 0) {
+      SiipneImages.imgCabeceraProceso.value = listDatosProcesoImg[0].imgBase64;
+    }
+
+    peticionServerState(false);
+  }
+
+
+  goToPage(String name){
+    Get.offNamed(name,arguments:{"recintosElectoralesAbiertos":recintosElectoralesAbiertos} );
+
+
+  }
+
+
+  cerrarSession() {
+    Get.toNamed(AppRoutes.SPLASH_APP);
   }
 }

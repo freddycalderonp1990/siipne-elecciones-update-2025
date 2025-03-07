@@ -13,24 +13,23 @@ class WorkAreaPageWidget extends StatefulWidget {
 
   final bool mostrarVersion;
   final bool mostrarBtnHome;
-  final bool mostrarAnuncio;
-  final bool mostrarBtnAtras;
 
+  final bool mostrarBtnAtras;
 
   final VoidCallback? onPressedBtnHome;
 
-  const WorkAreaPageWidget(
-      {required this.peticionServer,
-      required this.contenido,
-      this.imgPerfil = null,
-      this.imgFondo,
-      this.mostrarVersion = false,
-      this.title,
-      this.mostrarBtnHome = false,
-      this.onPressedBtnHome,
-      this.mostrarAnuncio = false,
-      this.mostrarBtnAtras = false,
-      this.onChangedBusqueda, });
+  const WorkAreaPageWidget({
+    required this.peticionServer,
+    required this.contenido,
+    this.imgPerfil = null,
+    this.imgFondo,
+    this.mostrarVersion = false,
+    this.title,
+    this.mostrarBtnHome = false,
+    this.onPressedBtnHome,
+    this.mostrarBtnAtras = false,
+    this.onChangedBusqueda,
+  });
 
   @override
   _WorkAreaPageWidgetState createState() => _WorkAreaPageWidgetState();
@@ -73,6 +72,33 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
     );
   }
 
+  Widget getDesingImgProceso() {
+    final responsive = ResponsiveUtil();
+    return Obx(() {
+      if (SiipneImages.imgCabeceraProceso.value.length > 10) {
+        var imgMemory = PhotoHelper.convertStringToUint8List(
+            SiipneImages.imgCabeceraProceso.value);
+        // Puedes procesar imgCabeceraProceso y convertirla a un widget
+        return imgMemory != null
+            ? Positioned(
+                right: 5,
+                top: 5,
+                child: Container(
+                    height: responsive.isHorizontal()
+                        ? responsive.altoP(24)
+                        : responsive.altoP(12),
+                    width: responsive.isHorizontal()
+                        ? responsive.anchoP(50)
+                        : responsive.anchoP(48),
+                    child: Center(
+                      child: Image.memory(imgMemory, fit: BoxFit.contain),
+                    )))
+            : Container();
+      } else {
+        return Container();
+      }
+    });
+  }
 
   Widget getDersingPage() {
     final responsive = ResponsiveUtil();
@@ -88,49 +114,51 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
               child: Stack(
                 children: [
                   getImgFondo(),
-
+                  getDesingImgProceso(),
                   Column(
                     children: [
-                      Image.asset(
-                        AppImages.cabecera,
-                        fit: BoxFit.fill,
-                      ),
                       Expanded(
                         child: Column(
+
+
+
                           children: [
-                            SearchWidget(
-                              onChangedisSearching: (value) {
-                                _isSearching = value;
-                                setState(() {
-                                });
-                              },
-                              title: widget.title,
-                              onChangedBusqueda: widget.onChangedBusqueda,
-                              isSearching: _isSearching,
+                            SizedBox(
+                              height: responsive.altoP(15),
                             ),
 
+                            Flexible(
+                                child: Center(
+                              child: Container (
 
-                            Expanded(
-                                child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 12),
+                                    child:  widget.contenido != null
+                                        ? widget.title!=null? Column(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      children: [
 
-                     
-                                  padding: EdgeInsets.symmetric(
-                                      horizontal: responsive.anchoP(7)),
-                                  child:  widget.contenido != null
-                                      ? widget.contenido
-                                      : Container(),
-                                )),
-                            
-                            SizedBox(height: responsive.altoP(15),)
+                                      TextSombrasWidget(
+                                        colorTexto: Colors.white,
+                                        colorSombra: Colors.black,
+                                        title: widget.title!,
+                                        size: responsive.diagonalP(AppConfig.tamTextoTitulo),
+                                      ),
 
+                                      Flexible(child:  widget.contenido),
+                                    ],):widget.contenido
+                                        : Container(),
+                                  ),
+                            )),
+                            SizedBox(
+                              height: responsive.altoP(8),
+                            )
                           ],
                         ),
                       ),
-
                     ],
                   ),
-
-
 
                   widget.mostrarBtnAtras ? BtnAtrasWidget() : Container(),
 
@@ -148,14 +176,19 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
         ));
   }
 
-  Widget getBtnBuscar(){
-    return        widget.onChangedBusqueda!=null?  !_isSearching?BtnBuscar(
-      onPressed: () {
-        setState(() {
-          _isSearching = !_isSearching; // Asegúrate de usar setState aquí
-        });
-      },
-    ):Container():Container();
+  Widget getBtnBuscar() {
+    return widget.onChangedBusqueda != null
+        ? !_isSearching
+            ? BtnBuscar(
+                onPressed: () {
+                  setState(() {
+                    _isSearching =
+                        !_isSearching; // Asegúrate de usar setState aquí
+                  });
+                },
+              )
+            : Container()
+        : Container();
   }
 
   Widget getBtnHome() {
@@ -273,62 +306,64 @@ class _SearchWidgetState extends State<SearchWidget> {
     }
 
     return Container(
-      padding: EdgeInsets.only(right: 10,left: 40),
+      padding: EdgeInsets.only(right: 10, left: 40),
       child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        widget.isSearching
-            ? Expanded(
-          child: TextField(
-              autofocus: true,
-              controller: _searchQueryController,
-              onChanged: (value) {
-                if (widget.onChangedBusqueda != null) {
-                  widget.onChangedBusqueda!(value);
-                }
-              },
-              style: TextStyle(
-                color: Colors.black,
-              ),
-              decoration: InputDecoration(
-                hintText: "Buscar...",
-                hintStyle: TextStyle(color: Colors.black),
-                enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                      color: AppColors
-                          .colorPrimary), // Cambia a tu color deseado
-                ),
-                focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                      color: AppColors
-                          .colorPrimary), // Cambia a tu color deseado
-                ),
-              )),
-        )
-            : getTitle(), // Espacio para alinear la lupa a la derecha
-        Row(
-          children: [
-            widget.isSearching ? IconButton(
-              icon: Icon(widget.isSearching ? Icons.close : Icons.search,
-                  color: Colors.white),
-              onPressed: () {
-                setState(() {
-                  if (widget.isSearching) {
-                    _searchQueryController.clear();
-                    if (widget.onChangedBusqueda != null) {
-                      widget.onChangedBusqueda!("");
-
-                    }
-                  }
-                  widget.onChangedisSearching(!widget.isSearching);
-                });
-              },
-            ) : Container(),
-
-          ],
-        ),
-      ],
-    ),);
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          widget.isSearching
+              ? Expanded(
+                  child: TextField(
+                      autofocus: true,
+                      controller: _searchQueryController,
+                      onChanged: (value) {
+                        if (widget.onChangedBusqueda != null) {
+                          widget.onChangedBusqueda!(value);
+                        }
+                      },
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                      decoration: InputDecoration(
+                        hintText: "Buscar...",
+                        hintStyle: TextStyle(color: Colors.black),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors
+                                  .colorPrimary), // Cambia a tu color deseado
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(
+                              color: AppColors
+                                  .colorPrimary), // Cambia a tu color deseado
+                        ),
+                      )),
+                )
+              : getTitle(), // Espacio para alinear la lupa a la derecha
+          Row(
+            children: [
+              widget.isSearching
+                  ? IconButton(
+                      icon: Icon(
+                          widget.isSearching ? Icons.close : Icons.search,
+                          color: Colors.white),
+                      onPressed: () {
+                        setState(() {
+                          if (widget.isSearching) {
+                            _searchQueryController.clear();
+                            if (widget.onChangedBusqueda != null) {
+                              widget.onChangedBusqueda!("");
+                            }
+                          }
+                          widget.onChangedisSearching(!widget.isSearching);
+                        });
+                      },
+                    )
+                  : Container(),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   getTitle() {
@@ -338,7 +373,6 @@ class _SearchWidgetState extends State<SearchWidget> {
             colorTexto: AppColors.colorAmarilloTitle,
             colorSombra: Colors.black87,
             title: widget.title!,
-
             size: responsive.diagonalP(AppConfig.tamTextoTitulo + 0.6),
           )
         : Container();

@@ -6,8 +6,8 @@ class MenuAppPage extends GetView<MenuAppController> {
   @override
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
-      mostrarAnuncio: true,
-      contenido: getContenido(),
+      title: "MENÚ PRINCIPAL",
+      contenido: Container(child: Center(child: getContenido())),
       peticionServer: controller.peticionServerState,
     );
   }
@@ -15,32 +15,77 @@ class MenuAppPage extends GetView<MenuAppController> {
   Widget getContenido() {
     final responsive = ResponsiveUtil();
 
+    String Bienvenido =
+        controller.user.sexo == 'HOMBRE' ? "BIENVENIDO: " : "BIENVENIDA: ";
+
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          imgPerfilRedonda(
+            size: 25,
+            img: controller.user.foto,
+          ),
+
+          DesingTextNameUser(data:  Bienvenido + controller.user.nombres),
+          Container(
+            padding: EdgeInsets.all(5),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  height: responsive.altoP(2),
+                ),
+                _getMenu(responsive),
+              ],
+            ),
+          ),
+         BtnIconWidget(
+              icon: Icons.exit_to_app,
+              titulo: "SALIR",
+              onPressed: () => controller.cerrarSession(),
+            ),
+
+          SizedBox(
+            height: responsive.altoP(3.5),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _getMenu(ResponsiveUtil responsive) {
+    double separacionBtnMenu = 1.5;
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Container(
-          height: responsive.altoP(5),
+        BtnMenuWidget(
+            horizontal: false,
+            colorFondo: Colors.white,
+            img: SiipneImages.icon_abrir_rec_elec,
+            title: SiipneStrings.CREARCODIGO,
+            onTap: () => Get.toNamed(SiipneRoutes.SELECT_PROCESO_OPERATIVOS)),
+        SizedBox(
+          height: responsive.altoP(separacionBtnMenu),
         ),
-        Expanded(
-            child: Obx(() => ListView.builder(
-                shrinkWrap: true,
-                itemCount: controller.listCatBeneficio.length,
-                itemBuilder: (context, i) {
-                  DataCatBeneficio data = controller.listCatBeneficio[i];
-                  return BtnMenuWidget(
-                    img: data.imgBase64,
-                    mostrarLine: false,
-                    colorFondo: Colors.white,
-                    imgLocal: AppImages.ic_empresa,
-                    horizontal: true,
-                    title: data.descripcion,
-                    onTap: () {
-                      controller.gotoToPage(data);
-                    },
-                  );
-                }))),
+        BtnMenuWidget(
+            horizontal: false,
+            colorFondo: Colors.white,
+            img: SiipneImages.icon_registrarse_rec_elect,
+            title: SiipneStrings.ANEXARSE,
+            onTap: () {
+              /* Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          VerificarGpsPage(pantalla: AnexarsePage())));*/
+            }),
+        SizedBox(
+          height: responsive.altoP(separacionBtnMenu),
+        ),
       ],
     );
   }
 }
+
+

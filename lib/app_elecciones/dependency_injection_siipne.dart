@@ -1,4 +1,6 @@
 
+import 'package:siipnelecciones3/app_elecciones/data/models/models.dart';
+
 import '../app_elecciones/presentation/modules/controllers.dart';
 
 import 'data/repository/data_repositories.dart';
@@ -18,14 +20,16 @@ class DependencyInjectionSiipne extends Bindings{
     //DATA
 
 
-
-
     Get.lazyPut<LocalStoreImpl> (() => LocalStoreImpl(LocalStoreProviderImpl()), fenix: true);
 
     //Domain
     Get.lazyPut<AuthApiImpl> (() => AuthApiImpl(AuthApiProviderImpl()), fenix: true);
-    Get.lazyPut<BeneficiosApiImpl> (() => BeneficiosApiImpl(BeneficiosApiProviderImpl()), fenix: true);
-    Get.lazyPut<EmpresaApiImpl> (() => EmpresaApiImpl(EmpresaApiProviderImpl()), fenix: true);
+    Get.lazyPut<EleccionesProcesosApiImpl> (() => EleccionesProcesosApiImpl(EleccionesProcesosApiProviderImpl()), fenix: true);
+    Get.lazyPut<EleccionesRecintosApiImpl> (() => EleccionesRecintosApiImpl(EleccionesRecintosApiProviderImpl()), fenix: true);
+    Get.lazyPut<EleccionesTipoEjesApiImpl> (() => EleccionesTipoEjesApiImpl(EleccionesTipoEjesApiProviderImpl()), fenix: true);
+    Get.lazyPut<PersonaApiImpl> (() => PersonaApiImpl(PersonaApiProviderImpl()), fenix: true);
+
+    Get.lazyPut<EleccionesNovedadesApiImpl> (() => EleccionesNovedadesApiImpl(EleccionesNovedadesApiProviderImpl()), fenix: true);
 
     //Providers
     Get.lazyPut<LocalStorageRepository> (() => LocalStoreImpl(LocalStoreProviderImpl()), fenix: true);
@@ -34,9 +38,6 @@ class DependencyInjectionSiipne extends Bindings{
     //realizo la inyecto para utilizarla enm toda la aplicacion
     Get.put(LoginController());
     Get.put(MyGpsController());
-
-
-
 
 
 

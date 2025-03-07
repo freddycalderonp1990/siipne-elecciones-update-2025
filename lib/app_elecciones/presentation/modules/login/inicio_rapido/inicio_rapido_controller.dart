@@ -19,7 +19,7 @@ class InicioRapidoController extends GetxController {
   RxBool mostrarBtnGuardarPinCode = false.obs;
   int contadorLogin2 = 0;
   RxBool mostrarBtnHome = false.obs;
-  RxString namePhone="".obs;
+  RxString namePhone = "".obs;
   RxList<Widget> adWidget = <Widget>[].obs;
 
   RxBool wgInicioRapidoUserPass = false.obs;
@@ -54,79 +54,30 @@ class InicioRapidoController extends GetxController {
     super.onClose();
   }
 
+
   void verificarSitieneBiometrico() async {
     mostrarAccesoHuella.value = await BiometricUtil.checkAccesoBiometrico();
   }
 
-  Future<bool> login({required String user, required String pass}) async {
-if (status==ConnectionStatus.online){
-    bool result=false;
-
-    String imei = 'imei';
-    String tipoRed = 'movil';
-    String nameRed = 'namered';
-
-    bool isAndroid = UtilidadesUtil.plataformaIsAndroid;
-    int  versionCodeApp = int.parse(await DeviceInfo.getVersionCode);
 
 
-    try {
-      peticionServerState(true);
-      //TODO: Implementar cuando se lance a produccion
-  String ip= await DeviceInfo.getIp;
+  Future<void> login({required String user, required String pass}) async {
 
-      final userResponse = await _authApiImpl.auth(AuthRequest(
-        ip: ip,
-          user: user,
-          pass: pass,
-          isAndroid: isAndroid,
-          versionCodeApp: versionCodeApp,
-          imei: imei,
-          tipoRed: tipoRed,
-          nameRed: nameRed));
-      await _localStoreImpl.setUser(user);
-      await _localStoreImpl.setPass(pass);
-      await _localStoreImpl.setUserName(userResponse.userName);
-      await _localStoreImpl.setUserModel(userResponse);
+    peticionServerState(true);
+    //TODO: Implementar cuando se lance a produccion
 
-      controllerUser.clear();
-      controllerPass.clear();
-      peticionServerState(false);
 
-      this.user.value = userResponse;
-      this.user.refresh();
-      return false;
+    await ExceptionHelper.manejarErroresShowDialogo(() async {
+      DataUser? userResponse = await loginController.authApp(
+          user: user, pass: pass, localStoreImpl: _localStoreImpl);
+      if (userResponse != null) {
+        InciarPantalla();
+      }
+    });
 
-    } on ServerException catch (e) {
-
-      DialogosAwesome.getError(descripcion: e.cause);
-
-      peticionServerState(false);
-
-      return false;
-    }
-  }else
-  {
-    DialogosAwesome.getError(descripcion: 'No tiene Conexión a Internet');
-    return false;
-
+    controllerPass.clear();
+    peticionServerState(false);
   }
-  }
-
-
-  _init() async {
-    print("AppConfig.plataformIsIos2= ${AppConfig.plataformIsIos}");
-    if (Platform.isIOS) {
-      mostrarBtnHome.value = true;
-    }
-
-    if (!await _localStoreImpl.getLoginInit()) {
-      wgInicioRapidoUserPass.value = true;
-      wgOcultarInicioRapidoUserPass.value = true;
-    }
-  }
-
-
 
   Future<void> ingresoConUsuarioClave() async {
     wgInicioRapidoUserPass.value = true;
@@ -169,6 +120,7 @@ if (status==ConnectionStatus.online){
     bool verificaCredecniales = false;
     String user = await _localStoreImpl.getUser();
     String pass = await _localStoreImpl.getPass();
+    print("la clave es **877faCsP@p5TsS1Yh*zVtCPz5crkCQQYEP    =======   ${pass}");
 
     if (user.length > 0 && pass.length > 0) {
       verificaCredecniales = true;
@@ -203,7 +155,7 @@ if (status==ConnectionStatus.online){
 
   Future<void> loginConBiometrico() async {
     //verificamos si tiene configurado el biometrico
-    if (status==ConnectionStatus.online){
+    if (status == ConnectionStatus.online) {
       bool confHuella = await _localStoreImpl.getConfigHuella();
 
       if (!confHuella) {
@@ -232,74 +184,46 @@ if (status==ConnectionStatus.online){
           if (result) {
             String user = await _localStoreImpl.getUser();
             String pass = await _localStoreImpl.getPass();
+            await login(user: user, pass: pass);
 
-         bool result=   await login(user: user, pass: pass);
-            InciarPantalla(result);
           }
         } else {
           DialogosAwesome.getWarning(
               descripcion: "No existe biometrico", btnOkOnPress: () {});
         }
       }
-    }else
-      {
-        DialogosAwesome.getError(descripcion: 'No tiene Conexión a Internet');
-      }
-
+    } else {
+      DialogosAwesome.getError(descripcion: 'No tiene Conexión a Internet');
+    }
   }
 
-  InciarPantalla(bool actualizarApp) async {
+  InciarPantalla() async {
     await _localStoreImpl.setContadorFallido(0);
-    if (actualizarApp) {
-      DialogosAwesome.getWarning(
-          title: "ACTUALIZAR LA APP",
-          descripcion: MensajesString.msjNuevaVersionApp,
-          btnOkOnPress: () {
-            Get.back();
-            if (GetPlatform.isAndroid) {
-              UtilidadesUtil.abrirUrl(SiipneConfig.linkAppAndroid);
-              print('App Android');
-            } else {
-              UtilidadesUtil.abrirUrl(SiipneConfig.linkAppIos);
-              print('App Ios');
-            }
-          });
-    } else {
-      _localStoreImpl.setLoginInit(true);
-      Get.offAllNamed(SiipneRoutes.MENU_APP);
+
+    _localStoreImpl.setLoginInit(true);
+    Get.offAllNamed(SiipneRoutes.MENU_APP);
+
+  }
+
+
+  _init() async {
+    print("AppConfig.plataformIsIos2= ${AppConfig.plataformIsIos}");
+    if (Platform.isIOS) {
+      mostrarBtnHome.value = true;
+    }
+
+    if (!await _localStoreImpl.getLoginInit()) {
+      wgInicioRapidoUserPass.value = true;
+      wgOcultarInicioRapidoUserPass.value = true;
     }
   }
 
-    getPantalla() async {
-      peticionServer(true);
-      Get.offAllNamed(AppRoutes.HOME_APP_PUBLIC);
-       peticionServer (false);
+
+  getPantalla() async {
+    peticionServer(true);
+    Get.offAllNamed(AppRoutes.HOME_APP_PUBLIC);
+    peticionServer(false);
   }
 
-  void verificarIntentosFallidos({String? msj}) async {
-    //Obtenemos el contenedor de intentos fallidos
-    int contadorfallido = await _localStoreImpl.getContadorFallido();
-    contadorfallido = contadorfallido + 1;
 
-    if (contadorfallido >= SiipneConfig.intentosFallidos) {
-      await _localStoreImpl.clearAllData();
-      DialogosAwesome.getWarning(
-          descripcion: "Ah excedido el número de intentos permitidos",
-          btnOkOnPress: () {
-            Get.offAllNamed(AppRoutes.SPLASH_APP);
-          });
-    } else {
-      if (msj != null) {
-        DialogosAwesome.getWarning(
-            descripcion: msj,
-            btnOkOnPress: () async {
-
-
-              await _localStoreImpl.setContadorFallido(contadorfallido);
-            });
-      } else {
-        await _localStoreImpl.setContadorFallido(contadorfallido);
-      }
-    }
-  }
 }

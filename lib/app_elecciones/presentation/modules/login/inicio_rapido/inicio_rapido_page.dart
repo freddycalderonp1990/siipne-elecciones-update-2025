@@ -6,7 +6,6 @@ class InicioRapidoPage extends GetView<InicioRapidoController> {
     final responsive = ResponsiveUtil();
     // TODO: verifique
 
-
     Widget wg = Obx(() => WorkAreaLoginPageWidget(
       title: '',
       imgPerfil:controller.user.value.foto,
@@ -23,54 +22,70 @@ class InicioRapidoPage extends GetView<InicioRapidoController> {
   }
 
   Widget getContenido(ResponsiveUtil responsive) {
-    return Column(
+    String Bienvenido =  controller.user.value.sexo == 'HOMBRE'
+        ? "BIENVENIDO: "
+        : "BIENVENIDA: ";
+    return SingleChildScrollView(child: Column(
       children: [
         Obx(()=> Text(
-          controller.user.value.nombres,
+          Bienvenido + controller.user.value.nombres,
           textAlign: TextAlign.center,
           style: TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.bold,
               fontSize: responsive.anchoP(5)),
         )),
-        SizedBox(
-          height: responsive.altoP(2),
-        ),
-        wgHuella(),
+
 
         SizedBox(
           height: responsive.altoP(2),
         ),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 10),
 
-        wgOtroUsuario(responsive)
+
+          child: Column(
+
+            children: [
+              wgHuella(),
+              SizedBox(
+                height: responsive.altoP(2),
+              ),
+              wgOtroUsuario()
+            ],),)
       ],
-    );
+    ),);
   }
 
   Widget wgHuella() {
 
-    Widget wg = DesingBtn(imgLocal: AppImages.icon_huella,
+    Widget wg = BtnMenuWidget(
+      img: AppImages.icon_huella,
+      title: "HUELLA",
+      horizontal: false,
+      onTap: () => controller.loginConBiometrico(),
+      colorFondo:AppColors.colorAzul,
+      colorTexto: Colors.white,
+    );
 
-        title: "HUELLA",
 
-        onTap: () => controller.loginConBiometrico());
+
 
     return  wg;
   }
 
-  Widget wgOtroUsuario(ResponsiveUtil responsive) {
-    Widget wg = DesingBtn(
-        title: "¿NO ERES TÚ?",
-        imgLocal: AppImages.icon_usuario,
-        onTap: () async {
-          DialogosAwesome.getWarningSiNo(
-              descripcion:
-              "Por su seguridad el acceso rápido será desactivado."
-                  "\n¿Desea Continuar?",
-              btnOkOnPress: (){
-                controller.ingresoConOtroUsuario();
-              });
-        });
+  Widget wgOtroUsuario() {
+
+    Widget wg = BtnMenuWidget(
+      img: AppImages.icon_clave,
+      title: "¿NO ERES TÚ?",
+      horizontal: false,
+      onTap: () => controller.ingresoConOtroUsuario(),
+      colorFondo:AppColors.colorAzul,
+      colorTexto: Colors.white,
+    );
+
+
 
     return wg;
   }

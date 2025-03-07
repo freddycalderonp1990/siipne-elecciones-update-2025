@@ -1,18 +1,72 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:typed_data';
 import 'dart:io';
 
-
 import 'dart:math' as Math;
 
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:image/image.dart' as Img;
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:siipnelecciones3/app/core/utils/my_date.dart';
+import 'package:siipnelecciones3/app/core/utils/responsiveUtil.dart';
 import 'package:siipnelecciones3/app/core/utils/utilidadesUtil.dart';
+import 'package:siipnelecciones3/app_elecciones/core/values/siipne_images.dart';
+import 'package:siipnelecciones3/app_elecciones/presentation/widgets/customWidgets.dart';
 
-class PhotoHelper{
+import '../app_config.dart';
+import '../values/app_colors.dart';
+import '../values/app_images.dart';
+
+class PhotoHelper {
+
+  static Future<GaleryCameraModel?> getDesingPictureGaleryOrCamera({required String titleImg}) async {
+    final Completer<GaleryCameraModel?> completer = Completer();
+
+    AwesomeDialog(
+      dismissOnTouchOutside: false,
+      dismissOnBackKeyPress: false,
+      context: Get.context!,
+      dialogType: DialogType.info,
+      headerAnimationLoop: false,
+      customHeader: Container(
+        child: Image.asset(SiipneImages.imgIconD),
+      ),
+      animType: AnimType.scale,
+      title: "Registre Foto",
+      btnCancel: BtnIconWidget(
+        onPressed: () async {
+          GaleryCameraModel? data = await getImageGallery(titleImg);
+          Get.back();
+          completer.complete(data);  // Retorna la data al completar
+       // Cierra el diálogo
+        },
+        titulo: "Galería",
+      ),
+      btnOk: BtnIconWidget(
+        onPressed: () async {
+          GaleryCameraModel? data = await getImageCamera(titleImg);
+          Get.back(); // Cierra el diálogo
+          completer.complete(data); // Retorna la data al completar
+
+        },
+        titulo: "Cámara",
+      ),
+      desc: "Seleccione una Imagen o Tome una Fotografía",
+      showCloseIcon: true,
+    ).show();
+
+    return completer.future; // Espera la selección del usuario antes de retornar
+  }
+
+
+
 
   static Future<GaleryCameraModel?> getImageGallery(String title) async {
     final ImagePicker _picker = ImagePicker();
@@ -25,8 +79,6 @@ class PhotoHelper{
   static Future<GaleryCameraModel?> getImageCamera(String title) async {
     final ImagePicker _picker = ImagePicker();
     var imageFile = await _picker.pickImage(source: ImageSource.camera);
-
-
 
     return getImagenResourse(title: title, imageFile: imageFile);
   }
@@ -53,10 +105,10 @@ class PhotoHelper{
 
   static Future<GaleryCameraModel> getResizeImg(
       {required String title,
-        required Img.Image image,
-        required int tamImg,
-        bool mejorar = false,
-        bool mejorarVertical = false}) async {
+      required Img.Image image,
+      required int tamImg,
+      bool mejorar = false,
+      bool mejorarVertical = false}) async {
     print('Alto: ${image.height}, Ancho ${image.width}');
 
     int altoImg = image.height;
@@ -85,7 +137,7 @@ class PhotoHelper{
 
           //Obtenemos el nuevo alto
           double altoImgNew = tamImg / relacionAspecto;
-          altoImgNew = UtilidadesUtil. redondearDouble(altoImgNew, decimales: 0);
+          altoImgNew = UtilidadesUtil.redondearDouble(altoImgNew, decimales: 0);
 
           //Asiganmos los nuevos valores
           anchoImg = tamImg;
@@ -99,7 +151,8 @@ class PhotoHelper{
 
           //Obtenemos el nuevo ancho
           double anchoImgNew = tamImg * relacionAspecto;
-          anchoImgNew = UtilidadesUtil.redondearDouble(anchoImgNew, decimales: 0);
+          anchoImgNew =
+              UtilidadesUtil.redondearDouble(anchoImgNew, decimales: 0);
 
           //Asiganmos los nuevos valores
           altoImg = tamImg;
@@ -116,7 +169,8 @@ class PhotoHelper{
 
           //Obtenemos el nuevo ancho
           double anchoImgNew = tamImg * relacionAspecto;
-          anchoImgNew = UtilidadesUtil.redondearDouble(anchoImgNew, decimales: 0);
+          anchoImgNew =
+              UtilidadesUtil.redondearDouble(anchoImgNew, decimales: 0);
 
           //Asiganmos los nuevos valores
           altoImg = tamImg;
@@ -143,12 +197,13 @@ class PhotoHelper{
     }
 
     Img.Image smallerImg =
-    Img.copyResize(image, height: altoImg, width: anchoImg);
+        Img.copyResize(image, height: altoImg, width: anchoImg);
 
     String nameImg = "image_" +
         title +
         "_" +
-        rand.toString() +"_"+
+        rand.toString() +
+        "_" +
         MyDate.getFechaActual.replaceAll(" ", "_") +
         ".jpg";
     File compressImg = new File("$path/$nameImg")
@@ -164,32 +219,20 @@ class PhotoHelper{
         isVertical: isVertical);
   }
 
-
-
-  static Uint8List?  convertStringToUint8List(String? fotoString){
-
+  static Uint8List? convertStringToUint8List(String? fotoString) {
     try {
       Uint8List? imgDecode = null;
       if (fotoString != null && fotoString != '') {
-
-        final decodedBytes = base64Decode(fotoString
-            .toString()
-            .split(',')
-            .last);
+        final decodedBytes =
+            base64Decode(fotoString.toString().split(',').last);
         imgDecode = decodedBytes;
-
       }
       return imgDecode;
-    }
-    catch(e){
+    } catch (e) {
       log('Error al convertir imagen en ${e}');
       return null;
     }
   }
-
-
-
-
 }
 
 class GaleryCameraModel {
@@ -203,10 +246,11 @@ class GaleryCameraModel {
 
   GaleryCameraModel(
       {required this.title,
-        required this.tamImg,
-        required this.nombreImg,
-        required this.imageFile,
-        required this.image,
-        this.isVertical = false,
-        this.isHorizontal = false});
+      required this.tamImg,
+      required this.nombreImg,
+      required this.imageFile,
+      required this.image,
+      this.isVertical = false,
+      this.isHorizontal = false});
+
 }

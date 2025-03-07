@@ -28,6 +28,7 @@ class MainApp extends StatelessWidget {
         fontFamily: 'Bookman Old Style',
         primarySwatch:UtilidadesUtil.convertirAColorMaterial(AppColors.colorAzul_1),
       ),
+
       locale: Locale('es'),
       // translations will be displayed in that locale
       fallbackLocale: Locale('es'),

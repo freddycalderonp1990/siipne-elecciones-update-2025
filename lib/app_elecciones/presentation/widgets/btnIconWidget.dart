@@ -1,9 +1,9 @@
 part of 'customWidgets.dart';
 
 class BtnIconWidget extends StatelessWidget {
-  final String titulo;
+  final String? titulo;
 
-  final bool select;
+
   final VoidCallback? onPressed;
 
   final Color colorTxt;
@@ -11,17 +11,19 @@ class BtnIconWidget extends StatelessWidget {
   final IconData? icon;
   final Color colorIcon;
   final Color colorBtn;
+  final  double sizeTexto;
+  final  double sizeIcon;
 
   const BtnIconWidget(
       {Key? key,
-      this.titulo = '',
-      this.select = false,
+      this.titulo,
+
       required this.onPressed,
-      this.colorTxt = Colors.black,
-      this.colorLineas = AppColors.colorAzul,
+      this.colorTxt = Colors.white,
+      this.colorLineas = Colors.black,
       this.icon,
-      this.colorIcon = AppColors.colorAzul,
-       this.colorBtn=Colors.transparent})
+      this.colorIcon = Colors.white,
+       this.colorBtn=AppColors.colorBotones,  this.sizeTexto=AppConfig.tamTexto,  this.sizeIcon=AppConfig.tamIcons})
       : super(key: key);
 
   @override
@@ -37,18 +39,31 @@ class BtnIconWidget extends StatelessWidget {
             color: colorIcon,
           );
 
+Widget iconButton=Container(
+  decoration: BoxDecoration(
+    color: colorBtn, // Fondo azul
+    shape: BoxShape.circle, // Forma circular
+  ),
+  child: IconButton(
+    icon: iconWd, // Ícono blanco
+    onPressed: onPressed,
+  ),
+);
+
     wg = Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(radius),
       ),
-      child: TextButton.icon(
-        label: Text(titulo,
+      child:titulo==null?iconButton:
+
+      TextButton.icon(
+        label: Text(titulo!,
             textAlign: TextAlign.justify,
             style: TextStyle(
                 color: colorTxt,
-                fontSize: responsive.diagonalP(AppConfig.tamTexto))),
+                fontSize: responsive.diagonalP(sizeTexto))),
         icon: Container(
-            height: responsive.diagonalP(AppConfig.tamIcons), child: iconWd),
+            height: responsive.diagonalP(sizeIcon), child: iconWd),
         style: TextButton.styleFrom(
           backgroundColor: colorBtn,
           shape: RoundedRectangleBorder(
@@ -58,40 +73,10 @@ class BtnIconWidget extends StatelessWidget {
         onPressed: onPressed,
       ),
     );
-    if (select) {
-      wg = Container(
-        margin: EdgeInsets.all(0),
-        padding: EdgeInsets.all(0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(radius),
-        ),
-        child: TextButton.icon(
-          label: Text(titulo,
-              textAlign: TextAlign.justify,
-              style: TextStyle(
-                  color: colorTxt,
-                  fontSize: responsive.diagonalP(AppConfig.tamTexto))),
-          icon: Container(
-            height: responsive.diagonalP(AppConfig.tamIcons + 1),
-            child: iconWd,
-          ),
-          style: TextButton.styleFrom(
-            backgroundColor: colorBtn,
-            side: BorderSide(width: 2, color: Colors.white),
 
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(radius),
-                side: BorderSide(color: colorLineas)),
-          ),
-          onPressed: onPressed,
-        ),
-      );
-    }
 
     return wg;
 
-    return Expanded(
-      child: wg,
-    );
+
   }
 }

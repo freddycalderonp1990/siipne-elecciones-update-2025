@@ -9,6 +9,7 @@ import '../../app_elecciones/domain/enums/enums.dart';
 
 class AppConfig {
   static var AmbienteUrl=getAmbiente( dotenv.env['AMBIENTE']??'DEV');
+  static final AmbienteUrlAnterior=AmbienteUrl;
 
   static bool isUserGoogleOrIos=false;
   static bool activarMocks=false;
@@ -32,7 +33,7 @@ class AppConfig {
   static const double radioBordecajas = 15.0;
   static const double sobraBordecajas = 12.0;
 
-  static const double tamTextoTitulo = 2.0; //tamaño del texto en porcentaje
+  static const double tamTextoTitulo = 1.7; //tamaño del texto en porcentaje
   static const double tamTexto = 1.5; //tamaño del texto en porcentaje
   static const double tamIcons = 2.5; //tamaño de los iconos en porcentaje
 

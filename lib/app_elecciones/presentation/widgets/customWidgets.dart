@@ -12,6 +12,8 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'package:siipnelecciones3/app/core/utils/device_info.dart';
+import 'package:siipnelecciones3/app_elecciones/core/values/siipne_colors.dart';
+import 'package:siipnelecciones3/app_elecciones/core/values/siipne_images.dart';
 import 'dart:io';
 
 import '/../../app/core/app_config.dart';
@@ -35,6 +37,8 @@ import '/../../app/presentation/widgets/img_perfil_redonda.dart';
 
 
 
+
+
 part 'btnMenuWidget.dart';
 
 
@@ -44,6 +48,7 @@ part 'btnMenuWidget.dart';
 part 'btnIconWidget.dart';
 part 'awesome_dialog.dart';
 part 'workAreaLoginPageWidget.dart';
+part 'desing_text_name_user.dart';
 
 
 

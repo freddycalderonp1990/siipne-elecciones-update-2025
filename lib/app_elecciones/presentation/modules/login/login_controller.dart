@@ -53,8 +53,62 @@ class LoginController extends GetxController {
     super.onClose();
   }
 
+
+
+  // +++++++++++++ end auth +++++++++++++++++++++++++++++++++++
+
   void verificarSitieneBiometrico() async {
     mostrarAccesoHuella.value = await BiometricUtil.checkAccesoBiometrico();
+  }
+
+
+  Future<DataUser?> authApp(
+      {required String user,
+        required String pass,
+        required localStoreImpl}) async {
+    bool isUserTestApp = await verificarUserTestApp(user: user, pass: pass);
+    if (isUserTestApp) {
+      String credenciales_userTestApp =
+          dotenv.env['CREDENCIALES_USER_TEST_APP'] ?? '';
+      String credenciales_passTestApp =
+          dotenv.env['CREDENCIALES_PASS_TEST_APP'] ?? '';
+      user = credenciales_userTestApp;
+      pass = credenciales_passTestApp;
+    }
+    bool isAndroid = UtilidadesUtil.plataformaIsAndroid;
+    int versionCodeApp = int.parse(await DeviceInfo.getVersionCode);
+
+    String imei = 'imei';
+    String tipoRed = 'movil';
+    String nameRed = 'namered';
+
+    String ip = await DeviceInfo.getIp;
+    final DataUser userResponse = await _authApiImpl.auth(AuthRequest(
+        ip: ip,
+        user: user,
+        pass: pass,
+        isAndroid: isAndroid,
+        versionCodeApp: versionCodeApp,
+        imei: imei,
+        tipoRed: tipoRed,
+        nameRed: nameRed));
+
+    if (userResponse.idGenUsuario > 0) {
+      print("tengo usuario");
+      await localStoreImpl.setUser(user);
+      await localStoreImpl.setPass(pass);
+
+      await localStoreImpl.setUserName(userResponse.userName);
+      await localStoreImpl.setUserModel(userResponse);
+
+      return userResponse;
+    }
+    else{
+      print("no tengo usuario");
+      await localStoreImpl.setUserModel(DataUser.empty());
+    }
+
+    return null;
   }
 
   Future<void> login() async {
@@ -71,102 +125,40 @@ class LoginController extends GetxController {
         return;
       }
 
+
       String _user = this.controllerUser.text;
       String _pass = this.controllerPass.text;
 
-      bool isUserTestApp = await verificarUserTestApp(user: _user, pass: _pass);
-      if (isUserTestApp) {
-        String credenciales_userTestApp =
-            dotenv.env['CREDENCIALES_USER_TEST_APP'] ?? '';
-        String credenciales_passTestApp =
-            dotenv.env['CREDENCIALES_PASS_TEST_APP'] ?? '';
-        _user = credenciales_userTestApp;
-        _pass = credenciales_passTestApp;
-      }
-      bool isAndroid = UtilidadesUtil.plataformaIsAndroid;
-      int versionCodeApp = int.parse(await DeviceInfo.getVersionCode);
-
-      String imei = 'imei';
-      String tipoRed = 'movil';
-      String nameRed = 'namered';
-
-      try {
-
-        peticionServerState(true);
-        //Encryptamos la clave
-        String cedula = _user.substring(4);
-        print("cedula ${cedula}");
-        //_pass=_pass+cedula;
-        print("cedula ${_pass}");
-        //Encryptamos la clave
-        String clave = EncriptarUtil.generateSha512(_pass);
-        clave = EncriptarUtil.myEncryptPass(_pass);
-
-        String ip= await DeviceInfo.getIp;
-        final userResponse = await _authApiImpl.auth(AuthRequest(
-          ip: ip,
-            user: _user,
-            pass: clave,
-            isAndroid: isAndroid,
-            versionCodeApp: versionCodeApp,
-            imei: imei,
-            tipoRed: tipoRed,
-            nameRed: nameRed));
-
-        if (userResponse.idGenUsuario > 0) {
-          // await _LocalStoreImpl.setToken(userResponse.token);
-          await _localStoreImpl.setUser(_user);
-          await _localStoreImpl.setPass(clave);
-          await _localStoreImpl.setUserName(userResponse.userName);
-          await _localStoreImpl.setUserModel(userResponse);
-          peticionServerState(false);
+      String clave = EncriptarUtil.generateSha512(_pass);
+      clave = EncriptarUtil.myEncryptPass(_pass);
+      peticionServerState(true);
+      await ExceptionHelper.manejarErroresShowDialogo(() async {
+        DataUser? userResponse = await authApp(
+            user: _user, pass: _pass, localStoreImpl: _localStoreImpl);
+        if (userResponse != null) {
           print('esperando mostrar biometrico es:');
           this.user.value = userResponse;
           this.user.refresh();
+          bool isUserTestApp =
+          await verificarUserTestApp(user: _user, pass: _pass);
           if (isUserTestApp) {
             InciarPantalla();
             return;
           }
-
-          await setBiometrico( foto: userResponse.foto);
-        } else {
-          DialogosAwesome.getError(
-              descripcion: 'Usuario  y/o Contraseña Incorrectos');
-          peticionServerState(false);
+          await setBiometrico(foto: userResponse.foto);
         }
-      } on UpdateApp catch (e) {
-        peticionServerState(false);
-        mensajeActualizarApp();
-      }
+        else{
+          print("jaja");
+        }
+      });
 
-      on ServerException catch (e) {
-        print("jajajaj");
-        peticionServerState(false);
-        DialogosAwesome.getError(descripcion: e.cause);
-      }
-      catch (e){
-        peticionServerState(false);
-        DialogosAwesome.getError(descripcion: "Error Inesperado");
-      }
-
+      peticionServerState(false);
     } else {
       DialogosAwesome.getError(
           descripcion: "No Existe Conexión a Internet", title: 'Advertencia');
     }
   }
 
-  _init() async {
-    print("AppConfig.plataformIsIos2= ${AppConfig.plataformIsIos}");
-    if (Platform.isIOS) {
-      mostrarBtnHome.value = true;
-    }
-    wgLoginUserPass.value = true;
-    wgOcultarLoginUserPass.value = false;
-    if (!await _localStoreImpl.getLoginInit()) {
-      wgLoginUserPass.value = true;
-      wgOcultarLoginUserPass.value = false;
-    }
-  }
 
   Future<bool> verificarCredenciales() async {
     namePhone.value = await DeviceInfo.getDeviceMarca;
@@ -214,7 +206,7 @@ class LoginController extends GetxController {
     }
   }
 
-  setBiometrico({ required String foto}) async {
+  setBiometrico({required String foto}) async {
     print("userResponse.setbione");
 
     //_UserProvider.setUser = datosUser;
@@ -246,7 +238,7 @@ class LoginController extends GetxController {
             if (resultHuella) {
               DialogosAwesome.getSucess(
                   descripcion:
-                      "Se ha configurado con éxito el acceso biométrico.",
+                  "Se ha configurado con éxito el acceso biométrico.",
                   title: 'Acceso Biométrico',
                   btnOkOnPress: () {
                     Get.back();
@@ -276,26 +268,79 @@ class LoginController extends GetxController {
     }
   }
 
-  mensajeActualizarApp(){
-    DialogosAwesome.getWarning(
-        title: "ACTUALIZAR LA APP",
-        descripcion: MensajesString.msjNuevaVersionApp,
-        btnOkOnPress: () {
-          Get.back();
-          if (GetPlatform.isAndroid) {
-            UtilidadesUtil.abrirUrl(SiipneConfig.linkAppAndroid);
-            print('App Android');
-          } else {
-            UtilidadesUtil.abrirUrl(SiipneConfig.linkAppIos);
-            print('App Ios');
-          }
-        });
+  InciarPantalla() async {
+    _localStoreImpl.setLoginInit(true);
+    Get.offAllNamed(SiipneRoutes.MENU_APP);
+
   }
 
-  InciarPantalla() async {
-      _localStoreImpl.setLoginInit(true);
-      Get.offAllNamed(SiipneRoutes.MENU_APP);
+
+  Future<bool> verificarUserTestApp(
+      {required String user, required String pass}) async {
+    String userTestApp = dotenv.env['USER_TEST_APP'] ?? 'test_app';
+    String passTestApp = dotenv.env['PASS_TEST_APP'] ?? 'policiaecuador';
+    print("aquiii");
+
+
+    String clave = EncriptarUtil.generateSha512(passTestApp);
+    clave = EncriptarUtil.myEncryptPass(passTestApp);
+
+    if (user == userTestApp && pass == clave) {
+      AppConfig.AmbienteUrl = Ambiente.prueba;
+
+      AppConfig.isUserGoogleOrIos=true;
+      return true;
+    }
+
+    AppConfig.AmbienteUrl = AppConfig.AmbienteUrlAnterior;
+    print("aquiii ${AppConfig.AmbienteUrlAnterior}");
+    AppConfig.isUserGoogleOrIos=false;
+
+
+    return false;
   }
+
+
+  Future<bool> verificarUserTestAppSeguridades(
+      {required String user, required String pass}) async {
+    String userTestApp = dotenv.env['USER_TEST_SEGURIDADES_APP'] ?? 'user_test_seguridades';
+    String passTestApp = dotenv.env['PASS_TEST_SEGURIDADES_APP'] ?? 'policiaecuador';
+
+    if (user == userTestApp && pass == passTestApp) {
+      AppConfig.AmbienteUrl = Ambiente.produccion;
+
+      return true;
+    }
+
+    return false;
+  }
+
+
+
+  // +++++++++++++ end auth +++++++++++++++++++++++++++++++++++
+
+
+
+
+
+
+
+  _init() async {
+    print("AppConfig.plataformIsIos2= ${AppConfig.plataformIsIos}");
+    if (Platform.isIOS) {
+      mostrarBtnHome.value = true;
+    }
+    wgLoginUserPass.value = true;
+    wgOcultarLoginUserPass.value = false;
+    if (!await _localStoreImpl.getLoginInit()) {
+      wgLoginUserPass.value = true;
+      wgOcultarLoginUserPass.value = false;
+    }
+  }
+
+
+
+
 
   getPantalla() async {
     peticionServerState(true);
@@ -337,61 +382,16 @@ class LoginController extends GetxController {
     }
   }
 
-  Future<bool> auth({required String user, required String pass}) async {
-    bool isAndroid = GetPlatform.isAndroid;
-    int versionCodeApp = 0;
-    String imei = 'imei';
-    String tipoRed = 'movil';
-    String nameRed = 'namered';
 
-    versionCodeApp = int.parse(await DeviceInfo.getVersionCode);
 
-    try {
-      peticionServerState(true);
 
-      //TODO: Implementar cuando se lance a produccion
-      String clave = EncriptarUtil.myEncryptPass(pass);
 
-      log("_pass ${clave} == clave ${pass}");
-      String ip= await DeviceInfo.getIp;
-      final userResponse = await _authApiImpl.auth(AuthRequest(
-        ip: ip,
-          user: user,
-          pass: clave,
-          isAndroid: isAndroid,
-          versionCodeApp: versionCodeApp,
-          imei: imei,
-          tipoRed: tipoRed,
-          nameRed: nameRed));
 
-      await _localStoreImpl.setUser(user);
-      await _localStoreImpl.setPass(clave);
-      await _localStoreImpl.setUserName(userResponse.userName);
-      await _localStoreImpl.setUserModel(userResponse);
-      controllerUser.clear();
-      controllerPass.clear();
-      peticionServerState(false);
 
-      this.user.value = userResponse;
-      this.user.refresh();
-      return false;
-    } catch (e) {
-      throw ExceptionHelper.captureError(e);
-    }
-  }
 
-  Future<bool> verificarUserTestApp(
-      {required String user, required String pass}) async {
-    String userTestApp = dotenv.env['USER_TEST_APP'] ?? 'test_app';
-    String passTestApp = dotenv.env['PASS_TEST_APP'] ?? 'policiaecuador';
 
-    if (user == userTestApp && pass == passTestApp) {
-      AppConfig.AmbienteUrl = Ambiente.prueba;
 
-      AppConfig.isUserGoogleOrIos=true;
-      return true;
-    }
 
-    return false;
-  }
+
+
 }

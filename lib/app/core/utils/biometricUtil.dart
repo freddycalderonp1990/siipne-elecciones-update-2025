@@ -21,7 +21,6 @@ class BiometricUtil {
       await auth.getAvailableBiometrics();
 
 
-
       availableBiometrics.forEach((BiometricType age) => print("PERMISOS BIOMETRICOS = ${age}"));
 
       if (GetPlatform.isAndroid ) {

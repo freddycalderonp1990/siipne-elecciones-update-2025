@@ -1,5 +1,7 @@
-import '../../../app_elecciones//domain/enums/enums.dart';
+
+import '../../../app_elecciones/domain/enums/enums.dart';
 import '../../core/app_config.dart';
+import 'exception_helper.dart';
 
 abstract class Failure implements Exception {
   final String message;
@@ -8,20 +10,50 @@ abstract class Failure implements Exception {
     required this.message,
   });
 
-  get msj=>message;
+  get msj{
+    return ExceptionHelper.setMensaje(msjException: this.message);
+  }
 
 
 }
 
 
-class  UpdateApp implements Exception {
+
+
+class  UpdateAppException implements Exception {
   final String message;
 
-  UpdateApp({
+  UpdateAppException({
     required this.message,
   });
 
-  get msj=>message;
+  get msj{
+    String mesage = 'Actualizacion Disponible'
+        '\n\nExiste una nueva versión disponible. Para continuar, es necesario que actualice la aplicación.'
+    ;
+    return ExceptionHelper.setMensaje(
+        mensaje: mesage,
+        msjException: this.message);
+  }
+
+}
+
+
+class  CloseRecintoException implements Exception {
+  final String message;
+
+  CloseRecintoException({
+    required this.message,
+  });
+
+  get msj{
+    String mesage = 'Recinto/Unidad no se encuentra disponible'
+        '\n\nIntente nuevamente o contacte al administrador.'
+    ;
+    return ExceptionHelper.setMensaje(
+        mensaje: mesage,
+        msjException: this.message);
+  }
 
 }
 
@@ -32,40 +64,44 @@ class  ParseJsonException implements Exception {
     required this.message,
   });
 
-  get msj=>message;
+  factory ParseJsonException.setMensaje({ String mensaje='Parse Model\n\nOcurrió un problema. Intente nuevamente o contacte al administrador.',required String msjException}){
+     String msj= ExceptionHelper.setMensaje(
+        mensaje: mensaje,
+        msjException: msjException);
+
+    return ParseJsonException(message: msj);
+  }
+
+
+
+  get msj{
+    String mensaje='Parse Model\n\n'
+        "Ocurrió un problema. Intente nuevamente o contacte al administrador.";
+    return ExceptionHelper.setMensaje(
+        mensaje: mensaje,
+        msjException: this.message);
+  }
 
 }
 
 class ServerException implements Exception {
-  final String cause;
+  final String message;
 
-  ServerException({ required this.cause});
+  ServerException({ required this.message});
 
 
-  factory ServerException.msj(msjException
-   ) {
-    String mesage = 'No es posible conectar con el servidor. Contacte con el administrador';
-
-    if (AppConfig.AmbienteUrl != Ambiente.produccion) {
-      mesage = mesage + ' Exception: ' + msjException;
-    }
-
-    return ServerException(cause:mesage);
-  }
-
-  get msj=>cause;
 
   factory ServerException.StatusCode(
       {int statusCode = 0,
+        String msjException = ''}) {
 
-      String msjException = ''}) {
     String mesage = 'No definido';
-    print("jajajajajaj");
+
 
     switch (statusCode) {
       case 404: //HTTP_NOT_FOUND
         mesage =
-            "No es posible conectar con el servidor. Pagina no encontrada.";
+        "No es posible conectar con el servidor. Pagina no encontrada.";
         break;
 
       case 400: //HTTP_Bad_Request
@@ -88,10 +124,24 @@ class ServerException implements Exception {
             'Si el problema persiste contacte con el administrador.  ';
         break;
 
+      case 502: //HTTP_No_autorizado
+        mesage = 'Problema con el servidor'
+            '\n\nCampos Incompletos - vuelve a ejecutar la acción. '
+            'Si el problema persiste contacte con el administrador.  ';
+        break;
+
       case 426: //HTTP_No_autorizado
-        mesage = 'Actualizacion Disponible'
-            '\n\nExiste una nueva versión disponible. Para continuar, es necesario que actualice la aplicación.'
-            ;
+        mesage = 'Actualizacion Disponible';
+
+        throw UpdateAppException(message: msjException);
+
+        break;
+
+      case 422: //HTTP_No_autorizado
+        mesage = 'Recinto/Unidad no se encuentra disponible';
+
+        throw CloseRecintoException(message: msjException);
+
         break;
 
       default:
@@ -101,29 +151,26 @@ class ServerException implements Exception {
         break;
     }
 
-    if (AppConfig.AmbienteUrl != Ambiente.produccion) {
+
+
+    if (AppConfig.AmbienteUrl.toString() != Ambiente.produccion.toString()) {
       mesage = mesage + '\n\nException: ' + msjException;
+      print("aaaaaaa222 ${mesage}");
+      print(AppConfig.AmbienteUrl);
+      print(Ambiente.produccion);
     }
 
+    print("aaaaaaa ${mesage}");
+    print("aaaaaaa ${AppConfig.AmbienteUrl}");
 
-    return ServerException(cause:mesage);
+    return ServerException(message:mesage);
   }
 }
 
 
 
 
-class  TimeoutException implements Exception {
-  final String e;
 
-  TimeoutException(
-    this.e,
-  );
-
-  get msj=>e;
-
-
-}
 
 class CacheException implements Exception {}
 

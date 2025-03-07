@@ -40,6 +40,8 @@ class _WorkAreaPageLoginWidgetState extends State<WorkAreaPageLoginWidget> {
     _loadVersion();
   }
 
+
+
   _loadVersion() async {
     String _version = await DeviceInfo.getVersionCodeNameApp;
     String _namePhone = await DeviceInfo.getDeviceMarca;
@@ -74,14 +76,16 @@ class _WorkAreaPageLoginWidgetState extends State<WorkAreaPageLoginWidget> {
             child: Stack(
               children: [
                 getImgFondo(),
+
                 widget.mostrarBtnHome ? getBtnHome() : Container(),
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
 
                     Expanded(
                         child: Container(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: responsive.anchoP(7)),
+
                             child: Center(
                               child: SingleChildScrollView(
                                 child: Column(
@@ -140,14 +144,14 @@ class _WorkAreaPageLoginWidgetState extends State<WorkAreaPageLoginWidget> {
   Widget getTitle() {
     final responsive = ResponsiveUtil();
 
-return Container();
+
 
     return widget.title != ''
         ? TextSombrasWidget(
             colorTexto: Colors.white,
             colorSombra: Colors.black,
             title: widget.title,
-            size: responsive.diagonalP(AppConfig.tamTextoTitulo),
+            size: responsive.diagonalP(AppConfig.tamTextoTitulo+0.5),
           )
         : Container();
   }
