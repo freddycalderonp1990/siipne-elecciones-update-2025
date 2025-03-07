@@ -58,7 +58,7 @@ class RecintosElectoralesAbiertos {
   int idDgoPerAsigOpe;
   //Se agrega para capturar el proceso u operativo seleccionado
   int idDgoProcElec;
-  String codigoRecinto;
+  int codigoRecinto;
   String fechaIni;
   String nomRecintoElec;
   int idDgoReciElect;
@@ -77,7 +77,7 @@ class RecintosElectoralesAbiertos {
       descProcElecc: "",
       idDgoPerAsigOpe: 0,
       idDgoProcElec: 0,
-      codigoRecinto: "",
+      codigoRecinto: 0,
       fechaIni: "",
       nomRecintoElec: "",
       idDgoReciElect: 0,
@@ -87,14 +87,14 @@ class RecintosElectoralesAbiertos {
       descripcion: "",
       idDgoTipoEje: 0);
   factory RecintosElectoralesAbiertos.fromJson(Map<String, dynamic> json) {
-    print("ingresa");
+
     return    RecintosElectoralesAbiertos(
       idDgoProcElec: ParseModel.parseToInt(json["idDgoProcElec"]),
       descProcElecc: ParseModel.parseToString(json["descProcElecc"]),
       idDgoTipoEje: ParseModel.parseToInt(json["idDgoTipoEje"]),
       idDgoCreaOpReci: ParseModel.parseToInt(json["idDgoCreaOpReci"]),
       idDgoPerAsigOpe: ParseModel.parseToInt(json["idDgoPerAsigOpe"]),
-      codigoRecinto: ParseModel.parseToString(json["codigoRecinto"]),
+      codigoRecinto: ParseModel.parseToInt(json["codigoRecinto"]),
       fechaIni: ParseModel.parseToString(json["fechaIni"]),
       nomRecintoElec: ParseModel.parseToString(json["nomRecintoElec"]),
       idDgoReciElect: ParseModel.parseToInt(json["idDgoReciElect"]),

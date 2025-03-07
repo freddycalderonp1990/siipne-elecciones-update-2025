@@ -11,6 +11,8 @@ class BtnIconWidget extends StatelessWidget {
   final IconData? icon;
   final Color colorIcon;
   final Color colorBtn;
+  final  double sizeTexto;
+  final  double sizeIcon;
 
   const BtnIconWidget(
       {Key? key,
@@ -21,7 +23,7 @@ class BtnIconWidget extends StatelessWidget {
       this.colorLineas = Colors.black,
       this.icon,
       this.colorIcon = Colors.white,
-       this.colorBtn=AppColors.colorBotones})
+       this.colorBtn=AppColors.colorBotones,  this.sizeTexto=AppConfig.tamTexto,  this.sizeIcon=AppConfig.tamIcons})
       : super(key: key);
 
   @override
@@ -59,9 +61,9 @@ Widget iconButton=Container(
             textAlign: TextAlign.justify,
             style: TextStyle(
                 color: colorTxt,
-                fontSize: responsive.diagonalP(AppConfig.tamTexto))),
+                fontSize: responsive.diagonalP(sizeTexto))),
         icon: Container(
-            height: responsive.diagonalP(AppConfig.tamIcons), child: iconWd),
+            height: responsive.diagonalP(sizeIcon), child: iconWd),
         style: TextButton.styleFrom(
           backgroundColor: colorBtn,
           shape: RoundedRectangleBorder(

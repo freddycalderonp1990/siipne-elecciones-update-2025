@@ -50,8 +50,8 @@ class PersonaApiProviderImpl extends PersonaRepository {
       required double longitud,
       required int idDgoReciElect,
       required int idDgoTipoEje,
-      required String ip
-      }) async {
+      required int idDgoProcElec,
+      required String ip}) async {
     Object? body = {
       "modulo": ApiConstantes.MODULO,
       "uri": ApiConstantes.ELECCIONES_RECINTO_ADD_PERSONA,
@@ -62,7 +62,9 @@ class PersonaApiProviderImpl extends PersonaRepository {
       "ip": ip,
       "idDgoCreaOpReci": idDgoCreaOpReci,
       "idGenPersona": idGenPersona,
-      "idDgoTipoEje": idDgoTipoEje
+      "idDgoTipoEje": idDgoTipoEje,
+      "idDgoProcElec": idDgoProcElec,
+
     };
 
     String json = await UrlApiProviderSiipneMovil.post(
@@ -71,22 +73,61 @@ class PersonaApiProviderImpl extends PersonaRepository {
 
     String titleJson = "resgistroPersEnRecElectoral";
 
-
     try {
       // Validar la respuesta del servidor
       String msj =
-      ResponseApi.validateConsultas(json: json, titleJson: titleJson);
+          ResponseApi.validateConsultas(json: json, titleJson: titleJson);
       // Si la respuesta es válida
       if (msj == ApiConstantes.varTrue) {
         // Obtener los datos del modelo en formato String
         String datosJson = getDatosModelFromString(json, titleJson);
         // Parsear y retornar el modelo correspondiente
-      return resgistroPersEnRecElectoralModelFromJson(datosJson)
+        return resgistroPersEnRecElectoralModelFromJson(datosJson)
             .resgistroPersEnRecElectoral;
-
       }
       // En caso de respuesta no válida, devolver un modelo vacío
       return ResgistroPersEnRecElectoral.empty();
+    } catch (e, stackTrace) {
+      // Manejo centralizado de excepciones
+      throw ParseJsonException(
+          message: "Problema en Parse Model: ${e} - stackTrace: ${stackTrace}");
+    }
+  }
+
+  @override
+  Future<List<PersonalRecintoElectoral>>
+      consultarDatosPersonalAsignadoRecintoElectoral(
+          {required int idDgoCreaOpReci,
+          required int idDgoProcElec,
+          required int idDgoReciElect}) async {
+    Object? body = {
+      "modulo": ApiConstantes.MODULO,
+      "uri": ApiConstantes.ELECCIONES_RECINTO_GET_PERSONAL,
+      "idDgoCreaOpReci": idDgoCreaOpReci,
+      "idDgoProcElec": idDgoProcElec,
+      "idDgoReciElect": idDgoReciElect,
+    };
+
+    String json = await UrlApiProviderSiipneMovil.post(
+      body: body,
+    );
+
+    String titleJson = "personalRecintoElectoral";
+
+    try {
+      // Validar la respuesta del servidor
+      String msj =
+          ResponseApi.validateConsultas(json: json, titleJson: titleJson);
+      // Si la respuesta es válida
+      if (msj == ApiConstantes.varTrue) {
+        // Obtener los datos del modelo en formato String
+        String datosJson = getDatosModelFromString(json, titleJson);
+        // Parsear y retornar el modelo correspondiente
+        return personalRecintoElectoralModelFromJson(datosJson)
+            .personalRecintoElectoral;
+      }
+      // En caso de respuesta no válida, devolver un modelo vacío
+      return [];
     } catch (e, stackTrace) {
       // Manejo centralizado de excepciones
       throw ParseJsonException(

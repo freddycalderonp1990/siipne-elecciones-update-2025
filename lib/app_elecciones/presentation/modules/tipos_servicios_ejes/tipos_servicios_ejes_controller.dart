@@ -37,7 +37,7 @@ class TiposServiciosEjesController extends GetxController {
 
   Future<void> getTipoEjesActivosEnProcesoOperativos() async {
     peticionServerState(true);
-    await ExceptionHelper.manejarErrores(() async {
+    await ExceptionHelper.manejarErroresShowDialogo(() async {
       tipoEjesActivos.value = await
           _eleccionesTipoEjesApiImpl.getTipoEjesActivosEnProcesoOperativos(
               usuario: user.idGenUsuario,

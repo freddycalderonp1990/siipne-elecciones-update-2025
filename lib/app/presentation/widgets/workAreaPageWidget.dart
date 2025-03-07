@@ -132,7 +132,7 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
                               child: Container (
 
                                     padding: EdgeInsets.symmetric(
-                                        horizontal: responsive.anchoP(7)),
+                                        horizontal: 12),
                                     child:  widget.contenido != null
                                         ? widget.title!=null? Column(
                                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -152,7 +152,7 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
                                   ),
                             )),
                             SizedBox(
-                              height: responsive.altoP(13),
+                              height: responsive.altoP(8),
                             )
                           ],
                         ),

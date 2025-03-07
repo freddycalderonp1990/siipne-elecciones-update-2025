@@ -16,5 +16,8 @@ part 'menu_recintos_electorales/menu_recintos_electorales_binding.dart';
 part 'menu_unidades_policiales/menu_unidades_policiales_binding.dart';
 
 part 'personal/add/add_person_binding.dart';
+part 'personal/report/report_person_binding.dart';
+
+part 'novedades/add/add_novedades_binding.dart';
 
 

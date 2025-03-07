@@ -40,6 +40,8 @@ class _WorkAreaPageLoginWidgetState extends State<WorkAreaPageLoginWidget> {
     _loadVersion();
   }
 
+
+
   _loadVersion() async {
     String _version = await DeviceInfo.getVersionCodeNameApp;
     String _namePhone = await DeviceInfo.getDeviceMarca;
@@ -74,8 +76,11 @@ class _WorkAreaPageLoginWidgetState extends State<WorkAreaPageLoginWidget> {
             child: Stack(
               children: [
                 getImgFondo(),
+
                 widget.mostrarBtnHome ? getBtnHome() : Container(),
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
 
                     Expanded(

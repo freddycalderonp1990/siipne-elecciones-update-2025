@@ -18,7 +18,16 @@ abstract class PersonaRepository {
         required double longitud,
         required int idDgoReciElect,
         required int idDgoTipoEje,
+        required int idDgoProcElec,
+
         required String ip
       }) ;
+
+
+  Future<List<PersonalRecintoElectoral>> consultarDatosPersonalAsignadoRecintoElectoral({
+    required int idDgoCreaOpReci,
+    required int idDgoProcElec,
+    required int idDgoReciElect,
+  });
 
 }

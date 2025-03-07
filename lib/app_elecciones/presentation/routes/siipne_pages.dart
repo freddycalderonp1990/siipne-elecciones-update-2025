@@ -57,5 +57,16 @@ class SiipnePages {
         page: () => AddPersonPage(),
         binding: AddPersonBinding()),
 
+    AppPages.getPageConfig(
+        name: SiipneRoutes.REPORT_PERSONAL,
+        page: () => ReportPersonPage(),
+        binding: ReportPersonBinding()),
+
+
+    AppPages.getPageConfig(
+        name: SiipneRoutes.ADD_NOVEDADES,
+        page: () => AddNovedadesPage(),
+        binding: AddNovedadesBinding()),
+
   ];
 }

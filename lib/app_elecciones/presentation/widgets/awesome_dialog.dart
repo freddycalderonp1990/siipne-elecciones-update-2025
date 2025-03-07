@@ -8,7 +8,6 @@ class DialogosAwesome {
         required String descripcion,
         Function()? btnOkOnPress}) {
     AwesomeDialog(
-
         dismissOnTouchOutside: false,
         dismissOnBackKeyPress: false,
         context: Get.context!,
@@ -89,7 +88,7 @@ class DialogosAwesome {
         btnCancelText: "No",
         btnCancelIcon: Icons.cancel_rounded,
         btnOkIcon: Icons.check_circle,
-        btnOkColor: Colors.blue,
+        btnOkColor: AppColors.colorAzul,
         btnOkText: "Si",
         btnCancelOnPress:btnCancelOnPress!=null?btnCancelOnPress: () {
           Get.back();

@@ -87,6 +87,7 @@ class _ImputTextWidgetState extends State<ImputTextWidget> {
 
         focusedBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: AppColors.colorAzul),
+
         ),
         enabledBorder: UnderlineInputBorder(
           borderSide: BorderSide(color: AppColors.colorAzul),

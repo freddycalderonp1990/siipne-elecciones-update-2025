@@ -43,7 +43,7 @@ class SelectProcesoOperativoController extends GetxController {
     peticionServerState(true);
     cargaInicial.value=true;
 
-    await ExceptionHelper.manejarErrores(() async {
+    await ExceptionHelper.manejarErroresShowDialogo(() async {
       final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
       LatLng position = await locationBloc.getCurrentPosition();
 

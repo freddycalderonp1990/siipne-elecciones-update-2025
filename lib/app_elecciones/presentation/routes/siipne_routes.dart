@@ -15,6 +15,10 @@ class SiipneRoutes{
   static const MENU_UNIDADES_POLICIALES="/${name}menu_unidades_policiales";
 
   static const ADD_PERSONAL="/${name}add_personal";
+  static const REPORT_PERSONAL="/${name}report_personal";
+
+  static const ADD_NOVEDADES="/${name}add_novedades";
+  static const REPORT_NOVEDADES="/${name}report_novedades";
 
 
   static const LOGIN_RAPIDO="/${name}login_rapido";

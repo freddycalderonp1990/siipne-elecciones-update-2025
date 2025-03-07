@@ -6,17 +6,14 @@ class InicioRapidoPage extends GetView<InicioRapidoController> {
     final responsive = ResponsiveUtil();
     // TODO: verifique
 
-
-    Widget wg = Obx(() => WorkAreaPageWidget(
+    Widget wg = Obx(() => WorkAreaLoginPageWidget(
       title: '',
       imgPerfil:controller.user.value.foto,
       mostrarVersion: true,
       imgFondo: AppImages.imgFondoDefault,
       peticionServer: controller.peticionServerState,
-
-      contenido:
-        Center(child: getContenido(responsive),)
-
+      sizeTittle: 7,
+      contenido: <Widget>[getContenido(responsive)],
     ));
 
     return GetBuilder<LoginController>(
@@ -28,37 +25,36 @@ class InicioRapidoPage extends GetView<InicioRapidoController> {
     String Bienvenido =  controller.user.value.sexo == 'HOMBRE'
         ? "BIENVENIDO: "
         : "BIENVENIDA: ";
-    return Column(
+    return SingleChildScrollView(child: Column(
       children: [
-        imgPerfilRedonda(
-          size: 28,
-          img:       controller.user.value.foto,
-        ),
-        ContenedorDesingWidget(
+        Obx(()=> Text(
+          Bienvenido + controller.user.value.nombres,
+          textAlign: TextAlign.center,
+          style: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: responsive.anchoP(5)),
+        )),
 
-          paddin: EdgeInsets.all(5),
-          child: TextSombrasWidget(
-          size: responsive.diagonalP(AppConfig.tamTextoTitulo),
-          title:  Bienvenido + controller.user.value.nombres,),),
 
         SizedBox(
           height: responsive.altoP(2),
         ),
-      Container(
-        padding: EdgeInsets.symmetric(horizontal: 10),
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: 10),
 
-        
-        child: Column(
 
-        children: [
-          wgHuella(),
-          SizedBox(
-            height: responsive.altoP(2),
-          ),
-          wgOtroUsuario()
-        ],),)
+          child: Column(
+
+            children: [
+              wgHuella(),
+              SizedBox(
+                height: responsive.altoP(2),
+              ),
+              wgOtroUsuario()
+            ],),)
       ],
-    );
+    ),);
   }
 
   Widget wgHuella() {
@@ -68,7 +64,7 @@ class InicioRapidoPage extends GetView<InicioRapidoController> {
       title: "HUELLA",
       horizontal: false,
       onTap: () => controller.loginConBiometrico(),
-      colorFondo:AppColors.colorAzulHex,
+      colorFondo:AppColors.colorAzul,
       colorTexto: Colors.white,
     );
 
@@ -85,7 +81,7 @@ class InicioRapidoPage extends GetView<InicioRapidoController> {
       title: "¿NO ERES TÚ?",
       horizontal: false,
       onTap: () => controller.ingresoConOtroUsuario(),
-      colorFondo:AppColors.colorAzulHex,
+      colorFondo:AppColors.colorAzul,
       colorTexto: Colors.white,
     );
 

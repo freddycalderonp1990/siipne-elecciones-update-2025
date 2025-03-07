@@ -9,6 +9,7 @@ import '../../app_elecciones/domain/enums/enums.dart';
 
 class AppConfig {
   static var AmbienteUrl=getAmbiente( dotenv.env['AMBIENTE']??'DEV');
+  static final AmbienteUrlAnterior=AmbienteUrl;
 
   static bool isUserGoogleOrIos=false;
   static bool activarMocks=false;

@@ -27,6 +27,7 @@ class GpsAccessScreen extends StatelessWidget {
           locationBloc.getCurrentPosition();
           return BlocBuilder<LocationBloc, LocationState>(
               builder: (context, state) {
+
             if (state.lastKnownLocation == null) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.center,

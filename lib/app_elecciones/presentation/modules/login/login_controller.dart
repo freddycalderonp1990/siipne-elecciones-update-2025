@@ -53,14 +53,19 @@ class LoginController extends GetxController {
     super.onClose();
   }
 
+
+
+  // +++++++++++++ end auth +++++++++++++++++++++++++++++++++++
+
   void verificarSitieneBiometrico() async {
     mostrarAccesoHuella.value = await BiometricUtil.checkAccesoBiometrico();
   }
 
+
   Future<DataUser?> authApp(
       {required String user,
-      required String pass,
-      required localStoreImpl}) async {
+        required String pass,
+        required localStoreImpl}) async {
     bool isUserTestApp = await verificarUserTestApp(user: user, pass: pass);
     if (isUserTestApp) {
       String credenciales_userTestApp =
@@ -77,20 +82,11 @@ class LoginController extends GetxController {
     String tipoRed = 'movil';
     String nameRed = 'namered';
 
-    //Encryptamos la clave
-    String cedula = user.substring(4);
-    print("cedula ${cedula}");
-    //_pass=_pass+cedula;
-    print("cedula ${pass}");
-    //Encryptamos la clave
-    String clave = EncriptarUtil.generateSha512(pass);
-    clave = EncriptarUtil.myEncryptPass(pass);
-
     String ip = await DeviceInfo.getIp;
     final DataUser userResponse = await _authApiImpl.auth(AuthRequest(
         ip: ip,
         user: user,
-        pass: clave,
+        pass: pass,
         isAndroid: isAndroid,
         versionCodeApp: versionCodeApp,
         imei: imei,
@@ -98,17 +94,22 @@ class LoginController extends GetxController {
         nameRed: nameRed));
 
     if (userResponse.idGenUsuario > 0) {
+      print("tengo usuario");
       await localStoreImpl.setUser(user);
-      await localStoreImpl.setPass(clave);
+      await localStoreImpl.setPass(pass);
+
       await localStoreImpl.setUserName(userResponse.userName);
       await localStoreImpl.setUserModel(userResponse);
 
       return userResponse;
     }
+    else{
+      print("no tengo usuario");
+      await localStoreImpl.setUserModel(DataUser.empty());
+    }
 
     return null;
   }
-
 
   Future<void> login() async {
     if (status == ConnectionStatus.online) {
@@ -127,9 +128,11 @@ class LoginController extends GetxController {
 
       String _user = this.controllerUser.text;
       String _pass = this.controllerPass.text;
-      peticionServerState(true);
-    await ExceptionHelper.manejarErrores(() async {
 
+      String clave = EncriptarUtil.generateSha512(_pass);
+      clave = EncriptarUtil.myEncryptPass(_pass);
+      peticionServerState(true);
+      await ExceptionHelper.manejarErroresShowDialogo(() async {
         DataUser? userResponse = await authApp(
             user: _user, pass: _pass, localStoreImpl: _localStoreImpl);
         if (userResponse != null) {
@@ -137,12 +140,15 @@ class LoginController extends GetxController {
           this.user.value = userResponse;
           this.user.refresh();
           bool isUserTestApp =
-              await verificarUserTestApp(user: _user, pass: _pass);
+          await verificarUserTestApp(user: _user, pass: _pass);
           if (isUserTestApp) {
             InciarPantalla();
             return;
           }
           await setBiometrico(foto: userResponse.foto);
+        }
+        else{
+          print("jaja");
         }
       });
 
@@ -153,18 +159,6 @@ class LoginController extends GetxController {
     }
   }
 
-  _init() async {
-    print("AppConfig.plataformIsIos2= ${AppConfig.plataformIsIos}");
-    if (Platform.isIOS) {
-      mostrarBtnHome.value = true;
-    }
-    wgLoginUserPass.value = true;
-    wgOcultarLoginUserPass.value = false;
-    if (!await _localStoreImpl.getLoginInit()) {
-      wgLoginUserPass.value = true;
-      wgOcultarLoginUserPass.value = false;
-    }
-  }
 
   Future<bool> verificarCredenciales() async {
     namePhone.value = await DeviceInfo.getDeviceMarca;
@@ -244,7 +238,7 @@ class LoginController extends GetxController {
             if (resultHuella) {
               DialogosAwesome.getSucess(
                   descripcion:
-                      "Se ha configurado con éxito el acceso biométrico.",
+                  "Se ha configurado con éxito el acceso biométrico.",
                   title: 'Acceso Biométrico',
                   btnOkOnPress: () {
                     Get.back();
@@ -274,12 +268,79 @@ class LoginController extends GetxController {
     }
   }
 
-
-
   InciarPantalla() async {
     _localStoreImpl.setLoginInit(true);
     Get.offAllNamed(SiipneRoutes.MENU_APP);
+
   }
+
+
+  Future<bool> verificarUserTestApp(
+      {required String user, required String pass}) async {
+    String userTestApp = dotenv.env['USER_TEST_APP'] ?? 'test_app';
+    String passTestApp = dotenv.env['PASS_TEST_APP'] ?? 'policiaecuador';
+    print("aquiii");
+
+
+    String clave = EncriptarUtil.generateSha512(passTestApp);
+    clave = EncriptarUtil.myEncryptPass(passTestApp);
+
+    if (user == userTestApp && pass == clave) {
+      AppConfig.AmbienteUrl = Ambiente.prueba;
+
+      AppConfig.isUserGoogleOrIos=true;
+      return true;
+    }
+
+    AppConfig.AmbienteUrl = AppConfig.AmbienteUrlAnterior;
+    print("aquiii ${AppConfig.AmbienteUrlAnterior}");
+    AppConfig.isUserGoogleOrIos=false;
+
+
+    return false;
+  }
+
+
+  Future<bool> verificarUserTestAppSeguridades(
+      {required String user, required String pass}) async {
+    String userTestApp = dotenv.env['USER_TEST_SEGURIDADES_APP'] ?? 'user_test_seguridades';
+    String passTestApp = dotenv.env['PASS_TEST_SEGURIDADES_APP'] ?? 'policiaecuador';
+
+    if (user == userTestApp && pass == passTestApp) {
+      AppConfig.AmbienteUrl = Ambiente.produccion;
+
+      return true;
+    }
+
+    return false;
+  }
+
+
+
+  // +++++++++++++ end auth +++++++++++++++++++++++++++++++++++
+
+
+
+
+
+
+
+  _init() async {
+    print("AppConfig.plataformIsIos2= ${AppConfig.plataformIsIos}");
+    if (Platform.isIOS) {
+      mostrarBtnHome.value = true;
+    }
+    wgLoginUserPass.value = true;
+    wgOcultarLoginUserPass.value = false;
+    if (!await _localStoreImpl.getLoginInit()) {
+      wgLoginUserPass.value = true;
+      wgOcultarLoginUserPass.value = false;
+    }
+  }
+
+
+
+
 
   getPantalla() async {
     peticionServerState(true);
@@ -321,18 +382,16 @@ class LoginController extends GetxController {
     }
   }
 
-  Future<bool> verificarUserTestApp(
-      {required String user, required String pass}) async {
-    String userTestApp = dotenv.env['USER_TEST_APP'] ?? 'test_app';
-    String passTestApp = dotenv.env['PASS_TEST_APP'] ?? 'policiaecuador';
 
-    if (user == userTestApp && pass == passTestApp) {
-      AppConfig.AmbienteUrl = Ambiente.prueba;
 
-      AppConfig.isUserGoogleOrIos = true;
-      return true;
-    }
 
-    return false;
-  }
+
+
+
+
+
+
+
+
+
 }

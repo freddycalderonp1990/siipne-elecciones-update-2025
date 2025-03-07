@@ -82,7 +82,7 @@ class AddPersonController extends GetxController {
     }
 
     peticionServerState(true);
-    await ExceptionHelper.manejarErrores(() async {
+    await ExceptionHelper.manejarErroresShowDialogo(() async {
       datosPerson.value = await _personaApiImpl.getDatosPersona(
           usuario: user.idGenUsuario, cedula: controllerDocumento.text);
       if (datosPerson.value.idGenPersona == 0) {
@@ -107,7 +107,7 @@ class AddPersonController extends GetxController {
 
   Future<void> getSubsistemas() async {
     peticionServerState(true);
-    await ExceptionHelper.manejarErrores(() async {
+    await ExceptionHelper.manejarErroresShowDialogo(() async {
       listSubsistema.value = await _eleccionesTipoEjesApiImpl
           .getUnidadesPoliciales(usuario: user.idGenUsuario);
       if (listSubsistema.length == 0) {
@@ -124,7 +124,7 @@ class AddPersonController extends GetxController {
     print("consultando");
     peticionServerState(true);
     List<UnidadesPoliciale> list = [];
-    await ExceptionHelper.manejarErrores(() async {
+    await ExceptionHelper.manejarErroresShowDialogo(() async {
       list = await _eleccionesTipoEjesApiImpl.getTipoEjePorIdPadre(
           usuario: user.idGenUsuario, idDgoTipoEje: idDgoTipoEje);
     });
@@ -151,9 +151,13 @@ class AddPersonController extends GetxController {
   }
 
   Future<void> addPersona() async {
+
+
+
+
     peticionServerState(true);
 
-    await ExceptionHelper.manejarErrores(() async {
+    await ExceptionHelper.manejarErroresShowDialogo(() async {
       final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
       LatLng position = await locationBloc.getCurrentPosition();
 
@@ -161,6 +165,7 @@ class AddPersonController extends GetxController {
       ResgistroPersEnRecElectoral result =
           await _personaApiImpl.asignarPersonalEnRecintoElectoral(
               idDgoCreaOpReci: recintosElectoralesAbiertos.idDgoCreaOpReci,
+              idDgoProcElec:recintosElectoralesAbiertos.idDgoProcElec ,
               idGenPersona: datosPerson.value.idGenPersona,
               usuario: user.idGenUsuario,
               latitud: position.latitude,
@@ -169,34 +174,51 @@ class AddPersonController extends GetxController {
               idDgoTipoEje: selectUnidadPolicial.value.idDgoTipoEje,
               ip: ip);
 
-
-      if(result.idDgoPerAsigOpe>0 && result.codigoRecinto==0){
-        DialogosAwesome.getWarning(descripcion: "Exito", btnOkOnPress: (){});
+      if (result.idDgoPerAsigOpe == 0) {
+        DialogosAwesome.getWarning(
+            descripcion: "No se pudo completar el registro",
+            btnOkOnPress: () {});
         return;
       }
 
-      if(result.idDgoPerAsigOpe==0){
-        DialogosAwesome.getWarning(descripcion: "No se pudo completar el registro", btnOkOnPress: (){});
+      //validacion 1- cuando la persona no esta registrada solo devuelve idDgoPerAsigOpe
+      // es un regsitro nuevo
+
+
+      //validacion 2 -si ya esta registreada verificamos que sea al mismo recinto
+      if ((result.idDgoPerAsigOpe > 0 && result.codigoRecinto == 0) ||
+          (recintosElectoralesAbiertos.codigoRecinto == result.codigoRecinto)) {
+        DialogosAwesome.getSucess(
+            descripcion: "Registro realizado con éxito!.",
+            btnOkOnPress: () => cleardatos());
+        return;
+      } else {
+        DialogosAwesome.getWarning(
+            descripcion:
+                "${datosPerson.value.siglas}.${datosPerson.value.apenom} "
+                "\n\nya se encuentra asignado a \n${result.nomRecintoElec}"
+                " \n\n Para poder ser asignado abandone el recinto anterior y vuelva a intentar",
+            btnOkOnPress: () {});
         return;
       }
-      if(recintosElectoralesAbiertos.codigoRecinto==result.codigoRecinto){
-        DialogosAwesome.getWarning(descripcion: "Exito2", btnOkOnPress: (){});
-        return;
-      }
-
-      if(recintosElectoralesAbiertos.codigoRecinto!=result.codigoRecinto){
-        DialogosAwesome.getWarning(descripcion: "${datosPerson.value.siglas}.${datosPerson.value.apenom} "
-            ", ya se encuentra asignado a ${result.nomRecintoElec}", btnOkOnPress: (){});
-        return;
-      }
-
-
-
     });
     peticionServerState(false);
   }
 
+  cleardatos() {
+    selectSubsistema.value = UnidadesPoliciale.empty();
+    selectDireccionPoliciales.value = UnidadesPoliciale.empty();
+    selectUnidadPolicial.value = UnidadesPoliciale.empty();
+
+    controllerDocumento.clear();
+    datosPerson.value=DatosPer.empty();
+  }
+
   cerrarSession() {
     Get.toNamed(AppRoutes.SPLASH_APP);
+  }
+
+  goToPageReportePersonal(){
+    Get.toNamed(SiipneRoutes.REPORT_PERSONAL,arguments:{"recintosElectoralesAbiertos":recintosElectoralesAbiertos});
   }
 }

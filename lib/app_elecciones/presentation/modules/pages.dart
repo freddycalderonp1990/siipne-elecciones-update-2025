@@ -1,6 +1,7 @@
 
 
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:siipnelecciones3/app/core/utils/utilidadesUtil.dart';
 
@@ -12,6 +13,7 @@ import 'package:siipnelecciones3/app/presentation/routes/app_routes.dart';
 
 import 'package:siipnelecciones3/app/presentation/widgets/custom_app_widgets.dart';
 import 'package:flutter/rendering.dart';
+import 'package:siipnelecciones3/app_elecciones/presentation/modules/personal/report/local_widget/desing_personal.dart';
 
 import 'package:siipnelecciones3/app_elecciones/presentation/routes/siipne_routes.dart';
 import 'package:latlong2/latlong.dart' show LatLng;
@@ -34,6 +36,7 @@ import '../../../app_elecciones//presentation/widgets/customWidgets.dart';
 import 'package:get/get.dart';
 
 
+import '../../core/values/siipne_colors.dart';
 import '../../core/values/siipne_images.dart';
 import '../../core/values/siipne_strings.dart';
 import '../../data/models/models.dart';
@@ -42,6 +45,7 @@ import '../widgets/gps_access_screen.dart';
 import 'controllers.dart';
 import '../../presentation/modules/login/local_widgets/wgLogin.dart';
 import '../../../app/core/utils/responsiveUtil.dart';
+import 'novedades/add/validate.dart';
 
 
 
@@ -58,3 +62,6 @@ part 'menu_unidades_policiales/menu_unidades_policiales_page.dart';
 part '1_RecintoElectoral/rec_crear_codigo/rec_crear_codigo_page.dart';
 
 part 'personal/add/add_person_page.dart';
+part 'personal/report/report_person_page.dart';
+
+part 'novedades/add/add_novedades_page.dart';

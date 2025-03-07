@@ -89,8 +89,8 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
       required int idDgoProcElec,
       required int idDgoReciUnidadPolicial,
       required String telefono,
-        required String ip,
-      required int idDgoTipoEje}) async{
+      required String ip,
+      required int idDgoTipoEje}) async {
     Object? body = {
       "modulo": ApiConstantes.MODULO,
       "uri": ApiConstantes.ELECCIONES_CREAR_CODIGO,
@@ -103,7 +103,7 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
       "ip": ip,
       "idDgoReciUnidadPolicial": idDgoReciUnidadPolicial,
       "telefono": telefono,
-      "idDgoTipoEje":idDgoTipoEje
+      "idDgoTipoEje": idDgoTipoEje
     };
 
     String json = await UrlApiProviderSiipneMovil.post(
@@ -115,16 +115,60 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
     try {
       // Validar la respuesta del servidor
       String msj =
-      ResponseApi.validateConsultas(json: json, titleJson: titleJson);
+          ResponseApi.validateConsultas(json: json, titleJson: titleJson);
       // Si la respuesta es válida
       if (msj == ApiConstantes.varTrue) {
         // Obtener los datos del modelo en formato String
         String datosJson = getDatosModelFromString(json, titleJson);
         // Parsear y retornar el modelo correspondiente
-        return  abrirRecintoElectoralModelFromJson(datosJson).abrirRecintoElectoral;
+        return abrirRecintoElectoralModelFromJson(datosJson)
+            .abrirRecintoElectoral;
       }
       // En caso de respuesta no válida, devolver un modelo vacío
       return AbrirRecintoElectoral.empty();
+    } catch (e, stackTrace) {
+      // Manejo centralizado de excepciones
+      throw ParseJsonException(
+          message: "Problema en Parse Model: ${e} - stackTrace: ${stackTrace}");
+    }
+  }
+
+  @override
+  Future<bool> abandonarRecintoElectoral(
+      {required int idDgoPerAsigOpe,
+      required int usuario,
+      required double latitud,
+      required double longitud,
+        required int idDgoProcElec,
+        required int idDgoReciElect,
+        required String ip}) async {
+    Object? body = {
+      "modulo": ApiConstantes.MODULO,
+      "uri": ApiConstantes.ELECCIONES_RECINTO_ABANDONAR_PERSONAL,
+      "idDgoPerAsigOpe": idDgoPerAsigOpe,
+      "usuario": usuario,
+      "latitud": latitud,
+      "longitud": longitud,
+      "ip": ip,
+      "idDgoProcElec": idDgoProcElec,
+      "idDgoReciElect": idDgoReciElect
+    };
+    String json = await UrlApiProviderSiipneMovil.put(
+      body: body,
+    );
+
+    String titleJson = "abandonarRecintoElectoral";
+
+    try {
+      // Validar la respuesta del servidor
+      String msj =
+      await ResponseApi.validateInsert(json: json, titleJson: titleJson);
+      // Si la respuesta es válida
+      if (msj == ApiConstantes.varTrue) {
+        return true;
+      }
+      // En caso de respuesta no válida, devolver un modelo vacío
+      return false;
     } catch (e, stackTrace) {
       // Manejo centralizado de excepciones
       throw ParseJsonException(

@@ -27,6 +27,12 @@ class SiipneConfig {
   static const String passAdmin='admin1206762401';
 
 
+  static String formatoFecha = 'yyyy-MM-dd';
+  static String formatoHora = 'HH:mm';
+  static String formatoSoloHora = 'HH';
+  static String formatoSoloMinuto = 'mm';
+
+
 
 
 

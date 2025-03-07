@@ -45,7 +45,7 @@ class ResgistroPersEnRecElectoral {
   });
 
   int idDgoPerAsigOpe;
-  String codigoRecinto;
+  int codigoRecinto;
   String fechaIni;
   String nomRecintoElec;
   String encargado;
@@ -53,20 +53,24 @@ class ResgistroPersEnRecElectoral {
 
   factory ResgistroPersEnRecElectoral.empty() => ResgistroPersEnRecElectoral(
       idDgoPerAsigOpe: 0,
-      codigoRecinto: "",
+      codigoRecinto: 0,
       fechaIni: "",
       nomRecintoElec: "",
       encargado: "",
       documento: "");
-  factory ResgistroPersEnRecElectoral.fromJson(Map<String, dynamic> json) =>
-      ResgistroPersEnRecElectoral(
-        idDgoPerAsigOpe: ParseModel.parseToInt(json["idDgoPerAsigOpe"]),
-        codigoRecinto: ParseModel.parseToString(json["codigoRecinto"]),
-        fechaIni: ParseModel.parseToString(json["fechaIni"]),
-        nomRecintoElec: ParseModel.parseToString(json["nomRecintoElec"]),
-        encargado: ParseModel.parseToString(json["encargado"]),
-        documento: ParseModel.parseToString(json["documento"]),
-      );
+  factory ResgistroPersEnRecElectoral.fromJson(Map<String, dynamic> json) {
+
+    print("ResgistroPersEnRecElectoral ${json["codigoRecinto"]}");
+
+     return ResgistroPersEnRecElectoral(
+      idDgoPerAsigOpe: ParseModel.parseToInt(json["idDgoPerAsigOpe"]),
+      codigoRecinto: ParseModel.parseToInt(json["codigoRecinto"]),
+      fechaIni: ParseModel.parseToString(json["fechaIni"]),
+      nomRecintoElec: ParseModel.parseToString(json["nomRecintoElec"]),
+      encargado: ParseModel.parseToString(json["encargado"]),
+      documento: ParseModel.parseToString(json["documento"]),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         "idDgoPerAsigOpe": idDgoPerAsigOpe == null ? null : idDgoPerAsigOpe,

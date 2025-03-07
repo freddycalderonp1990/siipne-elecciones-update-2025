@@ -41,7 +41,7 @@ class MenuAppController extends GetxController {
 
   Future<void> verificarperAsignadoRecElectoral() async {
     peticionServerState(true);
-    await ExceptionHelper.manejarErrores(() async {
+    await ExceptionHelper.manejarErroresShowDialogo(() async {
       int idGenPersona = user.idGenPersona;
       recintosElectoralesAbiertos = await _eleccionesRecintosApiImpl
           .verificarperAsignadoRecElectoral(idGenPersona: idGenPersona);
@@ -72,7 +72,7 @@ class MenuAppController extends GetxController {
     peticionServerState(true);
 
     List<DatosProcesoImg> listDatosProcesoImg = <DatosProcesoImg>[];
-    await ExceptionHelper.manejarErrores(() async {
+    await ExceptionHelper.manejarErroresShowDialogo(() async {
       listDatosProcesoImg =
           await _eleccionesProcesosApiImpl.getProcesoActivoImgs();
     });

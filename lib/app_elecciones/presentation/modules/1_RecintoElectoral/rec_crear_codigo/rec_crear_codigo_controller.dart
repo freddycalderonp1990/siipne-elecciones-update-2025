@@ -50,7 +50,6 @@ class RecintosCrearCodigoController extends GetxController {
   @override
   void onClose() {
     // TODO: implement onClose
-
     super.onClose();
   }
 
@@ -60,7 +59,7 @@ class RecintosCrearCodigoController extends GetxController {
     // peticionServerState(true);
     cargaInicial.value = true;
 
-    await ExceptionHelper.manejarErrores(() async {
+    await ExceptionHelper.manejarErroresShowDialogo(() async {
       final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
       LatLng position = await locationBloc.getCurrentPosition();
 
@@ -89,7 +88,7 @@ class RecintosCrearCodigoController extends GetxController {
   Future<void> getSubsistemas() async {
     print("consultando");
     // peticionServerState(true);
-    await ExceptionHelper.manejarErrores(() async {
+    await ExceptionHelper.manejarErroresShowDialogo(() async {
       listSubsistema.value = await _eleccionesTipoEjesApiImpl
           .getUnidadesPoliciales(usuario: user.idGenUsuario);
       if (listSubsistema.length == 0) {
@@ -106,7 +105,7 @@ class RecintosCrearCodigoController extends GetxController {
     print("consultando");
     peticionServerState(true);
     List<UnidadesPoliciale> list = [];
-    await ExceptionHelper.manejarErrores(() async {
+    await ExceptionHelper.manejarErroresShowDialogo(() async {
       list = await _eleccionesTipoEjesApiImpl.getTipoEjePorIdPadre(
           usuario: user.idGenUsuario, idDgoTipoEje: idDgoTipoEje);
     });
@@ -212,7 +211,7 @@ class RecintosCrearCodigoController extends GetxController {
 
     late AbrirRecintoElectoral _abrirRecintoElectoral;
 
-    await ExceptionHelper.manejarErrores(() async {
+    await ExceptionHelper.manejarErroresShowDialogo(() async {
       final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
       LatLng position = await locationBloc.getCurrentPosition();
 
@@ -264,7 +263,7 @@ class RecintosCrearCodigoController extends GetxController {
                   }),
 
               BtnIconWidget(
-                colorBtn: AppColors.colorVerdeHex,
+                colorBtn: AppColors.colorAzul,
                   icon: Icons.call,
                   titulo: "Llamar",
                   onPressed: (){

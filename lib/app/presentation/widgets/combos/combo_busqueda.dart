@@ -77,6 +77,8 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
             _customDesingDataPopop(context, item, isSelected, l),
         showSearchBox: true,
         searchFieldProps: getBusquedaPopup(),
+
+
         dialogProps: DialogProps(
           backgroundColor: Colors.white,
           barrierDismissible: true, // Permite cerrar tocando fuera
@@ -109,13 +111,22 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
       },
     );
 
-    return wgComboBusqueda;
+    return Row(children: [
+      Expanded(child: TituloTextWidget(title: widget.searchHint),),
+      SizedBox(width: 5,),
+      Expanded(
+          flex: 3,
+          child: wgComboBusqueda)
+    ],);
   }
 
   TextFieldProps getBusquedaPopup() {
     return TextFieldProps(
       controller: _userEditTextController,
       decoration: InputDecoration(
+
+
+
         suffixIcon: Row(
           mainAxisSize:
               MainAxisSize.min, // Ajusta el tamaño para evitar expandir
@@ -174,7 +185,7 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
           : BoxDecoration(
         border: Border.all(color: Colors.black),
         borderRadius: BorderRadius.circular(5),
-        color: AppColors.colorAzulHex,
+        color: AppColors.colorAzul,
       ),
       child: (item == null)
           ? msjSelectDato
@@ -202,6 +213,8 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
     Widget _icon = getIcon(icon: icon,isSelecc: isSelect);
 
 
+
+
     return ListTile(
       selected: selected,
       contentPadding: EdgeInsets.all(0),
@@ -214,6 +227,8 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
   }
 
   getIcon({IconData? icon, bool isSelecc = false}) {
+
+
     if (isSelecc) {
 
       return Icon(
@@ -221,6 +236,8 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
         color: Colors.white,
       );
     }
+
+
 
     return CircleAvatar(
       backgroundColor: isNull ? Colors.red : Colors.transparent,

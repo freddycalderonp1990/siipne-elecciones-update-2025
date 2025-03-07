@@ -28,10 +28,9 @@ class AddPersonPage extends GetView<AddPersonController> {
 
 
        BtnIconWidget(
-
               icon: Icons.person,
               titulo: "VER PERSONAL",
-              onPressed: () => controller.cerrarSession(),
+              onPressed: () => controller.goToPageReportePersonal(),
             ),
 
 
@@ -57,58 +56,72 @@ class AddPersonPage extends GetView<AddPersonController> {
         ?   BtnIconWidget(
       icon: Icons.save,
       titulo: "AGREGAR",
-      onPressed: () => controller.addPersona(),
+      onPressed: () {
+        
+        if(controller.datosPerson.value.idGenPersona>0){
+          DialogosAwesome.getInformationSiNo(
+              descripcion: "¿Está seguro de registrar a\n${controller.datosPerson.value.siglas} "
+                  "${controller.datosPerson.value.apenom}?",
+              btnOkOnPress: (){
+            controller.addPersona();
+          },btnCancelOnPress: (){});
+        }
+
+      },
     ):Container());
   }
 
   Widget wgConsultaIdGenPersonaPorDocumento() {
     final responsive = ResponsiveUtil();
-    final sizeTxt = responsive.anchoP(AppConfig.tamTexto + 2.0);
+
 
     return ContenedorDesingWidget(
-      anchoPorce: AppConfig.anchoContenedor,
+
       child: InkWell(
         borderRadius: BorderRadius.circular(10),
-
         // handle your onTap here
         child: Container(
           margin: EdgeInsets.only(left: 0.0, right: 20.0),
-          width: responsive.anchoP(55),
-          height: responsive.anchoP(18),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                width: responsive.altoP(1),
-              ),
-              Expanded(
-                  child: Form(
-                    key: controller. formKeyDocumento,
-                    child: ImputTextWidget(
-                      keyboardType: TextInputType.number,
-                      controller:controller. controllerDocumento,
-                      icono: Icon(
-                        Icons.assignment_sharp,
-                        color: AppColors.colorIcons,
-                        size:responsive.diagonalP(AppConfig. tamIcons),
+
+
+          child: Column(children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                SizedBox(
+                  width: responsive.altoP(1),
+                ),
+                Expanded(
+                    child: Form(
+                      key: controller. formKeyDocumento,
+                      child: ImputTextWidget(
+
+                        keyboardType: TextInputType.number,
+                        controller:controller. controllerDocumento,
+                        icono: Icon(
+                          Icons.assignment_sharp,
+                          color: AppColors.colorIcons,
+                          size:responsive.diagonalP(AppConfig. tamIcons),
+                        ),
+                        label: SiipneStrings.cedula,
+                        fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
+                        validar: validateDocumento,
                       ),
-                      label: SiipneStrings.cedula,
-                      fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-                      validar: validateDocumento,
-                    ),
-                  )),
-              SizedBox(
-                width: responsive.altoP(1),
-              ),
-              BtnIconWidget(
+                    )),
+                SizedBox(
+                  width: responsive.altoP(1),
+                ),
+                BtnIconWidget(
 
-                icon: Icons.search,
-                onPressed: () =>controller.getDatosPersona(),
+                  icon: Icons.search,
+                  onPressed: () =>controller.getDatosPersona(),
 
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+            SizedBox(height: responsive.altoP(1),)
+          ],),
         ),
       ),
     );
@@ -234,29 +247,18 @@ class AddPersonPage extends GetView<AddPersonController> {
     final responsive = ResponsiveUtil();
 
     return Obx(()=>controller.datosPerson.value.idGenPersona > 0
-        ?  ContenedorDesingWidget(
-      anchoPorce: AppConfig.anchoContenedor,
-      child: ExpansionTile(
-        initiallyExpanded: true,
-        title: Text(
-          'DATOS',
-          style: TextStyle(
-            fontSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-          ),
-        ),
-        children: [
-          Container(
-            padding: EdgeInsets.all(5),
-            child: TituloDetalleTextWidget(
-              title: "Nombres",
-              detalle: controller.datosPerson.value.siglas.length > 0
-                  ? controller.datosPerson.value.siglas + "." + controller.datosPerson.value.apenom
-                  : controller.datosPerson.value.apenom,
+        ?  Container(
+      padding: EdgeInsets.all(5),
+      child: TituloDetalleTextWidget(
+        margin: EdgeInsets.all(0),
+        padding:  EdgeInsets.all(8),
 
-            ),)
-        ],
-      ),
-    )
+        title: "Nombres",
+        detalle: controller.datosPerson.value.siglas.length > 0
+            ? controller.datosPerson.value.siglas + "." + controller.datosPerson.value.apenom
+            : controller.datosPerson.value.apenom,
+
+      ),)
         : Container());
   }
 }

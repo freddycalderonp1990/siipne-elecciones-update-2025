@@ -50,4 +50,23 @@ class EleccionesRecintosApiImpl extends EleccionesRecintosRepository {
         ip: ip,
         idDgoTipoEje: idDgoTipoEje);
   }
+
+  @override
+  Future<bool> abandonarRecintoElectoral(
+      {required int idDgoPerAsigOpe,
+      required int usuario,
+      required double latitud,
+      required double longitud,
+        required int idDgoProcElec,
+        required int idDgoReciElect,
+      required String ip}) async {
+    return await _EleccionesRecintosApiProviderImpl.abandonarRecintoElectoral(
+        idDgoPerAsigOpe: idDgoPerAsigOpe,
+        usuario: usuario,
+        latitud: latitud,
+        longitud: longitud,
+        idDgoProcElec: idDgoProcElec,
+        idDgoReciElect: idDgoReciElect,
+        ip: ip);
+  }
 }

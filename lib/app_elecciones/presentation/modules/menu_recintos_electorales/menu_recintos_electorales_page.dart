@@ -7,8 +7,8 @@ class MenuRecintosElectoralesPage
   @override
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
-      title: "${controller.recintosElectoralesAbiertos.descProcElecc}",
-      contenido: getContenido(),
+      title: "${controller.recintosElectoralesAbiertos.nomRecintoElec}",
+      contenido: GpsAccessScreen(contenido:getContenido()),
       peticionServer: controller.peticionServerState,
     );
   }
@@ -19,6 +19,8 @@ class MenuRecintosElectoralesPage
     String Bienvenido =
         controller.user.sexo == 'HOMBRE' ? "BIENVENIDO: " : "BIENVENIDA: ";
 
+    print("foto ${controller.user.foto}");
+
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -26,12 +28,13 @@ class MenuRecintosElectoralesPage
         children: [
           imgPerfilRedonda(
             size: 20,
+
             img: controller.user.foto,
           ),
           TextSombrasWidget(
             colorSombra: Colors.black,
             colorTexto: Colors.white,
-            title: "${controller.recintosElectoralesAbiertos.nomRecintoElec}",
+            title:"${controller.recintosElectoralesAbiertos.descProcElecc}" ,
 
           ),
           TextSombrasWidget(
@@ -75,8 +78,8 @@ class MenuRecintosElectoralesPage
                   img: SiipneImages.icon_registrar_novedades_rec_elec,
                   title: SiipneStrings.recElecRegistrarNovedades,
                   onTap: () {
-                    /* _consultaRecintoAbierto(_UserProvider.getUser.idGenPersona,
-                  'novedades', 'registrar Novedades.', responsive);*/
+                    Get.toNamed(SiipneRoutes.ADD_NOVEDADES,arguments:{"recintosElectoralesAbiertos":controller. recintosElectoralesAbiertos});
+
                   }),
             )
           ],
@@ -89,9 +92,14 @@ class MenuRecintosElectoralesPage
             Flexible(
               child: BtnMenuWidget(
                   img: SiipneImages.icon_finalizar_rec_elec,
-                  title: "CERRAR RECINTO",
+                  title: "FINALIZAR RECINTO",
                   onTap: () {
-                    //_getReporteFinal(responsive)
+                    _dialogoFinalizarRecinto(
+                      nameRecinto: "${controller.recintosElectoralesAbiertos.nomRecintoElec}",
+                      totalPersonal: 10,
+                      totalNovedades: 5,
+
+                    );
                   }),
             ),
             SizedBox(
@@ -116,6 +124,9 @@ class MenuRecintosElectoralesPage
   }
 
   _wgCodigoRecinto(ResponsiveUtil responsive) {
+
+
+
     double separacionBtnMenu = 1.5;
     return Column(
       children: [
@@ -126,6 +137,9 @@ class MenuRecintosElectoralesPage
           size: responsive.anchoP(4.5),
         ),
         BtnIconWidget(
+          sizeIcon: AppConfig.tamIcons+1,
+          sizeTexto: AppConfig.tamTexto+1,
+
           icon: Icons.numbers,
           titulo: "${controller.recintosElectoralesAbiertos.idDgoCreaOpReci}",
           onPressed: () {},
@@ -137,12 +151,53 @@ class MenuRecintosElectoralesPage
           colorSombra: Colors.black,
           colorTexto: Colors.white,
           title: "${controller.recintosElectoralesAbiertos.descripcion}",
-          size: responsive.anchoP(4),
+          size: responsive.diagonalP(AppConfig.tamTextoTitulo),
         ),
         SizedBox(
           height: responsive.altoP(separacionBtnMenu),
         ),
       ],
     );
+  }
+
+
+  _dialogoFinalizarRecinto({required int totalPersonal, required int totalNovedades,required String nameRecinto}){
+
+
+    AwesomeDialog(
+      dismissOnTouchOutside: false,
+      dismissOnBackKeyPress: false,
+      context: Get.context!,
+      animType: AnimType.scale,
+      headerAnimationLoop: false,
+      btnCancelText: "No",
+      btnCancelIcon: Icons.cancel_rounded,
+      btnOkIcon: Icons.check_circle,
+      btnOkColor: AppColors.colorAzul,
+      btnOkText: "Si",
+      body: Column(children: [
+      TituloTextWidget(title: "Finalizar Recinto"),
+        SizedBox(height: 5,),
+        TituloDetalleTextWidget(
+          title: "Total Personal:",
+          detalle: "${totalPersonal}",
+        ),
+        TituloDetalleTextWidget(
+          title: "Total Novedades:",
+          detalle: "${totalNovedades}",
+        ),
+        SizedBox(height: 5,),
+        DetalleTextWidget(
+          todoElAncho: true,
+            detalle: "¿Esta seguro que desea finalizar el Recinto\n${nameRecinto}?")
+
+      ],),
+
+
+
+        btnCancelOnPress:(){},
+      //this is ignored
+      btnOkOnPress: () {},
+    ).show();
   }
 }

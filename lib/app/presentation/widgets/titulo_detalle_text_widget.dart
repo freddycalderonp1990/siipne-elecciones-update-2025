@@ -24,7 +24,7 @@ class TituloDetalleTextWidget extends StatelessWidget {
             color:color,
             borderRadius: BorderRadius.circular(5),
             boxShadow: [
-              BoxShadow(color: AppColors.colorBordecajas, blurRadius: 1)
+              BoxShadow(color: AppColors.colorBordecajas, blurRadius: 0.5)
             ]),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,

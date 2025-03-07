@@ -1,11 +1,14 @@
+
+
 part of '../../../providers_impl_app.dart';
+//se elimina la variable secondsTimeout, XQ NO SE ESTABA ASIGANDO EL TIEMPO
 
 class UrlApiProviderApp {
   String tag = "UrlProvider";
-  final int secondsTimeout;
+
   final String? token;
 
-  UrlApiProviderApp({this.secondsTimeout = 8, this.token});
+  UrlApiProviderApp({this.token});
 
   Map<String, String> getheaders({required String? token}) {
     return {
@@ -17,7 +20,7 @@ class UrlApiProviderApp {
 
   static Future<String> getToken() async {
     LocalStorageRepository _localStorageRepository =
-        Get.find<LocalStorageRepository>();
+    Get.find<LocalStorageRepository>();
 
     DataUser dataUser = await _localStorageRepository.getUserModel();
 
@@ -25,12 +28,11 @@ class UrlApiProviderApp {
 
     return token;
   }
-
   Future<String> post(
       {String segmento = '',
-      Object? body,
-      required String url,
-      bool isLogin = false}) async {
+        Object? body,
+        required String url,
+        bool isLogin = false}) async {
     late final response;
     try {
       http.Client client = http.Client();
@@ -45,8 +47,8 @@ class UrlApiProviderApp {
       PrintsMsj.myLog(tag: _tag, title: "uri:", detalle: uri.toString());
       response = await client
           .post(uri,
-              body: jsonEncode(body), headers: getheaders(token: this.token))
-          .timeout(Duration(seconds: this.secondsTimeout));
+          body: jsonEncode(body), headers: getheaders(token: this.token))
+          .timeout(Duration(seconds: AppConfig.secondsTimeout));
 
       PrintsMsj.myLog(
           tag: _tag, title: "body-request:", detalle: body.toString());
@@ -67,6 +69,7 @@ class UrlApiProviderApp {
     } else if (response.statusCode == 401 && isLogin) {
       throw ServerException(message: "Usuario / Clave incorrecta");
     } else {
+
       throw ServerException.StatusCode(statusCode: response.statusCode);
     }
   }
@@ -74,6 +77,7 @@ class UrlApiProviderApp {
   Future<String> get({
     required String segmento,
     required String url,
+
   }) async {
     final response;
     try {
@@ -85,10 +89,11 @@ class UrlApiProviderApp {
         uri = Uri.parse(url);
       }
 
+      print("timeOut ${AppConfig.secondsTimeout}");
       response =
-          await client.get(uri, headers: getheaders(token: this.token)).timeout(
-                Duration(seconds: this.secondsTimeout),
-              );
+      await client.get(uri, headers: getheaders(token: this.token)).timeout(
+        Duration(seconds: AppConfig.secondsTimeout),
+      );
 
       String _tag = tag + " GET ";
 
@@ -127,10 +132,10 @@ class UrlApiProviderApp {
 
       response = await client
           .delete(uri,
-              headers: getheaders(token: this.token), body: jsonEncode(body))
+          headers: getheaders(token: this.token), body: jsonEncode(body))
           .timeout(
-            Duration(seconds: this.secondsTimeout),
-          );
+        Duration(seconds: AppConfig.secondsTimeout),
+      );
       String _tag = tag + " DELETE ";
       PrintsMsj.myLog(tag: _tag, title: "-uri:", detalle: uri.toString());
       PrintsMsj.myLog(
@@ -168,8 +173,8 @@ class UrlApiProviderApp {
 
       response = await client
           .put(uri,
-              body: jsonEncode(body), headers: getheaders(token: this.token))
-          .timeout(Duration(seconds: this.secondsTimeout));
+          body: jsonEncode(body), headers: getheaders(token: this.token))
+          .timeout(Duration(seconds: AppConfig.secondsTimeout));
 
       String _tag = tag + " PUT ";
       PrintsMsj.myLog(tag: _tag, title: "-uri:", detalle: uri.toString());
@@ -208,8 +213,8 @@ class UrlApiProviderApp {
 
       response = await client
           .patch(uri,
-              body: jsonEncode(body), headers: getheaders(token: this.token))
-          .timeout(Duration(seconds: this.secondsTimeout));
+          body: jsonEncode(body), headers: getheaders(token: this.token))
+          .timeout(Duration(seconds: AppConfig.secondsTimeout));
       String _tag = tag + " PATCH ";
       PrintsMsj.myLog(tag: _tag, title: "-uri:", detalle: uri.toString());
       PrintsMsj.myLog(
@@ -234,9 +239,9 @@ class UrlApiProviderApp {
 
   Future<String> postUploadFile(
       {required doc.File file,
-      required String segmento,
-      required String url,
-      Map<String, String>? body}) async {
+        required String segmento,
+        required String url,
+        Map<String, String>? body}) async {
     http.StreamedResponse response;
     String? parsed = null;
     try {
@@ -246,25 +251,21 @@ class UrlApiProviderApp {
         uri = Uri.parse(url);
       }
 
-      var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
+      //old -> var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
+      var stream = http.ByteStream(file.openRead().cast());
       var length = await file.length();
-
       var request = new http.MultipartRequest("POST", uri);
-
       var multipartFile = new http.MultipartFile("file", stream, length,
           filename: basename(file.path),
           contentType: MediaType("text", "plain"));
 
       request.files.add(multipartFile);
-
       request.headers.addAll(getheaders(token: this.token));
-
       if (body != null) {
         request.fields.addAll(body);
       }
 
       response = await request.send();
-
       parsed = await response.stream.transform(utf8.decoder).first;
       String _tag = tag + " POST-UPDATE-FILE ";
       PrintsMsj.myLog(

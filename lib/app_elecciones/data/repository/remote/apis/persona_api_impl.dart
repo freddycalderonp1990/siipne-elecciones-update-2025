@@ -21,6 +21,8 @@ class PersonaApiImpl extends PersonaRepository {
       required double longitud,
       required int idDgoReciElect,
       required int idDgoTipoEje,
+        required int idDgoProcElec,
+
       required String ip}) async {
     return await _personaApiProviderImpl.asignarPersonalEnRecintoElectoral(
         idDgoCreaOpReci: idDgoCreaOpReci,
@@ -30,7 +32,19 @@ class PersonaApiImpl extends PersonaRepository {
         longitud: longitud,
         idDgoReciElect: idDgoReciElect,
         idDgoTipoEje: idDgoTipoEje,
-
+        idDgoProcElec: idDgoProcElec,
         ip: ip);
+  }
+
+  @override
+  Future<List<PersonalRecintoElectoral>>
+      consultarDatosPersonalAsignadoRecintoElectoral(
+          {required int idDgoCreaOpReci,    required int idDgoProcElec,
+            required int idDgoReciElect,}) async {
+    return _personaApiProviderImpl
+        .consultarDatosPersonalAsignadoRecintoElectoral(
+        idDgoProcElec: idDgoProcElec,
+            idDgoReciElect: idDgoReciElect,
+            idDgoCreaOpReci: idDgoCreaOpReci);
   }
 }

@@ -9,6 +9,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/state_manager.dart';
+import 'package:intl/intl.dart';
 import 'package:siipnelecciones3/app/core/values/app_colors.dart';
 
 import 'package:siipnelecciones3/app_elecciones//core/values/tutorial_app_strings.dart';
@@ -26,6 +27,7 @@ import '../../../app/core/exceptions/exceptions.dart';
 
 import '../../../app/core/utils/check_internet_conexion.dart';
 import '../../../app/core/utils/my_gps.dart';
+import '../../../app/core/utils/photo_helper.dart';
 import '../../../app/core/utils/responsiveUtil.dart';
 import '../../../app/core/utils/tutorial_utils.dart';
 
@@ -66,3 +68,6 @@ part 'menu_recintos_electorales/menu_recintos_electorales_controller.dart';
 part 'menu_unidades_policiales/menu_unidades_policiales_controller.dart';
 
 part 'personal/add/add_person_controller.dart';
+part 'personal/report/report_person_controller.dart';
+
+part 'novedades/add/add_novedades_controller.dart';

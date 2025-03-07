@@ -68,12 +68,9 @@ class _WorkAreaLoginPageWidgetState extends State<WorkAreaLoginPageWidget> {
 
     Widget wgImgPerfil = Center(
       child: Column(
-
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
 
-      widget.imgPerfil != null
+          widget.imgPerfil != null
               ? imgPerfilRedonda(
             size: 28,
             img: widget.imgPerfil,
@@ -104,9 +101,6 @@ class _WorkAreaLoginPageWidgetState extends State<WorkAreaLoginPageWidget> {
                     : responsive.anchoP(widget.sizeTittle)),
           )
               : Container(),
-
-
-
           widget.mostrarVersion
               ? Text(
             'Versión: ' + version,
@@ -154,24 +148,18 @@ class _WorkAreaLoginPageWidgetState extends State<WorkAreaLoginPageWidget> {
                 SafeArea(
                   child: Column(
                     children: [
-                      Expanded(
-                        child: SingleChildScrollView(
-                            padding: widget.paddin,
-                            child: Container(
-                              child: Column(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  wgImgPerfil,
-                                  Column(
-                                    children: widget.contenido != null
-                                        ? widget.contenido
-                                        : [Container()],
-                                  )
-                                ],
-                              ),
-                            )),
-                      )
+                     Expanded(child: Column(
+                       mainAxisAlignment:
+                       MainAxisAlignment.center,
+                       children: <Widget>[
+                         wgImgPerfil,
+                         Column(
+                           children: widget.contenido != null
+                               ? widget.contenido
+                               : [Container()],
+                         )
+                       ],
+                     ))
                     ],
                   ),
                 ),
@@ -182,5 +170,7 @@ class _WorkAreaLoginPageWidgetState extends State<WorkAreaLoginPageWidget> {
             )));
   }
 }
+
+
 
 
