@@ -217,7 +217,7 @@ class RecintosCrearCodigoController extends GetxController {
 
       String ip = await DeviceInfo.getIp;
 
-      _abrirRecintoElectoral = await _eleccionesRecintosApiImpl.crearCodigo(
+      CreateCodeRecintoRequest request=CreateCodeRecintoRequest(
           usuario: user.idGenUsuario,
           idGenPersona:user.idGenPersona,
           idDgoReciElect: selectRecintosElectoral.value.idDgoReciElect,
@@ -229,6 +229,10 @@ class RecintosCrearCodigoController extends GetxController {
           telefono: controllerTelefono.text,
           ip: ip,
           idDgoTipoEje: selectUnidadPolicial.value.idDgoTipoEje);
+
+      _abrirRecintoElectoral = await _eleccionesRecintosApiImpl.crearCodigo(
+         request: request);
+
     });
     peticionServerState(false);
     

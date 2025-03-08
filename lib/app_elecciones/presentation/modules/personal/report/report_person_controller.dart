@@ -68,7 +68,8 @@ class ReportPersonController extends GetxController {
       final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
       LatLng position = await locationBloc.getCurrentPosition();
 
-      bool result = await _eleccionesRecintosApiImpl.abandonarRecintoElectoral(
+
+      AbandonarRecintoRequest request= AbandonarRecintoRequest(
           idDgoPerAsigOpe: data.idDgoPerAsigOpe,
           usuario: user.idGenUsuario,
           latitud: position.latitude,
@@ -76,6 +77,9 @@ class ReportPersonController extends GetxController {
           idDgoProcElec: recintosElectoralesAbiertos.idDgoProcElec,
           idDgoReciElect: recintosElectoralesAbiertos.idDgoReciElect,
           ip: ip);
+
+      bool result = await _eleccionesRecintosApiImpl.abandonarRecintoElectoral(
+         request: request);
 
       if (result) {
         DialogosAwesome.getSucess(

@@ -15,25 +15,11 @@ abstract class EleccionesRecintosRepository {
   });
 
   Future<AbrirRecintoElectoral> crearCodigo({
-    required int usuario,
-    required int idGenPersona,
-    required int idDgoReciElect,
-    required double latitud,
-    required double longitud,
-    required int idDgoProcElec,
-    required int idDgoReciUnidadPolicial,
-    required String telefono,
-    required String ip,
-    required int idDgoTipoEje,
+    required CreateCodeRecintoRequest request,
   });
 
+
   Future<bool> abandonarRecintoElectoral({
-    required int idDgoPerAsigOpe,
-    required int usuario,
-    required double latitud,
-    required double longitud,
-    required String ip,
-    required int idDgoProcElec,
-    required int idDgoReciElect,
+    required AbandonarRecintoRequest request,
   });
 }
