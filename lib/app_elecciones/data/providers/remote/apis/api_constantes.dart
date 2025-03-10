@@ -38,6 +38,7 @@ class ApiConstantes {
   static const ELECCIONES_GET_NOVEDADES_PADRES = "v1-novedades"; // e5555afb24a6ebc9b52e146ccad21fe1
   static const ELECCIONES_GET_NOVEDADES_BY_ID_PADRE = "v1-novedades-by-id-padre"; // 3bc152ac532ebfd45f4b31c88c0a7eed
   static const ELECCIONES_NOVEDADES_INSERT = "v1-novedades-insert"; // 6a20441cc1f1a104871525b055e04dc8
+  static const ELECCIONES_GET_ALL_NOVEDADES = "v1-novedades-all"; // 2a6a53008561fb9e9e428c7802628aa3
   //************************** CONSULTAR PARA SABER SI EL USUARIO SE ENCUENTRA ASIGNADO A UN RECINTO ELECTORAL ********************************************************
   //verificar segun el idpersona para saber si se encuentra asignado a un recinto electoral  es para saber si es personal designado o es jefe
 

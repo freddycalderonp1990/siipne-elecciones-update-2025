@@ -39,7 +39,7 @@ class PhotoHelper {
         child: Image.asset(SiipneImages.imgIconD),
       ),
       animType: AnimType.scale,
-      title: "Registre Foto",
+      title: "Registre una Fotografia",
       btnCancel: BtnIconWidget(
         onPressed: () async {
           GaleryCameraModel? data = await getImageGallery(titleImg);

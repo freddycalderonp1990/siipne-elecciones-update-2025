@@ -16,8 +16,7 @@ class AddPersonPage extends GetView<AddPersonController> {
   Widget getContenido() {
     final responsive = ResponsiveUtil();
 
-    String Bienvenido =
-        controller.user.sexo == 'HOMBRE' ? "BIENVENIDO: " : "BIENVENIDA: ";
+
 
     return SingleChildScrollView(
       child: Column(

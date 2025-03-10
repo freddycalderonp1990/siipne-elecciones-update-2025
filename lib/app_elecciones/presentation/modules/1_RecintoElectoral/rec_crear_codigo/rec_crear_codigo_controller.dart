@@ -54,8 +54,6 @@ class RecintosCrearCodigoController extends GetxController {
   }
 
   Future<void> getRecintosElectorales() async {
-
-
     // peticionServerState(true);
     cargaInicial.value = true;
 
@@ -74,9 +72,8 @@ class RecintosCrearCodigoController extends GetxController {
               .selectProcesosOperativo.value.idDgoProcElec,
           idDgoTipoEje: idDgoTipoEje);
 
-      listRecintosElectorales.value =
-          await _eleccionesRecintosApiImpl.getRecintosElectoralesCercanos(
-             request:request);
+      listRecintosElectorales.value = await _eleccionesRecintosApiImpl
+          .getRecintosElectoralesCercanos(request: request);
 
       if (listRecintosElectorales.length == 0) {
         DialogosAwesome.getInformation(
@@ -143,65 +140,17 @@ class RecintosCrearCodigoController extends GetxController {
     peticionServerState(false);
   }
 
-  msjCrearCodigo({required VoidCallback? onPressed}) {
+  msjCrearCodigo({required VoidCallback onPressed}) {
     bool isValid = formKey.currentState!.validate();
     if (!isValid) return;
     String msj =
+        "¿Usted es la persona encargada o jefe designada a este recinto electoral?"
         "\nRecuerde crear el código si se encuentra de servicio en el recinto electoral, para prevenir el mal uso todo será registrado."
-        "\n \nUtilice la aplicación con responsabilidad.";
-    final responsive = ResponsiveUtil();
+        "\n \nUtilice la aplicación con responsabilidad."
+        "\n\n¿Desea Continuar?";
 
-    DialogosDesingWidget.getDialogoX(
-        title: "Crear Código",
-        contenido: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.warning,
-              color: Colors.amber,
-              size: 50,
-            ),
-            TituloTextWidget(
-                title:
-                    "¿Usted es la persona encargada o jefe designada a este recinto electoral?"),
-            DetalleTextWidget(
-              detalle: msj,
-              todoElAncho: true,
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            TituloTextWidget(title: "¿Desea Continuar?"),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                    child: BtnIconWidget(
-                  colorBtn: AppColors.colorBotones,
-                  icon: Icons.check_circle_outline,
-                  titulo: "SI",
-                  onPressed: onPressed,
-                )),
-                SizedBox(
-                  width: responsive.anchoP(5),
-                ),
-                Expanded(
-                    child: BtnIconWidget(
-                  colorBtn: Colors.red.shade300,
-                  icon: Icons.cancel_outlined,
-                  titulo: "NO",
-                  onPressed: () {
-                    Get.back();
-                  },
-                ))
-              ],
-            )
-          ],
-        ));
+    DialogosAwesome.getIconPolicia(
+        title: "Crear Código", btnOkOnPress: onPressed, descripcion: msj);
   }
 
   Future<void> crearCodigo() async {
@@ -246,78 +195,33 @@ class RecintosCrearCodigoController extends GetxController {
 
     if (_abrirRecintoElectoral.estado == "A") {
       String msj = user.nombres +
-          "\n\nYa existe un Código asignado ${_abrirRecintoElectoral.idDgoCreaOpReci} a esta Unidad Policial \n\n" +
+          "\n\nYa existe un código (${_abrirRecintoElectoral.idDgoCreaOpReci}) asignado a:\n" +
           selectRecintosElectoral.value.nomRecintoElec +
-          "\nFECHA INICIO: " +
+          "\nFECHA DE INICIO: " +
           _abrirRecintoElectoral.fechaIni +
-          "\n\nSi usted necesita abrir la misma Unidad Policial el encargado [${_abrirRecintoElectoral.apenom}] debe eliminarla o finalizarlo.";
+          "\n\nSi usted necesita abrir el código en este Recinto, comuníquese con: \n[${_abrirRecintoElectoral.apenom}] para que lo elimine o finalice.";
 
-      return Get.dialog(
-        PopScope(
-          canPop: false, // Evita que se cierre con el botón de retroceso
-          child: AlertDialog(
-            title: Text("Información"),
-            content: Text(msj),
-            actions: [
-              BtnIconWidget(
-                  colorBtn: Colors.red.shade300,
-                  icon: Icons.close,
-                  titulo: "Cerrar",
-                  onPressed: () {
-                    Get.back();
-                  }),
-              BtnIconWidget(
-                  colorBtn: AppColors.colorAzul,
-                  icon: Icons.call,
-                  titulo: "Llamar",
-                  onPressed: () {
-                    UtilidadesUtil.lanzarLlamada(
-                        _abrirRecintoElectoral.telefono);
-                    Get.back();
-                  })
-            ],
-          ),
-        ),
-        barrierDismissible:
-            false, // Evita que se cierre al tocar fuera del diálogo
+      DialogosAwesome.getIconPolicia(
+        colorBtnSi: AppColors.colorVerde_80,
+        mostrarSegungoBtn: false,
+        title: "Información",
+        btnOkOnPress: () {
+          Get.back();
+          UtilidadesUtil.lanzarLlamada(_abrirRecintoElectoral.telefono);
+        },
+        descripcion: msj,
+        titleBtnSi: "Llamar",
+        iconBtnSi: Icons.call,
       );
     } else {
-      final responsive = ResponsiveUtil();
-
       return Get.dialog(
         PopScope(
           canPop: false, // Evita que se cierre con el botón de retroceso
           child: AlertDialog(
-            title: Text("Información"),
             content: SingleChildScrollView(
               // Permite que el contenido se ajuste automáticamente
-              child: Column(
-                mainAxisSize: MainAxisSize
-                    .min, // Ajusta el tamaño del diálogo al contenido
-                children: [
-                  DetalleTextWidget(
-                    todoElAncho: true,
-                    detalle: "El Código para que el personal se anexe es:",
-                  ),
-                  Text(
-                    "${_abrirRecintoElectoral.idDgoCreaOpReci}",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize:
-                          responsive.diagonalP(AppConfig.tamTextoTitulo + 1.5),
-                    ),
-                  ),
-                  SizedBox(
-                    height: responsive.altoP(2),
-                  ),
-                  BtnIconWidget(
-                      icon: Icons.check_circle,
-                      titulo: "Aceptar",
-                      onPressed: () {
-                        Get.offAllNamed(SiipneRoutes.MENU_APP);
-                      })
-                ],
-              ),
+              child: getDesingCompartirCodigo(
+                  _abrirRecintoElectoral.idDgoCreaOpReci),
             ),
           ),
         ),
@@ -325,6 +229,41 @@ class RecintosCrearCodigoController extends GetxController {
             false, // Evita que se cierre al tocar fuera del diálogo
       );
     }
+  }
+
+  getDesingCompartirCodigo(int idDgoCreaOpReci) {
+    final responsive = ResponsiveUtil();
+    return Column(
+      mainAxisSize:
+          MainAxisSize.min, // Ajusta el tamaño del diálogo al contenido
+      children: [
+        TextLineasWidget(
+            title: "INFORMACIÓN",
+            sizeTxt: responsive.diagonalP(AppConfig.tamTextoTitulo)),
+        Container(
+          height: 100,
+          width: 100,
+          child: Image.asset(SiipneImages.imgIconD),
+        ),
+        DetalleTextWidget(
+          todoElAncho: true,
+          detalle: "El Código para que el personal se anexe es:",
+        ),
+        TextLineasWidget(
+          title: "${idDgoCreaOpReci}",
+          sizeTxt: responsive.diagonalP(AppConfig.tamTextoTitulo + 1.5),
+        ),
+        SizedBox(
+          height: responsive.altoP(2),
+        ),
+        BtnIconWidget(
+            icon: Icons.check_circle,
+            titulo: "Aceptar",
+            onPressed: () {
+              Get.offAllNamed(SiipneRoutes.MENU_APP);
+            })
+      ],
+    );
   }
 
   goToPage(String name) {

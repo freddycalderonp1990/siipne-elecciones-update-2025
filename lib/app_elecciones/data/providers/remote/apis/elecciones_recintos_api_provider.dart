@@ -146,10 +146,9 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
             bodyRequest: request.toJson())
         .toJson();
 
-    String json = await UrlApiProviderSiipneMovil.put(
+    String json = await UrlApiProviderSiipneMovil.delete(
       body: body,
     );
-
     String titleJson = "eliminarRecintoElectoral";
 
     try {

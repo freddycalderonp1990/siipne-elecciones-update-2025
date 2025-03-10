@@ -3,19 +3,23 @@ class DesingTextNameUser extends StatelessWidget {
   const DesingTextNameUser({
     super.key,
 
-    required this.data,
+    required this.sexo,
+    required this.text,
   });
 
-  final String data;
+  final String text;
+  final String sexo;
 
 
   @override
   Widget build(BuildContext context) {
+    String Bienvenido =
+    sexo == 'HOMBRE' ? "BIENVENIDO: " : "BIENVENIDA: ";
     final responsive = ResponsiveUtil();
     
-    return TextSombrasWidget(
-      size:responsive.diagonalP(AppConfig.tamTextoTitulo-0.5) ,
-      title: data,
+    return TextLineasWidget(
+      sizeTxt:responsive.diagonalP(AppConfig.tamTextoTitulo-0.5) ,
+      title: Bienvenido+ text,
     );
   }
 }

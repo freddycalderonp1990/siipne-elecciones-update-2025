@@ -16,8 +16,6 @@ class ReportPersonPage extends GetView<ReportPersonController> {
   Widget getContenido() {
     final responsive = ResponsiveUtil();
 
-    String Bienvenido =
-        controller.user.sexo == 'HOMBRE' ? "BIENVENIDO: " : "BIENVENIDA: ";
 
     return ContenedorDesingWidget(
         paddin: EdgeInsets.all(10),

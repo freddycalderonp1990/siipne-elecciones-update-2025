@@ -43,29 +43,12 @@ class PersonaApiProviderImpl extends PersonaRepository {
 
   @override
   Future<ResgistroPersEnRecElectoral> asignarPersonalEnRecintoElectoral(
-      {required int idDgoCreaOpReci,
-      required int idGenPersona,
-      required int usuario,
-      required double latitud,
-      required double longitud,
-      required int idDgoReciElect,
-      required int idDgoTipoEje,
-      required int idDgoProcElec,
-      required String ip}) async {
-    Object? body = {
-      "modulo": ApiConstantes.MODULO,
-      "uri": ApiConstantes.ELECCIONES_RECINTO_ADD_PERSONA,
-      "idDgoReciElect": idDgoReciElect,
-      "usuario": usuario,
-      "latitud": latitud,
-      "longitud": longitud,
-      "ip": ip,
-      "idDgoCreaOpReci": idDgoCreaOpReci,
-      "idGenPersona": idGenPersona,
-      "idDgoTipoEje": idDgoTipoEje,
-      "idDgoProcElec": idDgoProcElec,
+      {  required AddPersonalRequest request}) async {
 
-    };
+    Map<String, dynamic> body = HeadEleccionesRequest(
+        uri: ApiConstantes.ELECCIONES_RECINTO_ADD_PERSONA,
+        bodyRequest: request.toJson())
+        .toJson();
 
     String json = await UrlApiProviderSiipneMovil.post(
       body: body,

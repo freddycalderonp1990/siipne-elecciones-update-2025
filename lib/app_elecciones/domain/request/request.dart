@@ -10,3 +10,5 @@ part 'create_code_recinto_request.dart';
 part 'abandonar_recinto_request.dart';
 part 'eliminar_recinto_request.dart';
 part 'recinto_cercanos_request.dart';
+part 'add_personal_request.dart';
+part 'get_novedades_registradas_request.dart';

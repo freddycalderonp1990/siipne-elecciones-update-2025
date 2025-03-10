@@ -111,4 +111,42 @@ class EleccionesNovedadesApiProviderImpl extends EleccionesNovedadesRepository {
           message: "Problema en Parse Model: ${e} - stackTrace: ${stackTrace}");
     }
   }
+
+  @override
+  Future<List<NovedadesElectoralesDetalle>> getDetalleNovedadesPorRecinto(
+      {required GetNovedadesRegistradasdRequest request}) async {
+
+    HeadEleccionesRequest _headEleccionesRequest = HeadEleccionesRequest(
+        uri: ApiConstantes.ELECCIONES_NOVEDADES_INSERT,
+        bodyRequest: request.toJson());
+
+    String json = await UrlApiProviderSiipneMovil.post(
+      body: _headEleccionesRequest.toJson(),
+    );
+
+    String titleJson = "novedadesElectoralesDetalle";
+
+    try {
+      // Validar la respuesta del servidor
+      String msj =
+      ResponseApi.validateConsultas(json: json, titleJson: titleJson);
+      // Si la respuesta es válida
+      if (msj == ApiConstantes.varTrue) {
+        // Obtener los datos del modelo en formato String
+        String datosJson = getDatosModelFromString(json, titleJson);
+        // Parsear y retornar el modelo correspondiente
+
+        return
+            novedadesElectoralesDetalleModelFromJson(datosJson)
+                .novedadesElectoralesDetalle;
+      }
+      // En caso de respuesta no válida, devolver un modelo vacío
+      return [];
+    } catch (e, stackTrace) {
+      // Manejo centralizado de excepciones
+      throw ParseJsonException(
+          message: "Problema en Parse Model: ${e} - stackTrace: ${stackTrace}");
+    }
+
+  }
 }

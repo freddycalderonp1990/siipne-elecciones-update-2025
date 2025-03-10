@@ -69,11 +69,21 @@ class MenuRecintosElectoralesController extends GetxController {
 
       if (msjResponse== ApiConstantes.varTrue) {
         DialogosAwesome.getSucess(
-            descripcion: "El código fue eliminado con éxito!");
+            descripcion: "El código fue eliminado con éxito!",btnOkOnPress: (){
+          Get.offAllNamed(SiipneRoutes.MENU_APP );
+        });
         return;
       }
 
-      DialogosAwesome.getWarning(descripcion: msjResponse,btnOkOnPress: (){});
+      String msj="No se pudo eliminar."
+
+          "${msjResponse}"
+          "\n\nVuelva a intentarlo, o consulte con el administrador del sistema";
+
+
+      DialogosAwesome.getWarning(descripcion: msj,btnOkOnPress: (){
+        goToPageReportePersonal();
+      });
 
 
     });
@@ -83,5 +93,11 @@ class MenuRecintosElectoralesController extends GetxController {
 
   cerrarSession() {
     Get.toNamed(AppRoutes.SPLASH_APP);
+  }
+
+  goToPageReportePersonal() {
+    Get.toNamed(SiipneRoutes.REPORT_PERSONAL, arguments: {
+      "recintosElectoralesAbiertos": recintosElectoralesAbiertos
+    });
   }
 }

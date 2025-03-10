@@ -16,8 +16,7 @@ class MenuRecintosElectoralesPage
   Widget getContenido() {
     final responsive = ResponsiveUtil();
 
-    String Bienvenido =
-        controller.user.sexo == 'HOMBRE' ? "BIENVENIDO: " : "BIENVENIDA: ";
+
 
     print("foto ${controller.user.foto}");
 
@@ -37,9 +36,10 @@ class MenuRecintosElectoralesPage
             title:"${controller.recintosElectoralesAbiertos.descProcElecc}" ,
 
           ),
-          TextSombrasWidget(
-            title: Bienvenido + controller.user.nombres,
-          ),
+          DesingTextNameUser(
+              sexo:controller.user.sexo ,
+              text:  controller.user.nombres),
+
           _getMenuJefe(responsive),
           SizedBox(
             height: responsive.altoP(1),
@@ -125,10 +125,14 @@ class MenuRecintosElectoralesPage
                   }),
             )
           ],
-        )
+        ),
+
+
       ],
     );
   }
+
+
 
   _wgCodigoRecinto(ResponsiveUtil responsive) {
 
