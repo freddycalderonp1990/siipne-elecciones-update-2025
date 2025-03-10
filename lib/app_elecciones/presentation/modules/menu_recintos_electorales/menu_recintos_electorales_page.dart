@@ -110,11 +110,18 @@ class MenuRecintosElectoralesPage
                   img: SiipneImages.icon_eliminar_rec_elec,
                   title: "ELIMINAR CÓDIGO",
                   onTap: () {
-                    /*_consultaRecintoAbierto(
-                  _UserProvider.getUser.idGenPersona,
-                  'eliminar',
-                  'eliminar el Operativo. El Operativo Finalizará Automaticamente',
-                  responsive);*/
+                    String msj="Si abrió por error el Operativo se recomienda eliminarlo.  "
+                    "\n\nRecuerde todo será registrado para verificar el correcto uso del aplicativo."
+                    "\n\n¿Esta seguro que desea eliminar el Operativo.?";
+
+                    DialogosAwesome.getWarningSiNo(descripcion: msj,
+                        btnCancelOnPress: (){},
+
+                        btnOkOnPress: (){
+                      controller.eliminarCodigoRecinto();
+
+                    });
+
                   }),
             )
           ],

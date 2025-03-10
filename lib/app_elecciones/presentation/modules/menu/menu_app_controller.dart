@@ -86,7 +86,7 @@ class MenuAppController extends GetxController {
 
 
   goToPage(String name){
-    Get.offNamed(name,arguments:{"recintosElectoralesAbiertos":recintosElectoralesAbiertos} );
+    Get.offAllNamed(name,arguments:{"recintosElectoralesAbiertos":recintosElectoralesAbiertos} );
 
 
   }

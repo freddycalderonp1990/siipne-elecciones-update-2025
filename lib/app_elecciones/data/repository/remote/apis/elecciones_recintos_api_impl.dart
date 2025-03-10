@@ -13,32 +13,32 @@ class EleccionesRecintosApiImpl extends EleccionesRecintosRepository {
   }
 
   @override
-  Future<List<RecintosElectoral>> getRecintosElectoralesCercanos(
-      {required double latitud,
-      required double longitud,
-      required int idDgoProcElec,
-      required int idDgoTipoEje}) async {
+  Future<List<RecintosElectoral>> getRecintosElectoralesCercanos({
+    required RecintoCercanosRequest request,
+  }) async {
     return await _EleccionesRecintosApiProviderImpl
-        .getRecintosElectoralesCercanos(
-            latitud: latitud,
-            longitud: longitud,
-            idDgoProcElec: idDgoProcElec,
-            idDgoTipoEje: idDgoTipoEje);
+        .getRecintosElectoralesCercanos(request: request);
   }
 
   @override
   Future<AbrirRecintoElectoral> crearCodigo(
       {required CreateCodeRecintoRequest request}) async {
     return await _EleccionesRecintosApiProviderImpl.crearCodigo(
-       request: request);
+        request: request);
   }
 
   @override
   Future<bool> abandonarRecintoElectoral({
     required AbandonarRecintoRequest request,
   }) async {
-
     return await _EleccionesRecintosApiProviderImpl.abandonarRecintoElectoral(
+        request: request);
+  }
+
+  @override
+  Future<String> eliminarRecintoElectoralAbierto(
+      {required EliminarRecintoRequest request}) async {
+    return await _EleccionesRecintosApiProviderImpl.eliminarRecintoElectoralAbierto(
         request: request);
   }
 }

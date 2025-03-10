@@ -54,7 +54,7 @@ class RecintosCrearCodigoController extends GetxController {
   }
 
   Future<void> getRecintosElectorales() async {
-    print("consultando");
+
 
     // peticionServerState(true);
     cargaInicial.value = true;
@@ -67,13 +67,16 @@ class RecintosCrearCodigoController extends GetxController {
       //para solo mostrar los recintos electorales
       int idDgoTipoEje = 1;
 
+      RecintoCercanosRequest request = RecintoCercanosRequest(
+          latitud: position.latitude,
+          longitud: position.longitude,
+          idDgoProcElec: selectProcesoOperativoController
+              .selectProcesosOperativo.value.idDgoProcElec,
+          idDgoTipoEje: idDgoTipoEje);
+
       listRecintosElectorales.value =
           await _eleccionesRecintosApiImpl.getRecintosElectoralesCercanos(
-              latitud: position.latitude,
-              longitud: position.longitude,
-              idDgoProcElec: selectProcesoOperativoController
-                  .selectProcesosOperativo.value.idDgoProcElec,
-              idDgoTipoEje: idDgoTipoEje);
+             request:request);
 
       if (listRecintosElectorales.length == 0) {
         DialogosAwesome.getInformation(
@@ -138,8 +141,6 @@ class RecintosCrearCodigoController extends GetxController {
       getSubsistemas(),
     ]);
     peticionServerState(false);
-
-
   }
 
   msjCrearCodigo({required VoidCallback? onPressed}) {
@@ -217,9 +218,9 @@ class RecintosCrearCodigoController extends GetxController {
 
       String ip = await DeviceInfo.getIp;
 
-      CreateCodeRecintoRequest request=CreateCodeRecintoRequest(
+      CreateCodeRecintoRequest request = CreateCodeRecintoRequest(
           usuario: user.idGenUsuario,
-          idGenPersona:user.idGenPersona,
+          idGenPersona: user.idGenPersona,
           idDgoReciElect: selectRecintosElectoral.value.idDgoReciElect,
           latitud: position.latitude,
           longitud: position.longitude,
@@ -230,29 +231,30 @@ class RecintosCrearCodigoController extends GetxController {
           ip: ip,
           idDgoTipoEje: selectUnidadPolicial.value.idDgoTipoEje);
 
-      _abrirRecintoElectoral = await _eleccionesRecintosApiImpl.crearCodigo(
-         request: request);
-
+      _abrirRecintoElectoral =
+          await _eleccionesRecintosApiImpl.crearCodigo(request: request);
     });
     peticionServerState(false);
-    
-    if(_abrirRecintoElectoral.idDgoCreaOpReci==0){
-      DialogosAwesome.getWarning(descripcion: "No se pudo completar la acción. Por favor, inténtelo nuevamente.",btnOkOnPress: (){});
+
+    if (_abrirRecintoElectoral.idDgoCreaOpReci == 0) {
+      DialogosAwesome.getWarning(
+          descripcion:
+              "No se pudo completar la acción. Por favor, inténtelo nuevamente.",
+          btnOkOnPress: () {});
       return;
     }
 
     if (_abrirRecintoElectoral.estado == "A") {
-      String msj = user.nombres+
+      String msj = user.nombres +
           "\n\nYa existe un Código asignado ${_abrirRecintoElectoral.idDgoCreaOpReci} a esta Unidad Policial \n\n" +
           selectRecintosElectoral.value.nomRecintoElec +
           "\nFECHA INICIO: " +
           _abrirRecintoElectoral.fechaIni +
           "\n\nSi usted necesita abrir la misma Unidad Policial el encargado [${_abrirRecintoElectoral.apenom}] debe eliminarla o finalizarlo.";
 
-
       return Get.dialog(
         PopScope(
-          canPop:  false, // Evita que se cierre con el botón de retroceso
+          canPop: false, // Evita que se cierre con el botón de retroceso
           child: AlertDialog(
             title: Text("Información"),
             content: Text(msj),
@@ -261,42 +263,37 @@ class RecintosCrearCodigoController extends GetxController {
                   colorBtn: Colors.red.shade300,
                   icon: Icons.close,
                   titulo: "Cerrar",
-                  onPressed: (){
+                  onPressed: () {
                     Get.back();
-
                   }),
-
               BtnIconWidget(
-                colorBtn: AppColors.colorAzul,
+                  colorBtn: AppColors.colorAzul,
                   icon: Icons.call,
                   titulo: "Llamar",
-                  onPressed: (){
-                  UtilidadesUtil.lanzarLlamada(_abrirRecintoElectoral.telefono);
+                  onPressed: () {
+                    UtilidadesUtil.lanzarLlamada(
+                        _abrirRecintoElectoral.telefono);
                     Get.back();
-
-
                   })
-
-
             ],
           ),
         ),
-        barrierDismissible: false, // Evita que se cierre al tocar fuera del diálogo
+        barrierDismissible:
+            false, // Evita que se cierre al tocar fuera del diálogo
       );
-
-
-
     } else {
       final responsive = ResponsiveUtil();
 
       return Get.dialog(
         PopScope(
-          canPop:  false, // Evita que se cierre con el botón de retroceso
+          canPop: false, // Evita que se cierre con el botón de retroceso
           child: AlertDialog(
             title: Text("Información"),
-            content: SingleChildScrollView( // Permite que el contenido se ajuste automáticamente
+            content: SingleChildScrollView(
+              // Permite que el contenido se ajuste automáticamente
               child: Column(
-                mainAxisSize: MainAxisSize.min, // Ajusta el tamaño del diálogo al contenido
+                mainAxisSize: MainAxisSize
+                    .min, // Ajusta el tamaño del diálogo al contenido
                 children: [
                   DetalleTextWidget(
                     todoElAncho: true,
@@ -306,28 +303,27 @@ class RecintosCrearCodigoController extends GetxController {
                     "${_abrirRecintoElectoral.idDgoCreaOpReci}",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: responsive.diagonalP(AppConfig.tamTextoTitulo + 1.5),
+                      fontSize:
+                          responsive.diagonalP(AppConfig.tamTextoTitulo + 1.5),
                     ),
                   ),
-
-                  SizedBox(height: responsive.altoP(2),),
+                  SizedBox(
+                    height: responsive.altoP(2),
+                  ),
                   BtnIconWidget(
-
                       icon: Icons.check_circle,
                       titulo: "Aceptar",
-                      onPressed: (){
-                        Get.offAllNamed(SiipneRoutes.MENU_APP );
-
+                      onPressed: () {
+                        Get.offAllNamed(SiipneRoutes.MENU_APP);
                       })
                 ],
               ),
             ),
-          
           ),
         ),
-        barrierDismissible: false, // Evita que se cierre al tocar fuera del diálogo
+        barrierDismissible:
+            false, // Evita que se cierre al tocar fuera del diálogo
       );
-      
     }
   }
 

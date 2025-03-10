@@ -8,10 +8,8 @@ abstract class EleccionesRecintosRepository {
       {required int idGenPersona});
 
   Future<List<RecintosElectoral>> getRecintosElectoralesCercanos({
-    required double latitud,
-    required double longitud,
-    required int idDgoProcElec,
-    required int idDgoTipoEje,
+    required RecintoCercanosRequest request,
+
   });
 
   Future<AbrirRecintoElectoral> crearCodigo({
@@ -22,4 +20,13 @@ abstract class EleccionesRecintosRepository {
   Future<bool> abandonarRecintoElectoral({
     required AbandonarRecintoRequest request,
   });
+
+//se retiona como estring xq vienen los mensajes desde el server
+  Future<String> eliminarRecintoElectoralAbierto(
+      {
+        required EliminarRecintoRequest request,
+
+      });
+
+
 }
