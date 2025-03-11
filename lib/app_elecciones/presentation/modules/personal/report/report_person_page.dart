@@ -89,7 +89,7 @@ class ReportPersonPage extends GetView<ReportPersonController> {
                       btnCancelOnPress: (){},
 
                       btnOkOnPress: (){
-                        controller.remotePersonalOperativo(data);
+                        controller.remomePersonalOperativo(data);
                       });
 
                 },

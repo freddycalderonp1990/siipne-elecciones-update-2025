@@ -19,5 +19,6 @@ part 'personal/add/add_person_binding.dart';
 part 'personal/report/report_person_binding.dart';
 
 part 'novedades/add/add_novedades_binding.dart';
+part 'novedades/report/report_novedades_binding.dart';
 
 

@@ -60,7 +60,7 @@ class ReportPersonController extends GetxController {
     }
   }
 
-  Future<void> remotePersonalOperativo(PersonalRecintoElectoral data) async {
+  Future<void> remomePersonalOperativo(PersonalRecintoElectoral data) async {
     peticionServerState(true);
 
     await ExceptionHelper.manejarErroresShowDialogo(() async {

@@ -46,6 +46,7 @@ import 'controllers.dart';
 import '../../presentation/modules/login/local_widgets/wgLogin.dart';
 import '../../../app/core/utils/responsiveUtil.dart';
 import 'novedades/add/validate.dart';
+import 'novedades/report/local_widget/desing_novedades.dart';
 
 
 
@@ -65,3 +66,4 @@ part 'personal/add/add_person_page.dart';
 part 'personal/report/report_person_page.dart';
 
 part 'novedades/add/add_novedades_page.dart';
+part 'novedades/report/report_novedades_page.dart';

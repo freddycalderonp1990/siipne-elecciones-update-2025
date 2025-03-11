@@ -186,10 +186,11 @@ class AddNovedadesController extends GetxController {
   }
 
   goToPageReporteNovedades() {
-    Get.toNamed(SiipneRoutes.REPORT_PERSONAL, arguments: {
+    Get.toNamed(SiipneRoutes.REPORT_NOVEDADES, arguments: {
       "recintosElectoralesAbiertos": recintosElectoralesAbiertos
     });
   }
+
 
   setDatosHora() {
     List<String> datos = [];

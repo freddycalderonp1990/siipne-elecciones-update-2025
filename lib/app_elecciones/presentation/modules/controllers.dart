@@ -72,3 +72,4 @@ part 'personal/add/add_person_controller.dart';
 part 'personal/report/report_person_controller.dart';
 
 part 'novedades/add/add_novedades_controller.dart';
+part 'novedades/report/report_novedades_controller.dart';
