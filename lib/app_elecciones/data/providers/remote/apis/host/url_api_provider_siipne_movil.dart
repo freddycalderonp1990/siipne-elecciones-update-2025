@@ -51,4 +51,11 @@ class UrlApiProviderSiipneMovil {
     final String url = HostSiipneMovil.gethost();
     return _urlApiProviderApp.put(url: url, segmento: segmento, body: body);
   }
+
+  static Future<String> delete({String segmento = '', Object? body}) async {
+    String token = await getToken();
+    UrlApiProviderApp _urlApiProviderApp = UrlApiProviderApp(token: token);
+    final String url = HostSiipneMovil.gethost();
+    return _urlApiProviderApp.delete(url: url, segmento: segmento, body: body);
+  }
 }

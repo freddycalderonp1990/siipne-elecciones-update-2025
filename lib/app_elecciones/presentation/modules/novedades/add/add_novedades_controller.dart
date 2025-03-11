@@ -103,7 +103,6 @@ class AddNovedadesController extends GetxController {
 
   @override
   void onClose() {
-    // TODO: implement onClose
 
     super.onClose();
   }
@@ -187,10 +186,11 @@ class AddNovedadesController extends GetxController {
   }
 
   goToPageReporteNovedades() {
-    Get.toNamed(SiipneRoutes.REPORT_PERSONAL, arguments: {
+    Get.toNamed(SiipneRoutes.REPORT_NOVEDADES, arguments: {
       "recintosElectoralesAbiertos": recintosElectoralesAbiertos
     });
   }
+
 
   setDatosHora() {
     List<String> datos = [];
@@ -376,11 +376,11 @@ class AddNovedadesController extends GetxController {
     });
     peticionServerState(false);
 
-    if (resultInsert.toLowerCase().trim() == "true") {
+    if (resultInsert== ApiConstantes.varTrue) {
       clearData();
       DialogosAwesome.getSucess(
           descripcion: "Registro de Novedad con éxito", btnOkOnPress: () {});
-    } else if (resultInsert.toLowerCase().trim() == "existe") {
+    } else if (resultInsert == ApiConstantes.varExiste) {
       DialogosAwesome.getWarning(
           descripcion:
               "Ya existe una novedad registrada con este documento ${controllerCedula.text}",

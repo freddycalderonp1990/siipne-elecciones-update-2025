@@ -14,26 +14,9 @@ class PersonaApiImpl extends PersonaRepository {
 
   @override
   Future<ResgistroPersEnRecElectoral> asignarPersonalEnRecintoElectoral(
-      {required int idDgoCreaOpReci,
-      required int idGenPersona,
-      required int usuario,
-      required double latitud,
-      required double longitud,
-      required int idDgoReciElect,
-      required int idDgoTipoEje,
-        required int idDgoProcElec,
-
-      required String ip}) async {
+      {  required AddPersonalRequest request}) async {
     return await _personaApiProviderImpl.asignarPersonalEnRecintoElectoral(
-        idDgoCreaOpReci: idDgoCreaOpReci,
-        idGenPersona: idGenPersona,
-        usuario: usuario,
-        latitud: latitud,
-        longitud: longitud,
-        idDgoReciElect: idDgoReciElect,
-        idDgoTipoEje: idDgoTipoEje,
-        idDgoProcElec: idDgoProcElec,
-        ip: ip);
+       request: request);
   }
 
   @override

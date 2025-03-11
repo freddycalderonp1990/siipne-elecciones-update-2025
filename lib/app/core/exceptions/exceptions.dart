@@ -130,6 +130,12 @@ class ServerException implements Exception {
             'Si el problema persiste contacte con el administrador.  ';
         break;
 
+      case 405: //HTTP_No_autorizado
+        mesage = 'Metodo no implementado'
+            '\n\n'
+            'Si el problema persiste contacte con el administrador.  ';
+        break;
+
       case 426: //HTTP_No_autorizado
         mesage = 'Actualizacion Disponible';
 

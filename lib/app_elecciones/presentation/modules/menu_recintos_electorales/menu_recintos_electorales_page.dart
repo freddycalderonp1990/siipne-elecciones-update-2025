@@ -16,8 +16,7 @@ class MenuRecintosElectoralesPage
   Widget getContenido() {
     final responsive = ResponsiveUtil();
 
-    String Bienvenido =
-        controller.user.sexo == 'HOMBRE' ? "BIENVENIDO: " : "BIENVENIDA: ";
+
 
     print("foto ${controller.user.foto}");
 
@@ -37,9 +36,10 @@ class MenuRecintosElectoralesPage
             title:"${controller.recintosElectoralesAbiertos.descProcElecc}" ,
 
           ),
-          TextSombrasWidget(
-            title: Bienvenido + controller.user.nombres,
-          ),
+          DesingTextNameUser(
+              sexo:controller.user.sexo ,
+              text:  controller.user.nombres),
+
           _getMenuJefe(responsive),
           SizedBox(
             height: responsive.altoP(1),
@@ -110,18 +110,29 @@ class MenuRecintosElectoralesPage
                   img: SiipneImages.icon_eliminar_rec_elec,
                   title: "ELIMINAR CÓDIGO",
                   onTap: () {
-                    /*_consultaRecintoAbierto(
-                  _UserProvider.getUser.idGenPersona,
-                  'eliminar',
-                  'eliminar el Operativo. El Operativo Finalizará Automaticamente',
-                  responsive);*/
+                    String msj="Si abrió por error el Operativo se recomienda eliminarlo.  "
+                    "\n\nRecuerde todo será registrado para verificar el correcto uso del aplicativo."
+                    "\n\n¿Esta seguro que desea eliminar el Operativo.?";
+
+                    DialogosAwesome.getWarningSiNo(descripcion: msj,
+                        btnCancelOnPress: (){},
+
+                        btnOkOnPress: (){
+                      controller.eliminarCodigoRecinto();
+
+                    });
+
                   }),
             )
           ],
-        )
+        ),
+
+
       ],
     );
   }
+
+
 
   _wgCodigoRecinto(ResponsiveUtil responsive) {
 

@@ -72,6 +72,52 @@ class DialogosAwesome {
         .show();
   }
 
+
+  static getIconPolicia(
+      {
+        bool mostrarSegungoBtn=true,
+        Color colorBtnSi=AppColors.colorBotones,
+
+        required String title ,
+
+        IconData iconBtnSi= Icons.check_circle_outline,
+        IconData iconBtnNo= Icons.cancel_outlined,
+
+        String titleBtnSi = 'Si',
+        String titleBtnNo = 'No',
+        required String descripcion,
+       required Function() btnOkOnPress,Function()? btnCancelOnPress}) {
+    AwesomeDialog(
+      dismissOnTouchOutside: false,
+      dismissOnBackKeyPress: false,
+      context: Get.context!,
+      dialogType: DialogType.info,
+      headerAnimationLoop: false,
+      customHeader: Container(
+        child: Image.asset(SiipneImages.imgIconD),
+      ),
+      animType: AnimType.scale,
+      title: title,
+      btnCancel: BtnIconWidget(
+        colorBtn: colorBtnSi,
+        icon: iconBtnSi,
+        onPressed: btnOkOnPress,
+        titulo: titleBtnSi,
+      ),
+
+      btnOk:!mostrarSegungoBtn?null: BtnIconWidget(
+        colorBtn: AppColors.colorRojo_80,
+        icon: iconBtnNo,
+        onPressed: btnCancelOnPress!=null?btnCancelOnPress: () {
+          Get.back();
+        },
+        titulo: titleBtnNo,
+      ),
+      desc: descripcion,
+      showCloseIcon: true,
+    ).show();
+  }
+
   static getWarningSiNo(
       {String title = 'ADVERTENCIA',
         required String descripcion,

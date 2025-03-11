@@ -16,9 +16,6 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
   Widget getContenido() {
     final responsive = ResponsiveUtil();
 
-    String Bienvenido =
-        controller.user.sexo == 'HOMBRE' ? "BIENVENIDO: " : "BIENVENIDA: ";
-
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -33,12 +30,8 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
           SizedBox(
             height: responsive.altoP(0.4),
           ),
-
-
-
-          Obx(() => wgCajasTexto(
-              controller.selectTipoNovedad.value.descripcion)),
-
+          Obx(() =>
+              wgCajasTexto(controller.selectTipoNovedad.value.descripcion)),
           Obx(() => wgCajasTextoNovedades(
               controller.selectNovedad.value.idDgoNovedadesElect, responsive)),
           Obx(() {
@@ -120,7 +113,6 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
         SizedBox(
           height: responsive.altoP(0.4),
         ),
-
         getComboDelito(),
       ],
     );
@@ -173,11 +165,12 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
                 if (value != null) {
                   controller.selectNovedad.value = value;
 
-
-                  if(controller.idNovedadBoletaCaptura==value.idDgoNovedadesElect){
+                  if (controller.idNovedadBoletaCaptura ==
+                      value.idDgoNovedadesElect) {
                     controller.getNovedadesDelito(value.idDgoNovedadesElect);
-                  }
-                  else if(controller.selectNovedad.value.idDgoNovedadesElect>0){
+                  } else if (controller
+                          .selectNovedad.value.idDgoNovedadesElect >
+                      0) {
                     controller.mostrarBtnGuardar(true);
                   }
                   return;
@@ -188,107 +181,100 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
         : Container());
   }
 
-
   Widget getComboDelito() {
-
-    return Obx(() => controller.selectNovedad.value.idDgoNovedadesElect > 0 && controller.idNovedadBoletaCaptura==controller.selectNovedad.value.idDgoNovedadesElect
+    return Obx(() => controller.selectNovedad.value.idDgoNovedadesElect > 0 &&
+            controller.idNovedadBoletaCaptura ==
+                controller.selectNovedad.value.idDgoNovedadesElect
         ? ContenedorDesingWidget(
-        paddin: EdgeInsets.all(5),
-        child: ComboBusqueda(
-          selectValue: controller.selectDelito.value,
-          icon: Icons.select_all_sharp,
-          showClearButton: false,
-          datos: controller.listDelito,
-          displayField: (item) =>
-          item.descripcion, // Aquí decides mostrar "nombres"
-          searchHint: "Delito",
-          complete: (value) {
-            controller.selectDelito.value = NovedadesElectorale.empty();
-            controller.mostrarBtnGuardar(false);
-            if (value != null) {
-              controller.selectDelito.value = value;
-              if(controller.selectDelito.value.idDgoNovedadesElect>0){
-                controller.mostrarBtnGuardar(true);
-              }
-              return;
-            }
-          },
-          textSeleccioneUndato: "Seleccione el Delito",
-        ))
+            paddin: EdgeInsets.all(5),
+            child: ComboBusqueda(
+              selectValue: controller.selectDelito.value,
+              icon: Icons.select_all_sharp,
+              showClearButton: false,
+              datos: controller.listDelito,
+              displayField: (item) =>
+                  item.descripcion, // Aquí decides mostrar "nombres"
+              searchHint: "Delito",
+              complete: (value) {
+                controller.selectDelito.value = NovedadesElectorale.empty();
+                controller.mostrarBtnGuardar(false);
+                if (value != null) {
+                  controller.selectDelito.value = value;
+                  if (controller.selectDelito.value.idDgoNovedadesElect > 0) {
+                    controller.mostrarBtnGuardar(true);
+                  }
+                  return;
+                }
+              },
+              textSeleccioneUndato: "Seleccione el Delito",
+            ))
         : Container());
   }
-
-
 
   Widget wgCajasTexto(String novedadesPadres) {
     Widget wg = Container();
     final responsive = ResponsiveUtil();
 
-    bool registrarDatosPersona=true;
-    bool mostrarFoto=false;
-    bool validarForm=false;
+    bool mostrarFoto = false;
+    controller.validarForm = false;
 
+    controller.registrarDatosPersona = false;
 
-      switch (novedadesPadres.trim().toUpperCase()) {
-        case "NOVEDADES":
+    switch (novedadesPadres.trim().toUpperCase()) {
+      case "NOVEDADES":
+        break;
 
-          break;
+      case "DELITOS":
+        controller.validarForm = true;
+        if (controller.selectNovedad.value.idDgoNovedadesElect > 0) {
+          print("sqqqq");
+          wg = wgTxtCedula(responsive: responsive);
+          controller.registrarDatosPersona = true;
+        }
 
-        case "DELITOS":
-          validarForm = true;
-          if(controller.selectNovedad.value.idDgoNovedadesElect>0) {
-            wg = wgTxtCedula(responsive: responsive);
-          }
-          break;
+        break;
 
-        case "DETENIDOS":
-          validarForm = true;
-          if(controller.selectNovedad.value.idDgoNovedadesElect>0) {
-            wg = wgTxtCedulaBoleta(responsive);
-          }
-          break;
+      case "DETENIDOS":
+        controller.validarForm = true;
+        if (controller.selectNovedad.value.idDgoNovedadesElect > 0) {
+          wg = wgTxtCedulaBoleta(responsive);
+          controller.registrarDatosPersona = true;
+        }
+        break;
 
-        case "CITACIONES":
-          validarForm = true;
-          wg = wgTxtCedulaCitacion(responsive);
-          break;
+      case "CITACIONES":
+        controller.validarForm = true;
+        wg = wgTxtCedulaCitacion(responsive);
+        controller.registrarDatosPersona = true;
+        break;
 
-        case "VOTO EN CASA":
-          registrarDatosPersona = false;
-          validarForm = true;
-          wg = wgTxtObservacion(responsive: responsive);
-          break;
+      case "VOTO EN CASA":
+        controller.validarForm = true;
+        wg = wgTxtObservacion(responsive: responsive);
+        break;
 
-        case "NOV PPL":
-          registrarDatosPersona = false;
-          validarForm = true;
-          wg = wgTxtObservacion(responsive: responsive);
-          break;
-        case "UMO":
-          //controller.mostrarFoto = true;
-          //wg = wgTxtCedulaCitacion(responsive);
-          break;
+      case "NOV PPL":
+        controller.validarForm = true;
+        wg = wgTxtObservacion(responsive: responsive);
+        break;
+      case "UMO":
+        //controller.mostrarFoto = true;
+        //wg = wgTxtCedulaCitacion(responsive);
+        break;
 
-        default:
-          wg = Container();
-      }
-
+      default:
+        wg = Container();
+    }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-
-      controller.registrarDatosPersona = registrarDatosPersona;
       controller.mostrarFoto.value = mostrarFoto;
-      controller.validarForm = validarForm;
-
     });
-
 
     if (wg is Container) {
       return wg;
     } else {
       return ContenedorDesingWidget(paddin: EdgeInsets.all(5), child: wg);
     }
-
   }
 
   Widget wgCajasTextoNovedades(
@@ -296,9 +282,9 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
     Widget wg = Container();
     print("suiii");
     print(idDgoNovedadesElect);
-    bool validarForm = false;
+
     bool mostrarFoto = false;
-    bool registrarDatosPersona = false;
+
     switch (idDgoNovedadesElect) {
       case 17:
         //1. RECINTOS ELECTORALES INSTALADOS
@@ -314,22 +300,23 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
         //3. RECINTO ELECTORAL INSTALADO CON RETARDO POR DIFERENTES CAUSAS
 
         wg = wgTxtHora(responsive);
-        validarForm = true;
+        controller.validarForm = true;
         break;
 
       case 20:
         //4. RECINTOS ELECTORALES SUSPENDIDO POR DIFERENTES CAUSAS
         wg = wgTxtMotivo(responsive);
-        validarForm = true;
+        controller.validarForm = true;
         mostrarFoto = true;
         break;
 
       case 21:
         //5. AGRESIONES A SERVIDORES POLICIALES
         wg = wgTxtCedula(responsive: responsive, title: SiipneStrings.cedulaSP);
-        validarForm = true;
+        controller.validarForm = true;
         mostrarFoto = true;
-        registrarDatosPersona=true;
+        controller.registrarDatosPersona = true;
+
         break;
 
       case 22:
@@ -366,13 +353,13 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             )
           ],
         );
-        validarForm = true;
+        controller.validarForm = true;
         mostrarFoto = true;
         break;
 
       case 23:
         //7. QUEMA DE URNAS / PAPELETAS
-        validarForm = true;
+        controller.validarForm = true;
         mostrarFoto = true;
         wg = Column(
           children: [
@@ -410,7 +397,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
 
       case 28:
         //8. TOMA DE RECINTOS / DELEGACIONES / BODEGAS / INSTALACIONES DEL CNE
-        validarForm = true;
+        controller.validarForm = true;
         mostrarFoto = true;
         wg = Column(
           children: [
@@ -454,16 +441,16 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
 
       case 30:
         //10. ATENCIÓN MÉDICA POR DIFERENTES CAUSAS
-        validarForm = true;
+        controller.validarForm = true;
         mostrarFoto = true;
-        registrarDatosPersona=true;
+        controller.registrarDatosPersona = true;
         wg = wgTxtCedulaTelefono(responsive: responsive);
         break;
 
       case 31:
         //11. SERVIDORES POLICIALES INFECTADOS (SOSPECHA/POSITIVO)
 
-        validarForm = true;
+        controller.validarForm = true;
         wg = wgTxtCedulaTelefono(
             responsive: responsive, title: SiipneStrings.cedulaSP);
         break;
@@ -471,136 +458,135 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
       case 32:
         //NUMÉRICO DE ACÉMILAS
         wg = wgTxtNumerico(responsive);
-        validarForm = true;
+        controller.validarForm = true;
         break;
 
       /*********************** UMO ***************************************/
       case 33:
         //1. NUMERICO DE PERSONAL
         wg = wgTxtNumericoPersonal(responsive);
-        validarForm = true;
-        validarForm = true;
+        controller.validarForm = true;
+
         break;
 
       case 34:
         //2. PLANTONES
         wg = wgorganizacionDirigenteCantidad(responsive);
-        validarForm = true;
-        validarForm = true;
+        controller.validarForm = true;
+
         break;
 
       case 35:
         //3. MARCHAS
         wg = wgorganizacionDirigenteCantidad(responsive);
-        validarForm = true;
-        validarForm = true;
+        controller.validarForm = true;
+
         break;
 
       case 36:
         //4. CIERRE DE VIAS
         wg = wgorganizacionDirigenteCantidad(responsive);
-        validarForm = true;
-        validarForm = true;
+        controller.validarForm = true;
+
         break;
 
       case 37:
         //5. TOMA DE ENTIDADES
         wg = wgorganizacionDirigenteCantidad(responsive);
-        validarForm = true;
-        validarForm = true;
+        controller.validarForm = true;
+
         break;
 
       /************************AEREOPOLCIAL*************************************/
       case 45:
         //1. DESPLAZAMIENTO DE AUTORIDADES
         wg = wgTxtDesplazamientosAutoridades(responsive);
-        validarForm = true;
+        controller.validarForm = true;
         break;
 
       case 46:
         //2. DESPLAZAMIENTO DE SERVIDORES PÚBLICOS
         wg = wgTxtDesplazamientosAutoridades(responsive);
-        validarForm = true;
+        controller.validarForm = true;
         break;
 
       case 47:
         //3. APOYO AÉREO A MEDIOS DE COMUNICACIÓN
         wg = wgTxtApoyoMediosComunicacion(responsive);
-        validarForm = true;
+        controller.validarForm = true;
         break;
       /************************GOE - GIR*************************************/
       case 41:
         //1. SEGURIDAD DE PERSONAS IMPORTANTES
         wg = wgTxtSeguridadPersonasImportantes(responsive);
-        validarForm = true;
+        controller.validarForm = true;
         break;
 
       case 42:
         //2. SEGURIDAD DE INSTALACIONES
         wg = wgTxtSeguridadInstalaciones(responsive);
-        validarForm = true;
+        controller.validarForm = true;
         mostrarFoto = true;
         break;
 
       case 43:
         //3. REGISTRO DE EXPLOSIVOS
         wg = wgTxtExplosivos(responsive);
-        validarForm = true;
+        controller.validarForm = true;
         mostrarFoto = true;
         break;
 
       case 44:
         //4. APOYO A UNIDADES POLICIALES
         wg = wgTxtApoyoUnidadesPoliciales(responsive);
-        validarForm = true;
+        controller.validarForm = true;
         break;
 
       /************************CARCK - UMO - UER*************************************/
       case 49:
         //AGLOMERACIONES
         wg = wgTxtNumerico(responsive);
-        validarForm = true;
+        controller.validarForm = true;
         break;
 
       case 50:
         //NUMÉRICO DE ACÉMILAS
         wg = wgTxtNumerico(responsive);
-        validarForm = true;
+        controller.validarForm = true;
         break;
 
       case 51:
         //NUMÉRICO DE CANES
         wg = wgTxtNumerico(responsive);
-        validarForm = true;
+        controller.validarForm = true;
         break;
 
       case 52:
         //PERSONAL ESTÁTICO
         wg = wgTxtNumerico(responsive);
-        validarForm = true;
+        controller.validarForm = true;
         break;
 
       case 53:
         //PERSONAL MÓVIL
         wg = wgTxtNumerico(responsive);
-        validarForm = true;
+        controller.validarForm = true;
         break;
 
       case 54:
         //INICIA SERVICIO
         wg = wgTxtHora(responsive);
-        validarForm = true;
+        controller.validarForm = true;
         break;
 
       case 55:
         //FINALIZA SERVICIO
         wg = wgTxtHora(responsive);
-        validarForm = true;
+        controller.validarForm = true;
         break;
 
       default:
-        print('idDgoNovedadesElect');
-        validarForm = false;
+
         mostrarFoto = false;
         wg = Container();
     }
@@ -608,8 +594,9 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       controller.mostrarFoto.value = mostrarFoto;
     });
-    controller.validarForm = validarForm;
-    controller.registrarDatosPersona = registrarDatosPersona;
+
+    print("asigno registrarDatosPersona ${controller.registrarDatosPersona}");
+    print("wgCajasTextoNovedades validarForm ${controller.validarForm}");
 
     if (wg is Container) {
       return wg;
@@ -677,32 +664,27 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
   }
 
   Widget getBtnGuardar() {
-
-
-
-
     return Obx(() => controller.mostrarBtnGuardar.value
         ? BtnIconWidget(
-      icon: Icons.save,
-      titulo: "GUARDAR",
-      onPressed: () {
-        String descripcion=controller.selectNovedad.value.descripcion;
-        if(controller.selectDelito.value.idDgoNovedadesElect>0){
-          descripcion=controller.selectDelito.value.descripcion;
-        }
+            icon: Icons.save,
+            titulo: "GUARDAR",
+            onPressed: () {
+              String descripcion = controller.selectNovedad.value.descripcion;
+              if (controller.selectDelito.value.idDgoNovedadesElect > 0) {
+                descripcion = controller.selectDelito.value.descripcion;
+              }
 
-        DialogosAwesome.getWarningSiNo(
-            title: '¿Desea continuar con el registro?',
-            descripcion: 'Registro de Novedad:\n\n${descripcion}',
-            btnCancelOnPress: () {},
-            btnOkOnPress: () {
-              controller.eventoRegistrarNovedadesElectorales();
-            });
-      },
-    )
+              DialogosAwesome.getWarningSiNo(
+                  title: '¿Desea continuar con el registro?',
+                  descripcion: 'Registro de Novedad:\n\n${descripcion}',
+                  btnCancelOnPress: () {},
+                  btnOkOnPress: () {
+                    controller.eventoRegistrarNovedadesElectorales();
+                  });
+            },
+          )
         : Container());
   }
-
 
   //+++++++++++++++++++++++++++ TXT +++++++++++++++++++++++++++++
 
@@ -788,39 +770,38 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
 
   Widget getSelectNacionalExtranjero() {
     return Obx(() => Row(
-      children: [
-        Flexible(
-          child: ListTile(
-            title:TituloTextWidget(title: "Nacional") ,
-            leading: Radio<String>(
-              value: 'Nacional',
-              groupValue: controller.selectedOptionNAcionalExtranjero.value,
-              onChanged: (String? value) {
-                if (value != null) {
-                  controller.selectedOptionNAcionalExtranjero.value = value;
-                }
-              },
+          children: [
+            Flexible(
+              child: ListTile(
+                title: TituloTextWidget(title: "Nacional"),
+                leading: Radio<String>(
+                  value: 'Nacional',
+                  groupValue: controller.selectedOptionNAcionalExtranjero.value,
+                  onChanged: (String? value) {
+                    if (value != null) {
+                      controller.selectedOptionNAcionalExtranjero.value = value;
+                    }
+                  },
+                ),
+              ),
             ),
-          ),
-        ),
-        Flexible(
-          child: ListTile(
-            title:TituloTextWidget(title: "Extranjero") ,
-            leading: Radio<String>(
-              value: 'Extranjero',
-              groupValue: controller.selectedOptionNAcionalExtranjero.value,
-              onChanged: (String? value) {
-                if (value != null) {
-                  controller.selectedOptionNAcionalExtranjero.value = value;
-                }
-              },
+            Flexible(
+              child: ListTile(
+                title: TituloTextWidget(title: "Extranjero"),
+                leading: Radio<String>(
+                  value: 'Extranjero',
+                  groupValue: controller.selectedOptionNAcionalExtranjero.value,
+                  onChanged: (String? value) {
+                    if (value != null) {
+                      controller.selectedOptionNAcionalExtranjero.value = value;
+                    }
+                  },
+                ),
+              ),
             ),
-          ),
-        ),
-      ],
-    ));
+          ],
+        ));
   }
-
 
   Widget wgTxtCedulaBoleta(ResponsiveUtil responsive) {
     return getForm(
@@ -846,6 +827,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
   }
 
   Widget getWgCedulaWithFind(ResponsiveUtil responsive, {bool validar = true}) {
+
     return Column(
       children: [
         Row(
@@ -884,14 +866,12 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
                         "DETENIDOS") {
                       validar = false;
                     }
-                    controller.validarForm=validar;
+
+
+                   // controller.validarForm = validar;
 
                     controller.getDatosPersona(permitirAll: true);
-                    /*TODO:comentado
-                       _consultarDatosPersonaPorDocumento(
-                        validar: validar,
-                        cedula: controllerCedula.text,
-                        usuario: _UserProvider.getUser.idGenUsuario);*/
+
                   },
                   icon: Icons.search,
                   colorTxt: Colors.white,
@@ -904,9 +884,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
         SizedBox(
           height: responsive.altoP(1),
         ),
-
-
-     wgDatosPersona()
+        wgDatosPersona()
       ],
     );
   }
@@ -1392,25 +1370,21 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
 
 //+++++++++++++++++++++++++++ TXT +++++++++++++++++++++++++++++
 
-
-
-
   Widget wgDatosPersona() {
-
-
-    return Obx(()=>controller.datosPerson.value.idGenPersona > 0
-        ?  Container(
-      padding: EdgeInsets.all(5),
-      child: TituloDetalleTextWidget(
-        margin: EdgeInsets.all(0),
-        padding:  EdgeInsets.all(8),
-
-        title: "Nombres",
-        detalle: controller.datosPerson.value.siglas.length > 0
-            ? controller.datosPerson.value.siglas + "." + controller.datosPerson.value.apenom
-            : controller.datosPerson.value.apenom,
-
-      ),)
+    return Obx(() => controller.datosPerson.value.idGenPersona > 0
+        ? Container(
+            padding: EdgeInsets.all(5),
+            child: TituloDetalleTextWidget(
+              margin: EdgeInsets.all(0),
+              padding: EdgeInsets.all(8),
+              title: "Nombres",
+              detalle: controller.datosPerson.value.siglas.length > 0
+                  ? controller.datosPerson.value.siglas +
+                      "." +
+                      controller.datosPerson.value.apenom
+                  : controller.datosPerson.value.apenom,
+            ),
+          )
         : Container());
   }
 }

@@ -56,3 +56,4 @@ part 'workAreaPageLoginWidget.dart';
 part 'combos/combo_busqueda.dart';
 part 'combos/combo_con_busqueda.dart';
 part 'my_ubicacion_widget.dart';
+part 'text_lineas_widget.dart';

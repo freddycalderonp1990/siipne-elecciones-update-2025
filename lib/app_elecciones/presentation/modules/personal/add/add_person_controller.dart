@@ -151,28 +151,26 @@ class AddPersonController extends GetxController {
   }
 
   Future<void> addPersona() async {
-
-
-
-
     peticionServerState(true);
 
     await ExceptionHelper.manejarErroresShowDialogo(() async {
       final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
       LatLng position = await locationBloc.getCurrentPosition();
-
       String ip = await DeviceInfo.getIp;
-      ResgistroPersEnRecElectoral result =
-          await _personaApiImpl.asignarPersonalEnRecintoElectoral(
-              idDgoCreaOpReci: recintosElectoralesAbiertos.idDgoCreaOpReci,
-              idDgoProcElec:recintosElectoralesAbiertos.idDgoProcElec ,
-              idGenPersona: datosPerson.value.idGenPersona,
-              usuario: user.idGenUsuario,
-              latitud: position.latitude,
-              longitud: position.longitude,
-              idDgoReciElect: recintosElectoralesAbiertos.idDgoReciElect,
-              idDgoTipoEje: selectUnidadPolicial.value.idDgoTipoEje,
-              ip: ip);
+      AddPersonalRequest request = AddPersonalRequest(
+          idDgoCreaOpReci: recintosElectoralesAbiertos.idDgoCreaOpReci,
+          idDgoProcElec: recintosElectoralesAbiertos.idDgoProcElec,
+          idGenPersona: datosPerson.value.idGenPersona,
+          usuario: user.idGenUsuario,
+          latitud: position.latitude,
+          longitud: position.longitude,
+          idDgoReciElect: recintosElectoralesAbiertos.idDgoReciElect,
+          idDgoTipoEje: selectUnidadPolicial.value.idDgoTipoEje,
+          ip: ip);
+
+      ResgistroPersEnRecElectoral result = await _personaApiImpl
+          .asignarPersonalEnRecintoElectoral(request: request);
+
 
       if (result.idDgoPerAsigOpe == 0) {
         DialogosAwesome.getWarning(
@@ -183,7 +181,6 @@ class AddPersonController extends GetxController {
 
       //validacion 1- cuando la persona no esta registrada solo devuelve idDgoPerAsigOpe
       // es un regsitro nuevo
-
 
       //validacion 2 -si ya esta registreada verificamos que sea al mismo recinto
       if ((result.idDgoPerAsigOpe > 0 && result.codigoRecinto == 0) ||
@@ -211,14 +208,16 @@ class AddPersonController extends GetxController {
     selectUnidadPolicial.value = UnidadesPoliciale.empty();
 
     controllerDocumento.clear();
-    datosPerson.value=DatosPer.empty();
+    datosPerson.value = DatosPer.empty();
   }
 
   cerrarSession() {
     Get.toNamed(AppRoutes.SPLASH_APP);
   }
 
-  goToPageReportePersonal(){
-    Get.toNamed(SiipneRoutes.REPORT_PERSONAL,arguments:{"recintosElectoralesAbiertos":recintosElectoralesAbiertos});
+  goToPageReportePersonal() {
+    Get.toNamed(SiipneRoutes.REPORT_PERSONAL, arguments: {
+      "recintosElectoralesAbiertos": recintosElectoralesAbiertos
+    });
   }
 }

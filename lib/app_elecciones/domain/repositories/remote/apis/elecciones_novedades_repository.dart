@@ -22,4 +22,9 @@ abstract class EleccionesNovedadesRepository {
   // otros: No se pudo Registrar la Novedad. Vuelva a intentar o contacte con el administrador del sistema.
   Future<String> registrarNovedadesElectorales(
       {required AddNovedadesRequest request});
+
+  Future<List<NovedadesElectoralesDetalle>> getDetalleNovedadesPorRecinto({
+    required GetNovedadesRegistradasdRequest request,
+  });
+
 }

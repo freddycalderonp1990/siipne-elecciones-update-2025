@@ -41,6 +41,7 @@ import '../../../app/presentation/routes/app_routes.dart';
 
 import '../../../app/presentation/widgets/custom_app_widgets.dart';
 import '../../core/values/mensajes_string.dart';
+import '../../data/providers/remote/apis/api_constantes.dart';
 import '../../data/repository/data_repositories.dart';
 import '../../domain/enums/enums.dart';
 import '../../domain/request/request.dart';
@@ -71,3 +72,4 @@ part 'personal/add/add_person_controller.dart';
 part 'personal/report/report_person_controller.dart';
 
 part 'novedades/add/add_novedades_controller.dart';
+part 'novedades/report/report_novedades_controller.dart';

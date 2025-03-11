@@ -34,7 +34,13 @@ class EleccionesNovedadesApiImpl extends EleccionesNovedadesRepository {
   Future<String> registrarNovedadesElectorales(
       {required AddNovedadesRequest request}) async {
     return await _eleccionesNovedadesApiProviderImpl
-        .registrarNovedadesElectorales(
-          request: request);
+        .registrarNovedadesElectorales(request: request);
+  }
+
+  @override
+  Future<List<NovedadesElectoralesDetalle>> getDetalleNovedadesPorRecinto(
+      {required GetNovedadesRegistradasdRequest request}) async {
+    return await _eleccionesNovedadesApiProviderImpl
+        .getDetalleNovedadesPorRecinto(request: request);
   }
 }

@@ -68,5 +68,10 @@ class SiipnePages {
         page: () => AddNovedadesPage(),
         binding: AddNovedadesBinding()),
 
+    AppPages.getPageConfig(
+        name: SiipneRoutes.REPORT_NOVEDADES,
+        page: () => ReportNovedadesPage(),
+        binding: ReportNovedadesBinding()),
+
   ];
 }

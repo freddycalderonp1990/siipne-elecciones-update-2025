@@ -17,8 +17,7 @@ class SelectProcesoOperativoPage
   Widget getContenido() {
     final responsive = ResponsiveUtil();
 
-    String Bienvenido =
-        controller.user.sexo == 'HOMBRE' ? "BIENVENIDO: " : "BIENVENIDA: ";
+
 
 
     return SingleChildScrollView(child: Column(
@@ -45,7 +44,9 @@ class SelectProcesoOperativoPage
         SizedBox(
           height: 10,
         ),
-        DesingTextNameUser(data:  Bienvenido + controller.user.nombres),
+        DesingTextNameUser(
+            sexo:controller.user.sexo ,
+            text:  controller.user.nombres),
         Container(
           padding: EdgeInsets.all(5),
           child: Column(

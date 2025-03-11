@@ -14,8 +14,7 @@ class AppStrings{
   static const Usuario = "Usuario";
   static const Clave = "Clave";
 
-  static const Bienvenido = " Bienvenido: ";
-  static const Bienvenida = " Bienvenida: ";
+
   static const MENU = "MENU";
   static const GUARDAR = "GUARDAR";
   static const ABRIR = "ABRIR";

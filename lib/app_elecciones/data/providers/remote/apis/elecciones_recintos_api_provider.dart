@@ -39,19 +39,12 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
 
   @override
   Future<List<RecintosElectoral>> getRecintosElectoralesCercanos({
-    required double latitud,
-    required double longitud,
-    required int idDgoProcElec,
-    required int idDgoTipoEje,
+    required RecintoCercanosRequest request,
   }) async {
-    Object? body = {
-      "modulo": ApiConstantes.MODULO,
-      "uri": ApiConstantes.ELECCIONES_RECINTOS_ELECTORALES,
-      "latitud": latitud,
-      "longitud": longitud,
-      "idDgoProcElec": idDgoProcElec,
-      "idDgoTipoEje": idDgoTipoEje
-    };
+    Map<String, dynamic> body = HeadEleccionesRequest(
+            uri: ApiConstantes.ELECCIONES_RECINTOS_ELECTORALES,
+            bodyRequest: request.toJson())
+        .toJson();
 
     String json = await UrlApiProviderSiipneMovil.post(
       body: body,
@@ -81,30 +74,11 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
 
   @override
   Future<AbrirRecintoElectoral> crearCodigo(
-      {required int usuario,
-      required int idGenPersona,
-      required int idDgoReciElect,
-      required double latitud,
-      required double longitud,
-      required int idDgoProcElec,
-      required int idDgoReciUnidadPolicial,
-      required String telefono,
-      required String ip,
-      required int idDgoTipoEje}) async {
-    Object? body = {
-      "modulo": ApiConstantes.MODULO,
-      "uri": ApiConstantes.ELECCIONES_CREAR_CODIGO,
-      "idDgoReciElect": idDgoReciElect,
-      "usuario": usuario,
-      "idGenPersona": idGenPersona,
-      "idDgoProcElec": idDgoProcElec,
-      "latitud": latitud,
-      "longitud": longitud,
-      "ip": ip,
-      "idDgoReciUnidadPolicial": idDgoReciUnidadPolicial,
-      "telefono": telefono,
-      "idDgoTipoEje": idDgoTipoEje
-    };
+      {required CreateCodeRecintoRequest request}) async {
+    Map<String, dynamic> body = HeadEleccionesRequest(
+            uri: ApiConstantes.ELECCIONES_CREAR_CODIGO,
+            bodyRequest: request.toJson())
+        .toJson();
 
     String json = await UrlApiProviderSiipneMovil.post(
       body: body,
@@ -135,24 +109,12 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
 
   @override
   Future<bool> abandonarRecintoElectoral(
-      {required int idDgoPerAsigOpe,
-      required int usuario,
-      required double latitud,
-      required double longitud,
-        required int idDgoProcElec,
-        required int idDgoReciElect,
-        required String ip}) async {
-    Object? body = {
-      "modulo": ApiConstantes.MODULO,
-      "uri": ApiConstantes.ELECCIONES_RECINTO_ABANDONAR_PERSONAL,
-      "idDgoPerAsigOpe": idDgoPerAsigOpe,
-      "usuario": usuario,
-      "latitud": latitud,
-      "longitud": longitud,
-      "ip": ip,
-      "idDgoProcElec": idDgoProcElec,
-      "idDgoReciElect": idDgoReciElect
-    };
+      {required AbandonarRecintoRequest request}) async {
+    Map<String, dynamic> body = HeadEleccionesRequest(
+            uri: ApiConstantes.ELECCIONES_RECINTO_ABANDONAR_PERSONAL,
+            bodyRequest: request.toJson())
+        .toJson();
+
     String json = await UrlApiProviderSiipneMovil.put(
       body: body,
     );
@@ -162,13 +124,38 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
     try {
       // Validar la respuesta del servidor
       String msj =
-      await ResponseApi.validateInsert(json: json, titleJson: titleJson);
+          await ResponseApi.validateInsert(json: json, titleJson: titleJson);
       // Si la respuesta es válida
       if (msj == ApiConstantes.varTrue) {
         return true;
       }
       // En caso de respuesta no válida, devolver un modelo vacío
       return false;
+    } catch (e, stackTrace) {
+      // Manejo centralizado de excepciones
+      throw ParseJsonException(
+          message: "Problema en Parse Model: ${e} - stackTrace: ${stackTrace}");
+    }
+  }
+
+  @override
+  Future<String> eliminarRecintoElectoralAbierto(
+      {required EliminarRecintoRequest request}) async{
+    Map<String, dynamic> body = HeadEleccionesRequest(
+            uri: ApiConstantes.ELECCIONES_RECINTO_ELIMINAR,
+            bodyRequest: request.toJson())
+        .toJson();
+
+    String json = await UrlApiProviderSiipneMovil.delete(
+      body: body,
+    );
+    String titleJson = "eliminarRecintoElectoral";
+
+    try {
+      // Validar la respuesta del servidor
+      String msj =
+          await ResponseApi.validateInsert(json: json, titleJson: titleJson);
+      return msj;
     } catch (e, stackTrace) {
       // Manejo centralizado de excepciones
       throw ParseJsonException(
