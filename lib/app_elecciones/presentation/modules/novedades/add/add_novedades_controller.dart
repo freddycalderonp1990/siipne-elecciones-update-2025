@@ -176,10 +176,6 @@ class AddNovedadesController extends GetxController {
     peticionServerState(false);
   }
 
-  cleardatos() {
-    selectNovedad.value = NovedadesElectorale.empty();
-    selectTipoNovedad.value = NovedadesElectorale.empty();
-  }
 
   cerrarSession() {
     Get.toNamed(AppRoutes.SPLASH_APP);
@@ -398,6 +394,9 @@ class AddNovedadesController extends GetxController {
     selectTipoNovedad.value = NovedadesElectorale.empty();
     selectNovedad.value = NovedadesElectorale.empty();
     selectDelito.value = NovedadesElectorale.empty();
+
+
+    mGaleryCameraModel = Rx<GaleryCameraModel?>(null);
 
     controllerCedula.clear();
     controllerTelefono.clear();

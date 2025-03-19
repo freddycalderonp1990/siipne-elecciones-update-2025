@@ -8,7 +8,8 @@ class ReportNovedadesPage extends GetView<ReportNovedadesController> {
     return WorkAreaPageWidget(
       mostrarBtnAtras: true,
       title: "REPORTE DE NOVEDADES",
-      contenido: Container(child: GpsAccessScreen(contenido: getContenido())),
+      showGps: true,
+      contenido:  getContenido(),
       peticionServer: controller.peticionServerState,
     );
   }
@@ -59,6 +60,7 @@ class ReportNovedadesPage extends GetView<ReportNovedadesController> {
             ? [Text("No hay novedades disponibles")]
             : [
           ListView.builder(
+            reverse: true, // Invierte el orden
             shrinkWrap: true, // 🔹 Evita que el ListView tome más espacio del necesario
             physics: NeverScrollableScrollPhysics(), // 🔹 Evita conflictos de scroll
             itemCount: list.length,

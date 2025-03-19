@@ -19,6 +19,7 @@ import '../../../app/core/utils/responsiveUtil.dart';
 import '../../../app/core/utils/utilidadesUtil.dart';
 
 import '../../../app_elecciones/presentation/widgets/customWidgets.dart';
+import '../../../app_elecciones/presentation/widgets/gps_access_screen.dart';
 import '../../core/app_config.dart';
 import '../../core/utils/device_info.dart';
 import '../../core/utils/photo_helper.dart';

@@ -84,6 +84,7 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
       body: body,
     );
 
+
     String titleJson = "AbrirRecintoElectoral";
 
     try {
@@ -156,6 +157,41 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
       String msj =
           await ResponseApi.validateInsert(json: json, titleJson: titleJson);
       return msj;
+    } catch (e, stackTrace) {
+      // Manejo centralizado de excepciones
+      throw ParseJsonException(
+          message: "Problema en Parse Model: ${e} - stackTrace: ${stackTrace}");
+    }
+  }
+
+  @override
+  Future<datosFinalizarProceso> finalizarRecintoElectoral({required FinalizarRecintoRequest request}) async{
+    Map<String, dynamic> body = HeadEleccionesRequest(
+        uri: ApiConstantes.ELECCIONES_RECINTO_FINALIZAR,
+        bodyRequest: request.toJson())
+        .toJson();
+
+    String json = await UrlApiProviderSiipneMovil.post(
+      body: body,
+    );
+    String titleJson = "finalizarRecintoElectoral";
+
+    try {
+      // Validar la respuesta del servidor
+      String msj =
+      await ResponseApi.validateInsert(json: json, titleJson: titleJson);
+      if (msj == ApiConstantes.varTrue) {
+        return datosFinalizarProceso(horaServer: "00:00", horaValidate: "00:00",insert: true);
+      }
+      // Obtener los datos del modelo en formato String
+      String datosJson = getDatosModelFromString(json, titleJson);
+      // Parsear y retornar el modelo correspondiente
+
+      print("datosJson ${datosJson}");
+      return
+          FinalizarProcesoElectoralModel.fromJson(json)
+              .finalizarRecintoElectoral.datos;
+
     } catch (e, stackTrace) {
       // Manejo centralizado de excepciones
       throw ParseJsonException(

@@ -97,41 +97,54 @@ class ServerException implements Exception {
 
     String mesage = 'No definido';
 
+    String msjCode=" - code ${statusCode}";
 
     switch (statusCode) {
       case 404: //HTTP_NOT_FOUND
         mesage =
-        "No es posible conectar con el servidor. Pagina no encontrada.";
+        "No es posible conectar con el servidor. Pagina no encontrada. ${msjCode}";
         break;
 
       case 400: //HTTP_Bad_Request
-        mesage = "No es posible conectar con el servidor. Solicitud incorrecta";
+        mesage = "No es posible conectar con el servidor. Solicitud incorrecta  ${msjCode}";
         break;
 
       case 401: //HTTP_No_autorizado
-        mesage = "No es posible conectar con el servidor. Acceso no Autorizado";
+        mesage = "No es posible conectar con el servidor. Acceso no Autorizado  ${msjCode}";
         break;
 
-      case 500: //HTTP_No_autorizado
-        mesage = 'Problema con el servidor'
+      case 500:
+        mesage = 'Problema con el servidor  ${msjCode}'
             '\n\nPor favor revise su conexión a internet y vuelve a ejecutar la acción. '
             'Si el problema persiste contacte con el administrador.  ';
         break;
 
-      case 501: //HTTP_No_autorizado
-        mesage = 'Problema con el servidor'
+      case 530:
+        mesage = 'Problema con el servidor  ${msjCode}'
+            '\n\nPor favor revise su conexión a internet y vuelve a ejecutar la acción. '
+            'Si el problema persiste contacte con el administrador.  ';
+        break;
+
+      case 501:
+        mesage = 'Problema con el servidor  ${msjCode}'
             '\n\nProceso no completado - vuelve a ejecutar la acción. '
             'Si el problema persiste contacte con el administrador.  ';
         break;
 
-      case 502: //HTTP_No_autorizado
-        mesage = 'Problema con el servidor'
+      case 422: //Bad Gateway
+        mesage = 'Problema con el servidor  ${msjCode}'
             '\n\nCampos Incompletos - vuelve a ejecutar la acción. '
             'Si el problema persiste contacte con el administrador.  ';
         break;
 
+      case 422: //Bad Gateway
+        mesage = 'Problema con el servidor  ${msjCode}'
+            '\n'
+            'Si el problema persiste contacte con el administrador.  ';
+        break;
+
       case 405: //HTTP_No_autorizado
-        mesage = 'Metodo no implementado'
+        mesage = 'Metodo no implementado  ${msjCode}'
             '\n\n'
             'Si el problema persiste contacte con el administrador.  ';
         break;
@@ -143,12 +156,13 @@ class ServerException implements Exception {
 
         break;
 
-      case 422: //HTTP_No_autorizado
+      case 480: //HTTP_No_autorizado
         mesage = 'Recinto/Unidad no se encuentra disponible';
 
         throw CloseRecintoException(message: msjException);
 
         break;
+
 
       default:
         mesage = 'No  es posible conectar con el servidor.'

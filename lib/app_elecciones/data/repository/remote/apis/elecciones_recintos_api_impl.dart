@@ -38,7 +38,14 @@ class EleccionesRecintosApiImpl extends EleccionesRecintosRepository {
   @override
   Future<String> eliminarRecintoElectoralAbierto(
       {required EliminarRecintoRequest request}) async {
-    return await _EleccionesRecintosApiProviderImpl.eliminarRecintoElectoralAbierto(
+    return await _EleccionesRecintosApiProviderImpl
+        .eliminarRecintoElectoralAbierto(request: request);
+  }
+
+  @override
+  Future<datosFinalizarProceso> finalizarRecintoElectoral(
+      {required FinalizarRecintoRequest request}) async {
+    return await _EleccionesRecintosApiProviderImpl.finalizarRecintoElectoral(
         request: request);
   }
 }

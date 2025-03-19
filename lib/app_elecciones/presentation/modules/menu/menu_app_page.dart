@@ -76,13 +76,7 @@ class MenuAppPage extends GetView<MenuAppController> {
             colorFondo: Colors.white,
             img: SiipneImages.icon_registrarse_rec_elect,
             title: SiipneStrings.ANEXARSE,
-            onTap: () {
-              /* Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          VerificarGpsPage(pantalla: AnexarsePage())));*/
-            }),
+            onTap: () => Get.toNamed(SiipneRoutes.ANEXARSE)),
         SizedBox(
           height: responsive.altoP(separacionBtnMenu),
         ),

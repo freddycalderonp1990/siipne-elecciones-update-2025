@@ -1,6 +1,6 @@
 part of '../../controllers.dart';
 
-class RecintosCrearCodigoController extends GetxController {
+class CrearCodigoUnidadPoliController extends GetxController {
   final loginController = Get.find<LoginController>();
 
   final selectProcesoOperativoController =
@@ -34,6 +34,9 @@ class RecintosCrearCodigoController extends GetxController {
   var controllerTelefono = new TextEditingController();
   final formKey = GlobalKey<FormState>();
 
+  //para mostrar los recintos
+  RxBool continuar = false.obs;
+
   @override
   void onInit() async {
     user = loginController.user.value;
@@ -53,41 +56,10 @@ class RecintosCrearCodigoController extends GetxController {
     super.onClose();
   }
 
-  Future<void> getRecintosElectorales() async {
-    // peticionServerState(true);
-    cargaInicial.value = true;
-
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
-      final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
-      LatLng position = await locationBloc.getCurrentPosition();
-
-      //le asigno 1 porque es el id que le corresponde a recintos electorales
-      //para solo mostrar los recintos electorales
-      int idDgoTipoEje = 1;
-
-      RecintoCercanosRequest request = RecintoCercanosRequest(
-          latitud: position.latitude,
-          longitud: position.longitude,
-          idDgoProcElec: selectProcesoOperativoController
-              .selectProcesosOperativo.value.idDgoProcElec,
-          idDgoTipoEje: idDgoTipoEje);
-
-      listRecintosElectorales.value = await _eleccionesRecintosApiImpl
-          .getRecintosElectoralesCercanos(request: request);
-
-      if (listRecintosElectorales.length == 0) {
-        DialogosAwesome.getInformation(
-            descripcion: "No existen Recintos Electorales Cercanos");
-        return;
-      }
-    });
-
-    // peticionServerState(false);
-  }
 
   Future<void> getSubsistemas() async {
     print("consultando");
-    // peticionServerState(true);
+     peticionServerState(true);
     await ExceptionHelper.manejarErroresShowDialogo(() async {
       listSubsistema.value = await _eleccionesTipoEjesApiImpl
           .getUnidadesPoliciales(usuario: user.idGenUsuario);
@@ -97,7 +69,7 @@ class RecintosCrearCodigoController extends GetxController {
         return;
       }
     });
-    // peticionServerState(false);
+    peticionServerState(false);
   }
 
   Future<List<UnidadesPoliciale>> getTipoEjesPoridDgoTipoEje(
@@ -131,14 +103,41 @@ class RecintosCrearCodigoController extends GetxController {
     }
   }
 
-  Future<void> getDatos() async {
+
+  Future<void> getRecintosElectorales(int idDgoTipoEje) async {
     peticionServerState(true);
-    List<dynamic> resultados = await Future.wait([
-      getRecintosElectorales(),
-      getSubsistemas(),
-    ]);
+    cargaInicial.value = true;
+
+    await ExceptionHelper.manejarErroresShowDialogo(() async {
+      final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
+      LatLng position = await locationBloc.getCurrentPosition();
+
+      //le asigno 1 porque es el id que le corresponde a recintos electorales
+      //para solo mostrar los recintos electorales
+
+
+      RecintoCercanosRequest request = RecintoCercanosRequest(
+          latitud: position.latitude,
+          longitud: position.longitude,
+          idDgoProcElec: selectProcesoOperativoController
+              .selectProcesosOperativo.value.idDgoProcElec,
+          idDgoTipoEje: idDgoTipoEje);
+
+      listRecintosElectorales.value = await _eleccionesRecintosApiImpl
+          .getRecintosElectoralesCercanos(request: request);
+
+      if (listRecintosElectorales.length == 0) {
+        DialogosAwesome.getInformation(
+            descripcion: "No existen Unidades Policiales Cercanas");
+        return;
+      }
+    });
+
     peticionServerState(false);
   }
+
+
+
 
   msjCrearCodigo({required VoidCallback onPressed}) {
     bool isValid = formKey.currentState!.validate();
@@ -178,7 +177,7 @@ class RecintosCrearCodigoController extends GetxController {
           idDgoReciUnidadPolicial: selectRecintosElectoral.value.idDgoReciElect,
           telefono: controllerTelefono.text,
           ip: ip,
-          idDgoTipoEje: selectUnidadPolicial.value.idDgoTipoEje);
+          idDgoTipoEje: selectDireccionPoliciales.value.idDgoTipoEje);
 
       _abrirRecintoElectoral =
           await _eleccionesRecintosApiImpl.crearCodigo(request: request);

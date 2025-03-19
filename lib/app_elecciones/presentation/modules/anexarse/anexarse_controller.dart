@@ -1,6 +1,6 @@
 part of '../controllers.dart';
 
-class MenuUnidadesPolicialesController extends GetxController {
+class AnexarseController extends GetxController {
   final loginController = Get.find<LoginController>();
 
 
@@ -13,6 +13,7 @@ class MenuUnidadesPolicialesController extends GetxController {
       RecintosElectoralesAbiertos.empty();
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  var controllerCodigoRecinto = new TextEditingController();
 
   late DataUser  user;
 

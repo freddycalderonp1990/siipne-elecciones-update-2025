@@ -1,13 +1,23 @@
 part of '../../pages.dart';
 
-class RecintosCrearCodigoPage extends GetView<RecintosCrearCodigoController> {
-  const RecintosCrearCodigoPage({Key? key}) : super(key: key);
+class CrearCodigoUnidadPoliPage
+    extends GetView<CrearCodigoUnidadPoliController> {
+  const CrearCodigoUnidadPoliPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
-      title: SiipneStrings.recElecAbrir,
+      title: "CREAR CÓDIGO",
       mostrarBtnAtras: true,
+      onPressBtnAtras: (){
+
+        if(controller.continuar.value){
+          controller.continuar.value=false;
+        }
+        else{
+          Get.back();
+        }
+      },
       contenido: getContenido(),
       peticionServer: controller.peticionServerState,
     );
@@ -50,6 +60,40 @@ class RecintosCrearCodigoPage extends GetView<RecintosCrearCodigoController> {
     );
   }
 
+  _getDesingSelectDireccionContinuar(ResponsiveUtil responsive) {
+    return Column(
+      children: [
+        getComboSubsistema(),
+        SizedBox(
+          height: responsive.altoP(0.4),
+        ),
+        getComboDireccionesPoliciales(),
+
+        SizedBox(
+          height: responsive.altoP(3),
+        ),
+        btnContinuar(),
+      ],
+    );
+  }
+
+  _getDesingSelectUnidadVolver(ResponsiveUtil responsive) {
+    return Column(
+      children: [
+        getComboRecintosElectorales(),
+
+        SizedBox(
+          height: responsive.altoP(0.4),
+        ),
+        wgTxtTelefono(responsive),
+        SizedBox(
+          height: responsive.altoP(3),
+        ),
+        btnCrear(),
+      ],
+    );
+  }
+
   _getMenu(ResponsiveUtil responsive) {
     double separacionBtnMenu = 5;
     return Column(
@@ -58,32 +102,14 @@ class RecintosCrearCodigoPage extends GetView<RecintosCrearCodigoController> {
           () => controller.cargaInicial == false
               ? MyUbicacionWidget(
                   callback: (_) {
-                    controller.getDatos();
+                    controller.getSubsistemas();
                   },
                 )
               : Container(),
         ),
-        getComboRecintosElectorales(),
-        SizedBox(
-          height: responsive.altoP(0.4),
-        ),
-        getComboSubsistema(),
-        SizedBox(
-          height: responsive.altoP(0.4),
-        ),
-        getComboDireccionesPoliciales(),
-        SizedBox(
-          height: responsive.altoP(0.4),
-        ),
-        getComboEjesUnidadesPoliciales(),
-        SizedBox(
-          height: responsive.altoP(1),
-        ),
-        wgTxtTelefono(responsive),
-        SizedBox(
-          height: responsive.altoP(0.4),
-        ),
-        btnCrear(),
+        Obx(() => !controller.continuar.value
+            ? _getDesingSelectDireccionContinuar(responsive)
+            : _getDesingSelectUnidadVolver(responsive)),
         SizedBox(
           height: responsive.altoP(separacionBtnMenu),
         ),
@@ -95,32 +121,30 @@ class RecintosCrearCodigoPage extends GetView<RecintosCrearCodigoController> {
     return ContenedorDesingWidget(
         paddin: EdgeInsets.all(5),
         child: Obx(() => ComboBusqueda(
-              selectValue: controller.selectRecintosElectoral.value,
+          selectValue: controller.selectRecintosElectoral.value,
 
-              icon: Icons.select_all_sharp,
+          icon: Icons.select_all_sharp,
 
-              showClearButton: false,
-              datos: controller.listRecintosElectorales.value,
-              displayField: (item) =>
-                  item.nomRecintoElec, // Aquí decides mostrar "nombres"
-              searchHint: "Recinto Electoral",
-              complete: (value) {
-                controller.selectRecintosElectoral.value = RecintosElectoral();
+          showClearButton: false,
+          datos: controller.listRecintosElectorales.value,
+          displayField: (item) =>
+          item.nomRecintoElec, // Aquí decides mostrar "nombres"
+          searchHint: "Recinto Electoral",
+          complete: (value) {
+            controller.selectRecintosElectoral.value = RecintosElectoral();
 
-                if (value != null) {
-                  controller.selectRecintosElectoral.value = value;
-                }
-              },
-              textSeleccioneUndato: "Seleccione un Recinto",
-            )));
+            if (value != null) {
+              controller.selectRecintosElectoral.value = value;
+            }
+          },
+          textSeleccioneUndato: "Seleccione un Recinto",
+        )));
   }
 
   Widget getComboSubsistema() {
-    print("aaaaa ${controller.selectRecintosElectoral.value.idDgoTipoEje}");
-    return Obx(() => controller.selectRecintosElectoral.value.idDgoTipoEje > 0
-        ? ContenedorDesingWidget(
-            paddin: EdgeInsets.all(5),
-            child: ComboBusqueda(
+    return ContenedorDesingWidget(
+        paddin: EdgeInsets.all(5),
+        child: Obx(() => ComboBusqueda(
               selectValue: controller.selectSubsistema.value,
               icon: Icons.select_all_sharp,
               showClearButton: false,
@@ -143,8 +167,7 @@ class RecintosCrearCodigoPage extends GetView<RecintosCrearCodigoController> {
                 }
               },
               textSeleccioneUndato: "Seleccione un Subsistema",
-            ))
-        : Container());
+            )));
   }
 
   Widget getComboDireccionesPoliciales() {
@@ -175,32 +198,6 @@ class RecintosCrearCodigoPage extends GetView<RecintosCrearCodigoController> {
         : Container());
   }
 
-  Widget getComboEjesUnidadesPoliciales() {
-    return Obx(() => controller.selectDireccionPoliciales.value.idDgoTipoEje > 0
-        ? ContenedorDesingWidget(
-            paddin: EdgeInsets.all(5),
-            child: ComboBusqueda(
-              selectValue: controller.selectUnidadPolicial.value,
-              icon: Icons.select_all_sharp,
-              showClearButton: false,
-              datos: controller.listUnidadesPoliciales,
-              displayField: (item) =>
-                  item.descripcion, // Aquí decides mostrar "nombres"
-              searchHint: "Unidad Policial",
-              complete: (value) {
-                controller.selectUnidadPolicial.value =
-                    UnidadesPoliciale.empty();
-
-                if (value != null) {
-                  controller.selectUnidadPolicial.value = value;
-                  return;
-                }
-              },
-              textSeleccioneUndato: "Seleccione una Unidad",
-            ))
-        : Container());
-  }
-
   Widget wgTxtTelefono(ResponsiveUtil responsive) {
     Widget wg = ContenedorDesingWidget(
         child: Form(
@@ -221,7 +218,7 @@ class RecintosCrearCodigoPage extends GetView<RecintosCrearCodigoController> {
         ],
       ),
     ));
-    return Obx(() => controller.selectUnidadPolicial.value.idDgoTipoEje > 0
+    return Obx(() => controller.selectRecintosElectoral.value .idDgoTipoEje > 0
         ? wg
         : Container());
   }
@@ -233,21 +230,43 @@ class RecintosCrearCodigoPage extends GetView<RecintosCrearCodigoController> {
     return null;
   }
 
-  Widget btnCrear() {
-
-    return Obx(() => controller.selectUnidadPolicial.value.idDgoTipoEje > 0
-        ? controller.selectRecintosElectoral.value.idDgoTipoEje>0? BtnIconWidget(
+  Widget btnContinuar() {
+    return Obx(() => controller.selectDireccionPoliciales.value.idDgoTipoEje > 0
+        ? BtnIconWidget(
             icon: Icons.open_in_browser_outlined,
-            titulo: "CREAR CÓDIGO",
-            onPressed:()=>  controller.msjCrearCodigo(onPressed: (){
-              Get.back();
-              controller.crearCodigo();
+            titulo: "CONTINUAR",
+            onPressed: ()  async{
 
-            })
-            ,
-          ):Container()
+               int idDgoTipoEje=controller.selectDireccionPoliciales.value.idDgoTipoEje;
+               await controller.getRecintosElectorales(idDgoTipoEje);
+            controller.continuar.value = true;
+            },
+          )
         : Container());
   }
 
 
+  Widget btnVolver() {
+    return  BtnIconWidget(
+      icon: Icons.open_in_browser_outlined,
+      titulo: "VOLVER",
+      onPressed: () {
+        controller.continuar.value = false;
+      },
+    );
+  }
+
+  Widget btnCrear() {
+    return Obx(() =>  controller.selectRecintosElectoral.value.idDgoTipoEje > 0
+            ? BtnIconWidget(
+                icon: Icons.open_in_browser_outlined,
+                titulo: "CREAR CÓDIGO",
+                onPressed: () => controller.msjCrearCodigo(onPressed: () {
+                  Get.back();
+                  controller.crearCodigo();
+                }),
+              )
+            : Container()
+        );
+  }
 }

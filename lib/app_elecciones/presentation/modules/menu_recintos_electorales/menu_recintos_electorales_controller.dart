@@ -53,6 +53,47 @@ class MenuRecintosElectoralesController extends GetxController {
     }
   }
 
+
+  Future<void> finalizarRecinto() async {
+    peticionServerState(true);
+    String ip = await DeviceInfo.getIp;
+
+    int codigo=recintosElectoralesAbiertos.idDgoCreaOpReci;
+    await ExceptionHelper.manejarErroresShowDialogo(() async {
+      FinalizarRecintoRequest request = FinalizarRecintoRequest(
+          usuario: user.idGenUsuario,
+          ip: ip,
+          idDgoCreaOpReci: codigo,
+          idDgoProcElec: recintosElectoralesAbiertos.idDgoProcElec,
+          idDgoReciElect: recintosElectoralesAbiertos.idDgoReciElect,
+          idDgoPerAsigOpe: recintosElectoralesAbiertos.idDgoPerAsigOpe,
+          idDgoTipoEje: recintosElectoralesAbiertos.idDgoTipoEje);
+
+      datosFinalizarProceso dataResponse= await _eleccionesRecintosApiImpl
+          .finalizarRecintoElectoral(request: request);
+
+      if (dataResponse.insert) {
+        DialogosAwesome.getSucess(
+            descripcion: "El código ${codigo} fue finalizado con éxito!",btnOkOnPress: (){
+          Get.offAllNamed(SiipneRoutes.MENU_APP );
+        });
+        return;
+      }
+
+      String msj="No se pudo finalizar el código ${codigo}."
+          "\n\nLa Hora para finalizar es ${dataResponse.horaValidate}.";
+
+
+      DialogosAwesome.getWarning(descripcion: msj,btnOkOnPress: (){
+
+      });
+
+
+    });
+
+    peticionServerState(false);
+  }
+
   Future<void> eliminarCodigoRecinto() async {
     peticionServerState(true);
     String ip = await DeviceInfo.getIp;
@@ -66,16 +107,17 @@ class MenuRecintosElectoralesController extends GetxController {
 
       String msjResponse= await _eleccionesRecintosApiImpl
           .eliminarRecintoElectoralAbierto(request: request);
-
+      int codigo=recintosElectoralesAbiertos.idDgoCreaOpReci;
       if (msjResponse== ApiConstantes.varTrue) {
+
         DialogosAwesome.getSucess(
-            descripcion: "El código fue eliminado con éxito!",btnOkOnPress: (){
+            descripcion: "El código ${codigo} fue eliminado con éxito!",btnOkOnPress: (){
           Get.offAllNamed(SiipneRoutes.MENU_APP );
         });
         return;
       }
 
-      String msj="No se pudo eliminar."
+      String msj="el código ${codigo}, no se pudo eliminar."
 
           "${msjResponse}"
           "\n\nVuelva a intentarlo, o consulte con el administrador del sistema";

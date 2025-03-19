@@ -8,7 +8,8 @@ class ReportPersonPage extends GetView<ReportPersonController> {
     return WorkAreaPageWidget(
       mostrarBtnAtras: true,
       title: "REPORTE DEL PERSONAL",
-      contenido: Container(child: GpsAccessScreen(contenido:getContenido())),
+      showGps: true,
+      contenido: getContenido(),
       peticionServer: controller.peticionServerState,
     );
   }
@@ -76,6 +77,7 @@ class ReportPersonPage extends GetView<ReportPersonController> {
         title: "Personal Activo ${controller.listPersonalActivo.length}",
         children: [
           ListView.builder(
+            reverse: true, // Invierte el orden1206762401
             shrinkWrap: true,
             physics:
             NeverScrollableScrollPhysics(), // Evita conflictos de scroll dentro de otro scroll

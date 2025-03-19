@@ -7,9 +7,10 @@ class SelectProcesoOperativoPage
   @override
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
-      title:"OPERATIVOS 3" ,
+      title:"OPERATIVOS" ,
       mostrarBtnAtras: true,
-      contenido: Center(child:  GpsAccessScreen(contenido: getContenido())),
+      showGps: true,
+      contenido:  getContenido(),
       peticionServer: controller.peticionServerState,
     );
   }

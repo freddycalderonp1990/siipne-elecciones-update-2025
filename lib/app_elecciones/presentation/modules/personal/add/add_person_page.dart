@@ -8,7 +8,8 @@ class AddPersonPage extends GetView<AddPersonController> {
     return WorkAreaPageWidget(
       mostrarBtnAtras: true,
       title: "AGREGAR PERSONAL",
-      contenido: Container(child: GpsAccessScreen(contenido: getContenido())),
+      showGps: true,
+      contenido:  getContenido(),
       peticionServer: controller.peticionServerState,
     );
   }

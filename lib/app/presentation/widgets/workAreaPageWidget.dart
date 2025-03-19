@@ -6,6 +6,8 @@ class WorkAreaPageWidget extends StatefulWidget {
   final Widget contenido;
 
   final ValueChanged<String>? onChangedBusqueda;
+  final VoidCallback? onPressBtnAtras;
+  final bool showGps;
 
   final String? title;
   final imgPerfil;
@@ -18,18 +20,19 @@ class WorkAreaPageWidget extends StatefulWidget {
 
   final VoidCallback? onPressedBtnHome;
 
-  const WorkAreaPageWidget({
-    required this.peticionServer,
-    required this.contenido,
-    this.imgPerfil = null,
-    this.imgFondo,
-    this.mostrarVersion = false,
-    this.title,
-    this.mostrarBtnHome = false,
-    this.onPressedBtnHome,
-    this.mostrarBtnAtras = false,
-    this.onChangedBusqueda,
-  });
+  const WorkAreaPageWidget(
+      {required this.peticionServer,
+      required this.contenido,
+      this.imgPerfil = null,
+      this.imgFondo,
+      this.mostrarVersion = false,
+      this.title,
+      this.mostrarBtnHome = false,
+      this.onPressedBtnHome,
+      this.mostrarBtnAtras = false,
+      this.onChangedBusqueda,
+      this.onPressBtnAtras,
+      this.showGps = false});
 
   @override
   _WorkAreaPageWidgetState createState() => _WorkAreaPageWidgetState();
@@ -100,6 +103,30 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
     });
   }
 
+  Widget desingContenido() {
+    final responsive = ResponsiveUtil();
+
+    Widget wgContenido = widget.showGps
+        ? GpsAccessScreen(contenido: widget.contenido)
+        : widget.contenido;
+
+    return widget.title != null
+        ? Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              TextSombrasWidget(
+                colorTexto: Colors.white,
+                colorSombra: Colors.black,
+                title: widget.title!,
+                size: responsive.diagonalP(AppConfig.tamTextoTitulo),
+              ),
+              Flexible(child: wgContenido),
+            ],
+          )
+        : wgContenido;
+  }
+
   Widget getDersingPage() {
     final responsive = ResponsiveUtil();
 
@@ -119,37 +146,16 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
                     children: [
                       Expanded(
                         child: Column(
-
-
-
                           children: [
                             SizedBox(
                               height: responsive.altoP(15),
                             ),
-
                             Flexible(
                                 child: Center(
-                              child: Container (
-
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 12),
-                                    child:  widget.contenido != null
-                                        ? widget.title!=null? Column(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-
-                                      TextSombrasWidget(
-                                        colorTexto: Colors.white,
-                                        colorSombra: Colors.black,
-                                        title: widget.title!,
-                                        size: responsive.diagonalP(AppConfig.tamTextoTitulo),
-                                      ),
-
-                                      Flexible(child:  widget.contenido),
-                                    ],):widget.contenido
-                                        : Container(),
-                                  ),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: 12),
+                                child: desingContenido(),
+                              ),
                             )),
                             SizedBox(
                               height: responsive.altoP(8),
@@ -160,7 +166,11 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
                     ],
                   ),
 
-                  widget.mostrarBtnAtras ? BtnAtrasWidget() : Container(),
+                  widget.mostrarBtnAtras
+                      ? BtnAtrasWidget(
+                          pantallaIrAtras: widget.onPressBtnAtras,
+                        )
+                      : Container(),
 
                   getBtnBuscar(),
                   widget.mostrarBtnHome ? getBtnHome() : Container(),

@@ -63,7 +63,7 @@ class TiposServiciosEjesPage extends GetView<TiposServiciosEjesController> {
                     img: SiipneImages.icon_abrir_rec_elec,
                     title: 'SERVICIO EN RECINTOS',
                     onTap: () {
-                      Get.toNamed(SiipneRoutes.RECINTOS_CREAR_CODIGO);
+                      Get.toNamed(SiipneRoutes.CREAR_CODIGO_RECINTOS);
                     })
                 : Container(),
             SizedBox(
@@ -74,7 +74,11 @@ class TiposServiciosEjesPage extends GetView<TiposServiciosEjesController> {
                     horizontal: false,
                     img: SiipneImages.icon_agregar_personal,
                     title: SiipneStrings.UNIDADESPOLICIALES,
-                    onTap: () {},
+                    onTap: () {
+
+                      Get.toNamed(SiipneRoutes.CREAR_CODIGO_UNIDADES_POLI);
+
+                    },
                   )
                 : Container(),
             SizedBox(

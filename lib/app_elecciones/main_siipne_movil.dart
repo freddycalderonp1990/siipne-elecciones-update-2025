@@ -35,8 +35,6 @@ class MainSiipneMovil extends StatelessWidget {
 
       localizationsDelegates:const [
         GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
         Locale('es', ''), // arabic, no country code

@@ -27,6 +27,7 @@ class ApiConstantes {
   static const ELECCIONES_UNIDADES_POLICIALES = "v1-unidades-policiales"; // bbc1a27d5d33236b1ae4100a33b5f2e9
   static const ELECCIONES_TIPOS_EJES_BY_ID_PADRE = "v1-ejes-by-id-padre"; // 0934eca05bce3f4f96999f3fa15ec6aa
   static const ELECCIONES_SERVICIOS_ACTIVOS = "v1-servicios-activo"; // 1e5ce7ad42482403d3dc5b3eba80e97b
+  static const ELECCIONES_RECINTO_FINALIZAR= "v1-recinto-finalizar"; // a3a6f42d152098e487e00f831a2b4772
 
   //PERSONAL
   static const ELECCIONES_PERSONA_BY_CEDULA = "v1-persona-cedula"; // c996291faac0d749d702ba290948dcd8

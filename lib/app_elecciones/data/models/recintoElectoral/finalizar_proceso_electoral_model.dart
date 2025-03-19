@@ -50,13 +50,15 @@ class FinalizarRecintoElectoral {
 }
 
 class datosFinalizarProceso {
-  datosFinalizarProceso({
+  datosFinalizarProceso( {
     required  this.horaServer,
     required   this.horaValidate,
+    this.insert = false
   });
 
   final String horaServer;
   final String horaValidate;
+  final bool insert;
 
   factory datosFinalizarProceso.fromJson(String str) => datosFinalizarProceso.fromMap(json.decode(str));
 
@@ -66,6 +68,20 @@ class datosFinalizarProceso {
     horaServer: ParseModel.parseToString(json["horaServer"]),
     horaValidate: ParseModel.parseToString(json["horaValidate"]),
   );
+
+  /// Método `copyWith()` para crear una copia del objeto con valores modificados
+  datosFinalizarProceso copyWith({
+    String? horaServer,
+    String? horaValidate,
+    bool? insert,
+  }) {
+    return datosFinalizarProceso(
+      horaServer: horaServer ?? this.horaServer,
+      horaValidate: horaValidate ?? this.horaValidate,
+      insert: insert ?? this.insert,
+    );
+  }
+
 
   Map<String, dynamic> toMap() => {
     "horaServer": horaServer,

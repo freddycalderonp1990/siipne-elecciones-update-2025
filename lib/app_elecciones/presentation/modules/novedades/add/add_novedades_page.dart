@@ -8,7 +8,8 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
     return WorkAreaPageWidget(
       mostrarBtnAtras: true,
       title: "REGISTRAR NOVEDADES",
-      contenido: Container(child: GpsAccessScreen(contenido: getContenido())),
+      showGps: true,
+      contenido:getContenido(),
       peticionServer: controller.peticionServerState,
     );
   }

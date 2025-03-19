@@ -13,6 +13,7 @@ import 'package:siipnelecciones3/app/presentation/routes/app_routes.dart';
 
 import 'package:siipnelecciones3/app/presentation/widgets/custom_app_widgets.dart';
 import 'package:flutter/rendering.dart';
+import 'package:siipnelecciones3/app_elecciones/core/siipne_config.dart';
 import 'package:siipnelecciones3/app_elecciones/presentation/modules/personal/report/local_widget/desing_personal.dart';
 
 import 'package:siipnelecciones3/app_elecciones/presentation/routes/siipne_routes.dart';
@@ -57,10 +58,11 @@ part 'menu/menu_app_page.dart';
 part 'select_proceso_operativo/select_proceso_operativo_page.dart';
 part 'tipos_servicios_ejes/tipos_servicios_ejes_page.dart';
 part 'menu_recintos_electorales/menu_recintos_electorales_page.dart';
-part 'menu_unidades_policiales/menu_unidades_policiales_page.dart';
+part 'anexarse/anexarse_page.dart';
 
 
-part '1_RecintoElectoral/rec_crear_codigo/rec_crear_codigo_page.dart';
+part '1_RecintoElectoral/crear_codigo/crear_codigo_recintos_page.dart';
+part 'unidades_policiales/crear_codigo/crear_codigo_unidad_poli_page.dart';
 
 part 'personal/add/add_person_page.dart';
 part 'personal/report/report_person_page.dart';
