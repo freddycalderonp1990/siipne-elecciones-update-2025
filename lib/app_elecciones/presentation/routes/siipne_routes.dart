@@ -12,7 +12,9 @@ class SiipneRoutes{
   static const CREAR_CODIGO_RECINTOS="/${name}recintos_crear_codigo";
   static const CREAR_CODIGO_UNIDADES_POLI="/${name}unidades_poli_crear_codigo";
 
-  static const MENU_RECINTOS_ELECTORALES="/${name}menu_recintos_electorales";
+  static const MENU_RECINTOS_ELECTORALES_JEFE="/${name}menu_recintos_electorales_jefe";
+  static const MENU_RECINTOS_ELECTORALES_INTEGRANTE="/${name}menu_recintos_electorales_integrante";
+
   static const ANEXARSE="/${name}anexarse";
 
   static const ADD_PERSONAL="/${name}add_personal";

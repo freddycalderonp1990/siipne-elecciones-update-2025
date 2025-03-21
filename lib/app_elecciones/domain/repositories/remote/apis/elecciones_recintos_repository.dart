@@ -26,4 +26,14 @@ abstract class EleccionesRecintosRepository {
   Future<String> eliminarRecintoElectoralAbierto({
     required EliminarRecintoRequest request,
   });
+
+  Future<DatosRecintoElectoralClass> consultarDatosEncargadoRecintoPoridCreaRecinto({
+    required int idDgoCreaOpReci,
+  });
+
+
+
+
+
+
 }

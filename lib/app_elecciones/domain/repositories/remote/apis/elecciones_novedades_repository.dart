@@ -5,16 +5,11 @@ abstract class EleccionesNovedadesRepository {
   //se definen los contartos
 
   Future<List<NovedadesElectorale>> getNovedadesPadres({
-    required int idDgoTipoEje,
-    required int idDgoProcElec,
-    required int idDgoReciElect,
+    required GetNovedadesPadresRequest request,
   });
 
   Future<List<NovedadesElectorale>> getNovedadesHijas(
-      {required int idDgoTipoEje,
-      required int idNovedadesPadre,
-      required int idDgoProcElec,
-      required int idDgoReciElect});
+      {required GetNovedadesHijasRequest request});
 
   //esta no devuelve un true ni false xq muestra los mensajes
   //varExiste = rYa existe una novedad registrada con este documento

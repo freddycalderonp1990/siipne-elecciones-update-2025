@@ -3,19 +3,13 @@ part of '../../providers_impl.dart';
 class EleccionesNovedadesApiProviderImpl extends EleccionesNovedadesRepository {
   @override
   Future<List<NovedadesElectorale>> getNovedadesHijas({
-    required int idDgoTipoEje,
-    required int idNovedadesPadre,
-    required int idDgoProcElec,
-    required int idDgoReciElect,
+    required  GetNovedadesHijasRequest request
   }) async {
-    Object? body = {
-      "modulo": ApiConstantes.MODULO,
-      "uri": ApiConstantes.ELECCIONES_GET_NOVEDADES_BY_ID_PADRE,
-      "idNovedadesPadre": idNovedadesPadre,
-      "idDgoTipoEje": idDgoTipoEje,
-      "idDgoProcElec": idDgoProcElec,
-      "idDgoReciElect": idDgoReciElect
-    };
+
+    Map<String, dynamic> body = HeadEleccionesRequest(
+        uri: ApiConstantes.ELECCIONES_GET_NOVEDADES_BY_ID_PADRE,
+        bodyRequest: request.toJson())
+        .toJson();
 
     String json = await UrlApiProviderSiipneMovil.post(
       body: body,
@@ -46,17 +40,13 @@ class EleccionesNovedadesApiProviderImpl extends EleccionesNovedadesRepository {
 
   @override
   Future<List<NovedadesElectorale>> getNovedadesPadres({
-    required int idDgoTipoEje,
-    required int idDgoProcElec,
-    required int idDgoReciElect,
+    required  GetNovedadesPadresRequest request
   }) async {
-    Object? body = {
-      "modulo": ApiConstantes.MODULO,
-      "uri": ApiConstantes.ELECCIONES_GET_NOVEDADES_PADRES,
-      "idDgoTipoEje": idDgoTipoEje,
-      "idDgoProcElec": idDgoProcElec,
-      "idDgoReciElect": idDgoReciElect
-    };
+
+    Map<String, dynamic> body = HeadEleccionesRequest(
+        uri: ApiConstantes.ELECCIONES_GET_NOVEDADES_PADRES,
+        bodyRequest: request.toJson())
+        .toJson();
 
     String json = await UrlApiProviderSiipneMovil.post(
       body: body,

@@ -41,7 +41,8 @@ class PersonalRecintoElectoral {
       required this.fechaFin,
       required this.personal,
       required this.estadoPersonal,
-      required this.idDgoPerAsigOpe});
+      required this.idDgoPerAsigOpe,
+      required this.idGenPersona});
 
   String cargo;
   int idDgoCreaOpReci;
@@ -52,8 +53,10 @@ class PersonalRecintoElectoral {
   String personal;
   String estadoPersonal;
   int idDgoPerAsigOpe;
+  int idGenPersona;
 
   factory PersonalRecintoElectoral.empty() => PersonalRecintoElectoral(
+    idGenPersona: 0,
       cargo: "",
       idDgoCreaOpReci: 0,
       nomRecintoElec: "",
@@ -66,6 +69,7 @@ class PersonalRecintoElectoral {
 
   factory PersonalRecintoElectoral.fromJson(Map<String, dynamic> json) =>
       PersonalRecintoElectoral(
+        idGenPersona: ParseModel.parseToInt(json["idGenPersona"]),
         cargo: ParseModel.parseToString(json["cargo"]),
         idDgoCreaOpReci: ParseModel.parseToInt(json["idDgoCreaOpReci"]),
         nomRecintoElec: ParseModel.parseToString(json["nomRecintoElec"]),
@@ -78,6 +82,7 @@ class PersonalRecintoElectoral {
       );
 
   Map<String, dynamic> toJson() => {
+    "idGenPersona": idGenPersona,
         "cargo": cargo == null ? null : cargo,
         "idDgoCreaOpReci": idDgoCreaOpReci == null ? null : idDgoCreaOpReci,
         "nomRecintoElec": nomRecintoElec == null ? null : nomRecintoElec,

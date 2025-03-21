@@ -25,12 +25,16 @@ class EleccionesProcesosApiProviderImpl extends EleccionesProcesosRepository {
   @override
   Future<List<ProcesosOperativo>> getProcesosOperativos(
       {required double latitud, required double longitud}) async {
-    Object? body = {
-      "modulo": ApiConstantes.MODULO,
-      "uri": ApiConstantes.ELECCIONES_PROCESOS_ACTIVOS,
+
+    Map<String, dynamic> request={
       "latitud":latitud,
       "longitud":longitud
     };
+
+    Map<String, dynamic> body = HeadEleccionesRequest(
+        uri: ApiConstantes.ELECCIONES_PROCESOS_ACTIVOS,
+        bodyRequest: request)
+        .toJson();
 
     String json = await UrlApiProviderSiipneMovil.post(
 

@@ -48,4 +48,13 @@ class EleccionesRecintosApiImpl extends EleccionesRecintosRepository {
     return await _EleccionesRecintosApiProviderImpl.finalizarRecintoElectoral(
         request: request);
   }
+
+  @override
+  Future<DatosRecintoElectoralClass>
+      consultarDatosEncargadoRecintoPoridCreaRecinto(
+          {required int idDgoCreaOpReci}) async {
+    return await _EleccionesRecintosApiProviderImpl
+        .consultarDatosEncargadoRecintoPoridCreaRecinto(
+            idDgoCreaOpReci: idDgoCreaOpReci);
+  }
 }

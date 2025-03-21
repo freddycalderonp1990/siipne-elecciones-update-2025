@@ -66,7 +66,9 @@ part 'tipos_servicios_ejes/tipos_servicios_ejes_controller.dart';
 part '1_RecintoElectoral/crear_codigo/crear_codigo_recintos_controller.dart';
 part 'unidades_policiales/crear_codigo/crear_codigo_unidad_poli_controller.dart';
 
-part 'menu_recintos_electorales/menu_recintos_electorales_controller.dart';
+part 'menu_recintos_electorales/jefe/menu_rec_elec_jefe_controller.dart';
+part 'menu_recintos_electorales/integrante/menu_rec_elec_integrante_controller.dart';
+
 part 'anexarse/anexarse_controller.dart';
 
 part 'personal/add/add_person_controller.dart';

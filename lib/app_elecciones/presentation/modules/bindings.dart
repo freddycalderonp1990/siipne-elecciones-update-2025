@@ -12,7 +12,9 @@ part 'tipos_servicios_ejes/tipos_servicios_ejes_binding.dart';
 part '1_RecintoElectoral/crear_codigo/crear_codigo_recintos_binding.dart';
 part 'unidades_policiales/crear_codigo/crear_codigo_unidad_poli_binding.dart';
 
-part 'menu_recintos_electorales/menu_recintos_electorales_binding.dart';
+part 'menu_recintos_electorales/jefe/menu_rec_elec_jefe_binding.dart';
+part 'menu_recintos_electorales/integrante/menu_rec_elec_integrante_binding.dart';
+
 part 'anexarse/anexarse_binding.dart';
 
 part 'personal/add/add_person_binding.dart';

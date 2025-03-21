@@ -117,4 +117,34 @@ class PersonaApiProviderImpl extends PersonaRepository {
           message: "Problema en Parse Model: ${e} - stackTrace: ${stackTrace}");
     }
   }
+
+
+  @override
+  Future<PerSituacion> verificarSiPersonaEstaBloqueado(
+      {required int idDgoProcElec, required int idGenPersona}) async{
+    Map<String, dynamic> request = {
+      "idDgoProcElec": idDgoProcElec,
+      "idGenPersona": idGenPersona};
+
+    Map<String, dynamic> body = HeadEleccionesRequest(
+        uri: ApiConstantes.ELECCIONES_RECINTO_PER_VER_SITUACION,
+        bodyRequest: request)
+        .toJson();
+
+    String json = await UrlApiProviderSiipneMovil.post(
+      body: body,
+    );
+
+    try {
+      final List<PerSituacion> perSituacion= perSituacionModelFromJson(json).perSituacion;
+      if(perSituacion.length>0){
+        return perSituacion[0];
+      }
+      return PerSituacion.empty();
+    } catch (e, stackTrace) {
+      // Manejo centralizado de excepciones
+      throw ParseJsonException(
+          message: "Problema en Parse Model: ${e} - stackTrace: ${stackTrace}");
+    }
+  }
 }

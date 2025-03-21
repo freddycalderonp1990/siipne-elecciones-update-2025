@@ -1,6 +1,6 @@
-part of '../controllers.dart';
+part of '../../controllers.dart';
 
-class MenuRecintosElectoralesController extends GetxController {
+class MenuRecElecJefeController extends GetxController {
   final loginController = Get.find<LoginController>();
   final EleccionesRecintosApiImpl _eleccionesRecintosApiImpl =
       Get.find<EleccionesRecintosApiImpl>();

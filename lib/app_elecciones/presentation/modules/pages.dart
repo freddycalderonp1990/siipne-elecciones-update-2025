@@ -57,7 +57,9 @@ part 'login/inicio_rapido/inicio_rapido_page.dart';
 part 'menu/menu_app_page.dart';
 part 'select_proceso_operativo/select_proceso_operativo_page.dart';
 part 'tipos_servicios_ejes/tipos_servicios_ejes_page.dart';
-part 'menu_recintos_electorales/menu_recintos_electorales_page.dart';
+part 'menu_recintos_electorales/jefe/menu_rec_elec_jefe_page.dart';
+part 'menu_recintos_electorales/integrante/menu_rec_elec_integrante_page.dart';
+
 part 'anexarse/anexarse_page.dart';
 
 

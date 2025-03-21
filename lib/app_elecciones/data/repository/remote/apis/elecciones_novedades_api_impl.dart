@@ -7,27 +7,18 @@ class EleccionesNovedadesApiImpl extends EleccionesNovedadesRepository {
 
   @override
   Future<List<NovedadesElectorale>> getNovedadesHijas(
-      {required int idDgoTipoEje,
-      required int idNovedadesPadre,
-      required int idDgoProcElec,
-      required int idDgoReciElect}) async {
+      {required GetNovedadesHijasRequest request}) async {
     return await _eleccionesNovedadesApiProviderImpl.getNovedadesHijas(
-        idDgoProcElec: idDgoProcElec,
-        idDgoReciElect: idDgoReciElect,
-        idDgoTipoEje: idDgoTipoEje,
-        idNovedadesPadre: idNovedadesPadre);
+       request: request);
   }
 
   @override
   Future<List<NovedadesElectorale>> getNovedadesPadres({
-    required int idDgoTipoEje,
-    required int idDgoProcElec,
-    required int idDgoReciElect,
+    required GetNovedadesPadresRequest request,
+
   }) async {
     return await _eleccionesNovedadesApiProviderImpl.getNovedadesPadres(
-        idDgoProcElec: idDgoProcElec,
-        idDgoReciElect: idDgoReciElect,
-        idDgoTipoEje: idDgoTipoEje);
+        request: request);
   }
 
   @override

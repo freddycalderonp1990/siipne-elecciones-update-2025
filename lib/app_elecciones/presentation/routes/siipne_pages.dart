@@ -36,9 +36,13 @@ class SiipnePages {
         page: () => CrearCodigoUnidadPoliPage(),
         binding: CrearCodigoUnidadPoliBinding()),
     AppPages.getPageConfig(
-        name: SiipneRoutes.MENU_RECINTOS_ELECTORALES,
-        page: () => MenuRecintosElectoralesPage(),
-        binding: MenuRecintosElectoralesBinding()),
+        name: SiipneRoutes.MENU_RECINTOS_ELECTORALES_JEFE,
+        page: () => MenuRecElecJefePage(),
+        binding: MenuRecElecJefeBinding()),
+    AppPages.getPageConfig(
+        name: SiipneRoutes.MENU_RECINTOS_ELECTORALES_INTEGRANTE,
+        page: () => MenuRecElecIntegrantePage(),
+        binding: MenuRecElecIntegranteBinding()),
     AppPages.getPageConfig(
         name: SiipneRoutes.ANEXARSE,
         page: () => AnexarsePage(),

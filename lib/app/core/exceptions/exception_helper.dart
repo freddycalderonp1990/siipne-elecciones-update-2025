@@ -23,6 +23,7 @@ class ExceptionHelper {
   //y los mensjes van en manejarErroresShowDialogo
 
   static Future<bool> manejarErroresShowDialogo(
+
       Future<void> Function() funcion) async {
     try {
       await funcion();
@@ -37,21 +38,46 @@ class ExceptionHelper {
         Get.back();
       });
     } on CloseRecintoException catch (e) {
-      DialogosAwesome.getWarning(descripcion: e.msj,btnOkOnPress: (){
-        Get.offAllNamed(SiipneRoutes.MENU_APP );
-      });
+
+        DialogosAwesome.getWarning(descripcion: e.msj, btnOkOnPress: () {
+          Get.offAllNamed(SiipneRoutes.MENU_APP);
+        });
+
     } on ParseJsonException catch (e) {
-      DialogosAwesome.getError(descripcion: e.msj);
+
+      DialogosAwesome.getIconPolicia(
+        titleBtnSi: "Aceptar",
+        mostrarSegungoBtn: false,
+        btnOkOnPress: (){
+          Get.back();
+        },
+        descripcion:
+        e.msj, title: 'ERROR', );
     } on TimeoutException catch (e) {
-      DialogosAwesome.getError(
+      DialogosAwesome.getIconPolicia(
+        titleBtnSi: "Aceptar",
+        mostrarSegungoBtn: false,
+          btnOkOnPress: (){
+          Get.back();
+          },
           descripcion:
-              "Tiempo de Espera Superado.\nIntente nuevamente o contacte al administrador.");
+              "Tiempo de Espera Superado.\nIntente nuevamente o contacte al administrador.", title: 'ERROR', );
+
+
     } catch (e, t) {
       String msj = ExceptionHelper.setMensaje(
           mensaje:
               "Error Inesperado.\nIntente nuevamente o contacte al administrador.",
           msjException: "Error: ${e} - Linea: ${t}");
-      DialogosAwesome.getError(descripcion: msj);
+
+      DialogosAwesome.getIconPolicia(
+        titleBtnSi: "Aceptar",
+        mostrarSegungoBtn: false,
+        btnOkOnPress: (){
+          Get.back();
+        },
+        descripcion:
+        msj, title: 'ERROR', );
     }
     return false; // Hubo un error
   }

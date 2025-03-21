@@ -236,10 +236,9 @@ class CrearCodigoUnidadPoliPage
             icon: Icons.open_in_browser_outlined,
             titulo: "CONTINUAR",
             onPressed: ()  async{
-
                int idDgoTipoEje=controller.selectDireccionPoliciales.value.idDgoTipoEje;
                await controller.getRecintosElectorales(idDgoTipoEje);
-            controller.continuar.value = true;
+
             },
           )
         : Container());
@@ -262,7 +261,7 @@ class CrearCodigoUnidadPoliPage
                 icon: Icons.open_in_browser_outlined,
                 titulo: "CREAR CÓDIGO",
                 onPressed: () => controller.msjCrearCodigo(onPressed: () {
-                  Get.back();
+
                   controller.crearCodigo();
                 }),
               )

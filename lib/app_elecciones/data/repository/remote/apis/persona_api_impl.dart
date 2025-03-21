@@ -14,20 +14,29 @@ class PersonaApiImpl extends PersonaRepository {
 
   @override
   Future<ResgistroPersEnRecElectoral> asignarPersonalEnRecintoElectoral(
-      {  required AddPersonalRequest request}) async {
+      {required AddPersonalRequest request}) async {
     return await _personaApiProviderImpl.asignarPersonalEnRecintoElectoral(
-       request: request);
+        request: request);
   }
 
   @override
   Future<List<PersonalRecintoElectoral>>
-      consultarDatosPersonalAsignadoRecintoElectoral(
-          {required int idDgoCreaOpReci,    required int idDgoProcElec,
-            required int idDgoReciElect,}) async {
+      consultarDatosPersonalAsignadoRecintoElectoral({
+    required int idDgoCreaOpReci,
+    required int idDgoProcElec,
+    required int idDgoReciElect,
+  }) async {
     return _personaApiProviderImpl
         .consultarDatosPersonalAsignadoRecintoElectoral(
-        idDgoProcElec: idDgoProcElec,
+            idDgoProcElec: idDgoProcElec,
             idDgoReciElect: idDgoReciElect,
             idDgoCreaOpReci: idDgoCreaOpReci);
+  }
+
+  @override
+  Future<PerSituacion> verificarSiPersonaEstaBloqueado(
+      {required int idDgoProcElec, required int idGenPersona}) async {
+    return _personaApiProviderImpl.verificarSiPersonaEstaBloqueado(
+        idDgoProcElec: idDgoProcElec, idGenPersona: idGenPersona);
   }
 }

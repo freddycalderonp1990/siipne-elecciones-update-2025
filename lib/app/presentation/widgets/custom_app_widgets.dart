@@ -11,6 +11,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:siipnelecciones3/app_elecciones/core/values/siipne_images.dart';
 import 'package:latlong2/latlong.dart' show LatLng;
 

@@ -1,6 +1,8 @@
 part of '../custom_app_widgets.dart';
 
 class ComboBusqueda<T> extends StatefulWidget {
+
+
   final String title;
   final ValueChanged<T?>? complete;
   final List<T> datos;
@@ -12,7 +14,6 @@ class ComboBusqueda<T> extends StatefulWidget {
   final bool showClearButton;
   final GlobalKey? openDropDownProgKey;
   final String? textSeleccioneUndato;
-
 
   final String? Function(T?)? validator;
   final String Function(T)?
@@ -42,10 +43,14 @@ class ComboBusqueda<T> extends StatefulWidget {
 }
 
 class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
+
+  late bool showX; // Declaramos como una variable de estado
+
   final _userEditTextController = TextEditingController(text: '');
 
   @override
   void initState() {
+    showX = false; // Inicializamos en false
     super.initState();
   }
 
@@ -56,29 +61,21 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
       compareFn: (item, selectedItem) => item == selectedItem,
       validator: (v) {
         print("haolala");
-       return v == null ? "EL ${widget.title} Es requerido" : null;
-
-      } ,
+        return v == null ? "EL ${widget.title} Es requerido" : null;
+      },
       key: widget.openDropDownProgKey,
       suffixProps: DropdownSuffixProps(
-
-        clearButtonProps: ClearButtonProps(isVisible: true,
-          color: Colors.red
-
-        ),
+        clearButtonProps: ClearButtonProps(isVisible: showX, color: Colors.red),
         //lo paso en falkse xq ya esta diseñado xq no encontraba formada de captuyra el evento de limpiar
         // lo que fue seleccionado
       ),
       popupProps: PopupPropsMultiSelection.dialog(
-
         showSelectedItems: true,
         disableFilter: false,
         itemBuilder: (context, item, isSelected, l) =>
             _customDesingDataPopop(context, item, isSelected, l),
         showSearchBox: true,
         searchFieldProps: getBusquedaPopup(),
-
-
         dialogProps: DialogProps(
           backgroundColor: Colors.white,
           barrierDismissible: true, // Permite cerrar tocando fuera
@@ -88,7 +85,6 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
               MainAxisAlignment.end, // Alinea la acción a la derecha
           actionsPadding: EdgeInsets.only(
               top: 10, right: 10), // Posiciona el botón arriba a la derecha
-
         ),
       ),
       itemAsString: (item) {
@@ -104,29 +100,28 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
       onChanged: (value) {
         print("cambiaa");
         if (widget.complete != null) {
-
-            widget.complete!(value);
-
+          widget.complete!(value);
         }
       },
     );
 
-    return Row(children: [
-      Expanded(child: TituloTextWidget(title: widget.searchHint),),
-      SizedBox(width: 5,),
-      Expanded(
-          flex: 3,
-          child: wgComboBusqueda)
-    ],);
+    return Row(
+      children: [
+        Expanded(
+          child: TituloTextWidget(title: widget.searchHint),
+        ),
+        SizedBox(
+          width: 5,
+        ),
+        Expanded(flex: 3, child: wgComboBusqueda)
+      ],
+    );
   }
 
   TextFieldProps getBusquedaPopup() {
     return TextFieldProps(
       controller: _userEditTextController,
       decoration: InputDecoration(
-
-
-
         suffixIcon: Row(
           mainAxisSize:
               MainAxisSize.min, // Ajusta el tamaño para evitar expandir
@@ -153,14 +148,55 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
     );
   }
 
-  Widget _customDropDownExample(
-      BuildContext context, T? item) {
+  Widget _customDropDownExample(BuildContext context, T? item) {
+    final responsive = ResponsiveUtil();
+
+    Widget msjSelectDato = Text(
+      widget.textSeleccioneUndato ?? "Seleccione un dato",
+      style: TextStyle(color: Colors.red, fontSize: responsive.diagonalP(1)),
+    );
+
+    if (item == null) {
+      return msjSelectDato;
+    } else {
+      if (widget.displayField!(item).isEmpty) {
+
+        if (showX) {
+          Future.delayed(Duration.zero, () {
+            if (mounted) {
+              setState(() {
+                showX = false;
+              });
+            }
+          });
+        }
 
 
+        return msjSelectDato;
+      }
 
-   return _customDesingDataPopop(context, item, false, false);
+      if (!showX) {
+        Future.delayed(Duration.zero, () {
+          if (mounted) {
+            setState(() {
+              showX = true;
+            });
+          }
+        });
+      }
+
+
+      return Text(
+        widget.displayField!(item),
+        textAlign: TextAlign.center, // Justifica el texto
+        style: TextStyle(
+          fontSize: responsive.diagonalP(1.2),
+        ),
+      );
+
+
+    }
   }
-
 
   Widget _customDesingDataPopop(
       BuildContext context, T? item, bool v, bool isSelected) {
@@ -168,10 +204,8 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
 
     print("isSelected ${isSelected} ybb= ${v}");
 
-    Widget msjSelectDato =
-    ListTile(
+    Widget msjSelectDato = ListTile(
       contentPadding: EdgeInsets.all(0),
-
       title: Text(
         widget.textSeleccioneUndato ?? "Seleccione un dato",
         style: TextStyle(color: Colors.red, fontSize: responsive.diagonalP(1)),
@@ -183,73 +217,93 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
       decoration: !isSelected
           ? null
           : BoxDecoration(
-        border: Border.all(color: Colors.black),
-        borderRadius: BorderRadius.circular(5),
-        color: AppColors.colorAzul,
-      ),
+              border: Border.all(color: Colors.black),
+              borderRadius: BorderRadius.circular(5),
+              color: AppColors.colorAzul,
+            ),
       child: (item == null)
           ? msjSelectDato
           : widget.displayField!(item).length == 0
-          ? msjSelectDato
-          : getDesing(
-     colorTexto: isSelected?Colors.white:Colors.black,
-        titulo: widget.displayField!(item),
-        icon: widget.icon,
-        iconUrl: widget.imgUrl,
-        isSelect: isSelected
-      ),
+              ? msjSelectDato
+              : getDesing(
+                  colorTexto: isSelected ? Colors.white : Colors.black,
+                  titulo: widget.displayField!(item),
+                  icon: widget.icon,
+                  iconUrl: widget.imgUrl,
+                  isSelect: isSelected),
     );
   }
 
-  Widget getDesing({
-    bool isSelect=false,
-    IconData? icon,
-    String titulo = '',
-    bool selected = false,
-    String? iconUrl,
-    Color colorTexto=Colors.black
-  }) {
+  Widget getOnlyDesing(
+      {required Widget icon,
+      String titulo = '',
+      Color colorTexto = Colors.black}) {
     final responsive = ResponsiveUtil();
-    Widget _icon = getIcon(icon: icon,isSelecc: isSelect);
-
-
-
-
-    return ListTile(
-      selected: selected,
-      contentPadding: EdgeInsets.all(0),
-      leading: _icon,
-      title: Text(
-        titulo,
-        style: TextStyle(fontSize: responsive.diagonalP(1.2),color: colorTexto,),
-      ),
+    return Column(
+      children: [
+        Row(
+          children: [
+            icon,
+            Flexible(
+                child: Text(
+              titulo,
+              style: TextStyle(
+                fontSize: responsive.diagonalP(1.2),
+                color: colorTexto,
+              ),
+            )),
+          ],
+        ),
+        SizedBox(
+          height: 4,
+        ),
+        Container(
+          height: 1,
+          color: Colors.black38,
+        )
+      ],
     );
+  }
+
+  Widget getDesing(
+      {bool isSelect = false,
+      IconData? icon,
+      String titulo = '',
+      bool selected = false,
+      String? iconUrl,
+      Color colorTexto = Colors.black}) {
+    Widget _icon = getIcon(icon: icon, isSelecc: isSelect);
+
+    return getOnlyDesing(icon: _icon, titulo: titulo, colorTexto: colorTexto);
+
   }
 
   getIcon({IconData? icon, bool isSelecc = false}) {
 
+    Widget wg=  icon != null
+        ? Icon(
+      icon,
+      color: AppColors.colorBotones,
+
+    )
+        : Icon(
+        Icons.article_outlined,
+        color: AppColors.colorBotones,);
 
     if (isSelecc) {
-
-      return Icon(
+      wg= Icon(
         Icons.check_circle,
         color: Colors.white,
+
       );
     }
+    return Container(
+      padding: EdgeInsets.all(5),
+      child: wg,);
 
 
 
-    return CircleAvatar(
-      backgroundColor: isNull ? Colors.red : Colors.transparent,
-      child: icon != null
-          ? Icon(
-              icon,
-              color: AppColors.colorBotones,
-            )
-          : Icon(
-              Icons.article_outlined,
-              color: AppColors.colorBotones,
-            ),
-    );
+
+
   }
 }

@@ -18,3 +18,8 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+
+
+//Bloquear acceso
+cuando desde el siipne se le asigna una situacion en la tabla dgoPerAsigOpe
+tipo Situación 'A'=Activo, 'F'=Franco, 'NU'=Novedad UDGA, 'OR'=Pertenece a Otro Recinto

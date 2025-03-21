@@ -26,4 +26,11 @@ class EleccionesTipoEjesApiImpl extends EleccionesTipoEjesRepository {
     return await _eleccionesTipoEjesApiProviderImpl.getTipoEjePorIdPadre(
         usuario: usuario, idDgoTipoEje: idDgoTipoEje);
   }
+
+  @override
+  Future<List<DatosUnidadesId>> getUnidadesPolicialesById(
+      {required int idDgoTipoEje}) async {
+    return await _eleccionesTipoEjesApiProviderImpl.getUnidadesPolicialesById(
+        idDgoTipoEje: idDgoTipoEje);
+  }
 }

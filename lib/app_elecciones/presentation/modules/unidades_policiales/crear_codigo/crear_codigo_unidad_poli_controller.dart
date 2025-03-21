@@ -127,10 +127,14 @@ class CrearCodigoUnidadPoliController extends GetxController {
           .getRecintosElectoralesCercanos(request: request);
 
       if (listRecintosElectorales.length == 0) {
+        continuar.value=false;
         DialogosAwesome.getInformation(
-            descripcion: "No existen Unidades Policiales Cercanas");
+            descripcion: "No existen Unidades Policiales Cercanas",btnOkOnPress: (){
+
+        });
         return;
       }
+      continuar.value = true;
     });
 
     peticionServerState(false);

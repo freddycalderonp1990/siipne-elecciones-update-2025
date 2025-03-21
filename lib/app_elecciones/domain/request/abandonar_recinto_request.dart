@@ -7,15 +7,17 @@ class AbandonarRecintoRequest {
   final double longitud;
   final int idDgoProcElec;
   final int idDgoReciElect;
+  final int idGenPersona;
   final String ip;
 
-  AbandonarRecintoRequest({
+  AbandonarRecintoRequest( {
     required this.idDgoPerAsigOpe,
     required this.usuario,
     required this.latitud,
     required this.longitud,
     required this.idDgoProcElec,
     required this.idDgoReciElect,
+    required this.idGenPersona,
     required this.ip,
   });
 
@@ -24,6 +26,7 @@ class AbandonarRecintoRequest {
     return {
       "idDgoPerAsigOpe": idDgoPerAsigOpe,
       "usuario": usuario,
+      "idGenPersona": idGenPersona,
       "latitud": latitud,
       "longitud": longitud,
       "idDgoProcElec": idDgoProcElec,

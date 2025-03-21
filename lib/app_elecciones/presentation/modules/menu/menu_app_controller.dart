@@ -56,14 +56,14 @@ class MenuAppController extends GetxController {
     }
 
 
-      if (recintosElectoralesAbiertos.isRecinto) {
+      if (recintosElectoralesAbiertos.isJefe) {
         //Menu Recintos Electorales
         print('Menu Recintos Electorales');
-        goToPage(SiipneRoutes.MENU_RECINTOS_ELECTORALES,);
+        goToPage(SiipneRoutes.MENU_RECINTOS_ELECTORALES_JEFE,);
 
       } else {
         //Menu Unidades Policiales u Otros
-        goToPage(SiipneRoutes.MENU_RECINTOS_ELECTORALES);
+        goToPage(SiipneRoutes.MENU_RECINTOS_ELECTORALES_INTEGRANTE,);
       }
 
   }

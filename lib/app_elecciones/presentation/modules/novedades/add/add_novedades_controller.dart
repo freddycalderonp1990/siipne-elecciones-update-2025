@@ -79,6 +79,8 @@ class AddNovedadesController extends GetxController {
   String? nombreDetenido;
   int? idGenPersonaD;
 
+  RxBool showVerNovedades=true.obs;
+
   @override
   void onInit() async {
     user = loginController.user.value;
@@ -103,7 +105,6 @@ class AddNovedadesController extends GetxController {
 
   @override
   void onClose() {
-
     super.onClose();
   }
 
@@ -115,6 +116,12 @@ class AddNovedadesController extends GetxController {
     if (arguments != null &&
         arguments.containsKey('recintosElectoralesAbiertos')) {
       try {
+
+        if(arguments.containsKey('shorReporte')){
+          showVerNovedades.value=arguments['shorReporte'] as bool;
+        }
+
+
         recintosElectoralesAbiertos = arguments['recintosElectoralesAbiertos']
             as RecintosElectoralesAbiertos;
       } catch (e) {
@@ -128,11 +135,13 @@ class AddNovedadesController extends GetxController {
   Future<void> getNovedadesPadres() async {
     peticionServerState(true);
     await ExceptionHelper.manejarErroresShowDialogo(() async {
-      listTipoNovedades.value =
-          await _eleccionesNovedadesApiImpl.getNovedadesPadres(
-            idDgoProcElec:recintosElectoralesAbiertos.idDgoProcElec ,
-              idDgoReciElect:recintosElectoralesAbiertos.idDgoReciElect ,
-              idDgoTipoEje: recintosElectoralesAbiertos.idDgoTipoEje);
+      GetNovedadesPadresRequest request = GetNovedadesPadresRequest(
+          idDgoProcElec: recintosElectoralesAbiertos.idDgoProcElec,
+          idDgoReciElect: recintosElectoralesAbiertos.idDgoReciElect,
+          idDgoTipoEje: recintosElectoralesAbiertos.idDgoTipoEje);
+
+      listTipoNovedades.value = await _eleccionesNovedadesApiImpl
+          .getNovedadesPadres(request: request);
 
       if (listTipoNovedades.length == 0) {
         DialogosAwesome.getInformation(descripcion: "No existen Novedades");
@@ -142,40 +151,40 @@ class AddNovedadesController extends GetxController {
     peticionServerState(false);
   }
 
-  Future<void> getNovedadesHijas(int idNovedadesPadre) async {
+  Future<List<NovedadesElectorale>> consultarNovedadesHijas(int idNovedadesPadre) async {
     peticionServerState(true);
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
-      listNovedades.value = await _eleccionesNovedadesApiImpl.getNovedadesHijas(
-          idDgoProcElec:recintosElectoralesAbiertos.idDgoProcElec ,
-          idDgoReciElect:recintosElectoralesAbiertos.idDgoReciElect ,
-          idNovedadesPadre: idNovedadesPadre,
-          idDgoTipoEje: recintosElectoralesAbiertos.idDgoTipoEje);
 
-      if (listNovedades.length == 0) {
+    List<NovedadesElectorale> novedades = [];
+
+    await ExceptionHelper.manejarErroresShowDialogo(() async {
+      GetNovedadesHijasRequest request = GetNovedadesHijasRequest(
+        idDgoProcElec: recintosElectoralesAbiertos.idDgoProcElec,
+        idDgoReciElect: recintosElectoralesAbiertos.idDgoReciElect,
+        idNovedadesPadre: idNovedadesPadre,
+        idDgoTipoEje: recintosElectoralesAbiertos.idDgoTipoEje,
+      );
+
+      novedades = await _eleccionesNovedadesApiImpl.getNovedadesHijas(request: request);
+
+      if (novedades.isEmpty) {
         DialogosAwesome.getInformation(descripcion: "No existen Novedades");
-        return;
       }
     });
+
     peticionServerState(false);
+    return novedades;
   }
+
 
   Future<void> getNovedadesDelito(int idNovedadesPadre) async {
-    peticionServerState(true);
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
-      listDelito.value = await _eleccionesNovedadesApiImpl.getNovedadesHijas(
-          idNovedadesPadre: idNovedadesPadre,
-          idDgoProcElec:recintosElectoralesAbiertos.idDgoProcElec ,
-          idDgoReciElect:recintosElectoralesAbiertos.idDgoReciElect ,
-          idDgoTipoEje: recintosElectoralesAbiertos.idDgoTipoEje);
+    listDelito.value =await consultarNovedadesHijas(idNovedadesPadre);
 
-      if (listDelito.length == 0) {
-        DialogosAwesome.getInformation(descripcion: "No existen Novedades");
-        return;
-      }
-    });
-    peticionServerState(false);
   }
 
+  Future<void> getNovedadesHijas(int idNovedadesPadre) async {
+    listNovedades.value =await consultarNovedadesHijas(idNovedadesPadre);
+
+  }
 
   cerrarSession() {
     Get.toNamed(AppRoutes.SPLASH_APP);
@@ -186,7 +195,6 @@ class AddNovedadesController extends GetxController {
       "recintosElectoralesAbiertos": recintosElectoralesAbiertos
     });
   }
-
 
   setDatosHora() {
     List<String> datos = [];
@@ -349,8 +357,7 @@ class AddNovedadesController extends GetxController {
       LatLng position = await locationBloc.getCurrentPosition();
       String ip = await DeviceInfo.getIp;
 
-
-      AddNovedadesRequest request=AddNovedadesRequest(
+      AddNovedadesRequest request = AddNovedadesRequest(
         idDgoPerAsigOpe: idDgoPerAsigOpe,
         usuario: usuario,
         idDgoNovedadesElect: idDgoNovedadesElect,
@@ -362,17 +369,16 @@ class AddNovedadesController extends GetxController {
         longitud: position.longitude,
         cedula: controllerCedula.text,
         idDgoProcElec: recintosElectoralesAbiertos.idDgoProcElec,
-        ip: ip, idDgoReciElect: recintosElectoralesAbiertos.idDgoReciElect,
+        ip: ip,
+        idDgoReciElect: recintosElectoralesAbiertos.idDgoReciElect,
       );
 
-      resultInsert =
-          await _eleccionesNovedadesApiImpl.registrarNovedadesElectorales(
-        request: request
-      );
+      resultInsert = await _eleccionesNovedadesApiImpl
+          .registrarNovedadesElectorales(request: request);
     });
     peticionServerState(false);
 
-    if (resultInsert== ApiConstantes.varTrue) {
+    if (resultInsert == ApiConstantes.varTrue) {
       clearData();
       DialogosAwesome.getSucess(
           descripcion: "Registro de Novedad con éxito", btnOkOnPress: () {});
@@ -389,12 +395,11 @@ class AddNovedadesController extends GetxController {
     }
   }
 
-  void clearData(){
-    mostrarBtnGuardar.value=false;
+  void clearData() {
+    mostrarBtnGuardar.value = false;
     selectTipoNovedad.value = NovedadesElectorale.empty();
     selectNovedad.value = NovedadesElectorale.empty();
     selectDelito.value = NovedadesElectorale.empty();
-
 
     mGaleryCameraModel = Rx<GaleryCameraModel?>(null);
 

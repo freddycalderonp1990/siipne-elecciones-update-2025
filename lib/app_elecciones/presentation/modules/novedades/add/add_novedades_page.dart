@@ -22,11 +22,11 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          BtnIconWidget(
+          Obx(()=>controller.showVerNovedades.value?BtnIconWidget(
             icon: Icons.assignment_sharp,
             titulo: "VER NOVEDADES",
             onPressed: () => controller.goToPageReporteNovedades(),
-          ),
+          ):Container()),
           getCombos(),
           SizedBox(
             height: responsive.altoP(0.4),

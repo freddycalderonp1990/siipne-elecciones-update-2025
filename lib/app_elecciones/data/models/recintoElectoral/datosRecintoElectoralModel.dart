@@ -39,9 +39,11 @@ class DatosRecintoElectoralClass {
     required this.encargado,
     required this.documento,
     required this.sexoPerson,
+    required this.idDgoProcElec
   });
 
   int idDgoReciElect;
+  int idDgoProcElec;
   String nomRecintoElec;
   int idDgoTipoEje;
   String encargado;
@@ -49,6 +51,7 @@ class DatosRecintoElectoralClass {
   String sexoPerson;
 
   factory DatosRecintoElectoralClass.empty() => DatosRecintoElectoralClass(
+    idDgoProcElec: 0,
       idDgoReciElect: 0,
       nomRecintoElec: "",
       idDgoTipoEje: 0,
@@ -57,6 +60,7 @@ class DatosRecintoElectoralClass {
       sexoPerson: "");
   factory DatosRecintoElectoralClass.fromJson(Map<String, dynamic> json) =>
       DatosRecintoElectoralClass(
+        idDgoProcElec: ParseModel.parseToInt(json["idDgoProcElec"]),
         idDgoReciElect: ParseModel.parseToInt(json["idDgoReciElect"]),
         nomRecintoElec: ParseModel.parseToString(json["nomRecintoElec"]),
         idDgoTipoEje: ParseModel.parseToInt(json["idDgoTipoEje"]),

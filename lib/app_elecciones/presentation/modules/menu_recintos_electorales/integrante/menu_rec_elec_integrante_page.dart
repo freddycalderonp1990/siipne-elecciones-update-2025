@@ -1,15 +1,15 @@
-part of '../pages.dart';
+part of '../../pages.dart';
 
-class MenuRecintosElectoralesPage
-    extends GetView<MenuRecintosElectoralesController> {
-  const MenuRecintosElectoralesPage({Key? key}) : super(key: key);
+class MenuRecElecIntegrantePage
+    extends GetView<MenuRecElecIntegranteController> {
+  const MenuRecElecIntegrantePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
       title: "${controller.recintosElectoralesAbiertos.nomRecintoElec}",
       showGps: true,
-      contenido:  getContenido(),
+      contenido: getContenido(),
       peticionServer: controller.peticionServerState,
     );
   }
@@ -35,7 +35,7 @@ class MenuRecintosElectoralesPage
           ),
           DesingTextNameUser(
               sexo: controller.user.sexo, text: controller.user.nombres),
-          _getMenuJefe(responsive),
+          _getMenu(responsive),
           SizedBox(
             height: responsive.altoP(1),
           ),
@@ -49,7 +49,7 @@ class MenuRecintosElectoralesPage
     );
   }
 
-  _getMenuJefe(ResponsiveUtil responsive) {
+  _getMenu(ResponsiveUtil responsive) {
     double separacionBtnMenu = 1.5;
     return Column(
       children: [
@@ -58,46 +58,14 @@ class MenuRecintosElectoralesPage
           children: [
             Flexible(
               child: BtnMenuWidget(
-                  horizontal: false,
-                  img: SiipneImages.icon_agregar_personal,
-                  title: SiipneStrings.recElecAgregarpersonal,
-                  onTap: () {
-                    Get.toNamed(SiipneRoutes.ADD_PERSONAL, arguments: {
-                      "recintosElectoralesAbiertos":
-                          controller.recintosElectoralesAbiertos
-                    });
-                  }),
-            ),
-            SizedBox(
-              width: responsive.anchoP(2),
-            ),
-            Flexible(
-              child: BtnMenuWidget(
                   img: SiipneImages.icon_registrar_novedades_rec_elec,
                   title: SiipneStrings.recElecRegistrarNovedades,
                   onTap: () {
                     Get.toNamed(SiipneRoutes.ADD_NOVEDADES, arguments: {
                       "recintosElectoralesAbiertos":
-                          controller.recintosElectoralesAbiertos
+                          controller.recintosElectoralesAbiertos,
+                      "shorReporte": false
                     });
-                  }),
-            )
-          ],
-        ),
-        SizedBox(
-          height: responsive.altoP(separacionBtnMenu),
-        ),
-        Row(
-          children: [
-            Flexible(
-              child: BtnMenuWidget(
-                  img: SiipneImages.icon_finalizar_rec_elec,
-                  title: "FINALIZAR RECINTO",
-                  onTap: () {
-                    _dialogoFinalizarRecinto(
-                      nameRecinto:
-                          "${controller.recintosElectoralesAbiertos.nomRecintoElec}",
-                    );
                   }),
             ),
             SizedBox(
@@ -105,22 +73,24 @@ class MenuRecintosElectoralesPage
             ),
             Flexible(
               child: BtnMenuWidget(
-                  img: SiipneImages.icon_eliminar_rec_elec,
-                  title: "ELIMINAR CÓDIGO",
+                  horizontal: false,
+                  img: SiipneImages.icon_abandonar_rec_elec,
+                  title: "ABANDONAR CÓDIGO",
                   onTap: () {
-                    String msj =
-                        "Si abrió por error el Operativo se recomienda eliminarlo.  "
-                        "\n\nRecuerde todo será registrado para verificar el correcto uso del aplicativo."
-                        "\n\n¿Esta seguro que desea eliminar el Operativo.?";
+                    DialogosAwesome.getIconPolicia(
+                        title: "Abandonar",
+                        descripcion:
+                            "¿Esta seguro que desea abandonar el Operativo.?",
+                        btnOkOnPress: () {
 
-                    DialogosAwesome.getIconPolicia(title: "ELIMINAR CÓDIGO \n${controller.recintosElectoralesAbiertos.idDgoCreaOpReci}", descripcion: msj, btnOkOnPress: (){
-                    Get.back();
-                      controller.eliminarCodigoRecinto();
-                    });
-
+                          controller.removePersonalOperativo();
+                        });
                   }),
-            )
+            ),
           ],
+        ),
+        SizedBox(
+          height: responsive.altoP(separacionBtnMenu),
         ),
       ],
     );
@@ -159,14 +129,5 @@ class MenuRecintosElectoralesPage
     );
   }
 
-  _dialogoFinalizarRecinto({required String nameRecinto}) {
-    DialogosAwesome.getIconPolicia(
-        title: "Finalizar Recinto",
-        descripcion:
-            "¿Esta seguro que desea finalizar el Recinto\n\n${nameRecinto}?",
-        btnOkOnPress: () {
-          Get.back();
-     controller.finalizarRecinto();
-        });
-  }
+
 }

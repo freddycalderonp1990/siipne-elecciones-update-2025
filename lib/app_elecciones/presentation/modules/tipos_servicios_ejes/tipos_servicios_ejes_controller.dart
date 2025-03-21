@@ -9,6 +9,8 @@ class TiposServiciosEjesController extends GetxController {
   final EleccionesTipoEjesApiImpl _eleccionesTipoEjesApiImpl =
       Get.find<EleccionesTipoEjesApiImpl>();
 
+  final PersonaApiImpl _personaApiImpl=Get.find<PersonaApiImpl>();
+
   Rx<TipoEjesActivos> tipoEjesActivos = TipoEjesActivos.empty().obs;
 
   late DataUser user;
@@ -17,7 +19,7 @@ class TiposServiciosEjesController extends GetxController {
   @override
   void onInit() async {
     user = loginController.user.value;
-    getTipoEjesActivosEnProcesoOperativos();
+    verificarSiPersonaEstaBloqueado();
 
     super.onInit();
   }
@@ -45,6 +47,24 @@ class TiposServiciosEjesController extends GetxController {
                   .selectProcesosOperativo.value.idDgoProcElec);
     });
     peticionServerState(false);
+
+
+  }
+
+
+  Future<void> verificarSiPersonaEstaBloqueado() async {
+    peticionServerState(true);
+    await ExceptionHelper.manejarErroresShowDialogo(() async {
+      PerSituacion perSituacion = await
+      _personaApiImpl.verificarSiPersonaEstaBloqueado(
+        idGenPersona: user.idGenPersona,
+
+          idDgoProcElec: selectProcesoOperativoController
+              .selectProcesosOperativo.value.idDgoProcElec);
+    });
+    peticionServerState(false);
+
+    getTipoEjesActivosEnProcesoOperativos();
 
 
   }

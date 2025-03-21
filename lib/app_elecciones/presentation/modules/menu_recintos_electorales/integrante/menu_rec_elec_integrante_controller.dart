@@ -1,31 +1,24 @@
 part of '../../controllers.dart';
 
-class ReportPersonController extends GetxController {
+class MenuRecElecIntegranteController extends GetxController {
   final loginController = Get.find<LoginController>();
+  final EleccionesRecintosApiImpl _eleccionesRecintosApiImpl =
+      Get.find<EleccionesRecintosApiImpl>();
+
+  RxList<DatosProcesoImg> listDatosProcesoImg = <DatosProcesoImg>[].obs;
 
   RecintosElectoralesAbiertos recintosElectoralesAbiertos =
       RecintosElectoralesAbiertos.empty();
 
-  final PersonaApiImpl _personaApiImpl = Get.find<PersonaApiImpl>();
-  final EleccionesRecintosApiImpl _eleccionesRecintosApiImpl =
-      Get.find<EleccionesRecintosApiImpl>();
-
-  Rx<PersonalRecintoElectoral> encargado = PersonalRecintoElectoral.empty().obs;
-  RxList<PersonalRecintoElectoral> listPersonalActivo =
-      <PersonalRecintoElectoral>[].obs;
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   late DataUser user;
 
   RxBool peticionServerState = false.obs;
-
   @override
   void onInit() async {
     user = loginController.user.value;
-
     getDataToPage();
-
-    reportPersona();
-
     super.onInit();
   }
 
@@ -60,7 +53,7 @@ class ReportPersonController extends GetxController {
     }
   }
 
-  Future<void> removePersonalOperativo(PersonalRecintoElectoral data) async {
+  Future<void> removePersonalOperativo() async {
     peticionServerState(true);
 
     await ExceptionHelper.manejarErroresShowDialogo(() async {
@@ -70,23 +63,24 @@ class ReportPersonController extends GetxController {
 
 
       AbandonarRecintoRequest request= AbandonarRecintoRequest(
-          idDgoPerAsigOpe: data.idDgoPerAsigOpe,
-          idGenPersona: data.idGenPersona,
+          idDgoPerAsigOpe: recintosElectoralesAbiertos.idDgoPerAsigOpe,
           usuario: user.idGenUsuario,
           latitud: position.latitude,
           longitud: position.longitude,
           idDgoProcElec: recintosElectoralesAbiertos.idDgoProcElec,
           idDgoReciElect: recintosElectoralesAbiertos.idDgoReciElect,
-          ip: ip);
-
+          ip: ip, idGenPersona: user.idGenPersona);
 
       bool result = await _eleccionesRecintosApiImpl.abandonarRecintoElectoral(
-         request: request);
+          request: request);
 
       if (result) {
         DialogosAwesome.getSucess(
-            descripcion: "Proceso realizado con éxito!", btnOkOnPress: () {});
-        reportPersona();
+            descripcion: "Proceso realizado con éxito!", btnOkOnPress: () {
+
+          Get.offAllNamed(SiipneRoutes.MENU_APP);
+        });
+
         return;
       }
 
@@ -97,33 +91,12 @@ class ReportPersonController extends GetxController {
     peticionServerState(false);
   }
 
-  Future<void> reportPersona() async {
-    peticionServerState(true);
-    listPersonalActivo.clear();
 
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
-      List<PersonalRecintoElectoral> datos =
-          await _personaApiImpl.consultarDatosPersonalAsignadoRecintoElectoral(
-            idDgoReciElect: recintosElectoralesAbiertos.idDgoReciElect,
-        idDgoProcElec: recintosElectoralesAbiertos.idDgoProcElec,
-        idDgoCreaOpReci: recintosElectoralesAbiertos.idDgoCreaOpReci,
-      );
 
-      if (datos.length == 0) {
-        DialogosAwesome.getInformation(
-            descripcion: "No existen datos que mostrar", btnOkOnPress: () {});
-        return;
-      }
 
-      for (int i = 0; i < datos.length; i++) {
-        PersonalRecintoElectoral data = datos[i];
-        if (data.cargo == 'J') {
-          encargado.value = data;
-        } else {
-          listPersonalActivo.add(data);
-        }
-      }
-    });
-    peticionServerState(false);
+  cerrarSession() {
+    Get.toNamed(AppRoutes.SPLASH_APP);
   }
+
+
 }

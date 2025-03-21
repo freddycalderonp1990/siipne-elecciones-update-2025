@@ -83,6 +83,7 @@ class LoginController extends GetxController {
     String nameRed = 'namered';
 
     String ip = await DeviceInfo.getIp;
+
     final DataUser userResponse = await _authApiImpl.auth(AuthRequest(
         ip: ip,
         user: user,
@@ -269,6 +270,8 @@ class LoginController extends GetxController {
   }
 
   InciarPantalla() async {
+    controllerUser.clear();
+    controllerPass.clear();
     _localStoreImpl.setLoginInit(true);
     Get.offAllNamed(SiipneRoutes.MENU_APP);
 

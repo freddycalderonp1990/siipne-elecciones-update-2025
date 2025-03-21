@@ -21,4 +21,9 @@ abstract class PersonaRepository {
     required int idDgoReciElect,
   });
 
+
+  Future<PerSituacion> verificarSiPersonaEstaBloqueado({
+    required int idDgoProcElec,
+    required int idGenPersona,
+  });
 }

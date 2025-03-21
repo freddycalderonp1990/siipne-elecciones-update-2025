@@ -13,3 +13,5 @@ part 'recinto_cercanos_request.dart';
 part 'add_personal_request.dart';
 part 'get_novedades_registradas_request.dart';
 part 'finalizar_recinto_request.dart';
+part 'get_novedades_hijas_request.dart';
+part 'get_novedades_padres_request.dart';

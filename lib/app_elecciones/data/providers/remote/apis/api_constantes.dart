@@ -23,8 +23,11 @@ class ApiConstantes {
   static const ELECCIONES_VERIFICA_PER_ASIGNADO_REC_ELECT = "v1-verifica-per-asignado-rec-elect"; //f24a0c023c07526f2b99ce54be2ab798
   static const ELECCIONES_RECINTO_ABANDONAR_PERSONAL = "v1-recinto-abandonar"; // 8003332d8a39a88789b39e39d15a4293
   static const ELECCIONES_RECINTO_ELIMINAR = "v1-recinto-eliminar"; // 6231af906d203808e063e9f9bc676c03
+  static const ELECCIONES_RECINTO_ENCARGADO = "v1-recinto-encargado"; // d4cf4bc777d01be23f8172a4e036b34a
 
   static const ELECCIONES_UNIDADES_POLICIALES = "v1-unidades-policiales"; // bbc1a27d5d33236b1ae4100a33b5f2e9
+  static const ELECCIONES_UNIDADES_POLICIALES_BY_ID = "v1-unidades-policiales-by-id"; // ea5772b547e90221ee9f04c8ad3266dc
+
   static const ELECCIONES_TIPOS_EJES_BY_ID_PADRE = "v1-ejes-by-id-padre"; // 0934eca05bce3f4f96999f3fa15ec6aa
   static const ELECCIONES_SERVICIOS_ACTIVOS = "v1-servicios-activo"; // 1e5ce7ad42482403d3dc5b3eba80e97b
   static const ELECCIONES_RECINTO_FINALIZAR= "v1-recinto-finalizar"; // a3a6f42d152098e487e00f831a2b4772
@@ -32,6 +35,7 @@ class ApiConstantes {
   //PERSONAL
   static const ELECCIONES_PERSONA_BY_CEDULA = "v1-persona-cedula"; // c996291faac0d749d702ba290948dcd8
   static const ELECCIONES_RECINTO_ADD_PERSONA = "v1-recinto-add-persona"; // 7fd3b86402efccdf476a77bf120ec3cc
+  static const ELECCIONES_RECINTO_PER_VER_SITUACION = "v1-recinto-per-ver-situacion"; //
   static const ELECCIONES_RECINTO_GET_PERSONAL = "v1-recinto-persona"; // b3c995b78182ffb79e73789755776355
 
 

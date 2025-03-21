@@ -69,8 +69,7 @@ class UrlApiProviderApp {
     } else if (response.statusCode == 401 && isLogin) {
       throw ServerException(message: "Usuario / Clave incorrecta");
     } else {
-
-      throw ServerException.StatusCode(statusCode: response.statusCode);
+      throw ServerException.StatusCode(response: response);
     }
   }
 
@@ -114,7 +113,7 @@ class UrlApiProviderApp {
     if (response.statusCode == 200) {
       return response.body.toString();
     } else {
-      throw ServerException.StatusCode(statusCode: response.statusCode);
+      throw ServerException.StatusCode(response: response);
     }
   }
 
@@ -155,7 +154,7 @@ class UrlApiProviderApp {
     if (response.statusCode == 200) {
       return response.body.toString();
     } else {
-      throw ServerException.StatusCode(statusCode: response.statusCode);
+      throw ServerException.StatusCode(response: response);
     }
   }
 
@@ -194,7 +193,7 @@ class UrlApiProviderApp {
     if (response.statusCode == 200) {
       return response.body.toString();
     } else {
-      throw ServerException.StatusCode(statusCode: response.statusCode);
+      throw ServerException.StatusCode(response: response);
     }
   }
 
@@ -233,7 +232,7 @@ class UrlApiProviderApp {
     if (response.statusCode == 200) {
       return response.body.toString();
     } else {
-      throw ServerException.StatusCode(statusCode: response.statusCode);
+      throw ServerException.StatusCode(response: response);
     }
   }
 
@@ -286,7 +285,7 @@ class UrlApiProviderApp {
     if (response.statusCode == 200) {
       return parsed.toString();
     } else {
-      throw ServerException.StatusCode(statusCode: response.statusCode);
+      throw ServerException.StatusCode(response: response);
     }
   }
 }

@@ -101,7 +101,10 @@ class DialogosAwesome {
       btnCancel: BtnIconWidget(
         colorBtn: colorBtnSi,
         icon: iconBtnSi,
-        onPressed: btnOkOnPress,
+        onPressed: (){
+         // Get.back();
+          btnOkOnPress();
+        },
         titulo: titleBtnSi,
       ),
 

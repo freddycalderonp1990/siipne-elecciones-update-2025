@@ -1,4 +1,5 @@
 
+import '../../../app_elecciones/data/models/models.dart';
 import '../../../app_elecciones/domain/enums/enums.dart';
 import '../../core/app_config.dart';
 import 'exception_helper.dart';
@@ -90,10 +91,10 @@ class ServerException implements Exception {
   ServerException({ required this.message});
 
 
-
   factory ServerException.StatusCode(
-      {int statusCode = 0,
+      {final response,
         String msjException = ''}) {
+    int statusCode=response.statusCode;
 
     String mesage = 'No definido';
 
@@ -157,10 +158,20 @@ class ServerException implements Exception {
         break;
 
       case 480: //HTTP_No_autorizado
-        mesage = 'Recinto/Unidad no se encuentra disponible';
+        mesage = 'Acción no permitida ${msjCode}'
+            '\n\nRecinto/Unidad no se encuentra disponible';
 
         throw CloseRecintoException(message: msjException);
 
+        break;
+
+      case 481: //
+
+        PerSituacionModel data=perSituacionModelFromJson(response.body.toString());
+         String myMsj=  data.message;
+
+        mesage = 'Acción no permitida ${msjCode}'
+            '\n\n${myMsj}';
         break;
 
 
