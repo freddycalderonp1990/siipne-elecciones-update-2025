@@ -7,7 +7,10 @@ abstract class PersonaRepository {
   Future<DatosPer> getDatosPersona(
       {
         required String cedula,
-        required int usuario});
+        required int usuario,
+        int? idDgoProcElec,
+
+      });
 
   Future<ResgistroPersEnRecElectoral> asignarPersonalEnRecintoElectoral(
       {

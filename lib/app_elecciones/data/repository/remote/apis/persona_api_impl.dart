@@ -7,9 +7,9 @@ class PersonaApiImpl extends PersonaRepository {
 
   @override
   Future<DatosPer> getDatosPersona(
-      {required String cedula, required int usuario}) async {
+      {required String cedula, required int usuario,  int? idDgoProcElec}) async {
     return await _personaApiProviderImpl.getDatosPersona(
-        cedula: cedula, usuario: usuario);
+        cedula: cedula, usuario: usuario,idDgoProcElec: idDgoProcElec);
   }
 
   @override

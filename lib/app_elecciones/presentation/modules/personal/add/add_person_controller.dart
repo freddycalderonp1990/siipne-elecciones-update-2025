@@ -84,6 +84,7 @@ class AddPersonController extends GetxController {
     peticionServerState(true);
     await ExceptionHelper.manejarErroresShowDialogo(() async {
       datosPerson.value = await _personaApiImpl.getDatosPersona(
+        idDgoProcElec: recintosElectoralesAbiertos.idDgoProcElec,
           usuario: user.idGenUsuario, cedula: controllerDocumento.text);
       if (datosPerson.value.idGenPersona == 0) {
         DialogosAwesome.getInformation(

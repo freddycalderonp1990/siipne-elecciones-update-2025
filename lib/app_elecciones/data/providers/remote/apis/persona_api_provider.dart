@@ -3,13 +3,16 @@ part of '../../providers_impl.dart';
 class PersonaApiProviderImpl extends PersonaRepository {
   @override
   Future<DatosPer> getDatosPersona(
-      {required String cedula, required int usuario}) async {
+      {required String cedula, required int usuario, int? idDgoProcElec}) async {
     Object? body = {
       "modulo": ApiConstantes.MODULO,
       "uri": ApiConstantes.ELECCIONES_PERSONA_BY_CEDULA,
       "cedula": cedula,
-      "usuario": usuario
+      "usuario": usuario,
+      "idDgoProcElec": idDgoProcElec==null?0:idDgoProcElec
     };
+
+
 
     String json = await UrlApiProviderSiipneMovil.post(
       body: body,

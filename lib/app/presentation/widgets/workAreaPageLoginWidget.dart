@@ -123,6 +123,7 @@ class _WorkAreaPageLoginWidgetState extends State<WorkAreaPageLoginWidget> {
         child: BtnIconWidget(
           colorIcon: Colors.black,
           colorTxt: Colors.black,
+          colorBtn: Colors.white38,
           onPressed: widget.onPressedBtnHome,
           icon: Icons.menu,
           titulo: "Home",

@@ -27,15 +27,12 @@ class InicioRapidoPage extends GetView<InicioRapidoController> {
         : "BIENVENIDA: ";
     return SingleChildScrollView(child: Column(
       children: [
-        Obx(()=> Text(
-          Bienvenido + controller.user.value.nombres,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-              fontSize: responsive.anchoP(5)),
-        )),
 
+
+        Obx(()=>  DesingTextNameUser(
+            sizeText: responsive.diagonalP(AppConfig.tamTextoTitulo),
+            sexo:controller.user.value.sexo ,
+            text:  controller.user.value.nombres)),
 
         SizedBox(
           height: responsive.altoP(2),

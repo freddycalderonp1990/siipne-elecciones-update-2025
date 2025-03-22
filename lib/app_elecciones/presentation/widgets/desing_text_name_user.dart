@@ -4,11 +4,12 @@ class DesingTextNameUser extends StatelessWidget {
     super.key,
 
     required this.sexo,
-    required this.text,
+    required this.text,  this.sizeText,
   });
 
   final String text;
   final String sexo;
+  final double? sizeText;
 
 
   @override
@@ -16,9 +17,11 @@ class DesingTextNameUser extends StatelessWidget {
     String Bienvenido =
     sexo == 'HOMBRE' ? "BIENVENIDO: " : "BIENVENIDA: ";
     final responsive = ResponsiveUtil();
-    
+
+    double sizeT=responsive.diagonalP(AppConfig.tamTextoTitulo-0.5);
+
     return TextLineasWidget(
-      sizeTxt:responsive.diagonalP(AppConfig.tamTextoTitulo-0.5) ,
+      sizeTxt:sizeText==null?sizeT:sizeText!,
       title: Bienvenido+ text,
     );
   }

@@ -25,3 +25,96 @@ samples, guidance on mobile development, and a full API reference.
 //Bloquear acceso
 cuando desde el siipne se le asigna una situacion en la tabla dgoPerAsigOpe
 tipo Situación 'A'=Activo, 'F'=Franco, 'NU'=Novedad UDGA, 'OR'=Pertenece a Otro Recinto
+
+
+
+/para cambiar la version de kottlin - cambiar a 1.9.10
+buscar el archivo settings.gradle
+
+
+*****  IMPORTANTE +++++++++++++++++++++++++
+//agregar esto en el info list para evitar la alerta de cifrado al mandar a revison
+
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+
+
+
+//Permisos utilizando permission_handler - Para IOS - agregar en el
+/Users/policianacional/AndroidStudioProjects/siipne_key/ios/Podfile
+//si no se agrega siempre le va a salir permiso denegado
+
+//IMPORTANTE
+se debe ejecutar para aplicar los cambios
+
+flutter clean
+flutter pub get
+cd ios
+pod install
+
+
+//1 = Activo 0= Desactivar
+
+post_install do |installer|
+installer.pods_project.targets.each do |target|
+flutter_additional_ios_build_settings(target)
+
+    target.build_configurations.each do |config|
+      # You can remove unused permissions here
+      # for more infomation: https://github.com/BaseflowIT/flutter-permission-handler/blob/master/permission_handler/ios/Classes/PermissionHandlerEnums.h
+      # e.g. when you don't need camera permission, just add 'PERMISSION_CAMERA=0'
+      config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= [
+        '$(inherited)',
+
+        ## dart: [PermissionGroup.calendarWriteOnly, PermissionGroup.calendar (until iOS 16)]
+        'PERMISSION_EVENTS=0',
+
+        ## dart: [PermissionGroup.calendarFullAccess, PermissionGroup.calendar (from iOS 17)]
+       'PERMISSION_EVENTS_FULL_ACCESS=0',
+
+        ## dart: PermissionGroup.reminders
+        'PERMISSION_REMINDERS=0',
+
+        ## dart: PermissionGroup.contacts
+        'PERMISSION_CONTACTS=0',
+
+        ## dart: PermissionGroup.camera
+        'PERMISSION_CAMERA=1',
+
+        ## dart: PermissionGroup.microphone
+        'PERMISSION_MICROPHONE=0',
+
+        ## dart: PermissionGroup.speech
+        'PERMISSION_SPEECH_RECOGNIZER=0',
+
+        ## dart: PermissionGroup.photos
+        'PERMISSION_PHOTOS=1',
+
+        ## dart: [PermissionGroup.location, PermissionGroup.locationAlways, PermissionGroup.locationWhenInUse]
+        'PERMISSION_LOCATION=0',
+
+        ## dart: PermissionGroup.notification
+        'PERMISSION_NOTIFICATIONS=0',
+
+        ## dart: PermissionGroup.mediaLibrary
+        'PERMISSION_MEDIA_LIBRARY=0',
+
+        ## dart: PermissionGroup.sensors
+        'PERMISSION_SENSORS=0',
+
+        ## dart: PermissionGroup.bluetooth
+        'PERMISSION_BLUETOOTH=0',
+
+        ## dart: PermissionGroup.appTrackingTransparency
+        'PERMISSION_APP_TRACKING_TRANSPARENCY=0',
+
+        ## dart: PermissionGroup.criticalAlerts
+        'PERMISSION_CRITICAL_ALERTS=0',
+
+        ## dart: PermissionGroup.assistant
+        'PERMISSION_ASSISTANT=0',
+      ]
+
+    end
+end
+end

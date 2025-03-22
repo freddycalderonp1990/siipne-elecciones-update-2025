@@ -109,7 +109,8 @@ class DialogosAwesome {
       ),
 
       btnOk:!mostrarSegungoBtn?null: BtnIconWidget(
-        colorBtn: AppColors.colorRojo_80,
+
+        colorBtn: AppColors.colorRojo_60,
         icon: iconBtnNo,
         onPressed: btnCancelOnPress!=null?btnCancelOnPress: () {
           Get.back();

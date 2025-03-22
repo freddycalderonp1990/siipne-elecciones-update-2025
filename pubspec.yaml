@@ -130,7 +130,8 @@ flutter:
     - assets/img/
     - assets/icon/
     - .env
-
+    - assets/imgs_mi_upc/img/
+    - assets/imgs_mi_upc/icon/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
 
