@@ -8,6 +8,12 @@ Engine • revision 18b71d647a
 Tools • Dart 3.7.2 • DevTools 2.42.3
 
 
+# Proyecto Flutter
+
+Bienvenido a este proyecto Flutter. Consulta el [Changelog](CHANGELOG.md) para ver los cambios recientes.
+
+
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
