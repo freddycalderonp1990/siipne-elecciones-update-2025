@@ -1,10 +1,9 @@
 import 'dart:io';
 
 
-import 'package:flutter/cupertino.dart';
-import '../../../app/core/utils/device_info.dart';
-import '../../../app/core/utils/utilidadesUtil.dart';
-import 'package:path_provider/path_provider.dart';
+
+
+import 'device_info.dart';
 
 class MyFile{
 

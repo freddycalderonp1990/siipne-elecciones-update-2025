@@ -3,20 +3,20 @@
 
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:siipnelecciones3/app/core/utils/utilidadesUtil.dart';
+import '../../../app/core/utils/utilidadesUtil.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
-import 'package:siipnelecciones3/app/core/values/app_colors.dart';
-import 'package:siipnelecciones3/app/presentation/routes/app_routes.dart';
+import '../../../app/core/values/app_colors.dart';
+import '../../../app/presentation/routes/app_routes.dart';
 
-import 'package:siipnelecciones3/app/presentation/widgets/custom_app_widgets.dart';
+import '../../../app/presentation/widgets/custom_app_widgets.dart';
 import 'package:flutter/rendering.dart';
-import 'package:siipnelecciones3/app_elecciones/core/siipne_config.dart';
-import 'package:siipnelecciones3/app_elecciones/presentation/modules/personal/report/local_widget/desing_personal.dart';
+import '../../../app_elecciones/core/siipne_config.dart';
+import '../../../app_elecciones/presentation/modules/personal/report/local_widget/desing_personal.dart';
 
-import 'package:siipnelecciones3/app_elecciones/presentation/routes/siipne_routes.dart';
+import '../../../app_elecciones/presentation/routes/siipne_routes.dart';
 import 'package:latlong2/latlong.dart' show LatLng;
 
 import '../../../app/core/app_config.dart';

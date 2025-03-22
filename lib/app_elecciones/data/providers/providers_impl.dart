@@ -5,8 +5,8 @@ import 'dart:developer';
 
 import 'dart:typed_data';
 
-import 'package:siipnelecciones3/app/core/utils/parse_model.dart';
-import 'package:siipnelecciones3/app_elecciones/data/providers/remote/apis/api_constantes.dart';
+import '../../../app/core/utils/parse_model.dart';
+import '../../../app_elecciones/data/providers/remote/apis/api_constantes.dart';
 import 'package:http/http.dart' as http;
 
 

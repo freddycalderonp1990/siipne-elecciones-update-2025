@@ -14,11 +14,11 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:image/image.dart' as Img;
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:siipnelecciones3/app/core/utils/my_date.dart';
-import 'package:siipnelecciones3/app/core/utils/responsiveUtil.dart';
-import 'package:siipnelecciones3/app/core/utils/utilidadesUtil.dart';
-import 'package:siipnelecciones3/app_elecciones/core/values/siipne_images.dart';
-import 'package:siipnelecciones3/app_elecciones/presentation/widgets/customWidgets.dart';
+import '../../../../../app/core/utils/my_date.dart';
+import '../../../../../app/core/utils/responsiveUtil.dart';
+import '../../../../../app/core/utils/utilidadesUtil.dart';
+import '../../../../../app_elecciones/core/values/siipne_images.dart';
+import '../../../../../app_elecciones/presentation/widgets/customWidgets.dart';
 
 import '../app_config.dart';
 import '../values/app_colors.dart';

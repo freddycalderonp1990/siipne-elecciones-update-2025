@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:siipnelecciones3/app/core/utils/responsiveUtil.dart';
-import 'package:siipnelecciones3/app/core/values/app_colors.dart';
-import 'package:siipnelecciones3/app/presentation/blocs/calculadora/calculadora_bloc.dart';
-import 'package:siipnelecciones3/app/presentation/blocs/location/location_bloc.dart';
-import 'package:siipnelecciones3/app_elecciones/core/values/siipne_colors.dart';
-import 'package:siipnelecciones3/app_elecciones/core/values/siipne_images.dart';
-import 'package:siipnelecciones3/app_elecciones/presentation/widgets/customWidgets.dart';
+import '../../../app/core/utils/responsiveUtil.dart';
+import '../../../app/core/values/app_colors.dart';
+import '../../../app/presentation/blocs/calculadora/calculadora_bloc.dart';
+import '../../../app/presentation/blocs/location/location_bloc.dart';
+import '../../../app_elecciones/core/values/siipne_colors.dart';
+import '../../../app_elecciones/core/values/siipne_images.dart';
+import '../../../app_elecciones/presentation/widgets/customWidgets.dart';
 
 import '../../../../app/presentation/blocs/gps/gps_bloc.dart';
 import '../../../../app/presentation/widgets/custom_app_widgets.dart';

@@ -2,8 +2,8 @@ import 'package:app_mi_upc/app_mi_upc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:siipnelecciones3/app/presentation/modules/splash/local_widget/loading_splash.dart';
-import 'package:siipnelecciones3/app/presentation/widgets/custom_app_widgets.dart';
+import '../app/presentation/modules/splash/local_widget/loading_splash.dart';
+import '../app/presentation/widgets/custom_app_widgets.dart';
 import '../../../../../app/dependency_injection_app.dart';
 import '../../../../../app/presentation/routes/app_routes.dart';
 

@@ -1,4 +1,4 @@
-import 'package:siipnelecciones3/app_elecciones/core/values/siipne_strings.dart';
+import '../../../../../../app_elecciones/core/values/siipne_strings.dart';
 
 class Validate {
   static  String? validateCedula(String? value) {

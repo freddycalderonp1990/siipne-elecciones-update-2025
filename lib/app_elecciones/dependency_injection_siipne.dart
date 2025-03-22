@@ -1,5 +1,5 @@
 
-import 'package:siipnelecciones3/app_elecciones/data/models/models.dart';
+import '../app_elecciones/data/models/models.dart';
 
 import '../app_elecciones/presentation/modules/controllers.dart';
 

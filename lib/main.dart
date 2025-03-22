@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:siipnelecciones3/app/presentation/blocs/calculadora/calculadora_bloc.dart';
-import 'package:siipnelecciones3/app/presentation/blocs/location/location_bloc.dart';
+import '../app/presentation/blocs/calculadora/calculadora_bloc.dart';
+import '../app/presentation/blocs/location/location_bloc.dart';
 
 import '../app/dependency_injection_app.dart';
 

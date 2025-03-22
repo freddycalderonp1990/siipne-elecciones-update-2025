@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:siipnelecciones3/app/core/utils/responsiveUtil.dart';
+import '../../../../../app/core/utils/responsiveUtil.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart' as myGeolocator;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:siipnelecciones3/app/core/app_config.dart';
-import 'package:siipnelecciones3/app/core/utils/responsiveUtil.dart';
-import 'package:siipnelecciones3/app/core/values/app_colors.dart';
-import 'package:siipnelecciones3/app/presentation/widgets/custom_app_widgets.dart';
+import '../../../../../app/core/app_config.dart';
+import '../../../../../app/core/utils/responsiveUtil.dart';
+import '../../../../../app/core/values/app_colors.dart';
+import '../../../../../app/presentation/widgets/custom_app_widgets.dart';
 
 import '../../../../../app_elecciones/core/siipne_config.dart';
 

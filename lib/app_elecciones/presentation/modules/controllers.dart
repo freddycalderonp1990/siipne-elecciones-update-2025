@@ -10,12 +10,13 @@ import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/state_manager.dart';
 import 'package:intl/intl.dart';
-import 'package:siipnelecciones3/app/core/values/app_colors.dart';
+import '../../../app/core/utils/device_info.dart';
+import '../../../app/core/values/app_colors.dart';
 
-import 'package:siipnelecciones3/app_elecciones//core/values/tutorial_app_strings.dart';
+import '../../../app_elecciones//core/values/tutorial_app_strings.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:siipnelecciones3/app_elecciones/core/values/siipne_images.dart';
+import '../../../app_elecciones/core/values/siipne_images.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 import 'package:geolocator/geolocator.dart' as myGeolocator;
 
@@ -31,7 +32,7 @@ import '../../../app/core/utils/photo_helper.dart';
 import '../../../app/core/utils/responsiveUtil.dart';
 import '../../../app/core/utils/tutorial_utils.dart';
 
-import '../../../app/core/utils/device_info.dart';
+
 import '../../../app/core/utils/encriptar_util.dart';
 
 import '../../../app/data/provider/providers_impl_app.dart';

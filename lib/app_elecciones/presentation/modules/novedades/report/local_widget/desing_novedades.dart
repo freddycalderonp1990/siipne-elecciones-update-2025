@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:siipnelecciones3/app/core/values/app_colors.dart';
+import '../../../../../../app/core/values/app_colors.dart';
 
 import '../../../../../../app/core/utils/responsiveUtil.dart';
 import '../../../../../../app/presentation/widgets/custom_app_widgets.dart';

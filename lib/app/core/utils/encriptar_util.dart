@@ -3,7 +3,7 @@ import 'dart:math';
 
 import 'package:crypto/crypto.dart';
 
-import 'package:siipnelecciones3/app/core/app_config.dart';
+import '../../../../../app/core/app_config.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class EncriptarUtil {

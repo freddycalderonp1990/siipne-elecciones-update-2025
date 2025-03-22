@@ -3,7 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:siipnelecciones3/app/presentation/widgets/custom_app_widgets.dart';
+import '../../../../../app/presentation/widgets/custom_app_widgets.dart';
 import '../../../app_elecciones//domain/enums/enums.dart';
 import '../../core/utils/responsiveUtil.dart';
 

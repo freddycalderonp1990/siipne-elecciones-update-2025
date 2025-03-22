@@ -1,8 +1,8 @@
 
 import 'dart:typed_data';
 
-import 'package:siipnelecciones3/app/core/app_config.dart';
-import 'package:siipnelecciones3/app/core/values/app_mocks.dart';
+import '../../../app/core/app_config.dart';
+import '../../../app/core/values/app_mocks.dart';
 import 'package:get/get.dart';
 import 'package:flutter/services.dart' as rootBundle;
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:siipnelecciones3/app/core/values/app_colors.dart';
-import 'package:siipnelecciones3/app/core/values/app_images.dart';
-import 'package:siipnelecciones3/app_elecciones/core/values/siipne_images.dart';
+import '../../../../../../app/core/values/app_colors.dart';
+import '../../../../../../app/core/values/app_images.dart';
+import '../../../../../../app_elecciones/core/values/siipne_images.dart';
 
 import '../../../../../../app/core/app_config.dart';
 import '../../../../../../app/core/utils/responsiveUtil.dart';

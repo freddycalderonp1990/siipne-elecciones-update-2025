@@ -10,7 +10,7 @@ import 'package:network_info_plus/network_info_plus.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:siipnelecciones3/app/data/provider/providers_impl_app.dart';
+import '../../../../../app/data/provider/providers_impl_app.dart';
 
 import '../../../app/core/utils/utilidadesUtil.dart';
 import '../../../app_elecciones//presentation/widgets/customWidgets.dart';

@@ -14,8 +14,8 @@ import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 
-import 'package:siipnelecciones3/app/core/utils/utilidadesUtil.dart';
-import 'package:siipnelecciones3/app/presentation/widgets/custom_app_widgets.dart';
+import '../../../app/core/utils/utilidadesUtil.dart';
+import '../../../app/presentation/widgets/custom_app_widgets.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../../../../app_elecciones/presentation/widgets/customWidgets.dart';
