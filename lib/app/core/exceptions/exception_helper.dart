@@ -82,6 +82,20 @@ class ExceptionHelper {
     return false; // Hubo un error
   }
 
+
+  static Future<T> manejarErroresParseJsonException<T>(Future<T> Function() funcion) async {
+    try {
+      return await funcion(); // Retorna el tipo de dato de la función
+    } catch (e, t) {
+      // Manejo centralizado de excepciones
+      throw ParseJsonException(
+        message: "Problema en Parse Model: $e - stackTrace: $t",
+      );
+    }
+  }
+
+
+
   static void _verificarIntentosFallidosClave() async {
     final LocalStoreImpl _localStoreImpl = Get.find<LocalStoreImpl>();
     //Obtenemos el contenedor de intentos fallidos

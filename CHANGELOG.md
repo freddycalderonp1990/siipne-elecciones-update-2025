@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.0.1] - Elecciones 2025 - Segunda Vuelta
+## [2.0.0] - Elecciones 2025 - Segunda Vuelta - 13-abrir-2025
 
 ### Bloqueo de Acceso
 - Implementación del bloqueo de acceso para anexarse o crear código.

@@ -29,19 +29,24 @@ class DatosPersModel {
 class DatosPer {
   DatosPer(
       {required this.idGenPersona,
+        required this.idDgpGrado,
         required this.siglas,
         required this.apenom,
         this.poliRegistrado = false,
         required this.documento});
 
   int idGenPersona;
+  int idDgpGrado;
   String siglas;
   String apenom;
   String documento;
   bool poliRegistrado;
   factory DatosPer.empty() =>
-      DatosPer(idGenPersona: 0, siglas: "", apenom: "", documento: "");
+      DatosPer(
+        idDgpGrado: 0,
+          idGenPersona: 0, siglas: "", apenom: "", documento: "");
   factory DatosPer.fromJson(Map<String, dynamic> json) => DatosPer(
+    idDgpGrado:  ParseModel.parseToInt(json["idDgpGrado"]),
     idGenPersona: ParseModel.parseToInt(json["idGenPersona"]),
     siglas: ParseModel.parseToString(json["siglas"]),
     documento: ParseModel.parseToString(json["documento"]),

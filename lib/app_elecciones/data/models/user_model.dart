@@ -16,7 +16,6 @@ DataUser obtenerDataUserDesdeToken(String token) {
 
     // Convierte el payload a JSON
     Map<String, dynamic> payloadMap = json.decode(payloadDecodificado);
-
     // Obtiene y retorna el modelo DataUser de la sección 'data'
     if (payloadMap.containsKey('data')) {
       return DataUser.fromJson(payloadMap['data']);
@@ -66,6 +65,7 @@ DataUser userModelFromJsonLocalDB(String str) => DataUser.fromJson(json.decode(s
 class DataUser {
   final int idGenUsuario;
   final int idGenPersona;
+  final int idGrado;
   final String nombres;
   final String documento;
   final String userName;
@@ -84,12 +84,14 @@ class DataUser {
     required this.sexo,
     required this.foto,
    required this.token,
+    required this.idGrado
   });
 
 
 
 
   factory DataUser.empty() => DataUser(
+    idGrado: 0,
     token: "",
       idGenUsuario: 0,
       idGenPersona: 0,
@@ -110,8 +112,10 @@ class DataUser {
     String? documento,
     String? sexo,
     String? foto,
+    int? idGrado,
   }) {
     return DataUser(
+      idGrado:  idGrado ?? this.idGrado,
       token: token ?? this.token,
       idGenUsuario: idGenUsuario ?? this.idGenUsuario,
       idGenPersona: idGenPersona ?? this.idGenPersona,
@@ -126,18 +130,18 @@ class DataUser {
   factory DataUser.fromJson(Map<String, dynamic> json) => DataUser(
     idGenUsuario: ParseModel.parseToInt(json["idGenUsuario"]),
     idGenPersona: ParseModel.parseToInt(json["idGenPersona"]),
+    idGrado: ParseModel.parseToInt(json["idGrado"]),
     userName: ParseModel.parseToString(json["userName"]),
     nombres: ParseModel.parseToString(json["nombres"]),
     documento: ParseModel.parseToString(json["documento"]),
     sexo: ParseModel.parseToString(json["sexo"]),
-
     foto: ParseModel.parseToString(json["foto"]),
     token: ParseModel.parseToString(json["token"]),
   );
 
-
   Map<String, dynamic> toJson() => {
     "idGenUsuario": idGenUsuario,
+    "idGrado": idGrado,
     "idGenPersona": idGenPersona,
     "userName": userName,
     "nombres": nombres,

@@ -25,8 +25,6 @@ class ResponseApi{
   static String validateConsultasExiste({required String json,required String titleJson}){
 
 
-
-
       final MsjServerModel = MsjServerModelFromJson(json, titleJson);
 
 

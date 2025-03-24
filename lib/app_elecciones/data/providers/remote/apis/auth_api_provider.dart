@@ -18,15 +18,14 @@ class AuthApiProviderImpl extends AuthRepository {
       body: body,
     );
 
-    try {
+    return await ExceptionHelper.manejarErroresParseJsonException(() async {
+
       DataAuth authModel = authModelFromJson(json).dataAuth;
       DataUser dataUser = obtenerDataUserDesdeToken(authModel.token);
       dataUser =
           dataUser.copyWith(token: authModel.token, foto: authModel.foto);
       return dataUser;
-    } catch (e,stackTrace) {
-      throw ParseJsonException(message: "Problema en Parse Model: ${e} - stackTrace: ${stackTrace}");
-    }
+    });
   }
 
   @override
