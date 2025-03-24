@@ -24,3 +24,11 @@
 - Se realiza la verificación según la **cédula**, **estado** y **proceso**.
 - Importante: Si un usuario ya está registrado en un proceso diferente (por ejemplo, `9`), pero se crea el proceso `10`, no se encontrará a menos que coincidan los procesos.
 
+### 🚀 Finalizar Recinto
+- Antes, solo validaba si era un recinto con la hora configurada para permitir su finalización.
+- Ahora, la validación se basa en la hora configurada para determinar si el usuario puede finalizar un recinto.
+
+### ✅ Validaciones Comprobadas
+- Si el usuario crea o ya tiene un código activo e intenta generar uno nuevo, se verifica la existencia del código y se le redirige al código activo correspondiente.
+- Si el usuario intenta anexarse a un código y ya está anexado o ha creado uno previamente, se le redirige al código que le corresponde.
+- El usuario **no puede tener dos códigos activos** en el mismo proceso ni estar anexado a dos códigos simultáneamente.

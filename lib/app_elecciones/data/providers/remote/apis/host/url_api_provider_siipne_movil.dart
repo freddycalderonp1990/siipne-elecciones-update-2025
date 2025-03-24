@@ -12,13 +12,14 @@ class UrlApiProviderSiipneMovil {
         bool isLogin = false,
         bool onlyUrl = false}) async {
     String token = await getToken();
+
     UrlApiProviderApp _urlApiProviderApp = UrlApiProviderApp(token: token);
 
     if (isLogin) {
       onlyUrl = true;
     }
 
-    final String url = HostSiipneMovil.gethost(onlyUrl: onlyUrl);
+    final String url = HostSiipneElecciones.gethost();
 
     return _urlApiProviderApp.post(
         url: url, segmento: segmento, body: body, isLogin: isLogin);
@@ -29,7 +30,7 @@ class UrlApiProviderSiipneMovil {
     String token = await getToken();
 
     UrlApiProviderApp _urlApiProviderApp = UrlApiProviderApp(token: token);
-    String url = HostSiipneMovil.gethost(onlyUrl: onlyUrl);
+    String url = HostSiipneElecciones.gethost();
     return _urlApiProviderApp.get(
       url: url,
       segmento: segmento,
@@ -40,7 +41,7 @@ class UrlApiProviderSiipneMovil {
     String token = await getToken();
 
     UrlApiProviderApp _urlApiProviderApp = UrlApiProviderApp(token: token);
-    final String url = HostSiipneMovil.gethost();
+    final String url = HostSiipneElecciones.gethost();
     return _urlApiProviderApp.patch(url: url, segmento: segmento, body: body);
   }
 
@@ -48,14 +49,14 @@ class UrlApiProviderSiipneMovil {
   static Future<String> put({String segmento = '', Object? body}) async {
     String token = await getToken();
     UrlApiProviderApp _urlApiProviderApp = UrlApiProviderApp(token: token);
-    final String url = HostSiipneMovil.gethost();
+    final String url = HostSiipneElecciones.gethost();
     return _urlApiProviderApp.put(url: url, segmento: segmento, body: body);
   }
 
   static Future<String> delete({String segmento = '', Object? body}) async {
     String token = await getToken();
     UrlApiProviderApp _urlApiProviderApp = UrlApiProviderApp(token: token);
-    final String url = HostSiipneMovil.gethost();
+    final String url = HostSiipneElecciones.gethost();
     return _urlApiProviderApp.delete(url: url, segmento: segmento, body: body);
   }
 }

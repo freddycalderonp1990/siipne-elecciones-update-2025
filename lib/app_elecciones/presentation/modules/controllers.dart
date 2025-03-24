@@ -64,7 +64,7 @@ part 'menu/menu_app_controller.dart';
 part 'select_proceso_operativo/select_proceso_operativo_controller.dart';
 part 'tipos_servicios_ejes/tipos_servicios_ejes_controller.dart';
 
-part '1_RecintoElectoral/crear_codigo/crear_codigo_recintos_controller.dart';
+part 'recinto_electoral/crear_codigo/crear_codigo_recintos_controller.dart';
 part 'unidades_policiales/crear_codigo/crear_codigo_unidad_poli_controller.dart';
 
 part 'menu_recintos_electorales/jefe/menu_rec_elec_jefe_controller.dart';
@@ -77,3 +77,5 @@ part 'personal/report/report_person_controller.dart';
 
 part 'novedades/add/add_novedades_controller.dart';
 part 'novedades/report/report_novedades_controller.dart';
+
+part 'combo_dependiente/combo_dependiente_controller.dart';

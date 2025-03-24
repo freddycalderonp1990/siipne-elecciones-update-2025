@@ -3,6 +3,9 @@ part of '../controllers.dart';
 class AnexarseController extends GetxController {
   final loginController = Get.find<LoginController>();
 
+
+  final comboDependienteController=Get.find<ComboDependienteController>();
+
   final EleccionesRecintosApiImpl _eleccionesRecintosApiImpl =
       Get.find<EleccionesRecintosApiImpl>();
 
@@ -52,6 +55,12 @@ class AnexarseController extends GetxController {
       return;
     }
 
+    selectUnidadPolicial = DatosUnidadesId.empty().obs;
+
+   comboDependienteController.selectUnidadPolicial = UnidadesPoliciale.empty().obs;
+    comboDependienteController.selectUnidadPolicial.refresh();
+
+
     String text = controllerCodigoRecinto.text;
     int? codigoRecinto = int.tryParse(text);
 
@@ -67,6 +76,8 @@ class AnexarseController extends GetxController {
 
       peticionServerState(false);
 
+
+
       if (datosEncargado.value.idDgoReciElect == 0) {
         DialogosAwesome.getWarning(
             btnOkOnPress: () {},
@@ -76,7 +87,15 @@ class AnexarseController extends GetxController {
       }
 
 
-      getUnidadesPolicialesById(datosEncargado.value.idDgoTipoEje);
+      if(datosEncargado.value.idDgoTipoEje==1){
+
+        getSubsistemas();
+      }else{
+
+
+        getUnidadesPolicialesById(datosEncargado.value.idDgoTipoEje);
+      }
+
     });
 
     peticionServerState(false);
@@ -91,7 +110,7 @@ class AnexarseController extends GetxController {
     peticionServerState(false);
   }
 
-  Future<void> registrarse() async {
+  Future<void> registrarse(int idDgoTipoEje) async {
     peticionServerState(true);
 
     await ExceptionHelper.manejarErroresShowDialogo(() async {
@@ -107,7 +126,7 @@ class AnexarseController extends GetxController {
           latitud: position.latitude,
           longitud: position.longitude,
           idDgoReciElect: datosEncargado.value.idDgoReciElect,
-          idDgoTipoEje: selectUnidadPolicial.value.idDgoTipoEje,
+          idDgoTipoEje: idDgoTipoEje,
           ip: ip);
 
       ResgistroPersEnRecElectoral result = await _personaApiImpl
@@ -128,6 +147,27 @@ class AnexarseController extends GetxController {
         Get.offAllNamed(SiipneRoutes.MENU_APP);
       });
     });
+    peticionServerState(false);
+  }
+
+
+  Future<void> getSubsistemas() async {
+    peticionServerState(true);
+
+    await comboDependienteController.getSubsistemas(idGenUsuario: user.idGenUsuario);
+    peticionServerState(false);
+
+  }
+
+  Future<void> getEjesDireccionesPoliciales(int idDgoTipoEje) async {
+    peticionServerState(true);
+    await  comboDependienteController.getEjesDireccionesPoliciales(idDgoTipoEje: idDgoTipoEje, idGenUsuario:user. idGenUsuario);
+    peticionServerState(false);
+  }
+
+  Future<void> getEjesUnidadesPoliciales(int idDgoTipoEje) async {
+    peticionServerState(true);
+    await comboDependienteController.getEjesUnidadesPoliciales(idDgoTipoEje: idDgoTipoEje, idGenUsuario:user. idGenUsuario);
     peticionServerState(false);
   }
 }

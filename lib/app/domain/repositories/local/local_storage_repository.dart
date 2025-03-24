@@ -1,6 +1,9 @@
 //Para Guardar informacion en local
 
 part of '../domain_repositories.dart';
+
+
+
 abstract class LocalStorageRepository{
   //Se define que cosas quiero hacer
   //se definen los contartos
@@ -18,7 +21,7 @@ abstract class LocalStorageRepository{
 
 
 
- Future<bool> getConfigHuella() ;
+  Future<bool> getConfigHuella() ;
   Future<void> setConfigHuella(bool value) ;
 
 
@@ -39,7 +42,6 @@ abstract class LocalStorageRepository{
 
   Future<void> setPinCode(String value);
   Future<String> getPinCode();
-
 
 
 

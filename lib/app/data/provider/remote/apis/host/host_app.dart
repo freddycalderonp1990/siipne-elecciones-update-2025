@@ -20,20 +20,20 @@ class HostApp {
     return dotenv.env['HOST_PROD'] ?? 'https://siipne3wv2.policia.gob.ec/';
   }
 
-  static gethost({bool onlyUrl = false}) {
+  static gethost({required String segmento}) {
     String url = '';
-    String path = dotenv.env['PATH_APP'] ?? '';
+
     switch (AppConfig.AmbienteUrl) {
       case Ambiente.desarrollo:
-        url = getDes() + path; //Desarrollo
+        url = getDes() + segmento; //Desarrollo
 
         break;
       case Ambiente.prueba:
-        url = getTest() + path; //Pruebas
+        url = getTest() + segmento; //Pruebas
 
         break;
       case Ambiente.produccion:
-        url = getProd() + path; //Produccion
+        url = getProd() + segmento; //Produccion
 
         break;
     }

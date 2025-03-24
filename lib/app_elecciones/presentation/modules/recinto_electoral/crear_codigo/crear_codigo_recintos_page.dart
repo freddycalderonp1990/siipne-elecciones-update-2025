@@ -67,15 +67,10 @@ class CrearCodigoRecintosPage extends GetView<CrearCodigoRecintosController> {
         SizedBox(
           height: responsive.altoP(0.4),
         ),
-        getComboSubsistema(),
-        SizedBox(
-          height: responsive.altoP(0.4),
-        ),
-        getComboDireccionesPoliciales(),
-        SizedBox(
-          height: responsive.altoP(0.4),
-        ),
-        getComboEjesUnidadesPoliciales(),
+
+
+        getDesingCombosPolicial(),
+
         SizedBox(
           height: responsive.altoP(1),
         ),
@@ -115,91 +110,110 @@ class CrearCodigoRecintosPage extends GetView<CrearCodigoRecintosController> {
             )));
   }
 
+
+
+  Widget getDesingCombosPolicial(){
+    final responsive=ResponsiveUtil();
+    return
+
+
+      Obx(() => controller.selectRecintosElectoral.value.idDgoTipoEje > 0
+        ?   ContenedorDesingWidget(
+        paddin: EdgeInsets.all(5),
+    child:Column(children: [
+      getComboSubsistema(),
+      SizedBox(
+        height: responsive.altoP(0.4),
+      ),
+      getComboDireccionesPoliciales(),
+      SizedBox(
+        height: responsive.altoP(0.4),
+      ),
+      getComboEjesUnidadesPoliciales(),
+
+
+    ],)):Container());
+  }
+
   Widget getComboSubsistema() {
-    print("aaaaa ${controller.selectRecintosElectoral.value.idDgoTipoEje}");
-    return Obx(() => controller.selectRecintosElectoral.value.idDgoTipoEje > 0
-        ? ContenedorDesingWidget(
-            paddin: EdgeInsets.all(5),
-            child: ComboBusqueda(
-              selectValue: controller.selectSubsistema.value,
+
+    return  ComboBusqueda(
+              selectValue: controller.comboDependienteController.selectSubsistema.value,
               icon: Icons.select_all_sharp,
               showClearButton: false,
-              datos: controller.listSubsistema,
+              datos: controller.comboDependienteController.listSubsistema,
               displayField: (item) =>
                   item.descripcion, // Aquí decides mostrar "nombres"
               searchHint: "Subsistema",
               complete: (value) {
-                controller.selectSubsistema.value = UnidadesPoliciale.empty();
-                controller.selectDireccionPoliciales.value =
+                controller.comboDependienteController.selectSubsistema.value = UnidadesPoliciale.empty();
+                controller.comboDependienteController.selectDireccionPoliciales.value =
                     UnidadesPoliciale.empty();
-                controller.selectUnidadPolicial.value =
+                controller.comboDependienteController.selectUnidadPolicial.value =
                     UnidadesPoliciale.empty();
 
                 if (value != null) {
-                  controller.selectSubsistema.value = value;
+                  controller.comboDependienteController.selectSubsistema.value = value;
 
                   controller.getEjesDireccionesPoliciales(value.idDgoTipoEje);
                   return;
                 }
               },
               textSeleccioneUndato: "Seleccione un Subsistema",
-            ))
-        : Container());
+            )
+        ;
   }
 
   Widget getComboDireccionesPoliciales() {
-    return Obx(() => controller.selectSubsistema.value.idDgoTipoEje > 0
-        ? ContenedorDesingWidget(
-            paddin: EdgeInsets.all(5),
-            child: ComboBusqueda(
-              selectValue: controller.selectDireccionPoliciales.value,
+    return Obx(() => controller.comboDependienteController.selectSubsistema.value.idDgoTipoEje > 0
+        ?  ComboBusqueda(
+              selectValue: controller.comboDependienteController.selectDireccionPoliciales.value,
               icon: Icons.select_all_sharp,
               showClearButton: false,
-              datos: controller.listDireccionesPoliciales,
+              datos: controller.comboDependienteController.listDireccionesPoliciales,
               displayField: (item) =>
                   item.descripcion, // Aquí decides mostrar "nombres"
               searchHint: "Dirección",
               complete: (value) {
-                controller.selectDireccionPoliciales.value =
+                controller.comboDependienteController.selectDireccionPoliciales.value =
                     UnidadesPoliciale.empty();
-                controller.selectUnidadPolicial.value =
+                controller.comboDependienteController.selectUnidadPolicial.value =
                     UnidadesPoliciale.empty();
                 if (value != null) {
                   controller.getEjesUnidadesPoliciales(value.idDgoTipoEje);
-                  controller.selectDireccionPoliciales.value = value;
+                  controller.comboDependienteController.selectDireccionPoliciales.value = value;
                   return;
                 }
               },
               textSeleccioneUndato: "Seleccione una Dirección",
-            ))
+            )
         : Container());
   }
 
   Widget getComboEjesUnidadesPoliciales() {
-    return Obx(() => controller.selectDireccionPoliciales.value.idDgoTipoEje > 0
-        ? ContenedorDesingWidget(
-            paddin: EdgeInsets.all(5),
-            child: ComboBusqueda(
-              selectValue: controller.selectUnidadPolicial.value,
+    return Obx(() => controller.comboDependienteController.selectDireccionPoliciales.value.idDgoTipoEje > 0
+        ?  ComboBusqueda(
+              selectValue: controller.comboDependienteController.selectUnidadPolicial.value,
               icon: Icons.select_all_sharp,
               showClearButton: false,
-              datos: controller.listUnidadesPoliciales,
+              datos: controller.comboDependienteController.listUnidadesPoliciales,
               displayField: (item) =>
                   item.descripcion, // Aquí decides mostrar "nombres"
               searchHint: "Unidad Policial",
               complete: (value) {
-                controller.selectUnidadPolicial.value =
+                controller.comboDependienteController.selectUnidadPolicial.value =
                     UnidadesPoliciale.empty();
-
                 if (value != null) {
-                  controller.selectUnidadPolicial.value = value;
+                  controller.comboDependienteController.selectUnidadPolicial.value = value;
                   return;
                 }
               },
               textSeleccioneUndato: "Seleccione una Unidad",
-            ))
+            )
         : Container());
   }
+
+
 
   Widget wgTxtTelefono(ResponsiveUtil responsive) {
     Widget wg = ContenedorDesingWidget(
@@ -221,7 +235,7 @@ class CrearCodigoRecintosPage extends GetView<CrearCodigoRecintosController> {
         ],
       ),
     ));
-    return Obx(() => controller.selectUnidadPolicial.value.idDgoTipoEje > 0
+    return Obx(() => controller.comboDependienteController.selectUnidadPolicial.value.idDgoTipoEje > 0
         ? wg
         : Container());
   }
@@ -235,7 +249,7 @@ class CrearCodigoRecintosPage extends GetView<CrearCodigoRecintosController> {
 
   Widget btnCrear() {
 
-    return Obx(() => controller.selectUnidadPolicial.value.idDgoTipoEje > 0
+    return Obx(() => controller.comboDependienteController.selectUnidadPolicial.value.idDgoTipoEje > 0
         ? controller.selectRecintosElectoral.value.idDgoTipoEje>0? BtnIconWidget(
             icon: Icons.open_in_browser_outlined,
             titulo: "CREAR CÓDIGO",

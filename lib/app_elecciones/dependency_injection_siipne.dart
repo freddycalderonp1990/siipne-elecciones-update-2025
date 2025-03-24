@@ -1,15 +1,15 @@
 
-import '../app_elecciones/data/models/models.dart';
 
 import '../app_elecciones/presentation/modules/controllers.dart';
 
 import 'data/repository/data_repositories.dart';
 
-
 import 'data/providers/providers_impl.dart';
-import 'domain/repositories/domain_repositories.dart';
+
 
 import 'package:get/get.dart';
+
+import 'domain/repositories/domain_repositories.dart';
 
 
 class DependencyInjectionSiipne extends Bindings{
@@ -35,8 +35,13 @@ class DependencyInjectionSiipne extends Bindings{
     Get.lazyPut<LocalStorageRepository> (() => LocalStoreImpl(LocalStoreProviderImpl()), fenix: true);
 
 
+    Get.lazyPut<ComboDependienteController> (() => ComboDependienteController(), fenix: true);
+
     //realizo la inyecto para utilizarla enm toda la aplicacion
+
     Get.put(LoginController());
+
+
     Get.put(MyGpsController());
 
 

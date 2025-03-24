@@ -43,6 +43,7 @@ import '../../core/values/siipne_strings.dart';
 import '../../data/models/models.dart';
 import '../../domain/enums/enums.dart';
 import '../widgets/gps_access_screen.dart';
+import 'combo_dependiente/combo_dependiente_page.dart';
 import 'controllers.dart';
 import '../../presentation/modules/login/local_widgets/wgLogin.dart';
 import '../../../app/core/utils/responsiveUtil.dart';
@@ -63,7 +64,7 @@ part 'menu_recintos_electorales/integrante/menu_rec_elec_integrante_page.dart';
 part 'anexarse/anexarse_page.dart';
 
 
-part '1_RecintoElectoral/crear_codigo/crear_codigo_recintos_page.dart';
+part 'recinto_electoral/crear_codigo/crear_codigo_recintos_page.dart';
 part 'unidades_policiales/crear_codigo/crear_codigo_unidad_poli_page.dart';
 
 part 'personal/add/add_person_page.dart';

@@ -23,8 +23,8 @@ class ExceptionHelper {
   //y los mensjes van en manejarErroresShowDialogo
 
   static Future<bool> manejarErroresShowDialogo(
-
-      Future<void> Function() funcion) async {
+    Future<void> Function() funcion,
+  ) async {
     try {
       await funcion();
       return true; // Operación exitosa
@@ -34,67 +34,73 @@ class ExceptionHelper {
       if (e.message.contains("Usuario / Clave incorrecta")) {
         _verificarIntentosFallidosClave();
       }
-      DialogosAwesome.getError(descripcion: e.message,btnOkOnPress: (){
-        Get.back();
-      });
+      DialogosAwesome.getError(
+        descripcion: e.message,
+        btnOkOnPress: () {
+         // Get.back();
+        },
+      );
     } on CloseRecintoException catch (e) {
-
-        DialogosAwesome.getWarning(descripcion: e.msj, btnOkOnPress: () {
+      DialogosAwesome.getWarning(
+        descripcion: e.msj,
+        btnOkOnPress: () {
           Get.offAllNamed(SiipneRoutes.MENU_APP);
-        });
-
+        },
+      );
     } on ParseJsonException catch (e) {
-
       DialogosAwesome.getIconPolicia(
         titleBtnSi: "Aceptar",
         mostrarSegungoBtn: false,
-        btnOkOnPress: (){
+        btnOkOnPress: () {
           Get.back();
         },
-        descripcion:
-        e.msj, title: 'ERROR', );
+        descripcion: e.msj,
+        title: 'ERROR',
+      );
     } on TimeoutException catch (e) {
       DialogosAwesome.getIconPolicia(
         titleBtnSi: "Aceptar",
         mostrarSegungoBtn: false,
-          btnOkOnPress: (){
+        btnOkOnPress: () {
           Get.back();
-          },
-          descripcion:
-              "Tiempo de Espera Superado.\nIntente nuevamente o contacte al administrador.", title: 'ERROR', );
-
-
+        },
+        descripcion:
+            "Tiempo de Espera Superado.\nIntente nuevamente o contacte al administrador.",
+        title: 'ERROR',
+      );
     } catch (e, t) {
       String msj = ExceptionHelper.setMensaje(
-          mensaje:
-              "Error Inesperado.\nIntente nuevamente o contacte al administrador.",
-          msjException: "Error: ${e} - Linea: ${t}");
+        mensaje:
+            "Error Inesperado.\nIntente nuevamente o contacte al administrador.",
+        msjException: "Error: ${e} - Linea: ${t}",
+      );
 
       DialogosAwesome.getIconPolicia(
         titleBtnSi: "Aceptar",
         mostrarSegungoBtn: false,
-        btnOkOnPress: (){
+        btnOkOnPress: () {
           Get.back();
         },
-        descripcion:
-        msj, title: 'ERROR', );
+        descripcion: msj,
+        title: 'ERROR',
+      );
     }
     return false; // Hubo un error
   }
 
-
-  static Future<T> manejarErroresParseJsonException<T>(Future<T> Function() funcion) async {
+  static Future<T> manejarErroresParseJsonException<T>(
+    Future<T> Function() funcion,
+  ) async {
     try {
       return await funcion(); // Retorna el tipo de dato de la función
     } catch (e, t) {
+      print("Problema en Parse Model:");
       // Manejo centralizado de excepciones
       throw ParseJsonException(
         message: "Problema en Parse Model: $e - stackTrace: $t",
       );
     }
   }
-
-
 
   static void _verificarIntentosFallidosClave() async {
     final LocalStoreImpl _localStoreImpl = Get.find<LocalStoreImpl>();
@@ -117,10 +123,11 @@ class ExceptionHelper {
       await _localStoreImpl.setUserModel(DataUser.empty());
 
       DialogosAwesome.getWarning(
-          descripcion: "Ah excedido el número de intentos permitidos",
-          btnOkOnPress: () {
-            Get.offAllNamed(AppRoutes.SPLASH_APP);
-          });
+        descripcion: "Ah excedido el número de intentos permitidos",
+        btnOkOnPress: () {
+          Get.offAllNamed(AppRoutes.SPLASH_APP);
+        },
+      );
     } else {
       await _localStoreImpl.setContadorFallido(contadorfallido);
     }
@@ -128,21 +135,22 @@ class ExceptionHelper {
 
   static mensajeActualizarApp() {
     DialogosAwesome.getWarning(
-        title: "ACTUALIZAR LA APP",
-        descripcion: MensajesString.msjNuevaVersionApp,
-        btnOkOnPress: () {
-          Get.back();
-          if (GetPlatform.isAndroid) {
-            UtilidadesUtil.abrirUrl(SiipneConfig.linkAppAndroid);
-            print('App Android');
-          } else {
-            UtilidadesUtil.abrirUrl(SiipneConfig.linkAppIos);
-            print('App Ios');
-          }
-        });
+      title: "ACTUALIZAR LA APP",
+      descripcion: MensajesString.msjNuevaVersionApp,
+      btnOkOnPress: () {
+        Get.back();
+        if (GetPlatform.isAndroid) {
+          UtilidadesUtil.abrirUrl(SiipneConfig.linkAppAndroid);
+          print('App Android');
+        } else {
+          UtilidadesUtil.abrirUrl(SiipneConfig.linkAppIos);
+          print('App Ios');
+        }
+      },
+    );
   }
 
-//se encarga de ejecutar la funcion al servidor y en caso de existir un timeoutException
+  //se encarga de ejecutar la funcion al servidor y en caso de existir un timeoutException
   //valida que el usaurio sea el de google o ios de pruebas
   //para cargar la data desde un json
   static Future<T> executeWithMock<T>({
@@ -177,9 +185,10 @@ class ExceptionHelper {
     print("Time out: ${AppConfig.secondsTimeout}");
     print("Tipo de excepción: ${e.toString()}");
 
-    final exception = e is Exception
-        ? e
-        : Exception(e.toString()); // Asegura que sea una excepción válida
+    final exception =
+        e is Exception
+            ? e
+            : Exception(e.toString()); // Asegura que sea una excepción válida
 
     // Verifica si es TimeoutException
     if (exception is TimeoutException) {
@@ -194,9 +203,10 @@ class ExceptionHelper {
         }
       }
       String msj = ExceptionHelper.setMensaje(
-          mensaje:
-              "Se superó el tiempo de espera.\nIntente nuevamente o contacte al administrador.",
-          msjException: "Error: ${e} - Linea: ${t}");
+        mensaje:
+            "Se superó el tiempo de espera.\nIntente nuevamente o contacte al administrador.",
+        msjException: "Error: ${e} - Linea: ${t}",
+      );
 
       throw TimeoutException(msj);
     } else {
@@ -204,13 +214,11 @@ class ExceptionHelper {
     }
   }
 
-  static throwError(
-    Object e,
-    Object t,
-  ) {
-    final exception = e is Exception
-        ? e
-        : Exception(e.toString()); // Asegura que sea una excepción válida
+  static throwError(Object e, Object t) {
+    final exception =
+        e is Exception
+            ? e
+            : Exception(e.toString()); // Asegura que sea una excepción válida
 
     // Manejo de otras excepciones específicas
     if (exception is ParseJsonException) {
@@ -230,14 +238,17 @@ class ExceptionHelper {
       throw TimeoutException(exception.message);
     }
     String message = ExceptionHelper.setMensaje(
-        mensaje: "Intente nuevamente o contacte al administrador.",
-        msjException: "Error: ${e} - Linea: ${t}");
+      mensaje: "Intente nuevamente o contacte al administrador.",
+      msjException: "Error: ${e} - Linea: ${t}",
+    );
 
     throw Exception(message);
   }
 
   static Future<T> manejarErroresMocks<T>(
-      Future<T> Function() funcion, T Function()? mockData) async {
+    Future<T> Function() funcion,
+    T Function()? mockData,
+  ) async {
     try {
       return await funcion(); // Ejecuta la función principal
     } on ParseJsonException catch (e) {
@@ -263,10 +274,11 @@ class ExceptionHelper {
 
   //lo que este en mensaje siempre se va a mostra
   //msjException solo se muestra si el ambiente es difrente de produccion
-  static String setMensaje(
-      {String mensaje =
-          "Ocurrió un problema. Intente nuevamente o contacte al administrador.",
-      required String msjException}) {
+  static String setMensaje({
+    String mensaje =
+        "Ocurrió un problema. Intente nuevamente o contacte al administrador.",
+    required String msjException,
+  }) {
     if (AppConfig.AmbienteUrl.toString() != Ambiente.produccion.toString()) {
       mensaje = mensaje + ' Exception: ' + msjException;
     }

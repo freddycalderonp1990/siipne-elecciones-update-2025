@@ -19,6 +19,7 @@ class AuthModel {
     statusCode: json["status_code"],
     message: json["message"],
     dataAuth: DataAuth.fromJson(json["data"]),
+
   );
 
   Map<String, dynamic> toJson() => {

@@ -5,6 +5,8 @@ import 'dart:developer';
 
 import 'dart:typed_data';
 
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import '../../../app/core/utils/parse_model.dart';
 import '../../../app_elecciones/data/providers/remote/apis/api_constantes.dart';
 import 'package:http/http.dart' as http;
@@ -35,7 +37,7 @@ import '../../domain/request/request.dart';
 
 
 part 'remote/apis/responseApi.dart';
-part 'remote/apis/host/host_siipne_movil.dart';
+part 'remote/apis/host/host_siipne_elecciones.dart';
 
 part 'remote/apis/elecciones_procesos_api_provider.dart';
 part 'remote/apis/elecciones_recintos_api_provider.dart';
