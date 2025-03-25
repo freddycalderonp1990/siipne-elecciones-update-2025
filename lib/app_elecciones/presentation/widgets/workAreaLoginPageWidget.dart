@@ -102,12 +102,10 @@ class _WorkAreaLoginPageWidgetState extends State<WorkAreaLoginPageWidget> {
           )
               : Container(),
           widget.mostrarVersion
-              ? Text(
-            'Versión: ' + version,
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                color: Colors.black.withOpacity(0.5)),
-          )
+              ?
+          TextLineasWidget(title: 'Versión: ' + version,colorTexto: Colors.black,sizeTxt: 10,grosorLinea: 2,)
+
+
               : Container()
         ],
       ),

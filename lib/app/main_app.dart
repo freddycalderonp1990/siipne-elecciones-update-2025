@@ -24,10 +24,10 @@ class MainApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       //theme: AppTheme.lightTheme,
-      theme: ThemeData(
-        fontFamily: 'Bookman Old Style',
+      /*theme: ThemeData(
+        fontFamily: 'Century Gothic',
         primarySwatch:UtilidadesUtil.convertirAColorMaterial(AppColors.colorAzul_1),
-      ),
+      ),*/
 
       locale: Locale('es'),
       // translations will be displayed in that locale
@@ -38,7 +38,7 @@ class MainApp extends StatelessWidget {
       home: Scaffold(
         body: SafeArea(
           child: Center(
-            child: Text('Mi UPC'),
+            child: Text(''),
           ),
         ),
       ),

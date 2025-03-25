@@ -1,3 +1,19 @@
+import java.util.Properties
+import java.io.File
+import java.io.FileInputStream
+
+// Definir la ruta absoluta de key.properties
+val keystorePropertiesFile = File("/Users/policianacional/AndroidStudioProjects/siipne-elecciones-update-2025/android/key.properties")
+
+
+// Verificar si el archivo existe antes de cargarlo
+val keystoreProperties = Properties()
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+} else {
+    println("WARNING: key.properties no encontrado en ${keystorePropertiesFile.absolutePath}")
+}
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -30,11 +46,20 @@ android {
         versionName = flutter.versionName
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file(keystoreProperties["storeFile"] as String)
+            storePassword = keystoreProperties["storePassword"] as String
+            keyAlias = keystoreProperties["keyAlias"] as String
+            keyPassword = keystoreProperties["keyPassword"] as String
+        }
+    }
+
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.getByName("debug")
+
+            signingConfig = signingConfigs.getByName("release")
         }
     }
 }

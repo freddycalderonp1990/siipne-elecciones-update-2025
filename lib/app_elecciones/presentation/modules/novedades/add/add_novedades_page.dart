@@ -9,7 +9,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
       mostrarBtnAtras: true,
       title: "REGISTRAR NOVEDADES",
       showGps: true,
-      contenido:getContenido(),
+      contenido: getContenido(),
       peticionServer: controller.peticionServerState,
     );
   }
@@ -22,27 +22,33 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Obx(()=>controller.showVerNovedades.value?BtnIconWidget(
-            icon: Icons.assignment_sharp,
-            titulo: "VER NOVEDADES",
-            onPressed: () => controller.goToPageReporteNovedades(),
-          ):Container()),
-          getCombos(),
-          SizedBox(
-            height: responsive.altoP(0.4),
+          Obx(
+            () =>
+                controller.showVerNovedades.value
+                    ? BtnIconWidget(
+                      icon: Icons.assignment_sharp,
+                      titulo: "VER NOVEDADES",
+                      onPressed: () => controller.goToPageReporteNovedades(),
+                    )
+                    : Container(),
           ),
-          Obx(() =>
-              wgCajasTexto(controller.selectTipoNovedad.value.descripcion)),
-          Obx(() => wgCajasTextoNovedades(
-              controller.selectNovedad.value.idDgoNovedadesElect, responsive)),
+          getCombos(),
+          SizedBox(height: responsive.altoP(0.4)),
+          Obx(
+            () => wgCajasTexto(controller.selectTipoNovedad.value.descripcion),
+          ),
+          Obx(
+            () => wgCajasTextoNovedades(
+              controller.selectNovedad.value.idDgoNovedadesElect,
+              responsive,
+            ),
+          ),
           Obx(() {
             return controller.mostrarFoto.value
                 ? wgFoto(responsive)
                 : Container();
           }),
-          SizedBox(
-            height: responsive.altoP(3.5),
-          ),
+          SizedBox(height: responsive.altoP(3.5)),
           getBtnGuardar(),
         ],
       ),
@@ -53,46 +59,42 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
     Widget wgSolicitarFoto = Column(
       children: [
         controller.mGaleryCameraModel.value == null
-            ? TituloTextWidget(
-                title: "Registre una Imagen",
-              )
-            : TituloTextWidget(
-                title: "Cambiar la Imagen",
-              ),
-        SizedBox(
-          height: responsive.altoP(1),
-        ),
+            ? TituloTextWidget(title: "Registre una Imagen")
+            : TituloTextWidget(title: "Cambiar la Imagen"),
+        SizedBox(height: responsive.altoP(1)),
         Material(
-            child: InkWell(
-          onTap: () async {
-            controller.peticionServerState(true);
-            controller.mGaleryCameraModel.value =
-                await PhotoHelper.getDesingPictureGaleryOrCamera(
-                    titleImg:
-                        "ImgRecElectNovedades_id_${controller.selectNovedad.value.idDgoNovedadesElect}");
-            controller.peticionServerState(false);
-          },
-          child: Container(
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(20.0),
-              child: Image.asset(SiipneImages.icon_camara,
-                  width: responsive.altoP(6.0)),
+          child: InkWell(
+            onTap: () async {
+              controller
+                  .mGaleryCameraModel
+                  .value = await PhotoHelper.getDesingPictureGaleryOrCamera(
+                titleImg:
+                    "ImgRecElectNovedades_id_${controller.selectNovedad.value.idDgoNovedadesElect}",
+              );
+            },
+            child: Container(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(20.0),
+                child: Image.asset(
+                  SiipneImages.icon_camara,
+                  width: responsive.altoP(6.0),
+                ),
+              ),
             ),
           ),
-        )),
+        ),
         controller.mGaleryCameraModel.value == null
             ? Container()
             : ClipRRect(
-                borderRadius: BorderRadius.circular(25.0),
-                child: Image.file(
-                  controller.mGaleryCameraModel.value!.imageFile,
-                  fit: BoxFit.fill,
-                  height: responsive.altoP(30.0),
-                  width: responsive.altoP(34.0),
-                )),
-        SizedBox(
-          height: responsive.altoP(1),
-        ),
+              borderRadius: BorderRadius.circular(25.0),
+              child: Image.file(
+                controller.mGaleryCameraModel.value!.imageFile,
+                fit: BoxFit.fill,
+                height: responsive.altoP(30.0),
+                width: responsive.altoP(34.0),
+              ),
+            ),
+        SizedBox(height: responsive.altoP(1)),
       ],
     );
 
@@ -105,17 +107,11 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
     final responsive = ResponsiveUtil();
     return Column(
       children: [
-        SizedBox(
-          height: responsive.altoP(0.4),
-        ),
+        SizedBox(height: responsive.altoP(0.4)),
         getComboTipoNovedad(),
-        SizedBox(
-          height: responsive.altoP(0.4),
-        ),
+        SizedBox(height: responsive.altoP(0.4)),
         getComboNovedades(),
-        SizedBox(
-          height: responsive.altoP(0.4),
-        ),
+        SizedBox(height: responsive.altoP(0.4)),
         getComboDelito(),
       ],
     );
@@ -123,95 +119,112 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
 
   Widget getComboTipoNovedad() {
     return ContenedorDesingWidget(
-        paddin: EdgeInsets.all(5),
-        child: ComboBusqueda(
-          selectValue: controller.selectTipoNovedad.value,
-          icon: Icons.select_all_sharp,
-          showClearButton: false,
-          datos: controller.listTipoNovedades,
-          displayField: (item) =>
-              item.descripcion, // Aquí decides mostrar "nombres"
-          searchHint: "Tipo Novedad",
-          complete: (value) {
-            controller.selectTipoNovedad.value = NovedadesElectorale.empty();
-            controller.selectNovedad.value = NovedadesElectorale.empty();
-            controller.selectDelito.value = NovedadesElectorale.empty();
+      paddin: EdgeInsets.all(5),
+      child: ComboBusqueda(
+        selectValue: controller.selectTipoNovedad.value,
+        icon: Icons.select_all_sharp,
+        showClearButton: false,
+        datos: controller.listTipoNovedades,
+        displayField:
+            (item) => item.descripcion, // Aquí decides mostrar "nombres"
+        searchHint: "Tipo Novedad",
+        complete: (value) {
+          controller.selectTipoNovedad.value = NovedadesElectorale.empty();
+          controller.selectNovedad.value = NovedadesElectorale.empty();
+          controller.selectDelito.value = NovedadesElectorale.empty();
 
-            if (value != null) {
-              controller.selectTipoNovedad.value = value;
+          if (value != null) {
+            controller.selectTipoNovedad.value = value;
 
-              controller.getNovedadesHijas(value.idDgoNovedadesElect);
-              return;
-            }
-          },
-          textSeleccioneUndato: "Seleccione un Tipo de Novedad",
-        ));
+            controller.getNovedadesHijas(value.idDgoNovedadesElect);
+            return;
+          }
+        },
+        textSeleccioneUndato: "Seleccione un Tipo de Novedad",
+      ),
+    );
   }
 
   Widget getComboNovedades() {
-    return Obx(() => controller.selectTipoNovedad.value.idDgoNovedadesElect > 0
-        ? ContenedorDesingWidget(
-            paddin: EdgeInsets.all(5),
-            child: ComboBusqueda(
-              selectValue: controller.selectNovedad.value,
-              icon: Icons.select_all_sharp,
-              showClearButton: false,
-              datos: controller.listNovedades,
-              displayField: (item) =>
-                  item.descripcion, // Aquí decides mostrar "nombres"
-              searchHint: "Novedad",
-              complete: (value) {
-                controller.selectNovedad.value = NovedadesElectorale.empty();
-                controller.selectDelito.value = NovedadesElectorale.empty();
+    return Obx(
+      () =>
+          controller.selectTipoNovedad.value.idDgoNovedadesElect > 0
+              ? ContenedorDesingWidget(
+                paddin: EdgeInsets.all(5),
+                child: ComboBusqueda(
+                  selectValue: controller.selectNovedad.value,
+                  icon: Icons.select_all_sharp,
+                  showClearButton: false,
+                  datos: controller.listNovedades,
+                  displayField:
+                      (item) =>
+                          item.descripcion, // Aquí decides mostrar "nombres"
+                  searchHint: "Novedad",
+                  complete: (value) {
+                    controller.selectNovedad.value =
+                        NovedadesElectorale.empty();
+                    controller.selectDelito.value = NovedadesElectorale.empty();
 
-                controller.mostrarBtnGuardar(false);
-                if (value != null) {
-                  controller.selectNovedad.value = value;
+                    controller.mostrarBtnGuardar(false);
+                    if (value != null) {
+                      controller.selectNovedad.value = value;
 
-                  if (controller.idNovedadBoletaCaptura ==
-                      value.idDgoNovedadesElect) {
-                    controller.getNovedadesDelito(value.idDgoNovedadesElect);
-                  } else if (controller
-                          .selectNovedad.value.idDgoNovedadesElect >
-                      0) {
-                    controller.mostrarBtnGuardar(true);
-                  }
-                  return;
-                }
-              },
-              textSeleccioneUndato: "Seleccione una Novedad",
-            ))
-        : Container());
+                      if (controller.idNovedadBoletaCaptura ==
+                          value.idDgoNovedadesElect) {
+                        controller.getNovedadesDelito(
+                          value.idDgoNovedadesElect,
+                        );
+                      } else if (controller
+                              .selectNovedad
+                              .value
+                              .idDgoNovedadesElect >
+                          0) {
+                        controller.mostrarBtnGuardar(true);
+                      }
+                      return;
+                    }
+                  },
+                  textSeleccioneUndato: "Seleccione una Novedad",
+                ),
+              )
+              : Container(),
+    );
   }
 
   Widget getComboDelito() {
-    return Obx(() => controller.selectNovedad.value.idDgoNovedadesElect > 0 &&
-            controller.idNovedadBoletaCaptura ==
-                controller.selectNovedad.value.idDgoNovedadesElect
-        ? ContenedorDesingWidget(
-            paddin: EdgeInsets.all(5),
-            child: ComboBusqueda(
-              selectValue: controller.selectDelito.value,
-              icon: Icons.select_all_sharp,
-              showClearButton: false,
-              datos: controller.listDelito,
-              displayField: (item) =>
-                  item.descripcion, // Aquí decides mostrar "nombres"
-              searchHint: "Delito",
-              complete: (value) {
-                controller.selectDelito.value = NovedadesElectorale.empty();
-                controller.mostrarBtnGuardar(false);
-                if (value != null) {
-                  controller.selectDelito.value = value;
-                  if (controller.selectDelito.value.idDgoNovedadesElect > 0) {
-                    controller.mostrarBtnGuardar(true);
-                  }
-                  return;
-                }
-              },
-              textSeleccioneUndato: "Seleccione el Delito",
-            ))
-        : Container());
+    return Obx(
+      () =>
+          controller.selectNovedad.value.idDgoNovedadesElect > 0 &&
+                  controller.idNovedadBoletaCaptura ==
+                      controller.selectNovedad.value.idDgoNovedadesElect
+              ? ContenedorDesingWidget(
+                paddin: EdgeInsets.all(5),
+                child: ComboBusqueda(
+                  selectValue: controller.selectDelito.value,
+                  icon: Icons.select_all_sharp,
+                  showClearButton: false,
+                  datos: controller.listDelito,
+                  displayField:
+                      (item) =>
+                          item.descripcion, // Aquí decides mostrar "nombres"
+                  searchHint: "Delito",
+                  complete: (value) {
+                    controller.selectDelito.value = NovedadesElectorale.empty();
+                    controller.mostrarBtnGuardar(false);
+                    if (value != null) {
+                      controller.selectDelito.value = value;
+                      if (controller.selectDelito.value.idDgoNovedadesElect >
+                          0) {
+                        controller.mostrarBtnGuardar(true);
+                      }
+                      return;
+                    }
+                  },
+                  textSeleccioneUndato: "Seleccione el Delito",
+                ),
+              )
+              : Container(),
+    );
   }
 
   Widget wgCajasTexto(String novedadesPadres) {
@@ -281,7 +294,9 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
   }
 
   Widget wgCajasTextoNovedades(
-      int idDgoNovedadesElect, ResponsiveUtil responsive) {
+    int idDgoNovedadesElect,
+    ResponsiveUtil responsive,
+  ) {
     Widget wg = Container();
     print("suiii");
     print(idDgoNovedadesElect);
@@ -327,33 +342,35 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
         wg = Column(
           children: [
             wgTxtNumeroManifestantes(responsive),
-            SizedBox(
-              height: responsive.altoP(1),
-            ),
+            SizedBox(height: responsive.altoP(1)),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   getBtnColores(
-                      responsive: responsive,
-                      color: Colors.green.withOpacity(0.8),
-                      title: "1-50"),
+                    responsive: responsive,
+                    color: Colors.green.withOpacity(0.8),
+                    title: "1-50",
+                  ),
                   getBtnColores(
-                      responsive: responsive,
-                      color: Colors.yellow.withOpacity(0.8),
-                      title: "51-200"),
+                    responsive: responsive,
+                    color: Colors.yellow.withOpacity(0.8),
+                    title: "51-200",
+                  ),
                   getBtnColores(
-                      responsive: responsive,
-                      color: Colors.orange.withOpacity(0.8),
-                      title: "201-500"),
+                    responsive: responsive,
+                    color: Colors.orange.withOpacity(0.8),
+                    title: "201-500",
+                  ),
                   getBtnColores(
-                      responsive: responsive,
-                      color: Colors.red.withOpacity(0.8),
-                      title: "501-Más"),
+                    responsive: responsive,
+                    color: Colors.red.withOpacity(0.8),
+                    title: "501-Más",
+                  ),
                 ],
               ),
-            )
+            ),
           ],
         );
         controller.validarForm = true;
@@ -367,33 +384,35 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
         wg = Column(
           children: [
             wgTxtNumeroQuemaUrnas(responsive),
-            SizedBox(
-              height: responsive.altoP(1),
-            ),
+            SizedBox(height: responsive.altoP(1)),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   getBtnColores(
-                      responsive: responsive,
-                      color: Colors.green.withOpacity(0.8),
-                      title: "1-50"),
+                    responsive: responsive,
+                    color: Colors.green.withOpacity(0.8),
+                    title: "1-50",
+                  ),
                   getBtnColores(
-                      responsive: responsive,
-                      color: Colors.yellow.withOpacity(0.8),
-                      title: "51-200"),
+                    responsive: responsive,
+                    color: Colors.yellow.withOpacity(0.8),
+                    title: "51-200",
+                  ),
                   getBtnColores(
-                      responsive: responsive,
-                      color: Colors.orange.withOpacity(0.8),
-                      title: "201-500"),
+                    responsive: responsive,
+                    color: Colors.orange.withOpacity(0.8),
+                    title: "201-500",
+                  ),
                   getBtnColores(
-                      responsive: responsive,
-                      color: Colors.red.withOpacity(0.8),
-                      title: "501-Más"),
+                    responsive: responsive,
+                    color: Colors.red.withOpacity(0.8),
+                    title: "501-Más",
+                  ),
                 ],
               ),
-            )
+            ),
           ],
         );
         break;
@@ -405,33 +424,35 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
         wg = Column(
           children: [
             wgTxtNumeroTomaRecintos(responsive),
-            SizedBox(
-              height: responsive.altoP(1),
-            ),
+            SizedBox(height: responsive.altoP(1)),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   getBtnColores(
-                      responsive: responsive,
-                      color: Colors.green.withOpacity(0.8),
-                      title: "1-50"),
+                    responsive: responsive,
+                    color: Colors.green.withOpacity(0.8),
+                    title: "1-50",
+                  ),
                   getBtnColores(
-                      responsive: responsive,
-                      color: Colors.yellow.withOpacity(0.8),
-                      title: "51-200"),
+                    responsive: responsive,
+                    color: Colors.yellow.withOpacity(0.8),
+                    title: "51-200",
+                  ),
                   getBtnColores(
-                      responsive: responsive,
-                      color: Colors.orange.withOpacity(0.8),
-                      title: "201-500"),
+                    responsive: responsive,
+                    color: Colors.orange.withOpacity(0.8),
+                    title: "201-500",
+                  ),
                   getBtnColores(
-                      responsive: responsive,
-                      color: Colors.red.withOpacity(0.8),
-                      title: "501-Más"),
+                    responsive: responsive,
+                    color: Colors.red.withOpacity(0.8),
+                    title: "501-Más",
+                  ),
                 ],
               ),
-            )
+            ),
           ],
         );
         break;
@@ -455,7 +476,9 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
 
         controller.validarForm = true;
         wg = wgTxtCedulaTelefono(
-            responsive: responsive, title: SiipneStrings.cedulaSP);
+          responsive: responsive,
+          title: SiipneStrings.cedulaSP,
+        );
         break;
 
       case 32:
@@ -589,7 +612,6 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
         break;
 
       default:
-
         mostrarFoto = false;
         wg = Container();
     }
@@ -608,10 +630,11 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
     }
   }
 
-  Widget getBtnColores(
-      {required ResponsiveUtil responsive,
-      required String title,
-      required Color color}) {
+  Widget getBtnColores({
+    required ResponsiveUtil responsive,
+    required String title,
+    required Color color,
+  }) {
     return Container(
       child: Text(
         title,
@@ -621,13 +644,15 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
       width: responsive.anchoP(20),
       height: responsive.altoP(2),
       decoration: BoxDecoration(
-          color: color,
-          borderRadius: BorderRadius.circular(AppConfig.radioBordecajas),
-          boxShadow: [
-            BoxShadow(
-                color: SiipneColors.colorBordecajas,
-                blurRadius: AppConfig.sobraBordecajas)
-          ]),
+        color: color,
+        borderRadius: BorderRadius.circular(AppConfig.radioBordecajas),
+        boxShadow: [
+          BoxShadow(
+            color: SiipneColors.colorBordecajas,
+            blurRadius: AppConfig.sobraBordecajas,
+          ),
+        ],
+      ),
     );
   }
 
@@ -635,82 +660,84 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
     return Column(
       children: [
         wgTxtNumeroManifestantes(responsive),
-        SizedBox(
-          height: responsive.altoP(1),
-        ),
+        SizedBox(height: responsive.altoP(1)),
         Container(
           padding: EdgeInsets.symmetric(horizontal: 10),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               getBtnColores(
-                  responsive: responsive,
-                  color: Colors.green.withOpacity(0.8),
-                  title: "1-50"),
+                responsive: responsive,
+                color: Colors.green.withOpacity(0.8),
+                title: "1-50",
+              ),
               getBtnColores(
-                  responsive: responsive,
-                  color: Colors.yellow.withOpacity(0.8),
-                  title: "51-200"),
+                responsive: responsive,
+                color: Colors.yellow.withOpacity(0.8),
+                title: "51-200",
+              ),
               getBtnColores(
-                  responsive: responsive,
-                  color: Colors.orange.withOpacity(0.8),
-                  title: "201-500"),
+                responsive: responsive,
+                color: Colors.orange.withOpacity(0.8),
+                title: "201-500",
+              ),
               getBtnColores(
-                  responsive: responsive,
-                  color: Colors.red.withOpacity(0.8),
-                  title: "501-Más"),
+                responsive: responsive,
+                color: Colors.red.withOpacity(0.8),
+                title: "501-Más",
+              ),
             ],
           ),
-        )
+        ),
       ],
     );
   }
 
   Widget getBtnGuardar() {
-    return Obx(() => controller.mostrarBtnGuardar.value
-        ? BtnIconWidget(
-            icon: Icons.save,
-            titulo: "GUARDAR",
-            onPressed: () {
-              String descripcion = controller.selectNovedad.value.descripcion;
-              if (controller.selectDelito.value.idDgoNovedadesElect > 0) {
-                descripcion = controller.selectDelito.value.descripcion;
-              }
+    return Obx(
+      () =>
+          controller.mostrarBtnGuardar.value
+              ? BtnIconWidget(
+                icon: Icons.save,
+                titulo: "GUARDAR",
+                onPressed: () {
+                  String descripcion =
+                      controller.selectNovedad.value.descripcion;
+                  if (controller.selectDelito.value.idDgoNovedadesElect > 0) {
+                    descripcion = controller.selectDelito.value.descripcion;
+                  }
 
-              DialogosAwesome.getWarningSiNo(
-                  title: '¿Desea continuar con el registro?',
-                  descripcion: 'Registro de Novedad:\n\n${descripcion}',
-                  btnCancelOnPress: () {},
-                  btnOkOnPress: () {
-                    controller.eventoRegistrarNovedadesElectorales();
-                  });
-            },
-          )
-        : Container());
+                  DialogosAwesome.getWarningSiNo(
+                    title: '¿Desea continuar con el registro?',
+                    descripcion: 'Registro de Novedad:\n\n${descripcion}',
+                    btnCancelOnPress: () {},
+                    btnOkOnPress: () {
+                      controller.eventoRegistrarNovedadesElectorales();
+                    },
+                  );
+                },
+              )
+              : Container(),
+    );
   }
 
   //+++++++++++++++++++++++++++ TXT +++++++++++++++++++++++++++++
 
   Widget getForm({required Widget child}) {
-    return Form(
-      key: controller.formKey,
-      child: child,
-    );
+    return Form(key: controller.formKey, child: child);
   }
 
-  Widget wgTxtCedula(
-      {required ResponsiveUtil responsive,
-      String title = SiipneStrings.cedula}) {
-    return getForm(
-      child: Column(
-        children: [getWgCedulaWithFind(responsive)],
-      ),
-    );
+  Widget wgTxtCedula({
+    required ResponsiveUtil responsive,
+    String title = SiipneStrings.cedula,
+  }) {
+    return getForm(child: Column(children: [getWgCedulaWithFind(responsive)]));
   }
 
-  Widget wgTxtCedulaTelefono(
-      {required ResponsiveUtil responsive,
-      String title = SiipneStrings.cedula}) {
+  Widget wgTxtCedulaTelefono({
+    required ResponsiveUtil responsive,
+    String title = SiipneStrings.cedula,
+  }) {
     return getForm(
       child: Column(
         children: [
@@ -726,15 +753,16 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             label: "Teléfono",
             fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
             validar: Validate.validateTelefono,
-          )
+          ),
         ],
       ),
     );
   }
 
-  Widget wgTxtObservacion(
-      {required ResponsiveUtil responsive,
-      String title = SiipneStrings.cedula}) {
+  Widget wgTxtObservacion({
+    required ResponsiveUtil responsive,
+    String title = SiipneStrings.cedula,
+  }) {
     return getForm(
       child: Column(
         children: [
@@ -743,27 +771,30 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
               "Observación",
               textAlign: TextAlign.start,
               style: TextStyle(
-                  fontSize: responsive.diagonalP(1.5),
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black),
+                fontSize: responsive.diagonalP(1.5),
+                fontWeight: FontWeight.w700,
+                color: Colors.black,
+              ),
             ),
           ),
           Column(
             children: <Widget>[
               Card(
-                  color: Colors.white54,
-                  child: Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: TextField(
-                      controller: controller.controllerObs,
-                      maxLength: 100,
-                      maxLines: 4, //or null
-                      decoration: InputDecoration.collapsed(
-                          hintText: "Ingrese la Observación"),
+                color: Colors.white54,
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: controller.controllerObs,
+                    maxLength: 100,
+                    maxLines: 4, //or null
+                    decoration: InputDecoration.collapsed(
+                      hintText: "Ingrese la Observación",
                     ),
-                  ))
+                  ),
+                ),
+              ),
             ],
-          )
+          ),
         ],
       ),
     );
@@ -772,38 +803,40 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
   //Widget para detenidos
 
   Widget getSelectNacionalExtranjero() {
-    return Obx(() => Row(
-          children: [
-            Flexible(
-              child: ListTile(
-                title: TituloTextWidget(title: "Nacional"),
-                leading: Radio<String>(
-                  value: 'Nacional',
-                  groupValue: controller.selectedOptionNAcionalExtranjero.value,
-                  onChanged: (String? value) {
-                    if (value != null) {
-                      controller.selectedOptionNAcionalExtranjero.value = value;
-                    }
-                  },
-                ),
+    return Obx(
+      () => Row(
+        children: [
+          Flexible(
+            child: ListTile(
+              title: TituloTextWidget(title: "Nacional"),
+              leading: Radio<String>(
+                value: 'Nacional',
+                groupValue: controller.selectedOptionNAcionalExtranjero.value,
+                onChanged: (String? value) {
+                  if (value != null) {
+                    controller.selectedOptionNAcionalExtranjero.value = value;
+                  }
+                },
               ),
             ),
-            Flexible(
-              child: ListTile(
-                title: TituloTextWidget(title: "Extranjero"),
-                leading: Radio<String>(
-                  value: 'Extranjero',
-                  groupValue: controller.selectedOptionNAcionalExtranjero.value,
-                  onChanged: (String? value) {
-                    if (value != null) {
-                      controller.selectedOptionNAcionalExtranjero.value = value;
-                    }
-                  },
-                ),
+          ),
+          Flexible(
+            child: ListTile(
+              title: TituloTextWidget(title: "Extranjero"),
+              leading: Radio<String>(
+                value: 'Extranjero',
+                groupValue: controller.selectedOptionNAcionalExtranjero.value,
+                onChanged: (String? value) {
+                  if (value != null) {
+                    controller.selectedOptionNAcionalExtranjero.value = value;
+                  }
+                },
               ),
             ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 
   Widget wgTxtCedulaBoleta(ResponsiveUtil responsive) {
@@ -823,14 +856,13 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
             validar: Validate.validateNumBoleta,
           ),
-          getWgCedulaWithFind(responsive)
+          getWgCedulaWithFind(responsive),
         ],
       ),
     );
   }
 
   Widget getWgCedulaWithFind(ResponsiveUtil responsive, {bool validar = true}) {
-
     return Column(
       children: [
         Row(
@@ -870,24 +902,20 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
                       validar = false;
                     }
 
-
-                   // controller.validarForm = validar;
+                    // controller.validarForm = validar;
 
                     controller.getDatosPersona(permitirAll: true);
-
                   },
                   icon: Icons.search,
                   colorTxt: Colors.white,
                   colorIcon: Colors.white,
                 ),
               ),
-            )
+            ),
           ],
         ),
-        SizedBox(
-          height: responsive.altoP(1),
-        ),
-        wgDatosPersona()
+        SizedBox(height: responsive.altoP(1)),
+        wgDatosPersona(),
       ],
     );
   }
@@ -908,7 +936,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
             validar: Validate.validateNumCitacion,
           ),
-          getWgCedulaWithFind(responsive)
+          getWgCedulaWithFind(responsive),
         ],
       ),
     );
@@ -1299,11 +1327,9 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(
-            height: responsive.altoP(1),
-          ),
+          SizedBox(height: responsive.altoP(1)),
           getComboHora(responsive),
-          getComboMinuto(responsive)
+          getComboMinuto(responsive),
         ],
       ),
     );
@@ -1371,23 +1397,27 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
     );
   }
 
-//+++++++++++++++++++++++++++ TXT +++++++++++++++++++++++++++++
+  //+++++++++++++++++++++++++++ TXT +++++++++++++++++++++++++++++
 
   Widget wgDatosPersona() {
-    return Obx(() => controller.datosPerson.value.idGenPersona > 0
-        ? Container(
-            padding: EdgeInsets.all(5),
-            child: TituloDetalleTextWidget(
-              margin: EdgeInsets.all(0),
-              padding: EdgeInsets.all(8),
-              title: "Nombres",
-              detalle: controller.datosPerson.value.siglas.length > 0
-                  ? controller.datosPerson.value.siglas +
-                      "." +
-                      controller.datosPerson.value.apenom
-                  : controller.datosPerson.value.apenom,
-            ),
-          )
-        : Container());
+    return Obx(
+      () =>
+          controller.datosPerson.value.idGenPersona > 0
+              ? Container(
+                padding: EdgeInsets.all(5),
+                child: TituloDetalleTextWidget(
+                  margin: EdgeInsets.all(0),
+                  padding: EdgeInsets.all(8),
+                  title: "Nombres",
+                  detalle:
+                      controller.datosPerson.value.siglas.length > 0
+                          ? controller.datosPerson.value.siglas +
+                              "." +
+                              controller.datosPerson.value.apenom
+                          : controller.datosPerson.value.apenom,
+                ),
+              )
+              : Container(),
+    );
   }
 }

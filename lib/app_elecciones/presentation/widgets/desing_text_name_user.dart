@@ -21,6 +21,7 @@ class DesingTextNameUser extends StatelessWidget {
     double sizeT=responsive.diagonalP(AppConfig.tamTextoTitulo-0.5);
 
     return TextLineasWidget(
+      grosorLinea: 3,
       sizeTxt:sizeText==null?sizeT:sizeText!,
       title: Bienvenido+ text,
     );

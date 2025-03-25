@@ -31,6 +31,7 @@ class TiposServiciosEjesPage extends GetView<TiposServiciosEjesController> {
           ),
 
           TextLineasWidget(
+            grosorLinea: 1.5,
             title: "Seleccione el servicio al que fue designado. ",
             sizeTxt: responsive.diagonalP(AppConfig.tamTexto),
 

@@ -35,7 +35,7 @@ class InicioRapidoPage extends GetView<InicioRapidoController> {
 
           SizedBox(height: responsive.altoP(2)),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 10),
+            padding: EdgeInsets.symmetric(horizontal: responsive.anchoP(10)),
 
             child: Column(
               children: [
