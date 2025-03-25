@@ -1,16 +1,15 @@
 //Para Guardar informacion en local
 
-part of '../domain_repositories.dart';
 
-
+import '../../entities/user.dart';
 
 abstract class LocalStorageRepository{
   //Se define que cosas quiero hacer
   //se definen los contartos
 
 
-  Future<DataUser> getUserModel();
-  Future<void> setUserModel(DataUser user);
+  Future<UserEntities> getUserModel();
+  Future<void> setUserModel(UserEntities user);
 
 
   Future<int> getContadorFallido();
@@ -33,11 +32,7 @@ abstract class LocalStorageRepository{
   Future<String> getPass();
 
 
-  Future<void> setFoto(String? foto);
-  Future<Uint8List?> getFoto();
 
-  Future<void> setUserName(String userName);
-  Future<String> getUserName();
 
 
   Future<void> setPinCode(String value);
@@ -45,16 +40,10 @@ abstract class LocalStorageRepository{
 
 
 
-
-  Future<void> setDataAppsQrPublic(DataSaveAppsQrModel value);
-  Future<List<ApsQr> > getDataAppsQrPublic();
-
-
   Future<void> setPassCodeTemSiipne(String userName,String passCode);
   Future<String> getPassCodeTemSiipne(String userName);
 
   //Para que el usario acepte y ya no le muetre el mensaje de que existe un codigo teporal guardado
-
 
   Future<bool> getAceptacionUserCodeTemporal() ;
   Future<void> setAceptacionUserCodeTemporal(bool value) ;
@@ -62,8 +51,7 @@ abstract class LocalStorageRepository{
   Future<void> setAppPageSelect(String value);
   Future<String> getAppPagePublic();
 
-  Future<String> getShowTutorial() ;
-  Future<void> showTutorial(String value) ;
+
 
   Future<bool> getShowDataUser() ;
   Future<void> setShowDataUser(bool value) ;
@@ -71,16 +59,6 @@ abstract class LocalStorageRepository{
   Future<void> clearAllData();
 
 
-  Future<void> setFechaServer(String value);
-  Future<String> getFechaServer();
-
-  Future<void> setFechaCellPause(String value);
-  Future<String> getFechaCellPause();
-
-
-
-  Future<void> setFechaSolicitarAcceso(DateTime value);
-  Future<DateTime> getFechaSolicitarAcceso();
 
 
 

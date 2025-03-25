@@ -47,7 +47,7 @@ part 'remote/apis/elecciones_novedades_api_provider.dart';
 
 part 'remote/apis/host/url_api_provider_siipne_movil.dart';
 
-part 'remote/apis/auth_api_provider.dart';
+
 part 'remote/apis/persona_api_provider.dart';
 
 
@@ -55,7 +55,7 @@ part 'remote/apis/persona_api_provider.dart';
 
 
 
-part 'local/local_store_provider.dart';
+
 
 
 

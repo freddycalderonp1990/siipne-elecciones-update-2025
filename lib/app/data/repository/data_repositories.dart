@@ -1,31 +1,10 @@
 
 import 'dart:typed_data';
 
-import '../../../app/core/app_config.dart';
-import '../../../app/core/values/app_mocks.dart';
-import 'package:get/get.dart';
-import 'package:flutter/services.dart' as rootBundle;
-
-
-
-import '../../../app/core/exceptions/exception_helper.dart';
-import '../../../app/core/exceptions/exceptions.dart';
-import '../../data/models/models.dart';
-import '../../data/providers/providers_impl.dart';
-
 import '../../domain/repositories/domain_repositories.dart';
-import '../../domain/request/request.dart';
+import '../model/models.dart';
+import '../provider/providers_impl_app.dart';
 
 
 
-part 'remote/apis/auth_api_impl.dart';
 
-part 'remote/apis/elecciones_procesos_api_impl.dart';
-part 'remote/apis/elecciones_recintos_api_impl.dart';
-part 'remote/apis/elecciones_tipo_ejes_api_impl.dart';
-part 'remote/apis/persona_api_impl.dart';
-part 'remote/apis/elecciones_novedades_api_impl.dart';
-
-
-
-part 'local/local_store_impl.dart';

@@ -26,7 +26,7 @@ class CrearCodigoUnidadPoliController extends GetxController {
   RxList<RecintosElectoral> listRecintosElectorales = <RecintosElectoral>[].obs;
   Rx<RecintosElectoral> selectRecintosElectoral = RecintosElectoral().obs;
 
-  late DataUser user;
+  late UserEntities user;
   RxBool cargaInicial = false.obs;
 
   RxBool peticionServerState = false.obs;
@@ -181,6 +181,7 @@ class CrearCodigoUnidadPoliController extends GetxController {
           idDgoReciUnidadPolicial: selectRecintosElectoral.value.idDgoReciElect,
           telefono: controllerTelefono.text,
           ip: ip,
+          idDgpGrado: user.idDgpGrado,
           idDgoTipoEje: selectDireccionPoliciales.value.idDgoTipoEje);
 
       _abrirRecintoElectoral =

@@ -22,7 +22,7 @@ class AnexarseController extends GetxController {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   var controllerCodigoRecinto = new TextEditingController();
 
-  late DataUser user;
+  late UserEntities user;
 
   RxList<DatosUnidadesId> listUnidadesPoliciales = <DatosUnidadesId>[].obs;
   Rx<DatosUnidadesId> selectUnidadPolicial = DatosUnidadesId.empty().obs;
@@ -127,6 +127,7 @@ class AnexarseController extends GetxController {
           longitud: position.longitude,
           idDgoReciElect: datosEncargado.value.idDgoReciElect,
           idDgoTipoEje: idDgoTipoEje,
+          idDgpGrado: user.idDgpGrado,
           ip: ip);
 
       ResgistroPersEnRecElectoral result = await _personaApiImpl

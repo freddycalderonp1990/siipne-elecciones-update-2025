@@ -9,7 +9,7 @@ class PdfViewController extends GetxController {
   RxString errorMessage = ''.obs;
   RxString title = ''.obs;
 
-  final LocalStoreImpl _LocalStoreImpl = Get.find<LocalStoreImpl>();
+
 
 
   GlobalKey<ScaffoldState> key = GlobalKey<ScaffoldState>();

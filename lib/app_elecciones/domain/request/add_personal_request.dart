@@ -9,6 +9,7 @@ class AddPersonalRequest {
   final int idDgoReciElect;
   final int idDgoTipoEje;
   final int idDgoProcElec;
+  final int idDgpGrado;
   final String ip;
 
   AddPersonalRequest({
@@ -21,6 +22,7 @@ class AddPersonalRequest {
     required this.idDgoTipoEje,
     required this.idDgoProcElec,
     required this.ip,
+    required this.idDgpGrado
   });
 
   /// Método para convertir el objeto a JSON
@@ -35,6 +37,8 @@ class AddPersonalRequest {
       "idDgoTipoEje": idDgoTipoEje,
       "idDgoProcElec": idDgoProcElec,
       "ip": ip,
+      "idDgpGrado": idDgpGrado,
+
     };
   }
 }

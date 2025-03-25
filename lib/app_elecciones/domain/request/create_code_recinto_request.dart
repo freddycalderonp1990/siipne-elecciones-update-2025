@@ -11,8 +11,9 @@ class CreateCodeRecintoRequest {
   final String telefono;
   final String ip;
   final int idDgoTipoEje;
+  final int idDgpGrado;
 
-  CreateCodeRecintoRequest({
+  CreateCodeRecintoRequest( {
     required this.usuario,
     required this.idGenPersona,
     required this.idDgoReciElect,
@@ -23,6 +24,7 @@ class CreateCodeRecintoRequest {
     required this.telefono,
     required this.ip,
     required this.idDgoTipoEje,
+    required this.idDgpGrado
   });
 
   /// Método para convertir el objeto a JSON
@@ -38,6 +40,7 @@ class CreateCodeRecintoRequest {
       "telefono": telefono,
       "ip": ip,
       "idDgoTipoEje": idDgoTipoEje,
+      "idDgpGrado": idDgpGrado,
     };
   }
 }

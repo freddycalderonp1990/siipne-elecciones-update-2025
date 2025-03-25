@@ -8,7 +8,6 @@ import '../../data/model/models.dart';
 
 
 
-part 'remote/apis/user_repository.dart';
 
 
 

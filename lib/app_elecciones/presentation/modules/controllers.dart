@@ -13,35 +13,41 @@ import 'package:intl/intl.dart';
 import '../../../app/core/utils/device_info.dart';
 import '../../../app/core/values/app_colors.dart';
 
-import '../../../app_elecciones//core/values/tutorial_app_strings.dart';
+import '../../../app/data/repository/data_repositories.dart';
+
 import 'package:latlong2/latlong.dart';
 import 'package:permission_handler/permission_handler.dart';
 import '../../../app_elecciones/core/values/siipne_images.dart';
-import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
+
 import 'package:geolocator/geolocator.dart' as myGeolocator;
 
 import '../../../app/core/app_config.dart';
 
 import '../../../app/core/exceptions/exception_helper.dart';
-import '../../../app/core/exceptions/exceptions.dart';
+
 
 
 import '../../../app/core/utils/check_internet_conexion.dart';
 import '../../../app/core/utils/my_gps.dart';
 import '../../../app/core/utils/photo_helper.dart';
 import '../../../app/core/utils/responsiveUtil.dart';
-import '../../../app/core/utils/tutorial_utils.dart';
+
 
 
 import '../../../app/core/utils/encriptar_util.dart';
 
-import '../../../app/data/provider/providers_impl_app.dart';
+
 import '../../../app/presentation/blocs/location/location_bloc.dart';
 import '../../../app/presentation/routes/app_routes.dart';
 
 
 import '../../../app/presentation/widgets/custom_app_widgets.dart';
-import '../../core/values/mensajes_string.dart';
+import '../../../feactures/user/domain/entities/user.dart';
+import '../../../feactures/user/domain/request/request_user.dart';
+import '../../../feactures/user/domain/use_cases/auth.dart';
+import '../../../feactures/user/domain/use_cases/get_data_user.dart';
+
+import '../../../feactures/user/domain/use_cases/local_store.dart';
 import '../../data/providers/remote/apis/api_constantes.dart';
 import '../../data/repository/data_repositories.dart';
 import '../../domain/enums/enums.dart';

@@ -20,10 +20,8 @@ class DependencyInjectionSiipne extends Bindings{
     //DATA
 
 
-    Get.lazyPut<LocalStoreImpl> (() => LocalStoreImpl(LocalStoreProviderImpl()), fenix: true);
-
     //Domain
-    Get.lazyPut<AuthApiImpl> (() => AuthApiImpl(AuthApiProviderImpl()), fenix: true);
+
     Get.lazyPut<EleccionesProcesosApiImpl> (() => EleccionesProcesosApiImpl(EleccionesProcesosApiProviderImpl()), fenix: true);
     Get.lazyPut<EleccionesRecintosApiImpl> (() => EleccionesRecintosApiImpl(EleccionesRecintosApiProviderImpl()), fenix: true);
     Get.lazyPut<EleccionesTipoEjesApiImpl> (() => EleccionesTipoEjesApiImpl(EleccionesTipoEjesApiProviderImpl()), fenix: true);
@@ -31,8 +29,7 @@ class DependencyInjectionSiipne extends Bindings{
 
     Get.lazyPut<EleccionesNovedadesApiImpl> (() => EleccionesNovedadesApiImpl(EleccionesNovedadesApiProviderImpl()), fenix: true);
 
-    //Providers
-    Get.lazyPut<LocalStorageRepository> (() => LocalStoreImpl(LocalStoreProviderImpl()), fenix: true);
+
 
 
     Get.lazyPut<ComboDependienteController> (() => ComboDependienteController(), fenix: true);

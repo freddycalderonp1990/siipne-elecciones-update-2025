@@ -13,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
+import 'package:siipnemovil2/feactures/user/domain/use_cases/local_store.dart';
 
 import '../../../app/core/utils/utilidadesUtil.dart';
 import '../../../app/presentation/widgets/custom_app_widgets.dart';
@@ -32,12 +33,14 @@ import '../../../app_elecciones/domain/request/request.dart';
 
 import '../../../app_elecciones/presentation/modules/controllers.dart';
 import '../../../app_elecciones/presentation/routes/siipne_routes.dart';
+import '../../../feactures/user/domain/entities/user.dart';
 import '../../core/app_config.dart';
 import '../../core/exceptions/exceptions.dart';
 import '../../core/utils/device_info.dart';
 
 import '../../core/utils/prints_msj.dart';
 import '../../data/provider/providers_impl_app.dart';
+import '../../data/repository/data_repositories.dart';
 import '../routes/app_routes.dart';
 
 

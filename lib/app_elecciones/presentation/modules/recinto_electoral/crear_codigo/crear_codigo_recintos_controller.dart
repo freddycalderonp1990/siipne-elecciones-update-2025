@@ -20,7 +20,7 @@ class CrearCodigoRecintosController extends GetxController {
   RxList<RecintosElectoral> listRecintosElectorales = <RecintosElectoral>[].obs;
   Rx<RecintosElectoral> selectRecintosElectoral = RecintosElectoral().obs;
 
-  late DataUser user;
+  late UserEntities user;
   RxBool cargaInicial = false.obs;
 
   RxBool peticionServerState = false.obs;
@@ -144,6 +144,7 @@ class CrearCodigoRecintosController extends GetxController {
           idDgoReciUnidadPolicial: selectRecintosElectoral.value.idDgoReciElect,
           telefono: controllerTelefono.text,
           ip: ip,
+          idDgpGrado: user.idDgpGrado,
           idDgoTipoEje:comboDependienteController. selectUnidadPolicial.value.idDgoTipoEje);
 
       _abrirRecintoElectoral =

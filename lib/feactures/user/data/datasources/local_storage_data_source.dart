@@ -1,4 +1,62 @@
-part of '../providers_impl.dart';
+import 'dart:typed_data';
+
+import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../app/core/utils/photo_helper.dart';
+import '../../../../app_elecciones/domain/enums/enums.dart';
+import '../../domain/entities/user.dart';
+
+abstract class LocalStorageDataSource {
+
+  Future<UserEntities> getUserModel();
+  Future<void> setUserModel(UserEntities user);
+
+
+  Future<int> getContadorFallido();
+  Future<void> setContadorFallido(int value);
+
+  Future<bool> getLoginInit();
+  Future<void> setLoginInit(bool value);
+
+
+
+  Future<bool> getConfigHuella() ;
+  Future<void> setConfigHuella(bool value) ;
+
+
+
+  Future<void> setUser(String user);
+  Future<String> getUser();
+
+  Future<void> setPass(String pass);
+  Future<String> getPass();
+
+
+
+
+  Future<void> setPinCode(String value);
+  Future<String> getPinCode();
+
+
+
+  Future<void> setPassCodeTemSiipne(String userName,String passCode);
+  Future<String> getPassCodeTemSiipne(String userName);
+
+  //Para que el usario acepte y ya no le muetre el mensaje de que existe un codigo teporal guardado
+
+  Future<bool> getAceptacionUserCodeTemporal() ;
+  Future<void> setAceptacionUserCodeTemporal(bool value) ;
+
+  Future<void> setAppPageSelect(String value);
+  Future<String> getAppPagePublic();
+
+
+
+  Future<bool> getShowDataUser() ;
+  Future<void> setShowDataUser(bool value) ;
+
+  Future<void> clearAllData();
+
+}
 
 const _PREF_TOKEN = 'TOKEN';
 const _PREF_USER = 'USER';
@@ -17,21 +75,19 @@ const _PREF_USER_JSON = 'USER_JSON';
 
 const _PREF_CODE_PIN = 'CODE_PIN';
 
+const _PREF_APP_PAGE_SELECT = 'APP_PAGE_SELECT';
+const _PREF_APP_SAVE_QR = 'APP_SAVE_QR';
+const _PREF_ACEPTACIONUSER_CODE_TOTP = 'ACEPTACIONUSER_CODE_TOTP';
 
-const _PREF_APP_PAGE_SELECT= 'APP_PAGE_SELECT';
-const _PREF_APP_SAVE_QR= 'APP_SAVE_QR';
-const _PREF_ACEPTACIONUSER_CODE_TOTP= 'ACEPTACIONUSER_CODE_TOTP';
+const _PREF_SHOW_TUTORIAL = 'SHOW_TUTORIAL';
 
-const _PREF_SHOW_TUTORIAL= 'SHOW_TUTORIAL';
+const _PREF_SHOW_DATA_USER = 'SHOW_DATA_USUARIO';
+const _PREF_FECHA_SERVER = 'PREF_FECHA_SERVER';
+const _PREF_FECHA_CELL_PAUSE = 'PREF_FECHA_CELL_PAUSE';
 
-const _PREF_SHOW_DATA_USER= 'SHOW_DATA_USUARIO';
-const _PREF_FECHA_SERVER= 'PREF_FECHA_SERVER';
-const _PREF_FECHA_CELL_PAUSE= 'PREF_FECHA_CELL_PAUSE';
+const _PREF_FECHA_SOLICITAR_ACCESO = 'PREF_FECHA_SOLICITAR_ACCESO';
 
-const _PREF_FECHA_SOLICITAR_ACCESO= 'PREF_FECHA_SOLICITAR_ACCESO';
-
-
-class LocalStoreProviderImpl extends LocalStorageRepository {
+class LocalStorageDataSourceImpl implements LocalStorageDataSource {
   @override
   Future<void> clearAllData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -39,53 +95,41 @@ class LocalStoreProviderImpl extends LocalStorageRepository {
     setConfigHuella(false);
     setContadorFallido(0);
 
-    setFoto('');
     setLoginInit(false);
     setPass('');
     setPinCode('');
 
     setUser('');
-    setUserModel(DataUser.empty());
+    setUserModel(UserEntities.empty());
     //setUserName(''); no lo limpiamos para saber que usaurio fue el ultimo que uso la app
 
     setAceptacionUserCodeTemporal(false);
 
-
-   // prefs.clear();
+    // prefs.clear();
   }
 
-
-
   @override
-  Future<void> setUserModel(DataUser user) async {
+  Future<void> setUserModel(UserEntities user) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    String jsonString= userModelToJsonLocalDB(user);
+    String jsonString = userEntitiesToJson(user);
 
     print(" json user es= ${jsonString}");
     prefs.setString(_PREF_USER_JSON, jsonString);
 
     final String data1 = prefs.getString(_PREF_USER_JSON) ?? '';
-
-
-
   }
 
   @override
-  Future<DataUser> getUserModel() async {
+  Future<UserEntities> getUserModel() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final String data = prefs.getString(_PREF_USER_JSON) ?? '';
 
-
     if (data == '') {
-
-      return DataUser.empty();
+      return UserEntities.empty();
     }
 
-
-    final DataUser user =userModelFromJsonLocalDB(data);
-
-    return user;
+    return userEntitiesFromJson(data);
   }
 
   @override
@@ -100,24 +144,8 @@ class LocalStoreProviderImpl extends LocalStorageRepository {
     prefs.setString(_PREF_USER, user);
   }
 
-  @override
-  Future<Uint8List?> getFoto() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String foto= prefs.getString(_PREF_FOTO) ?? '';
-    if(foto==''){
-      return null;
-    }
-    return PhotoHelper.convertStringToUint8List(foto);
-  }
 
-  @override
-  Future<void> setFoto(String? foto) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    if(foto==null){
-      foto='';
-    }
-    prefs.setString(_PREF_FOTO, foto);
-  }
+
 
   @override
   Future<String> getPass() async {
@@ -129,18 +157,6 @@ class LocalStoreProviderImpl extends LocalStorageRepository {
   Future<void> setPass(String pass) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(_PREF_PASS, pass);
-  }
-
-  @override
-  Future<String> getUserName() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_PREF_USER_NAME) ?? '';
-  }
-
-  @override
-  Future<void> setUserName(String userName) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(_PREF_USER_NAME, userName);
   }
 
 
@@ -195,46 +211,21 @@ class LocalStoreProviderImpl extends LocalStorageRepository {
     prefs.setString(_PREF_CODE_PIN, value);
   }
 
-
-
-
-
-
   @override
   Future<String> getAppPagePublic() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_PREF_APP_PAGE_SELECT) ?? PageAppsSelect.Bienvenida.toString();
+    return prefs.getString(_PREF_APP_PAGE_SELECT) ??
+        PageAppsSelect.Bienvenida.toString();
   }
 
   @override
-  Future<void> setAppPageSelect(String value)  async{
+  Future<void> setAppPageSelect(String value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(_PREF_APP_PAGE_SELECT, value);
   }
 
   @override
-  Future<List<ApsQr>> getDataAppsQrPublic() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String json= prefs.getString(_PREF_APP_SAVE_QR) ?? '';
-
-    if(json==''){
-      return [];
-    }else{
-    return  dataSaveAppsQrModelFromJson(json).apsQr;
-    }
-  }
-
-  @override
-  Future<void> setDataAppsQrPublic(DataSaveAppsQrModel  value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    String valor=dataSaveAppsQrModelToJson(value);
-
-    prefs.setString(_PREF_APP_SAVE_QR, valor);
-  }
-
-  @override
-  Future<String> getPassCodeTemSiipne(String userName) async{
+  Future<String> getPassCodeTemSiipne(String userName) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     return prefs.getString(userName) ?? '';
   }
@@ -257,18 +248,7 @@ class LocalStoreProviderImpl extends LocalStorageRepository {
     prefs.setBool(_PREF_ACEPTACIONUSER_CODE_TOTP, value);
   }
 
-  @override
-  Future<String> getShowTutorial() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_PREF_SHOW_TUTORIAL) ?? ShowTutorial.Login.toString();
-  }
 
-  @override
-  Future<void> showTutorial(String value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(_PREF_SHOW_TUTORIAL, value);
-
-  }
 
   @override
   Future<bool> getShowDataUser() async {
@@ -281,49 +261,6 @@ class LocalStoreProviderImpl extends LocalStorageRepository {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(_PREF_SHOW_DATA_USER, value);
   }
-
-  @override
-  Future<String> getFechaCellPause() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_PREF_FECHA_CELL_PAUSE) ?? '';
-
-  }
-
-  @override
-  Future<String> getFechaServer() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_PREF_FECHA_SERVER) ?? '';
-
-  }
-
-  @override
-  Future<void> setFechaCellPause(String value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(_PREF_FECHA_CELL_PAUSE, value);
-  }
-
-  @override
-  Future<void> setFechaServer(String value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(_PREF_FECHA_SERVER, value);
-  }
-
-  @override
-  Future<DateTime> getFechaSolicitarAcceso() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    String fechaGuardada = prefs.getString(_PREF_FECHA_SOLICITAR_ACCESO) ?? '2000-09-01 11:56:15';
-    DateTime fechaParsed = DateTime.parse(fechaGuardada);
-    return fechaParsed;
-
-  }
-
-  @override
-  Future<void> setFechaSolicitarAcceso(DateTime value) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(_PREF_FECHA_SOLICITAR_ACCESO, value.toString());
-  }
-
 
 
 

@@ -12,7 +12,7 @@ class ReportNovedadesController extends GetxController {
   RxList<NovedadesElectoralesDetalle> listNovedadesElectorales =
       <NovedadesElectoralesDetalle>[].obs;
 
-  late DataUser user;
+  late UserEntities user;
 
   RxBool peticionServerState = false.obs;
 

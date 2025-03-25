@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:siipnemovil2/feactures/user/domain/use_cases/local_store.dart';
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '../../../../../app/core/app_config.dart';
@@ -10,6 +11,7 @@ import '../../../../../app/core/utils/tutorial_utils.dart';
 import '../../../../../app/core/utils/utilidadesUtil.dart';
 import '../../../../../app/core/values/app_colors.dart';
 import '../../../../../app/core/values/app_images.dart';
+import '../../../../../app/data/repository/data_repositories.dart';
 import '../../../../../app/presentation/widgets/custom_app_widgets.dart';
 import '../../../../core/siipne_config.dart';
 import '../../../../../app/core/utils/responsiveUtil.dart';
@@ -178,31 +180,7 @@ class _WgLoginState extends State<WgLogin> {
 
   }
 
-  void createTutorial() async {
-    final LocalStoreImpl _localStoreImpl = Get.find<LocalStoreImpl>();
-    String tutorial = await _localStoreImpl.getShowTutorial();
-    if (tutorial != ShowTutorial.Login.toString()) {
-      return;
-    }
 
-    tutorialCoachMark = TutorialUtils.createTutorial(
-        targets: _createTargets(),
-        completeTutorial: (value) {
-          if (value == ActionTutorial.onSkip) {
-            DialogosAwesome.getWarningSiNo(
-                descripcion:
-                "¿Estás seguro de que no quieres continuar con el tutorial?",
-                btnCancelOnPress: (){
-                 showTutorial();
-                },
-                btnOkOnPress: () {
-                 // widget.completeTutorial!(value);
-                });
-          }
-        });
-
-    showTutorial();
-  }
 }
 
 class OnlyDesingUserPass extends StatelessWidget {

@@ -16,7 +16,7 @@ class AddNovedadesController extends GetxController {
 
   RxBool mostrarBtnGuardar = false.obs;
 
-  late DataUser user;
+  late UserEntities user;
 
   RxBool peticionServerState = false.obs;
 

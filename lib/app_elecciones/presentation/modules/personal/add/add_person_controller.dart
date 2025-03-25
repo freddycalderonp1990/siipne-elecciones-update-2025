@@ -17,7 +17,7 @@ class AddPersonController extends GetxController {
   GlobalKey<FormState> formKeyDocumento = GlobalKey<FormState>();
   var controllerDocumento = new TextEditingController();
 
-  late DataUser user;
+  late UserEntities user;
 
   RxBool peticionServerState = false.obs;
 
@@ -162,6 +162,7 @@ class AddPersonController extends GetxController {
           idDgoCreaOpReci: recintosElectoralesAbiertos.idDgoCreaOpReci,
           idDgoProcElec: recintosElectoralesAbiertos.idDgoProcElec,
           idGenPersona: datosPerson.value.idGenPersona,
+          idDgpGrado: datosPerson.value.idDgpGrado,
           usuario: user.idGenUsuario,
           latitud: position.latitude,
           longitud: position.longitude,

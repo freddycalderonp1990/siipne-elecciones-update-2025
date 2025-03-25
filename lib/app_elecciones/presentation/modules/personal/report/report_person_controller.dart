@@ -14,7 +14,7 @@ class ReportPersonController extends GetxController {
   RxList<PersonalRecintoElectoral> listPersonalActivo =
       <PersonalRecintoElectoral>[].obs;
 
-  late DataUser user;
+  late UserEntities user;
 
   RxBool peticionServerState = false.obs;
 

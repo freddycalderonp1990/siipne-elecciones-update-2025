@@ -22,9 +22,7 @@ class InicioRapidoPage extends GetView<InicioRapidoController> {
   }
 
   Widget getContenido(ResponsiveUtil responsive) {
-    String Bienvenido =  controller.user.value.sexo == 'HOMBRE'
-        ? "BIENVENIDO: "
-        : "BIENVENIDA: ";
+
     return SingleChildScrollView(child: Column(
       children: [
 

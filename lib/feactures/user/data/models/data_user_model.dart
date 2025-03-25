@@ -1,4 +1,6 @@
-part of 'models.dart';
+part of 'models_user.dart';
+
+
 
 DataUser dataUserFromJson(String str) => DataUser.fromJson(json.decode(str));
 
@@ -7,7 +9,7 @@ String dataUserToJson(DataUser data) => json.encode(data.toJson());
 class DataUser {
   final int statusCode;
   final String message;
-  final User user;
+  final UserModel user;
 
   DataUser({
     required this.statusCode,
@@ -18,17 +20,22 @@ class DataUser {
   factory DataUser.fromJson(Map<String, dynamic> json) => DataUser(
     statusCode: json["status_code"],
     message: json["message"],
-    user: User.fromJson(json["data"]),
+    user: UserModel.fromJson(json["data"]),
   );
 
   Map<String, dynamic> toJson() => {
     "status_code": statusCode,
     "message": message,
     "data": user.toJson(),
+
   };
 }
 
-class User {
+UserModel userFromJson(String str) => UserModel.fromJson(json.decode(str));
+
+String userToJson(UserModel data) => json.encode(data.toJson());
+
+class UserModel {
   final int idGenUsuario;
   final int idGenPersona;
   final String nombreUsuario;
@@ -42,7 +49,7 @@ class User {
   final String grado;
   final String foto;
 
-  User({
+  UserModel({
     required this.idGenUsuario,
     required this.idGenPersona,
     required this.nombreUsuario,
@@ -57,19 +64,33 @@ class User {
     required this.foto,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => User(
-    idGenUsuario: ParseModel.parseToInt( json["idGenUsuario"]),
-    idGenPersona:ParseModel.parseToInt( json["idGenPersona"]),
-    nombreUsuario:ParseModel.parseToString( json["nombreUsuario"]),
-    idDgpGrado:ParseModel.parseToInt( json["idDgpGrado"]),
-    documento: ParseModel.parseToString( json["documento"]),
-    apenom: ParseModel.parseToString( json["apenom"]),
-    sexoPerson: ParseModel.parseToString( json["sexoPerson"]),
-    gradoSiglas:ParseModel.parseToString(  json["gradoSiglas"]),
-    unidad: ParseModel.parseToString( json["unidad"]),
-    funcion: ParseModel.parseToString( json["funcion"]),
-    grado: ParseModel.parseToString( json["grado"]),
-    foto: ParseModel.parseToString( json["foto"]),
+  factory UserModel.empty() => UserModel(
+    idGenUsuario: 0,
+    idGenPersona: 0,
+    nombreUsuario: "",
+    idDgpGrado: 0,
+    documento: "",
+    apenom: "",
+    sexoPerson: "",
+    gradoSiglas: "",
+    unidad: "",
+    funcion: "",
+    grado: "",
+    foto: "",
+  );
+  factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
+    idGenUsuario: ParseModel.parseToInt(json["idGenUsuario"]),
+    idGenPersona: ParseModel.parseToInt(json["idGenPersona"]),
+    nombreUsuario: ParseModel.parseToString(json["nombreUsuario"]),
+    idDgpGrado: ParseModel.parseToInt(json["idDgpGrado"]),
+    documento: ParseModel.parseToString(json["documento"]),
+    apenom: ParseModel.parseToString(json["apenom"]),
+    sexoPerson: ParseModel.parseToString(json["sexoPerson"]),
+    gradoSiglas: ParseModel.parseToString(json["gradoSiglas"]),
+    unidad: ParseModel.parseToString(json["unidad"]),
+    funcion: ParseModel.parseToString(json["funcion"]),
+    grado: ParseModel.parseToString(json["grado"]),
+    foto: ParseModel.parseToString(json["foto"]),
   );
 
   Map<String, dynamic> toJson() => {

@@ -19,13 +19,10 @@ class UrlApiProviderApp {
   }
 
   static Future<String> getToken() async {
-    LocalStorageRepository _localStorageRepository =
-    Get.find<LocalStorageRepository>();
-
-    DataUser dataUser = await _localStorageRepository.getUserModel();
-
-    String token = dataUser.token;
-
+    LocalStoreUseCase localStoreUseCase =
+    Get.find();
+    final UserEntities user=await localStoreUseCase.getUserModel();
+    final token =  user.token;
     return token;
   }
   Future<String> post(

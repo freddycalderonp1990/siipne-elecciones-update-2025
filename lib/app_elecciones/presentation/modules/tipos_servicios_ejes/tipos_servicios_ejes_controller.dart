@@ -13,7 +13,7 @@ class TiposServiciosEjesController extends GetxController {
 
   Rx<TipoEjesActivos> tipoEjesActivos = TipoEjesActivos.empty().obs;
 
-  late DataUser user;
+  late UserEntities user;
 
   RxBool peticionServerState = false.obs;
   @override

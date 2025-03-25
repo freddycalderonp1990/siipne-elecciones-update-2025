@@ -1,9 +1,11 @@
 part of '../controllers.dart';
 
 class LoginController extends GetxController {
-  final LocalStoreImpl _localStoreImpl = Get.find<LocalStoreImpl>();
-  final AuthApiImpl _authApiImpl = Get.find<AuthApiImpl>();
-  final user = DataUser.empty().obs;
+  final LocalStoreUseCase _localStoreUseCase = Get.find<LocalStoreUseCase>();
+  final AuthUseCase authUseCase=Get.find();
+  final GetDataUserUseCase getDataUserUseCase=Get.find();
+
+  final user = UserEntities.empty().obs;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   GlobalKey<FormState> formKey2 = GlobalKey<FormState>();
   GlobalKey<FormState> formKeyPinCode = GlobalKey<FormState>();
@@ -29,6 +31,8 @@ class LoginController extends GetxController {
 
   late StreamSubscription connectionSubscription;
   final status = Rx<ConnectionStatus>(ConnectionStatus.online);
+
+
   @override
   void onInit() {
     verificarSitieneBiometrico();
@@ -62,10 +66,10 @@ class LoginController extends GetxController {
   }
 
 
-  Future<DataUser?> authApp(
+  Future<UserEntities?> authApp(
       {required String user,
         required String pass,
-        required localStoreImpl}) async {
+        required LocalStoreUseCase localStoreImpl}) async {
     bool isUserTestApp = await verificarUserTestApp(user: user, pass: pass);
     if (isUserTestApp) {
       String credenciales_userTestApp =
@@ -78,41 +82,44 @@ class LoginController extends GetxController {
     bool isAndroid = UtilidadesUtil.plataformaIsAndroid;
     int versionCodeApp = int.parse(await DeviceInfo.getVersionCode);
 
-    String imei = 'imei';
-    String tipoRed = 'movil';
-    String nameRed = 'namered';
 
     String ip = await DeviceInfo.getIp;
 
-    final DataUser userResponse = await _authApiImpl.auth(AuthRequest(
-        ip: ip,
-        user: user,
-        pass: pass,
-        isAndroid: isAndroid,
-        versionCodeApp: versionCodeApp,
-        imei: imei,
-        tipoRed: tipoRed,
-        nameRed: nameRed));
+    AuthRequest request=AuthRequest(
+      ip: ip,
+      user: user,
+      pass: pass,
+      isAndroid: isAndroid,
+      versionCodeApp: versionCodeApp,
+    );
+
+    final String token = await authUseCase(request: request);
+    //consultamos los datos del usuario
+
+    UserEntities userResponse=await  getDataUserUseCase(token: token,idGenUsuario: 0);
+
+    userResponse= userResponse.copyWith(token: token);
 
     if (userResponse.idGenUsuario > 0) {
       print("tengo usuario");
       await localStoreImpl.setUser(user);
       await localStoreImpl.setPass(pass);
 
-      await localStoreImpl.setUserName(userResponse.userName);
+
       await localStoreImpl.setUserModel(userResponse);
 
       return userResponse;
     }
     else{
       print("no tengo usuario");
-      await localStoreImpl.setUserModel(DataUser.empty());
+      await localStoreImpl.setUserModel(UserEntities.empty());
     }
 
     return null;
   }
 
   Future<void> login() async {
+
     if (status == ConnectionStatus.online) {
       var isValid = true;
       if (formKey.currentState == null) {
@@ -134,8 +141,8 @@ class LoginController extends GetxController {
       clave = EncriptarUtil.myEncryptPass(_pass);
       peticionServerState(true);
       await ExceptionHelper.manejarErroresShowDialogo(() async {
-        DataUser? userResponse = await authApp(
-            user: _user, pass: _pass, localStoreImpl: _localStoreImpl);
+        UserEntities? userResponse = await authApp(
+            user: _user, pass: _pass, localStoreImpl: _localStoreUseCase);
         if (userResponse != null) {
           print('esperando mostrar biometrico es:');
           this.user.value = userResponse;
@@ -164,18 +171,19 @@ class LoginController extends GetxController {
   Future<bool> verificarCredenciales() async {
     namePhone.value = await DeviceInfo.getDeviceMarca;
 
-    String user = await _localStoreImpl.getUser();
-    String pass = await _localStoreImpl.getPass();
+    String user = await _localStoreUseCase.getUser();
+    String pass = await _localStoreUseCase.getPass();
 
     mostrarAccesoHuella.value = false;
 
     if (user.length > 0 && pass.length > 0) {
       print('mostrar huella');
 
-      this.user.value = await _localStoreImpl.getUserModel();
+     // this.user.value = await _localStoreImpl.getUserModel();
+
       this.user.refresh();
 
-      bool configHuella = await _localStoreImpl.getConfigHuella();
+      bool configHuella = await _localStoreUseCase.getConfigHuella();
       if (configHuella) {
         mostrarAccesoHuella.value = true;
       }
@@ -195,13 +203,6 @@ class LoginController extends GetxController {
 
       bool result = await BiometricUtil.biometrico();
       if (result) {
-        String user = await _localStoreImpl.getUser();
-        String pass = await _localStoreImpl.getUser();
-
-        controllerUser.text = user;
-        controllerPass.text = pass;
-
-        print('user: ${user}--pass: ${pass}');
         login();
       }
     }
@@ -214,8 +215,8 @@ class LoginController extends GetxController {
     bool checkAccesoBiometrico = await BiometricUtil.checkAccesoBiometrico();
     bool verificaCredecniales = false;
 
-    String user = await _localStoreImpl.getUser();
-    String pass = await _localStoreImpl.getPass();
+    String user = await _localStoreUseCase.getUser();
+    String pass = await _localStoreUseCase.getPass();
 
     if (user.length > 0 && pass.length > 0) {
       verificaCredecniales = true;
@@ -228,9 +229,9 @@ class LoginController extends GetxController {
         DialogosAwesome.getInformationSiNo(
           descripcion: "¿Desea configurar el acceso biometrico.?",
           btnCancelOnPress: () async {
-            _localStoreImpl.setLoginInit(false);
-            _localStoreImpl.setConfigHuella(false);
-            _localStoreImpl.setFoto('');
+            _localStoreUseCase.setLoginInit(false);
+            _localStoreUseCase.setConfigHuella(false);
+
             Get.back();
             InciarPantalla();
           },
@@ -243,18 +244,18 @@ class LoginController extends GetxController {
                   title: 'Acceso Biométrico',
                   btnOkOnPress: () {
                     Get.back();
-                    _localStoreImpl.setLoginInit(true);
-                    _localStoreImpl.setConfigHuella(true);
-                    _localStoreImpl.setFoto(foto);
+                    _localStoreUseCase.setLoginInit(true);
+                    _localStoreUseCase.setConfigHuella(true);
+
                     InciarPantalla();
                   });
             } else {
               DialogosAwesome.getError(
                   descripcion: "Error al configurar, su huella no coincide.",
                   btnOkOnPress: () {
-                    _localStoreImpl.setLoginInit(false);
-                    _localStoreImpl.setConfigHuella(false);
-                    _localStoreImpl.setFoto('');
+                    _localStoreUseCase.setLoginInit(false);
+                    _localStoreUseCase.setConfigHuella(false);
+
                     Get.back();
                     InciarPantalla();
                   });
@@ -272,7 +273,7 @@ class LoginController extends GetxController {
   InciarPantalla() async {
     controllerUser.clear();
     controllerPass.clear();
-    _localStoreImpl.setLoginInit(true);
+    _localStoreUseCase.setLoginInit(true);
     Get.offAllNamed(SiipneRoutes.MENU_APP);
 
   }
@@ -335,7 +336,7 @@ class LoginController extends GetxController {
     }
     wgLoginUserPass.value = true;
     wgOcultarLoginUserPass.value = false;
-    if (!await _localStoreImpl.getLoginInit()) {
+    if (!await _localStoreUseCase.getLoginInit()) {
       wgLoginUserPass.value = true;
       wgOcultarLoginUserPass.value = false;
     }
@@ -372,18 +373,11 @@ class LoginController extends GetxController {
   connectionStatusController() {}
 
   setAppPageSelect(PageAppsSelect value) {
-    _localStoreImpl.setAppPageSelect(value.toString());
+    _localStoreUseCase.setAppPageSelect(value.toString());
     Get.offAllNamed(AppRoutes.SPLASH_APP);
   }
 
-  setShowTutorial(ActionTutorial value) {
-    print("setShowTutorial  = ${value}");
-    if (value == ActionTutorial.onSkip) {
-      _localStoreImpl.showTutorial(ShowTutorial.ClaveDigital.toString());
-    } else if (value == ActionTutorial.onFinish) {
-      _localStoreImpl.showTutorial(ShowTutorial.ClaveDigital.toString());
-    }
-  }
+
 
 
 

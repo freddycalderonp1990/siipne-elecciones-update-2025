@@ -1,11 +1,11 @@
 part of '../../controllers.dart';
 
 class InicioRapidoController extends GetxController {
-  final AuthApiImpl _authApiImpl = Get.find<AuthApiImpl>();
-  final LocalStoreImpl _localStoreImpl = Get.find<LocalStoreImpl>();
+
+  final LocalStoreUseCase _localStoreUseCase = Get.find<LocalStoreUseCase>();
   final loginController = Get.find<LoginController>();
 
-  final user = DataUser.empty().obs;
+  final user = UserEntities.empty().obs;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   GlobalKey<FormState> formKey2 = GlobalKey<FormState>();
@@ -68,8 +68,8 @@ class InicioRapidoController extends GetxController {
 
 
     await ExceptionHelper.manejarErroresShowDialogo(() async {
-      DataUser? userResponse = await loginController.authApp(
-          user: user, pass: pass, localStoreImpl: _localStoreImpl);
+      UserEntities? userResponse = await loginController.authApp(
+          user: user, pass: pass, localStoreImpl: _localStoreUseCase);
       if (userResponse != null) {
         InciarPantalla();
       }
@@ -85,7 +85,7 @@ class InicioRapidoController extends GetxController {
   }
 
   Future<void> ingresoConOtroUsuario() async {
-    await _localStoreImpl.clearAllData();
+    await _localStoreUseCase.clearAllData();
 
     Get.offAllNamed(AppRoutes.SPLASH_APP);
   }
@@ -94,18 +94,18 @@ class InicioRapidoController extends GetxController {
 
     namePhone.value= await DeviceInfo.getDeviceMarca;
 
-    String user = await _localStoreImpl.getUser();
-    String pass = await _localStoreImpl.getPass();
+    String user = await _localStoreUseCase.getUser();
+    String pass = await _localStoreUseCase.getPass();
 
     mostrarAccesoHuella.value = false;
 
     if (user.length > 0 && pass.length > 0) {
       print('mostrar huella');
 
-      this.user.value = await _localStoreImpl.getUserModel();
+      this.user.value = await _localStoreUseCase.getUserModel();
       this.user.refresh();
 
-      bool configHuella = await _localStoreImpl.getConfigHuella();
+      bool configHuella = await _localStoreUseCase.getConfigHuella();
       if (configHuella) {
         mostrarAccesoHuella.value = true;
       }
@@ -118,8 +118,8 @@ class InicioRapidoController extends GetxController {
 
   _setBiometrico() async {
     bool verificaCredecniales = false;
-    String user = await _localStoreImpl.getUser();
-    String pass = await _localStoreImpl.getPass();
+    String user = await _localStoreUseCase.getUser();
+    String pass = await _localStoreUseCase.getPass();
     print("la clave es **877faCsP@p5TsS1Yh*zVtCPz5crkCQQYEP    =======   ${pass}");
 
     if (user.length > 0 && pass.length > 0) {
@@ -137,9 +137,9 @@ class InicioRapidoController extends GetxController {
             descripcion: "Ha configurado con éxito el acceso biométrico.",
             btnOkOnPress: () async {
               Get.back();
-              _localStoreImpl.setLoginInit(true);
-              _localStoreImpl.setConfigHuella(true);
-              _localStoreImpl.setFoto("foto");
+              _localStoreUseCase.setLoginInit(true);
+              _localStoreUseCase.setConfigHuella(true);
+
 
               await login(user: user, pass: pass);
             });
@@ -156,7 +156,7 @@ class InicioRapidoController extends GetxController {
   Future<void> loginConBiometrico() async {
     //verificamos si tiene configurado el biometrico
     if (status == ConnectionStatus.online) {
-      bool confHuella = await _localStoreImpl.getConfigHuella();
+      bool confHuella = await _localStoreUseCase.getConfigHuella();
 
       if (!confHuella) {
         DialogosAwesome.getInformationSiNo(
@@ -165,9 +165,9 @@ class InicioRapidoController extends GetxController {
               _setBiometrico();
             },
             btnCancelOnPress: () async {
-              _localStoreImpl.setLoginInit(false);
-              _localStoreImpl.setConfigHuella(false);
-              _localStoreImpl.setFoto('');
+              _localStoreUseCase.setLoginInit(false);
+              _localStoreUseCase.setConfigHuella(false);
+
               Get.back();
             });
       } else {
@@ -182,8 +182,8 @@ class InicioRapidoController extends GetxController {
 
           bool result = await BiometricUtil.biometrico();
           if (result) {
-            String user = await _localStoreImpl.getUser();
-            String pass = await _localStoreImpl.getPass();
+            String user = await _localStoreUseCase.getUser();
+            String pass = await _localStoreUseCase.getPass();
             await login(user: user, pass: pass);
 
           }
@@ -198,9 +198,9 @@ class InicioRapidoController extends GetxController {
   }
 
   InciarPantalla() async {
-    await _localStoreImpl.setContadorFallido(0);
+    await _localStoreUseCase.setContadorFallido(0);
 
-    _localStoreImpl.setLoginInit(true);
+    _localStoreUseCase.setLoginInit(true);
     Get.offAllNamed(SiipneRoutes.MENU_APP);
 
   }
@@ -212,7 +212,7 @@ class InicioRapidoController extends GetxController {
       mostrarBtnHome.value = true;
     }
 
-    if (!await _localStoreImpl.getLoginInit()) {
+    if (!await _localStoreUseCase.getLoginInit()) {
       wgInicioRapidoUserPass.value = true;
       wgOcultarInicioRapidoUserPass.value = true;
     }

@@ -4,6 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_utils/src/platform/platform.dart';
+import 'package:siipnemovil2/feactures/user/domain/entities/user.dart';
+import 'package:siipnemovil2/feactures/user/domain/use_cases/local_store.dart';
 
 import '../../../app_elecciones/core/siipne_config.dart';
 import '../../../app_elecciones/core/values/mensajes_string.dart';
@@ -12,6 +14,8 @@ import '../../../app_elecciones/data/repository/data_repositories.dart';
 import '../../../app_elecciones/domain/enums/enums.dart';
 import '../../../app_elecciones/presentation/routes/siipne_routes.dart';
 import '../../../app_elecciones/presentation/widgets/customWidgets.dart';
+import '../../data/model/models.dart';
+import '../../data/repository/data_repositories.dart';
 import '../../presentation/routes/app_routes.dart';
 import '../app_config.dart';
 import '../utils/utilidadesUtil.dart';
@@ -103,7 +107,7 @@ class ExceptionHelper {
   }
 
   static void _verificarIntentosFallidosClave() async {
-    final LocalStoreImpl _localStoreImpl = Get.find<LocalStoreImpl>();
+    final LocalStoreUseCase _localStoreImpl = Get.find<LocalStoreUseCase>();
     //Obtenemos el contenedor de intentos fallidos
     int contadorfallido = await _localStoreImpl.getContadorFallido();
     contadorfallido = contadorfallido + 1;
@@ -114,13 +118,13 @@ class ExceptionHelper {
       await _localStoreImpl.setConfigHuella(false);
       await _localStoreImpl.setContadorFallido(0);
 
-      await _localStoreImpl.setFoto('');
+
       await _localStoreImpl.setLoginInit(false);
       await _localStoreImpl.setPass('');
       await _localStoreImpl.setPinCode('');
 
       await _localStoreImpl.setUser('');
-      await _localStoreImpl.setUserModel(DataUser.empty());
+      await _localStoreImpl.setUserModel(UserEntities.empty());
 
       DialogosAwesome.getWarning(
         descripcion: "Ah excedido el número de intentos permitidos",

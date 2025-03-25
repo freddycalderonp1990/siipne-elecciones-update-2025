@@ -4,12 +4,12 @@ class SplashController extends GetxController {
 
 
 
-  final AuthApiImpl _authApiImpl = Get.find<AuthApiImpl>();
-  final LocalStoreImpl _localStoreImpl = Get.find<LocalStoreImpl>();
+
+  final LocalStoreUseCase _localStoreImpl = Get.find<LocalStoreUseCase>();
 
 
   String tag = "SplashController";
-  final LoginController _loginController = Get.find<LoginController>();
+
 
   RxBool peticionServerState = false.obs;
 
@@ -38,13 +38,13 @@ class SplashController extends GetxController {
   _verifiToken() async {
     print("SPLASH: verificando token");
 
-    DataUser dataUser=await _localStoreImpl.getUserModel();
-    final token = dataUser.token;
+final UserEntities user=await _localStoreImpl.getUserModel();
+    final token =  user.token;
 
     print("token : {el token} = ${token}");
 
     //verificamos si el token aun esta valido
-    if (token != null) {
+    if (token.length> 0) {
       print("SPLASH: tenemos token valido");
       //Tenemos token aun valido que no expira
       //vamos al login

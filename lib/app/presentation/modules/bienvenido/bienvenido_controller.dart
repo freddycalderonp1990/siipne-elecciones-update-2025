@@ -1,8 +1,8 @@
 part of '../controllers.dart';
 
 class BienvenidoController extends GetxController {
-  final LocalStoreImpl _localStoreImpl =
-      Get.find<LocalStoreImpl>();
+  final LocalStoreUseCase _localStoreImpl =
+      Get.find<LocalStoreUseCase>();
 
   @override
   void onInit() {

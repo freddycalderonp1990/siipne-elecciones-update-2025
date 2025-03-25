@@ -12,7 +12,7 @@ class MenuRecElecJefeController extends GetxController {
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  late DataUser user;
+  late UserEntities user;
 
   RxBool peticionServerState = false.obs;
   @override

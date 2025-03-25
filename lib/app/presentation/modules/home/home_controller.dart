@@ -1,7 +1,7 @@
 part of '../controllers.dart';
 
 class HomeController extends GetxController {
-  final LocalStoreImpl _localStoreImpl = Get.find<LocalStoreImpl>();
+  final LocalStoreUseCase _localStoreImpl = Get.find<LocalStoreUseCase>();
 
   RxList<ApsQr> listApsQr = <ApsQr>[].obs;
   var controllerAppName = new TextEditingController();
