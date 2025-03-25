@@ -70,7 +70,10 @@ class InicioRapidoController extends GetxController {
     await ExceptionHelper.manejarErroresShowDialogo(() async {
       UserEntities? userResponse = await loginController.authApp(
           user: user, pass: pass, localStoreImpl: _localStoreUseCase);
+
+
       if (userResponse != null) {
+        loginController.user.value=userResponse;
         InciarPantalla();
       }
     });

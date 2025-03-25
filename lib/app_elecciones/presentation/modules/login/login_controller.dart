@@ -101,7 +101,8 @@ class LoginController extends GetxController {
     userResponse= userResponse.copyWith(token: token);
 
     if (userResponse.idGenUsuario > 0) {
-      print("tengo usuario");
+
+
       await localStoreImpl.setUser(user);
       await localStoreImpl.setPass(pass);
 
@@ -111,6 +112,7 @@ class LoginController extends GetxController {
       return userResponse;
     }
     else{
+
       print("no tengo usuario");
       await localStoreImpl.setUserModel(UserEntities.empty());
     }
@@ -140,6 +142,10 @@ class LoginController extends GetxController {
       String clave = EncriptarUtil.generateSha512(_pass);
       clave = EncriptarUtil.myEncryptPass(_pass);
       peticionServerState(true);
+
+
+
+
       await ExceptionHelper.manejarErroresShowDialogo(() async {
         UserEntities? userResponse = await authApp(
             user: _user, pass: _pass, localStoreImpl: _localStoreUseCase);

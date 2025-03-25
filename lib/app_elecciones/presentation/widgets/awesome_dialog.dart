@@ -118,7 +118,7 @@ class DialogosAwesome {
         titulo: titleBtnNo,
       ),
       desc: descripcion,
-      showCloseIcon: true,
+
     ).show();
   }
 

@@ -82,7 +82,7 @@ class MenuRecElecIntegrantePage
                         descripcion:
                             "¿Esta seguro que desea abandonar el Operativo.?",
                         btnOkOnPress: () {
-
+                          Get.back();
                           controller.removePersonalOperativo();
                         });
                   }),

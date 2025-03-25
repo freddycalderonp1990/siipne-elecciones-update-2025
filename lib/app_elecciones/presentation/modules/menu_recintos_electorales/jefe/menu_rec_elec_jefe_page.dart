@@ -163,7 +163,8 @@ class MenuRecElecJefePage
     DialogosAwesome.getIconPolicia(
         title: "Finalizar Recinto",
         descripcion:
-            "¿Esta seguro que desea finalizar el Recinto\n\n${nameRecinto}?",
+            "¿Esta seguro que desea finalizar el Recinto?"
+                "\nNOMBRE:${nameRecinto}",
         btnOkOnPress: () {
           Get.back();
      controller.finalizarRecinto();

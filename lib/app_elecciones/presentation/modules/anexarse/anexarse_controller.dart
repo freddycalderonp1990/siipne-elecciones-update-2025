@@ -29,6 +29,8 @@ class AnexarseController extends GetxController {
 
   RxBool peticionServerState = false.obs;
   int idDgoCreaOpReci = 0;
+
+  RxInt select_save_IdDgoTipoEje=0.obs;
   @override
   void onInit() async {
     user = loginController.user.value;
@@ -86,7 +88,7 @@ class AnexarseController extends GetxController {
         return;
       }
 
-
+      select_save_IdDgoTipoEje.value=0;
       if(datosEncargado.value.idDgoTipoEje==1){
 
         getSubsistemas();
@@ -110,7 +112,7 @@ class AnexarseController extends GetxController {
     peticionServerState(false);
   }
 
-  Future<void> registrarse(int idDgoTipoEje) async {
+  Future<void> registrarse() async {
     peticionServerState(true);
 
     await ExceptionHelper.manejarErroresShowDialogo(() async {
@@ -126,7 +128,7 @@ class AnexarseController extends GetxController {
           latitud: position.latitude,
           longitud: position.longitude,
           idDgoReciElect: datosEncargado.value.idDgoReciElect,
-          idDgoTipoEje: idDgoTipoEje,
+          idDgoTipoEje: select_save_IdDgoTipoEje.value,
           idDgpGrado: user.idDgpGrado,
           ip: ip);
 

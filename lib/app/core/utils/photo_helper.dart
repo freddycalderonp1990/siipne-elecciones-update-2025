@@ -42,8 +42,9 @@ class PhotoHelper {
       title: "Registre una Fotografia",
       btnCancel: BtnIconWidget(
         onPressed: () async {
-          GaleryCameraModel? data = await getImageGallery(titleImg);
           Get.back();
+          GaleryCameraModel? data = await getImageGallery(titleImg);
+
           completer.complete(data);  // Retorna la data al completar
        // Cierra el diálogo
         },
@@ -51,8 +52,9 @@ class PhotoHelper {
       ),
       btnOk: BtnIconWidget(
         onPressed: () async {
+          Get.back();
           GaleryCameraModel? data = await getImageCamera(titleImg);
-          Get.back(); // Cierra el diálogo
+         // Cierra el diálogo
           completer.complete(data); // Retorna la data al completar
 
         },

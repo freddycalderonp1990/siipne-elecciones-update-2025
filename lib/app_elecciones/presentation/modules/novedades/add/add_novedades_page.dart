@@ -65,10 +65,12 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
         Material(
             child: InkWell(
           onTap: () async {
+            controller.peticionServerState(true);
             controller.mGaleryCameraModel.value =
                 await PhotoHelper.getDesingPictureGaleryOrCamera(
                     titleImg:
                         "ImgRecElectNovedades_id_${controller.selectNovedad.value.idDgoNovedadesElect}");
+            controller.peticionServerState(false);
           },
           child: Container(
             child: ClipRRect(

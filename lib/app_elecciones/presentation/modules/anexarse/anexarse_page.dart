@@ -187,9 +187,11 @@ class AnexarsePage extends GetView<AnexarseController> {
         searchHint: "Unidad Policial",
         complete: (value) {
           controller.selectUnidadPolicial.value = DatosUnidadesId.empty();
+          controller.select_save_IdDgoTipoEje.value=0;
 
           if (value != null) {
             controller.selectUnidadPolicial.value = value;
+            controller.select_save_IdDgoTipoEje.value=value.idDgoTipoEje;
             return;
           }
         },
@@ -201,17 +203,12 @@ class AnexarsePage extends GetView<AnexarseController> {
   Widget btnRegistrar() {
     return Obx(
       () =>
-          controller.selectUnidadPolicial.value.idDgoTipoEje > 0 ||
-                  controller
-                          .comboDependienteController
-                          .selectUnidadPolicial
-                          .value
-                          .idDgoTipoEje >
-                      0
+          controller.select_save_IdDgoTipoEje.value > 0
+
               ? BtnIconWidget(
                 icon: Icons.open_in_browser_outlined,
                 titulo: "REGISTRAR",
-                onPressed: () => controller.registrarse(10),
+                onPressed: () => controller.registrarse(),
               )
               : Container(),
     );
@@ -345,11 +342,14 @@ class AnexarsePage extends GetView<AnexarseController> {
                       .comboDependienteController
                       .selectUnidadPolicial
                       .value = UnidadesPoliciale.empty();
+                  controller.select_save_IdDgoTipoEje.value=0;
                   if (value != null) {
                     controller
                         .comboDependienteController
                         .selectUnidadPolicial
                         .value = value;
+
+                    controller.select_save_IdDgoTipoEje.value=value.idDgoTipoEje;
                     return;
                   }
                 },

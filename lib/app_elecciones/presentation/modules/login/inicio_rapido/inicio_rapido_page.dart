@@ -6,86 +6,73 @@ class InicioRapidoPage extends GetView<InicioRapidoController> {
     final responsive = ResponsiveUtil();
     // TODO: verifique
 
-    Widget wg = Obx(() => WorkAreaLoginPageWidget(
-      title: '',
-      imgPerfil:controller.user.value.foto,
-      mostrarVersion: true,
-      imgFondo: AppImages.imgFondoDefault,
-      peticionServer: controller.peticionServerState,
-      sizeTittle: 7,
-      contenido: <Widget>[getContenido(responsive)],
-    ));
-
-    return GetBuilder<LoginController>(
-      builder: (_c) => wg,
+    Widget wg = Obx(
+      () => WorkAreaLoginPageWidget(
+        title: '',
+        imgPerfil: controller.user.value.foto,
+        mostrarVersion: true,
+        imgFondo: AppImages.imgFondoDefault,
+        peticionServer: controller.peticionServerState,
+        sizeTittle: 7,
+        contenido: <Widget>[getContenido(responsive)],
+      ),
     );
+
+    return GetBuilder<LoginController>(builder: (_c) => wg);
   }
 
   Widget getContenido(ResponsiveUtil responsive) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          Obx(
+            () => DesingTextNameUser(
+              sizeText: responsive.diagonalP(AppConfig.tamTextoTitulo),
+              sexo: controller.user.value.sexo,
+              text: controller.user.value.nombres,
+            ),
+          ),
 
-    return SingleChildScrollView(child: Column(
-      children: [
+          SizedBox(height: responsive.altoP(2)),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10),
 
-
-        Obx(()=>  DesingTextNameUser(
-            sizeText: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            sexo:controller.user.value.sexo ,
-            text:  controller.user.value.nombres)),
-
-        SizedBox(
-          height: responsive.altoP(2),
-        ),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 10),
-
-
-          child: Column(
-
-            children: [
-              wgHuella(),
-              SizedBox(
-                height: responsive.altoP(2),
-              ),
-              wgOtroUsuario()
-            ],),)
-      ],
-    ),);
+            child: Column(
+              children: [
+                wgHuella(),
+                SizedBox(height: responsive.altoP(2)),
+                wgOtroUsuario(),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Widget wgHuella() {
-
     Widget wg = BtnMenuWidget(
       img: AppImages.icon_huella,
       title: "HUELLA",
       horizontal: false,
       onTap: () => controller.loginConBiometrico(),
-      colorFondo:AppColors.colorAzul,
+      colorFondo: AppColors.colorAzul,
       colorTexto: Colors.white,
     );
 
-
-
-
-    return  wg;
+    return wg;
   }
 
   Widget wgOtroUsuario() {
-
     Widget wg = BtnMenuWidget(
       img: AppImages.icon_clave,
       title: "¿NO ERES TÚ?",
       horizontal: false,
       onTap: () => controller.ingresoConOtroUsuario(),
-      colorFondo:AppColors.colorAzul,
+      colorFondo: AppColors.colorAzul,
       colorTexto: Colors.white,
     );
 
-
-
     return wg;
   }
-
-
-
-
 }

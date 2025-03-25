@@ -18,6 +18,10 @@
   - Se asigna la situación `AR` = Abandono Recinto.  
   - En la observación, se registra: **"ABANDONAR OPERATIVO (DESDE MÓVIL)"**.
 
+## CREAR CODIGO Y AGREGAR PERSONAL
+- Se agrego el idDgpGrado, para ser inseerrtado en la tabla dgoPerAsigOpe
+- 
+
 ### Agregar Nuevo Personal
 - Se permite agregar personal nuevo que aún no está registrado y no tiene grado en el **SIIPNE 3W**.
 - Estos registros se almacenan en la tabla temporal `dgoNoUsuarios`, donde se guardan junto con su grado y proceso.
