@@ -14,8 +14,8 @@ class UserRepositoryImpl implements UserRepository {
 
 
   @override
-  Future<UserEntities> getDataUser({required String token,required int idGenUsuario}) async {
-    UserModel dataUser = await userRemoteDataSource.getDataUser(token:token,idGenUsuario: idGenUsuario);
+  Future<UserEntities> getDataUser({required int idGenUsuario}) async {
+    UserModel dataUser = await userRemoteDataSource.getDataUser(idGenUsuario: idGenUsuario);
     return Mappers.fromDataUserToUserEntities(dataUser);
   }
 

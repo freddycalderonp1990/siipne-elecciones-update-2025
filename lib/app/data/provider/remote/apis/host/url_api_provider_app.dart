@@ -6,11 +6,10 @@ part of '../../../providers_impl_app.dart';
 class UrlApiProviderApp {
   String tag = "UrlProvider";
 
-  final String? token;
 
-  UrlApiProviderApp({this.token});
+  Future<Map<String, String>> getheaders() async {
+    String token= await getToken();
 
-  Map<String, String> getheaders({required String? token}) {
     return {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -42,9 +41,12 @@ class UrlApiProviderApp {
 
       String _tag = tag + " POST ";
       PrintsMsj.myLog(tag: _tag, title: "uri:", detalle: uri.toString());
+
+      Map<String, String> headers= await getheaders();
+
       response = await client
           .post(uri,
-          body: jsonEncode(body), headers: getheaders(token: this.token))
+          body: jsonEncode(body), headers: headers)
           .timeout(Duration(seconds: AppConfig.secondsTimeout));
 
       PrintsMsj.myLog(
@@ -85,9 +87,9 @@ class UrlApiProviderApp {
         uri = Uri.parse(url);
       }
 
-      print("timeOut ${AppConfig.secondsTimeout}");
+      Map<String, String> headers= await getheaders();
       response =
-      await client.get(uri, headers: getheaders(token: this.token)).timeout(
+      await client.get(uri, headers: headers).timeout(
         Duration(seconds: AppConfig.secondsTimeout),
       );
 
@@ -126,9 +128,10 @@ class UrlApiProviderApp {
         uri = Uri.parse(url);
       }
 
+      Map<String, String> headers= await getheaders();
       response = await client
           .delete(uri,
-          headers: getheaders(token: this.token), body: jsonEncode(body))
+          headers: headers, body: jsonEncode(body))
           .timeout(
         Duration(seconds: AppConfig.secondsTimeout),
       );
@@ -166,10 +169,10 @@ class UrlApiProviderApp {
       if (segmento != '') {
         uri = Uri.parse(url + segmento);
       }
-
+      Map<String, String> headers= await getheaders();
       response = await client
           .put(uri,
-          body: jsonEncode(body), headers: getheaders(token: this.token))
+          body: jsonEncode(body), headers: headers)
           .timeout(Duration(seconds: AppConfig.secondsTimeout));
 
       String _tag = tag + " PUT ";
@@ -207,9 +210,10 @@ class UrlApiProviderApp {
         uri = Uri.parse(url + segmento);
       }
 
+      Map<String, String> headers= await getheaders();
       response = await client
           .patch(uri,
-          body: jsonEncode(body), headers: getheaders(token: this.token))
+          body: jsonEncode(body), headers: headers)
           .timeout(Duration(seconds: AppConfig.secondsTimeout));
       String _tag = tag + " PATCH ";
       PrintsMsj.myLog(tag: _tag, title: "-uri:", detalle: uri.toString());
@@ -241,13 +245,11 @@ class UrlApiProviderApp {
     http.StreamedResponse response;
     String? parsed = null;
     try {
-      var uri = Uri.parse(url);
-      if (segmento != '') {
-        url = url + segmento;
-        uri = Uri.parse(url);
-      }
 
-      //old -> var stream = new http.ByteStream(DelegatingStream.typed(file.openRead()));
+      Map<String, String> headers= await getheaders();
+
+      var uri = Uri.parse(url);
+
       var stream = http.ByteStream(file.openRead().cast());
       var length = await file.length();
       var request = new http.MultipartRequest("POST", uri);
@@ -256,7 +258,7 @@ class UrlApiProviderApp {
           contentType: MediaType("text", "plain"));
 
       request.files.add(multipartFile);
-      request.headers.addAll(getheaders(token: this.token));
+      request.headers.addAll(headers);
       if (body != null) {
         request.fields.addAll(body);
       }

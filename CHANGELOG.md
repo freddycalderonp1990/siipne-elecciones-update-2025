@@ -36,3 +36,6 @@
 - Si el usuario crea o ya tiene un código activo e intenta generar uno nuevo, se verifica la existencia del código y se le redirige al código activo correspondiente.
 - Si el usuario intenta anexarse a un código y ya está anexado o ha creado uno previamente, se le redirige al código que le corresponde.
 - El usuario **no puede tener dos códigos activos** en el mismo proceso ni estar anexado a dos códigos simultáneamente.
+### 🚀 API Save FILE
+- Creacion de un api para guardar la imagenes
+

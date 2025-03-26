@@ -10,7 +10,8 @@ class GetDataUserUseCase {
 
   GetDataUserUseCase({required this.repository});
 
-  Future<UserEntities> call({required String token,required int idGenUsuario}) {
-    return repository.getDataUser(token: token,idGenUsuario: idGenUsuario);
+  Future<UserEntities> call() {
+    //no es necesario el idGenUsuario
+    return repository.getDataUser(idGenUsuario: 0);
   }
 }

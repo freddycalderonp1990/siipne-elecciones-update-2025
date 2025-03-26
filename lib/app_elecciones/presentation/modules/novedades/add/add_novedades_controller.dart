@@ -6,6 +6,8 @@ class AddNovedadesController extends GetxController {
 
   final loginController = Get.find<LoginController>();
 
+  final SaveFileImgUseCase _saveFileImgUseCase = Get.find();
+
   final EleccionesNovedadesApiImpl _eleccionesNovedadesApiImpl =
       Get.find<EleccionesNovedadesApiImpl>();
 
@@ -79,7 +81,7 @@ class AddNovedadesController extends GetxController {
   String? nombreDetenido;
   int? idGenPersonaD;
 
-  RxBool showVerNovedades=true.obs;
+  RxBool showVerNovedades = true.obs;
 
   @override
   void onInit() async {
@@ -116,14 +118,13 @@ class AddNovedadesController extends GetxController {
     if (arguments != null &&
         arguments.containsKey('recintosElectoralesAbiertos')) {
       try {
-
-        if(arguments.containsKey('shorReporte')){
-          showVerNovedades.value=arguments['shorReporte'] as bool;
+        if (arguments.containsKey('shorReporte')) {
+          showVerNovedades.value = arguments['shorReporte'] as bool;
         }
 
-
-        recintosElectoralesAbiertos = arguments['recintosElectoralesAbiertos']
-            as RecintosElectoralesAbiertos;
+        recintosElectoralesAbiertos =
+            arguments['recintosElectoralesAbiertos']
+                as RecintosElectoralesAbiertos;
       } catch (e) {
         DialogosAwesome.getError(descripcion: "No existe data valida");
       }
@@ -136,9 +137,10 @@ class AddNovedadesController extends GetxController {
     peticionServerState(true);
     await ExceptionHelper.manejarErroresShowDialogo(() async {
       GetNovedadesPadresRequest request = GetNovedadesPadresRequest(
-          idDgoProcElec: recintosElectoralesAbiertos.idDgoProcElec,
-          idDgoReciElect: recintosElectoralesAbiertos.idDgoReciElect,
-          idDgoTipoEje: recintosElectoralesAbiertos.idDgoTipoEje);
+        idDgoProcElec: recintosElectoralesAbiertos.idDgoProcElec,
+        idDgoReciElect: recintosElectoralesAbiertos.idDgoReciElect,
+        idDgoTipoEje: recintosElectoralesAbiertos.idDgoTipoEje,
+      );
 
       listTipoNovedades.value = await _eleccionesNovedadesApiImpl
           .getNovedadesPadres(request: request);
@@ -151,7 +153,9 @@ class AddNovedadesController extends GetxController {
     peticionServerState(false);
   }
 
-  Future<List<NovedadesElectorale>> consultarNovedadesHijas(int idNovedadesPadre) async {
+  Future<List<NovedadesElectorale>> consultarNovedadesHijas(
+    int idNovedadesPadre,
+  ) async {
     peticionServerState(true);
 
     List<NovedadesElectorale> novedades = [];
@@ -164,7 +168,9 @@ class AddNovedadesController extends GetxController {
         idDgoTipoEje: recintosElectoralesAbiertos.idDgoTipoEje,
       );
 
-      novedades = await _eleccionesNovedadesApiImpl.getNovedadesHijas(request: request);
+      novedades = await _eleccionesNovedadesApiImpl.getNovedadesHijas(
+        request: request,
+      );
 
       if (novedades.isEmpty) {
         DialogosAwesome.getInformation(descripcion: "No existen Novedades");
@@ -175,15 +181,12 @@ class AddNovedadesController extends GetxController {
     return novedades;
   }
 
-
   Future<void> getNovedadesDelito(int idNovedadesPadre) async {
-    listDelito.value =await consultarNovedadesHijas(idNovedadesPadre);
-
+    listDelito.value = await consultarNovedadesHijas(idNovedadesPadre);
   }
 
   Future<void> getNovedadesHijas(int idNovedadesPadre) async {
-    listNovedades.value =await consultarNovedadesHijas(idNovedadesPadre);
-
+    listNovedades.value = await consultarNovedadesHijas(idNovedadesPadre);
   }
 
   cerrarSession() {
@@ -191,9 +194,10 @@ class AddNovedadesController extends GetxController {
   }
 
   goToPageReporteNovedades() {
-    Get.toNamed(SiipneRoutes.REPORT_NOVEDADES, arguments: {
-      "recintosElectoralesAbiertos": recintosElectoralesAbiertos
-    });
+    Get.toNamed(
+      SiipneRoutes.REPORT_NOVEDADES,
+      arguments: {"recintosElectoralesAbiertos": recintosElectoralesAbiertos},
+    );
   }
 
   setDatosHora() {
@@ -224,8 +228,9 @@ class AddNovedadesController extends GetxController {
     }
 
     datosMinuto = datos;
-    selectMinuto =
-        DateFormat(SiipneConfig.formatoSoloMinuto).format(selectedDate);
+    selectMinuto = DateFormat(
+      SiipneConfig.formatoSoloMinuto,
+    ).format(selectedDate);
   }
 
   Future<void> getDatosPersona({bool permitirAll = false}) async {
@@ -242,12 +247,15 @@ class AddNovedadesController extends GetxController {
     peticionServerState(true);
     await ExceptionHelper.manejarErroresShowDialogo(() async {
       datosPerson.value = await _personaApiImpl.getDatosPersona(
-          usuario: user.idGenUsuario, cedula: controllerCedula.text);
+        usuario: user.idGenUsuario,
+        cedula: controllerCedula.text,
+      );
       if (datosPerson.value.idGenPersona == 0) {
         DialogosAwesome.getInformation(
-            btnOkOnPress: () {},
-            descripcion:
-                "No existe datos para el documento ${controllerCedula.text}");
+          btnOkOnPress: () {},
+          descripcion:
+              "No existe datos para el documento ${controllerCedula.text}",
+        );
         return;
       }
 
@@ -261,6 +269,40 @@ class AddNovedadesController extends GetxController {
       }
     });
     peticionServerState(false);
+  }
+
+  Future<bool> guardarImagen() async {
+    bool insertImg = false;
+    await ExceptionHelper.manejarErroresShowDialogo(() async {
+      String path = dotenv.env['PATH_IMG_APP_ELECCIONES'] ?? '';
+
+      String nameFile = recintosElectoralesAbiertos.descProcElecc;
+      String token = recintosElectoralesAbiertos.descProcElecc;
+      FileRequest request = FileRequest(
+        file: mGaleryCameraModel.value!.imageFile,
+        path: path,
+        nameFile: nameFile,
+      );
+
+      peticionServerState(true);
+      insertImg = await _saveFileImgUseCase(request: request);
+      peticionServerState(false);
+
+      if (!insertImg) {
+        DialogosAwesome.getIconPolicia(
+          title: "Guardar Imagen",
+          descripcion: "No se pudo guardar la Imagen",
+          btnOkOnPress: () {
+            Get.back();
+          },
+          mostrarSegungoBtn: false,
+        );
+      }
+    });
+    peticionServerState(false);
+
+
+    return insertImg;
   }
 
   eventoRegistrarNovedadesElectorales() async {
@@ -277,10 +319,11 @@ class AddNovedadesController extends GetxController {
     if (registrarDatosPersona) {
       if (datosPerson.value.idGenPersona == 0) {
         DialogosAwesome.getInformation(
-            btnOkOnPress: () {},
-            descripcion:
-                "No ha ingresado una cédula valida...Seleccione el icono buscar para continuar.",
-            title: 'Persona');
+          btnOkOnPress: () {},
+          descripcion:
+              "No ha ingresado una cédula valida...Seleccione el icono buscar para continuar.",
+          title: 'Persona',
+        );
 
         return;
       }
@@ -301,52 +344,49 @@ class AddNovedadesController extends GetxController {
       if (mostrarFoto.value) {
         if (mGaleryCameraModel.value == null) {
           DialogosAwesome.getWarning(
-              descripcion: "Selecione una Imagen",
-              title: "Imagen",
-              btnOkOnPress: () {});
+            descripcion: "Selecione una Imagen",
+            title: "Imagen",
+            btnOkOnPress: () {},
+          );
         } else {
-          /*
-          TODO: Comentado
-          bool insertImg = await guardarImgRecElectNovedades(
-              galeryCameraModel: mGaleryCameraModel);
-          print('Ingreso con imagen');
-
-           */
-          bool insertImg = true;
+          bool insertImg = await guardarImagen();
 
           if (insertImg) {
             await _RegistrarNovedades(
-                idGenPersonaD: idGenPersonaD,
-                nombreDetenido: nombreDetenido,
-                usuario: user.idGenUsuario,
-                observacion: getObservacion(),
-                idDgoPerAsigOpe: recintosElectoralesAbiertos.idDgoPerAsigOpe,
-                idDgoNovedadesElect: idDgoNovedadesElect,
-                imagen: mGaleryCameraModel.value!.nombreImg);
+              idGenPersonaD: idGenPersonaD,
+              nombreDetenido: nombreDetenido,
+              usuario: user.idGenUsuario,
+              observacion: getObservacion(),
+              idDgoPerAsigOpe: recintosElectoralesAbiertos.idDgoPerAsigOpe,
+              idDgoNovedadesElect: idDgoNovedadesElect,
+              imagen: mGaleryCameraModel.value!.nombreImg,
+            );
           }
         }
       } else {
         print('no foto');
 
         await _RegistrarNovedades(
-            idGenPersonaD: idGenPersonaD,
-            nombreDetenido: nombreDetenido,
-            usuario: user.idGenUsuario,
-            observacion: getObservacion(),
-            idDgoPerAsigOpe: recintosElectoralesAbiertos.idDgoPerAsigOpe,
-            idDgoNovedadesElect: idDgoNovedadesElect);
+          idGenPersonaD: idGenPersonaD,
+          nombreDetenido: nombreDetenido,
+          usuario: user.idGenUsuario,
+          observacion: getObservacion(),
+          idDgoPerAsigOpe: recintosElectoralesAbiertos.idDgoPerAsigOpe,
+          idDgoNovedadesElect: idDgoNovedadesElect,
+        );
       }
     }
   }
 
-  _RegistrarNovedades(
-      {required int idDgoNovedadesElect,
-      required int idDgoPerAsigOpe,
-      required String observacion,
-      required int usuario,
-      String? nombreDetenido,
-      int? idGenPersonaD,
-      String imagen = "No Imagen"}) async {
+  _RegistrarNovedades({
+    required int idDgoNovedadesElect,
+    required int idDgoPerAsigOpe,
+    required String observacion,
+    required int usuario,
+    String? nombreDetenido,
+    int? idGenPersonaD,
+    String imagen = "No Imagen",
+  }) async {
     if (idDgoPerAsigOpe == 0) return;
     log("observacion= ${observacion}");
 
@@ -381,17 +421,21 @@ class AddNovedadesController extends GetxController {
     if (resultInsert == ApiConstantes.varTrue) {
       clearData();
       DialogosAwesome.getSucess(
-          descripcion: "Registro de Novedad con éxito", btnOkOnPress: () {});
+        descripcion: "Registro de Novedad con éxito",
+        btnOkOnPress: () {},
+      );
     } else if (resultInsert == ApiConstantes.varExiste) {
       DialogosAwesome.getWarning(
-          descripcion:
-              "Ya existe una novedad registrada con este documento ${controllerCedula.text}",
-          btnOkOnPress: () {});
+        descripcion:
+            "Ya existe una novedad registrada con este documento ${controllerCedula.text}",
+        btnOkOnPress: () {},
+      );
     } else {
       DialogosAwesome.getError(
-          descripcion:
-              "No se pudo Registrar la Novedad. Vuelva a intentar o contacte con el administrador del sistema.",
-          btnOkOnPress: () {});
+        descripcion:
+            "No se pudo Registrar la Novedad. Vuelva a intentar o contacte con el administrador del sistema.",
+        btnOkOnPress: () {},
+      );
     }
   }
 
@@ -447,15 +491,17 @@ class AddNovedadesController extends GetxController {
       case 19:
 
         //3. RECINTO ELECTORAL INSTALADO CON RETARDO POR DIFERENTES CAUSAS
-        observacionModel =
-            observacionModel.copyWith(hora: "${selectHora}:${selectMinuto}");
+        observacionModel = observacionModel.copyWith(
+          hora: "${selectHora}:${selectMinuto}",
+        );
 
         break;
       case 20:
         //4. RECINTOS ELECTORALES SUSPENDIDO POR DIFERENTES CAUSAS
 
-        observacionModel =
-            observacionModel.copyWith(motivo: controllerMotivo.text);
+        observacionModel = observacionModel.copyWith(
+          motivo: controllerMotivo.text,
+        );
 
         break;
       case 21:
@@ -468,26 +514,29 @@ class AddNovedadesController extends GetxController {
         //6. PRESENCIA DE MANIFESTANTES / CONCENTRACIONES / MARCHAS
 
         observacionModel = observacionModel.copyWith(
-            organizacion: controllerOrganizacion.text,
-            dirigente: controllerDirigente.text,
-            cantidad: controllerCantidad.text);
+          organizacion: controllerOrganizacion.text,
+          dirigente: controllerDirigente.text,
+          cantidad: controllerCantidad.text,
+        );
         break;
       case 23:
         //7. QUEMA DE URNAS / PAPELETAS
 
         observacionModel = observacionModel.copyWith(
-            organizacion: controllerOrganizacion.text,
-            dirigente: controllerDirigente.text,
-            cantidad: controllerCantidad.text);
+          organizacion: controllerOrganizacion.text,
+          dirigente: controllerDirigente.text,
+          cantidad: controllerCantidad.text,
+        );
 
         break;
       case 28:
         //8. TOMA DE RECINTOS / DELEGACIONES / BODEGAS / INSTALACIONES DEL CNE
 
         observacionModel = observacionModel.copyWith(
-            organizacion: controllerOrganizacion.text,
-            dirigente: controllerDirigente.text,
-            cantidad: controllerCantidad.text);
+          organizacion: controllerOrganizacion.text,
+          dirigente: controllerDirigente.text,
+          cantidad: controllerCantidad.text,
+        );
 
         break;
       case 29:
@@ -505,9 +554,7 @@ class AddNovedadesController extends GetxController {
       case 31:
         //11. SERVIDORES POLICIALES INFECTADOS (SOSPECHA/POSITIVO)
 
-        observacionModel = observacionModel.copyWith(
-          cedula: cedula,
-        );
+        observacionModel = observacionModel.copyWith(cedula: cedula);
 
         break;
 
@@ -531,35 +578,39 @@ class AddNovedadesController extends GetxController {
         //2. PLANTONES
 
         observacionModel = observacionModel.copyWith(
-            organizacion: controllerOrganizacion.text,
-            dirigente: controllerDirigente.text,
-            cantidad: controllerCantidad.text);
+          organizacion: controllerOrganizacion.text,
+          dirigente: controllerDirigente.text,
+          cantidad: controllerCantidad.text,
+        );
 
         break;
       case 35:
         //3. MARCHAS
         observacionModel = observacionModel.copyWith(
-            organizacion: controllerOrganizacion.text,
-            dirigente: controllerDirigente.text,
-            cantidad: controllerCantidad.text);
+          organizacion: controllerOrganizacion.text,
+          dirigente: controllerDirigente.text,
+          cantidad: controllerCantidad.text,
+        );
 
         break;
 
       case 36:
         //4. CIERRE DE VIAS
         observacionModel = observacionModel.copyWith(
-            organizacion: controllerOrganizacion.text,
-            dirigente: controllerDirigente.text,
-            cantidad: controllerCantidad.text);
+          organizacion: controllerOrganizacion.text,
+          dirigente: controllerDirigente.text,
+          cantidad: controllerCantidad.text,
+        );
 
         break;
 
       case 37:
         //5. TOMA DE ENTIDADES
         observacionModel = observacionModel.copyWith(
-            organizacion: controllerOrganizacion.text,
-            dirigente: controllerDirigente.text,
-            cantidad: controllerCantidad.text);
+          organizacion: controllerOrganizacion.text,
+          dirigente: controllerDirigente.text,
+          cantidad: controllerCantidad.text,
+        );
 
         break;
 
@@ -568,18 +619,20 @@ class AddNovedadesController extends GetxController {
         //1. DESPLAZAMIENTO DE AUTORIDADES
 
         observacionModel = observacionModel.copyWith(
-            nombre: controllerNombre.text,
-            cargo: controllerCargo.text,
-            grado: controllerGrado.text);
+          nombre: controllerNombre.text,
+          cargo: controllerCargo.text,
+          grado: controllerGrado.text,
+        );
 
         break;
       case 46:
         //2. DESPLAZAMIENTO DE SERVIDORES PÚBLICOS
 
         observacionModel = observacionModel.copyWith(
-            nombre: controllerNombre.text,
-            cargo: controllerCargo.text,
-            grado: controllerGrado.text);
+          nombre: controllerNombre.text,
+          cargo: controllerCargo.text,
+          grado: controllerGrado.text,
+        );
 
         break;
       case 47:
@@ -659,14 +712,16 @@ class AddNovedadesController extends GetxController {
         );
         break;
       case 54:
-        observacionModel =
-            observacionModel.copyWith(hora: "${selectHora}:${selectMinuto}");
+        observacionModel = observacionModel.copyWith(
+          hora: "${selectHora}:${selectMinuto}",
+        );
 
         break;
 
       case 55:
-        observacionModel =
-            observacionModel.copyWith(hora: "${selectHora}:${selectMinuto}");
+        observacionModel = observacionModel.copyWith(
+          hora: "${selectHora}:${selectMinuto}",
+        );
 
         break;
     }
@@ -678,9 +733,10 @@ class AddNovedadesController extends GetxController {
     if (selectTipoNovedad.value.idDgoNovedadesElect > 0) {
       String novedadesPadres = selectTipoNovedad.value.descripcion;
       ObservacionModel observacionModel = ObservacionModel(
-          descNovedadesElectPadre: selectTipoNovedad.value.descripcion,
-          descNovedadesElect: selectNovedad.value.descripcion,
-          idDgoNovedadesElect: selectNovedad.value.idDgoNovedadesElect);
+        descNovedadesElectPadre: selectTipoNovedad.value.descripcion,
+        descNovedadesElect: selectNovedad.value.descripcion,
+        idDgoNovedadesElect: selectNovedad.value.idDgoNovedadesElect,
+      );
 
       String? cedula = null;
       if (registrarDatosPersona) {
@@ -698,29 +754,36 @@ class AddNovedadesController extends GetxController {
 
         case "DETENIDOS":
           observacionModel = observacionModel.copyWith(
-              cedula: cedula, numBoleta: controllerNumBoleta.text);
+            cedula: cedula,
+            numBoleta: controllerNumBoleta.text,
+          );
 
           if (selectDelito.value.idDgoNovedadesElect > 0) {
             observacionModel = observacionModel.copyWith(
-                descNovedadesElect: selectDelito.value.descripcion,
-                idDgoNovedadesElect: selectDelito.value.idDgoNovedadesElect);
+              descNovedadesElect: selectDelito.value.descripcion,
+              idDgoNovedadesElect: selectDelito.value.idDgoNovedadesElect,
+            );
           }
 
           break;
 
         case "CITACIONES":
           observacionModel = observacionModel.copyWith(
-              cedula: cedula, numCitacion: controllerNumCitacion.text);
+            cedula: cedula,
+            numCitacion: controllerNumCitacion.text,
+          );
           break;
 
         case "VOTO EN CASA":
-          observacionModel =
-              observacionModel.copyWith(numCitacion: controllerObs.text);
+          observacionModel = observacionModel.copyWith(
+            numCitacion: controllerObs.text,
+          );
           break;
 
         case "NOV PPL":
-          observacionModel =
-              observacionModel.copyWith(numCitacion: controllerObs.text);
+          observacionModel = observacionModel.copyWith(
+            numCitacion: controllerObs.text,
+          );
           break;
       }
       return observacionModelToJson2(observacionModel);

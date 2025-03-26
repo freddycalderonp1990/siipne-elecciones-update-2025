@@ -93,10 +93,11 @@ class LoginController extends GetxController {
       versionCodeApp: versionCodeApp,
     );
 
+
     final String token = await authUseCase(request: request);
     //consultamos los datos del usuario
 
-    UserEntities userResponse=await  getDataUserUseCase(token: token,idGenUsuario: 0);
+    UserEntities userResponse=await  getDataUserUseCase();
 
     userResponse= userResponse.copyWith(token: token);
 

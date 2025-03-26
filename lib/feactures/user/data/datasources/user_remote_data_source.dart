@@ -13,19 +13,19 @@ import '../models/models_user.dart';
 
 
 abstract class UserRemoteDataSource {
-  Future<UserModel> getDataUser({required String token, required int idGenUsuario});
+  Future<UserModel> getDataUser({required int idGenUsuario});
   Future<String> auth({required AuthRequest request});
 }
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
 
   @override
-  Future<UserModel> getDataUser({required String token,required int idGenUsuario}) async {
+  Future<UserModel> getDataUser({required int idGenUsuario}) async {
     Object? body = {
       "idGenUsuario":idGenUsuario
     };
 
-    UrlApiProviderApp _urlApiProviderApp = UrlApiProviderApp(token: token);
+    UrlApiProviderApp _urlApiProviderApp = UrlApiProviderApp();
     String segmento = dotenv.env['API_GET_DATA_USUARIO'] ?? '';
     String url = HostApp.gethost( segmento: segmento);
 
