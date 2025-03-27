@@ -36,6 +36,9 @@
 - Si el usuario crea o ya tiene un código activo e intenta generar uno nuevo, se verifica la existencia del código y se le redirige al código activo correspondiente.
 - Si el usuario intenta anexarse a un código y ya está anexado o ha creado uno previamente, se le redirige al código que le corresponde.
 - El usuario **no puede tener dos códigos activos** en el mismo proceso ni estar anexado a dos códigos simultáneamente.
-### 🚀 API Save FILE
+### 🚀 API Save FILE - 26-MARZO-2025
 - Creacion de un api para guardar la imagenes
+### ABANDONAR Y ELIMINAR CÓDIGO - 27-MARZO-2025
+- Se agrega un dialogo para solicitar al usuario su clave de acceso al sistema cada vez que selecciona abandonar o eliminar un código
+- Se mejoró los mensaje haciendo enfasis de que si abandona no será considerado como justificativo ante el CNE
 

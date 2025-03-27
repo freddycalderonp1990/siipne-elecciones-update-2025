@@ -15,7 +15,6 @@ part 'local/data_read_qr_model.dart';
 part 'config_app_model.dart';
 
 
-part 'auth_model.dart';
 
 part 'msjServerModel.dart';
 part 'getDatosModel.dart';

@@ -3,6 +3,89 @@ part of 'customWidgets.dart';
 class DialogosAwesome {
 
 
+  static getDesingChangePass({
+    required GlobalKey<FormState> formKey, // Asegurar el tipo correcto
+    required TextEditingController controllerPass,
+    VoidCallback? onPressed,
+    String title = 'INFO',
+    required String descripcion,
+  }) {
+    late AwesomeDialog dialog;
+    final responsive = ResponsiveUtil();
+    final sizeTxt = responsive.diagonalP(AppConfig.tamTextoTitulo);
+
+    dialog = AwesomeDialog(
+      dismissOnTouchOutside: false,
+      dismissOnBackKeyPress: false,
+      dialogType: DialogType.info,
+      headerAnimationLoop: false, // Desactiva la animación en loop
+      animType: AnimType.topSlide,
+      context: Get.context!,
+      keyboardAware: true,
+      body: Form( // Asegurar que formKey está dentro de un Form
+        key: formKey,
+        child: Column(
+          children: <Widget>[
+            TituloTextWidget(title: title),
+            Text(descripcion),
+            SizedBox(height: 10),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white, // Para probar container
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              child: ImputTextWidget(
+                imgString: AppImages.icon_clave,
+                elevation: 1,
+                isSegura: true,
+                controller: controllerPass,
+                hitText: "Ingrese la clave",
+                label: "Clave",
+                fonSize: sizeTxt,
+                validar: (text) {
+                  if (text != null && text.length >= 8) {
+                    return null;
+                  }
+                  return "Clave no válida";
+                },
+              ),
+            ),
+            SizedBox(height: 20),
+            BotonesWidget(
+              iconData: Icons.check_circle,
+              title: "ACEPTAR",
+              onPressed: () async {
+                bool isValid = formKey.currentState?.validate() ?? false;
+                if (isValid)  {
+
+
+                  LoginController loginController=Get.find();
+                  String pass=controllerPass.text;
+                  bool rersul=  await loginController.validarPass(pass);
+
+                  controllerPass.clear();
+                 if(!rersul){
+                   Get.back();
+                   DialogosAwesome.getError(descripcion: "La clave ingresada no es la correcta");
+                   return;
+                 }
+                   // Si el formulario es válido, ejecutar la acción
+                   Get.back();
+                   onPressed?.call();
+
+
+
+
+                }
+              },
+            ),
+            SizedBox(height: 10),
+          ],
+        ),
+      ),
+    )..show();
+  }
+
   static getError(
       {String title = 'ERROR',
         required String descripcion,

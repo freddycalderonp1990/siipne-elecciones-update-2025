@@ -1,13 +1,10 @@
-
 part of 'custom_app_widgets.dart';
 
 class CargandoWidget extends StatefulWidget {
-
-
   final bool mostrar;
+  final Color? color;
 
-
-  const CargandoWidget({required this.mostrar}) ;
+  const CargandoWidget({required this.mostrar, this.color=AppColors.colorAzul_40});
 
   @override
   _CargandoWidgetState createState() => _CargandoWidgetState();
@@ -17,24 +14,24 @@ class _CargandoWidgetState extends State<CargandoWidget> {
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    return
-      widget.mostrar? Container(
-          color: Colors.transparent,
+    return widget.mostrar
+        ? Container(
+          color:widget. color,
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-            CircularProgressIndicator(
-            valueColor:AlwaysStoppedAnimation<Color>(Colors.blueAccent),
-          ),
+                CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    AppColors.colorAzul,
+                  ),
+                ),
 
-
-
-              Text("Espere...",style: TextStyle(fontSize: 15,color: Colors.black),)
-            ],),
+                TextSombrasWidget(title: "Cargando..."),
+              ],
+            ),
           ),
         )
         : Container();
   }
-
 }

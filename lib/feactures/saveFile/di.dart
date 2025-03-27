@@ -1,5 +1,6 @@
 
 import 'package:get/get.dart';
+import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import 'data/datasources/file_remote_data_source.dart';
 import 'data/repository/file_repository_impl.dart';
@@ -11,15 +12,15 @@ class DependencyInjectionSaveFile  {
   static init() async {
     // Use cases
 
-    Get.lazyPut(()=>SaveFileImgUseCase(repository: Get.find()));
+    Get.lazyPut(()=>SaveFileImgUseCase(repository: Get.find()), fenix: true);
 
 
     // Repository
-    Get.lazyPut<FileRepository>(()=>FileRepositoryImpl(fileRemoteDataSource: Get.find()));
+    Get.lazyPut<FileRepository>(()=>FileRepositoryImpl(fileRemoteDataSource: Get.find()),fenix: true);
 
 
     // Data sources
-    Get.lazyPut<FileRemoteDataSource>(()=>FileRemoteDataSourceImpl());
+    Get.lazyPut<FileRemoteDataSource>(()=>FileRemoteDataSourceImpl(), fenix: true);
 
   }
 }

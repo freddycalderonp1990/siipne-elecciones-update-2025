@@ -1,4 +1,5 @@
-part of 'models.dart';
+part of 'models_user.dart';
+
 
 AuthModel authModelFromJson(String str) => AuthModel.fromJson(json.decode(str));
 
@@ -19,7 +20,6 @@ class AuthModel {
     statusCode: json["status_code"],
     message: json["message"],
     dataAuth: DataAuth.fromJson(json["data"]),
-
   );
 
   Map<String, dynamic> toJson() => {
@@ -31,20 +31,24 @@ class AuthModel {
 
 class DataAuth {
   final String token;
-  final String foto;
+  final String motivo;
+  final bool session;
 
   DataAuth({
     required this.token,
-    required this.foto,
+    required this.motivo,
+    required this.session,
   });
 
   factory DataAuth.fromJson(Map<String, dynamic> json) => DataAuth(
     token: ParseModel.parseToString(json["token"]),
-    foto:ParseModel.parseToString(json["foto"]),
+    motivo: ParseModel.parseToString(json["motivo"]),
+    session: ParseModel.parseToBool( json["session"]),
   );
 
   Map<String, dynamic> toJson() => {
     "token": token,
-    "foto": foto,
+    "motivo": motivo,
+    "session": session,
   };
 }

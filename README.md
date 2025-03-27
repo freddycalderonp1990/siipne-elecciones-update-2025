@@ -124,3 +124,57 @@ flutter_additional_ios_build_settings(target)
     end
 end
 end
+
+
+# Inyección de Dependencias en GetX
+
+En **GetX**, hay diferentes formas de inyectar dependencias según el ciclo de vida y el momento en que se necesiten. A continuación se detallan las distintas formas de inyección disponibles:
+
+## 1. `Get.put<T>(T dependency)`
+
+### Descripción:
+Crea e inyecta la instancia **de inmediato** y la mantiene viva mientras la aplicación esté en ejecución.
+
+### Ejemplo:
+```dart
+Get.put<AuthController>(AuthController());
+```
+
+
+
+
+
+## 2. `Get.lazyPut<T>(() => T())`
+
+### Descripción:
+Crea la instancia **solo cuando se usa por primera vez**. Si se destruye, **no se recrea automáticamente**, a menos que se use `fenix: true`.
+
+### Ejemplo:
+```dart
+Get.lazyPut<ProfileController>(() => ProfileController());
+```
+
+## 3. `Get.put<T>(T())`
+
+### Descripción:
+Crea y **pone una instancia de un controlador en memoria** de forma inmediata. Esta instancia estará disponible durante toda la vida útil de la aplicación, **hasta que se cierre la aplicación**.
+
+### Ejemplo:
+```dart
+Get.put<ProfileController>(ProfileController());
+```
+
+
+## 4. `Get.putAsync<T>(() async => T())`
+
+### Descripción:
+Permite crear una instancia **asíncrona** de un controlador. Se usa cuando la creación del controlador requiere operaciones asíncronas, como consultas a bases de datos o APIs.
+
+### Ejemplo:
+```dart
+Get.putAsync<ProfileController>(() async => ProfileController(await fetchUserProfile()));
+```
+
+
+
+

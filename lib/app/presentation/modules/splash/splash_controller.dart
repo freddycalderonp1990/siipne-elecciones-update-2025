@@ -23,7 +23,9 @@ class SplashController extends GetxController {
   @override
   void onReady() async {
     // TODO: Donde la vista ya se presento
-    await _verificarVersionApp();
+
+
+   await _verificarVersionApp();
   }
 
   _init() async {

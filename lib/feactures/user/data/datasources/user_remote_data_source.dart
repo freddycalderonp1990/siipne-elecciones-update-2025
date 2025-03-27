@@ -14,7 +14,7 @@ import '../models/models_user.dart';
 
 abstract class UserRemoteDataSource {
   Future<UserModel> getDataUser({required int idGenUsuario});
-  Future<String> auth({required AuthRequest request});
+  Future<DataAuth> auth({required AuthRequest request});
 }
 
 class UserRemoteDataSourceImpl implements UserRemoteDataSource {
@@ -41,7 +41,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
   }
 
   @override
-  Future<String> auth({required AuthRequest request}) async  {
+  Future<DataAuth> auth({required AuthRequest request}) async  {
 
     Map<String, dynamic> body =
     HeadEleccionesRequest(
@@ -55,7 +55,7 @@ class UserRemoteDataSourceImpl implements UserRemoteDataSource {
     );
 
     return await ExceptionHelper.manejarErroresParseJsonException(() async {
-      return dataTokenModelFromJson(json).dataToken.token;
+      return authModelFromJson(json).dataAuth;
     });
   }
 }

@@ -71,7 +71,6 @@ class InicioRapidoController extends GetxController {
       UserEntities? userResponse = await loginController.authApp(
           user: user, pass: pass, localStoreImpl: _localStoreUseCase);
 
-
       if (userResponse != null) {
         loginController.user.value=userResponse;
         InciarPantalla();

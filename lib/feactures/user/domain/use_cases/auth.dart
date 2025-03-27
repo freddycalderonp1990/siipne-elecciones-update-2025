@@ -1,4 +1,5 @@
 
+import '../../data/models/models_user.dart';
 import '../repository/user_repository.dart';
 import '../request/request_user.dart';
 
@@ -7,7 +8,7 @@ class AuthUseCase {
 
   AuthUseCase({required this.repository});
 
-  Future<String> call({required AuthRequest request}) {
+  Future<DataAuth> call({required AuthRequest request}) {
     return repository.auth(request: request);
   }
 }

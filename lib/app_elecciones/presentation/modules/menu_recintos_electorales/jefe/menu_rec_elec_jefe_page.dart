@@ -112,10 +112,22 @@ class MenuRecElecJefePage
                         "Si abrió por error el Operativo se recomienda eliminarlo.  "
                         "\n\nRecuerde todo será registrado para verificar el correcto uso del aplicativo."
                         "\n\n¿Esta seguro que desea eliminar el Operativo.?";
+                    String title="ELIMINAR CÓDIGO ${controller.recintosElectoralesAbiertos.idDgoCreaOpReci}";
 
-                    DialogosAwesome.getIconPolicia(title: "ELIMINAR CÓDIGO \n${controller.recintosElectoralesAbiertos.idDgoCreaOpReci}", descripcion: msj, btnOkOnPress: (){
+                    DialogosAwesome.getIconPolicia(title: title, descripcion: msj, btnOkOnPress: (){
 
-                      controller.eliminarCodigoRecinto();
+                      Get.back();
+                      DialogosAwesome.getDesingChangePass(
+                        onPressed: (){
+                          Get.back();
+                          controller.eliminarCodigoRecinto();
+                        },
+                          formKey: controller.formKeyPass,
+                          controllerPass:controller. controllerPass,
+                          title: title,
+                          descripcion: "Para eliminar el código ${controller.recintosElectoralesAbiertos.idDgoCreaOpReci}, ingrese su clave de seguridad"
+                      );
+
                     });
 
                   }),

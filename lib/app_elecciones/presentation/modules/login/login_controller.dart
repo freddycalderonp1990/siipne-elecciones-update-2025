@@ -94,15 +94,29 @@ class LoginController extends GetxController {
     );
 
 
-    final String token = await authUseCase(request: request);
+    final DataAuth dataAuth = await authUseCase(request: request);
+
+    //ESTA VALIDACION ES DE ELECCIONES
+    if(!dataAuth.session){
+      DialogosAwesome.getError(descripcion: dataAuth.motivo);
+      return null;
+    }
+    //END VALIDACION
+
+
+    //asignamos el token temporalmente
+    UserEntities userResponse=UserEntities.empty();
+    userResponse= userResponse.copyWith(token:dataAuth.token );
+
+    //lo guardamos
+    await localStoreImpl.setUserModel(userResponse);
+    //ya que estamos usando esto para buscar el token es necesario guarxar el token
+
     //consultamos los datos del usuario
-
-    UserEntities userResponse=await  getDataUserUseCase();
-
-    userResponse= userResponse.copyWith(token: token);
+    userResponse=await  getDataUserUseCase();
+    userResponse= userResponse.copyWith(token: dataAuth.token);
 
     if (userResponse.idGenUsuario > 0) {
-
 
       await localStoreImpl.setUser(user);
       await localStoreImpl.setPass(pass);
@@ -119,6 +133,18 @@ class LoginController extends GetxController {
     }
 
     return null;
+  }
+
+  Future<bool> validarPass(String pass) async{
+    String passLocal=await _localStoreUseCase.getPass();
+
+    String clave = EncriptarUtil.myDecryptPass(passLocal);
+
+    if(pass==clave){
+      return true;
+    }
+
+    return false;
   }
 
   Future<void> login() async {
@@ -141,10 +167,8 @@ class LoginController extends GetxController {
       String _pass = this.controllerPass.text;
 
       String clave = EncriptarUtil.generateSha512(_pass);
-      clave = EncriptarUtil.myEncryptPass(_pass);
+      _pass = EncriptarUtil.myEncryptPass(_pass);
       peticionServerState(true);
-
-
 
 
       await ExceptionHelper.manejarErroresShowDialogo(() async {

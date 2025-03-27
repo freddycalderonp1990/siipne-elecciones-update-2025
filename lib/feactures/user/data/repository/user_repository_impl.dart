@@ -1,3 +1,4 @@
+import 'package:siipnemovil2/feactures/user/data/datasources/local_storage_data_source.dart';
 import 'package:siipnemovil2/feactures/user/data/datasources/user_remote_data_source.dart';
 
 import 'package:siipnemovil2/feactures/user/domain/entities/user.dart';
@@ -10,6 +11,8 @@ import '../models/models_user.dart';
 class UserRepositoryImpl implements UserRepository {
   final UserRemoteDataSource userRemoteDataSource;
 
+
+
   UserRepositoryImpl({required this.userRemoteDataSource});
 
 
@@ -20,7 +23,8 @@ class UserRepositoryImpl implements UserRepository {
   }
 
   @override
-  Future<String> auth({required AuthRequest request}) async {
+  Future<DataAuth> auth({required AuthRequest request}) async {
    return userRemoteDataSource.auth(request: request);
   }
+
 }

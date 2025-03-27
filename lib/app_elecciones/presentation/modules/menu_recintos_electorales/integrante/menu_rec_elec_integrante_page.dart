@@ -78,12 +78,32 @@ class MenuRecElecIntegrantePage
                   title: "ABANDONAR CÓDIGO",
                   onTap: () {
                     DialogosAwesome.getIconPolicia(
-                        title: "Abandonar",
+                        title: "ABANDONAR CÓDIGO",
                         descripcion:
-                            "¿Esta seguro que desea abandonar el Operativo.?",
+                            "¿Esta seguro que desea abandonar el Operativo.?\n\n"
+                                "Si abandona, no será considerado para el justificativo ante el CNE."
+                                "\nDeberá anexarse a un nuevo código y no abandonar, ya que esta acción es automática al finalizar el proceso electoral"
+                                "\n\n¿ESTÁ SEGURO?",
+
                         btnOkOnPress: () {
                           Get.back();
-                          controller.removePersonalOperativo();
+
+
+
+                          Get.back();
+                          DialogosAwesome.getDesingChangePass(
+                              onPressed: (){
+                                Get.back();
+                                controller.removePersonalOperativo();
+                              },
+                              formKey: controller.formKeyPass,
+                              controllerPass:controller. controllerPass,
+                              title: "ABANDONAR CÓDIGO",
+                              descripcion: "Para abandonar el código ${controller.recintosElectoralesAbiertos.idDgoCreaOpReci}, ingrese su clave de seguridad"
+                          );
+
+
+
                         });
                   }),
             ),

@@ -27,7 +27,7 @@ class SplashPage extends GetView<SplashController> {
                         right: 0,
                         child: Column(
                           children: [
-                            CargandoWidget(mostrar: true)
+                            CargandoWidget(mostrar: true,color: Colors.transparent,)
                           ],
 
                         ),

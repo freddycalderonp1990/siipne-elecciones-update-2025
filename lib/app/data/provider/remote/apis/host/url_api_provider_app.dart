@@ -10,6 +10,7 @@ class UrlApiProviderApp {
   Future<Map<String, String>> getheaders() async {
     String token= await getToken();
 
+
     return {
       'Content-Type': 'application/json',
       'Accept': 'application/json',
@@ -22,6 +23,7 @@ class UrlApiProviderApp {
     Get.find();
     final UserEntities user=await localStoreUseCase.getUserModel();
     final token =  user.token;
+    print("getToken = ${token}");
     return token;
   }
   Future<String> post(

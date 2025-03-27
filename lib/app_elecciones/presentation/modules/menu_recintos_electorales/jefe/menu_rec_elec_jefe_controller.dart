@@ -14,6 +14,9 @@ class MenuRecElecJefeController extends GetxController {
 
   late UserEntities user;
 
+  GlobalKey<FormState> formKeyPass = GlobalKey<FormState>();
+  var controllerPass = new TextEditingController();
+
   RxBool peticionServerState = false.obs;
   @override
   void onInit() async {

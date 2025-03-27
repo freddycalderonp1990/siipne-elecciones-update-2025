@@ -126,13 +126,15 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
           mainAxisSize:
               MainAxisSize.min, // Ajusta el tamaño para evitar expandir
           children: [
-            IconButton(
+         /*
+         TODO: comentado
+         IconButton(
               icon: Icon(Icons.clear),
               onPressed: () {
                 _userEditTextController.clear(); // Limpia el campo de texto
               },
-            ),
-            IconButton(
+            ),*/
+         IconButton(
               icon:
                   Icon(Icons.close, color: Colors.red), // Botón "X" para cerrar
               onPressed: () {
