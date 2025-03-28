@@ -172,14 +172,30 @@ class MenuRecElecJefePage
   }
 
   _dialogoFinalizarRecinto({required String nameRecinto}) {
+    String title="FINALIZAR RECINTO";
     DialogosAwesome.getIconPolicia(
-        title: "Finalizar Recinto",
+        title: title,
         descripcion:
             "¿Esta seguro que desea finalizar el Recinto?"
                 "\nNOMBRE:${nameRecinto}",
         btnOkOnPress: () {
           Get.back();
-     controller.finalizarRecinto();
+
+          DialogosAwesome.getDesingChangePass(
+
+              onPressed: (){
+                Get.back();
+                controller.finalizarRecinto();
+              },
+              formKey: controller.formKeyPass,
+              controllerPass:controller. controllerPass,
+              title: title,
+              descripcion: "Para Finalizar el recinto con el código ${controller.recintosElectoralesAbiertos.idDgoCreaOpReci}, ingrese su clave de seguridad"
+          );
+
+
+
+
         });
   }
 }

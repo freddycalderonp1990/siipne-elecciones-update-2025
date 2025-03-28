@@ -13,7 +13,6 @@ class Validate {
     if (value != null && value.length < 8) {
       return "Ingrese el número de Teléfono";
     }
-
     return null;
   }
 

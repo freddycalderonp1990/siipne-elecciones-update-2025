@@ -122,7 +122,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
       paddin: EdgeInsets.all(5),
       child: ComboBusqueda(
         selectValue: controller.selectTipoNovedad.value,
-        icon: Icons.select_all_sharp,
+
         showClearButton: false,
         datos: controller.listTipoNovedades,
         displayField:
@@ -153,7 +153,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
                 paddin: EdgeInsets.all(5),
                 child: ComboBusqueda(
                   selectValue: controller.selectNovedad.value,
-                  icon: Icons.select_all_sharp,
+
                   showClearButton: false,
                   datos: controller.listNovedades,
                   displayField:
@@ -201,7 +201,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
                 paddin: EdgeInsets.all(5),
                 child: ComboBusqueda(
                   selectValue: controller.selectDelito.value,
-                  icon: Icons.select_all_sharp,
+
                   showClearButton: false,
                   datos: controller.listDelito,
                   displayField:
@@ -742,18 +742,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
       child: Column(
         children: [
           getWgCedulaWithFind(responsive),
-          ImputTextWidget(
-            keyboardType: TextInputType.number,
-            controller: controller.controllerTelefono,
-            icono: Icon(
-              Icons.phone_android,
-              color: Colors.black38,
-              size: controller.sizeIcons,
-            ),
-            label: "Teléfono",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateTelefono,
-          ),
+          WgTxtTelefono(controllerTelefono: controller.controllerTelefono),
         ],
       ),
     );
@@ -1340,7 +1329,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
 
     return ComboBusqueda(
       selectValue: controller.selectHora,
-      icon: Icons.select_all_sharp,
+
       showClearButton: false,
       datos: datos,
       displayField: (item) => item, // Aquí decides mostrar "nombres"
@@ -1360,7 +1349,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
 
     return ComboBusqueda(
       selectValue: controller.selectMinuto,
-      icon: Icons.select_all_sharp,
+
       showClearButton: false,
       datos: datos,
       displayField: (item) => item, // Aquí decides mostrar "nombres"

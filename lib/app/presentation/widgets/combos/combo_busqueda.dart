@@ -282,6 +282,7 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
 
   getIcon({IconData? icon, bool isSelecc = false}) {
 
+
     Widget wg=  icon != null
         ? Icon(
       icon,
@@ -289,7 +290,7 @@ class _ComboBusquedaState<T> extends State<ComboBusqueda<T>> {
 
     )
         : Icon(
-        Icons.article_outlined,
+        Icons.description,
         color: AppColors.colorBotones,);
 
     if (isSelecc) {

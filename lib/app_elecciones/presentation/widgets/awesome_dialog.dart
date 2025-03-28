@@ -21,6 +21,7 @@ class DialogosAwesome {
       headerAnimationLoop: false, // Desactiva la animación en loop
       animType: AnimType.topSlide,
       context: Get.context!,
+      showCloseIcon: true,
       keyboardAware: true,
       body: Form( // Asegurar que formKey está dentro de un Form
         key: formKey,

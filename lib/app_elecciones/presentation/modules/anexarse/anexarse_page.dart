@@ -180,7 +180,7 @@ class AnexarsePage extends GetView<AnexarseController> {
 
       child: ComboBusqueda(
         selectValue: controller.selectUnidadPolicial.value,
-        icon: Icons.select_all_sharp,
+        
         showClearButton: false,
         datos: controller.listUnidadesPoliciales,
         displayField: (item) => item.ejePadre, // Aquí decides mostrar "nombres"
@@ -238,7 +238,7 @@ class AnexarsePage extends GetView<AnexarseController> {
   Widget getComboSubsistema() {
     return ComboBusqueda(
       selectValue: controller.comboDependienteController.selectSubsistema.value,
-      icon: Icons.select_all_sharp,
+      
       showClearButton: false,
       datos: controller.comboDependienteController.listSubsistema,
       displayField:
@@ -278,7 +278,7 @@ class AnexarsePage extends GetView<AnexarseController> {
                         .comboDependienteController
                         .selectDireccionPoliciales
                         .value,
-                icon: Icons.select_all_sharp,
+                
                 showClearButton: false,
                 datos:
                     controller
@@ -327,7 +327,7 @@ class AnexarsePage extends GetView<AnexarseController> {
                         .comboDependienteController
                         .selectUnidadPolicial
                         .value,
-                icon: Icons.select_all_sharp,
+                
                 showClearButton: false,
                 datos:
                     controller

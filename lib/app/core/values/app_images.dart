@@ -9,7 +9,7 @@ class AppImages{
   static const imgFondoDefault1 = _rutaImg + "fondo_default.png";
   static const escudopolicia = _rutaImg + "escudo_policia.png";
   static const cabecera = _rutaImg + "cabecera.png";
-  static const splash = _rutaImg + "splash.png";
+  static const splash = _rutaImg + "fondo_default.png";
   static const ic_beneficios1 = _rutaImg + "ic_beneficios.png";
   static const anuncio1 = _rutaImg + "anuncio1.png";
   static const web = _rutaImg + "web.png";

@@ -16,6 +16,7 @@ import 'package:siipnemovil2/app_elecciones/presentation/modules/controllers.dar
 
 
 
+import '../modules/novedades/add/validate.dart';
 import '/../../app/core/app_config.dart';
 
 import '/../../app/core/utils/responsiveUtil.dart';
@@ -49,6 +50,7 @@ part 'btnIconWidget.dart';
 part 'awesome_dialog.dart';
 part 'workAreaLoginPageWidget.dart';
 part 'desing_text_name_user.dart';
+part 'wg_txt_telefono.dart';
 
 
 

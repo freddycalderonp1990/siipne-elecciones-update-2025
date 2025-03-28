@@ -123,7 +123,7 @@ class CrearCodigoUnidadPoliPage
         child: Obx(() => ComboBusqueda(
           selectValue: controller.selectRecintosElectoral.value,
 
-          icon: Icons.select_all_sharp,
+          
 
           showClearButton: false,
           datos: controller.listRecintosElectorales.value,
@@ -146,7 +146,7 @@ class CrearCodigoUnidadPoliPage
         paddin: EdgeInsets.all(5),
         child: Obx(() => ComboBusqueda(
               selectValue: controller.selectSubsistema.value,
-              icon: Icons.select_all_sharp,
+              
               showClearButton: false,
               datos: controller.listSubsistema,
               displayField: (item) =>
@@ -176,7 +176,7 @@ class CrearCodigoUnidadPoliPage
             paddin: EdgeInsets.all(5),
             child: ComboBusqueda(
               selectValue: controller.selectDireccionPoliciales.value,
-              icon: Icons.select_all_sharp,
+              
               showClearButton: false,
               datos: controller.listDireccionesPoliciales,
               displayField: (item) =>
@@ -200,35 +200,18 @@ class CrearCodigoUnidadPoliPage
 
   Widget wgTxtTelefono(ResponsiveUtil responsive) {
     Widget wg = ContenedorDesingWidget(
-        child: Form(
-      key: controller.formKey,
-      child: Column(
-        children: [
-          ImputTextWidget(
-            keyboardType: TextInputType.number,
-            controller: controller.controllerTelefono,
-            icono: Icon(
-              Icons.phone_android,
-              color: Colors.black38,
-            ),
-            label: "Teléfono",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: validateTelefono,
-          )
-        ],
-      ),
-    ));
+        child: WgTxtTelefono(
+
+          controllerTelefono: controller.controllerTelefono,
+
+          formKey: controller.formKey,
+        ));
     return Obx(() => controller.selectRecintosElectoral.value .idDgoTipoEje > 0
         ? wg
         : Container());
   }
 
-  String? validateTelefono(String? value) {
-    if (value == null || value.length < 8) {
-      return "Ingrese el número de Teléfono";
-    }
-    return null;
-  }
+
 
   Widget btnContinuar() {
     return Obx(() => controller.selectDireccionPoliciales.value.idDgoTipoEje > 0

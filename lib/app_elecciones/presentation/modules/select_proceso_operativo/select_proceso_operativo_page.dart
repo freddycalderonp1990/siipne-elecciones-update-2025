@@ -88,7 +88,7 @@ class SelectProcesoOperativoPage
   Widget getComboProcesosRecintos() {
     return Obx(()=>ComboBusqueda(
 
-      icon: Icons.select_all_sharp,
+      
 selectValue:  controller.selectProcesosOperativo.value,
       showClearButton: false,
       datos: controller.listProcesosOperativo.value,

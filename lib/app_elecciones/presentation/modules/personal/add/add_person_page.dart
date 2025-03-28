@@ -164,7 +164,7 @@ class AddPersonPage extends GetView<AddPersonController> {
         paddin: EdgeInsets.all(5),
         child: ComboBusqueda(
           selectValue: controller.selectSubsistema.value,
-          icon: Icons.select_all_sharp,
+          
           showClearButton: false,
           datos: controller.listSubsistema,
           displayField: (item) =>
@@ -194,7 +194,7 @@ class AddPersonPage extends GetView<AddPersonController> {
         paddin: EdgeInsets.all(5),
         child: ComboBusqueda(
           selectValue: controller.selectDireccionPoliciales.value,
-          icon: Icons.select_all_sharp,
+          
           showClearButton: false,
           datos: controller.listDireccionesPoliciales,
           displayField: (item) =>
@@ -222,7 +222,6 @@ class AddPersonPage extends GetView<AddPersonController> {
         paddin: EdgeInsets.all(5),
         child: ComboBusqueda(
           selectValue: controller.selectUnidadPolicial.value,
-          icon: Icons.select_all_sharp,
           showClearButton: false,
           datos: controller.listUnidadesPoliciales,
           displayField: (item) =>
