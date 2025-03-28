@@ -15,7 +15,7 @@ class WgTxtTelefono extends StatelessWidget {
       controller:controllerTelefono,
       icono: Icon(
         Icons.phone_android,
-        color: Colors.black38,
+        color: AppColors.colorIcons,
       ),
       label: "Teléfono",
       fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),

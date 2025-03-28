@@ -419,10 +419,12 @@ class AddNovedadesController extends GetxController {
     peticionServerState(false);
 
     if (resultInsert == ApiConstantes.varTrue) {
-      clearData();
+
       DialogosAwesome.getSucess(
         descripcion: "Registro de Novedad con éxito",
-        btnOkOnPress: () {},
+        btnOkOnPress: () {
+          clearData();
+        },
       );
     } else if (resultInsert == ApiConstantes.varExiste) {
       DialogosAwesome.getWarning(
@@ -440,10 +442,10 @@ class AddNovedadesController extends GetxController {
   }
 
   void clearData() {
-    mostrarBtnGuardar.value = false;
     selectTipoNovedad.value = NovedadesElectorale.empty();
     selectNovedad.value = NovedadesElectorale.empty();
     selectDelito.value = NovedadesElectorale.empty();
+    mostrarBtnGuardar.value = false;
 
     mGaleryCameraModel = Rx<GaleryCameraModel?>(null);
 
@@ -473,6 +475,13 @@ class AddNovedadesController extends GetxController {
 
     controllerNumerico.clear();
     datosPerson = DatosPer.empty().obs;
+
+
+
+
+
+
+
   }
 
   ObservacionModel getObservacionNovedades(ObservacionModel observacionModel) {

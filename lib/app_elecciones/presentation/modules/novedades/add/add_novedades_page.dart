@@ -120,7 +120,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
   Widget getComboTipoNovedad() {
     return ContenedorDesingWidget(
       paddin: EdgeInsets.all(5),
-      child: ComboBusqueda(
+      child: Obx(()=>ComboBusqueda(
         selectValue: controller.selectTipoNovedad.value,
 
         showClearButton: false,
@@ -141,7 +141,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
           }
         },
         textSeleccioneUndato: "Seleccione un Tipo de Novedad",
-      ),
+      )),
     );
   }
 
@@ -838,7 +838,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerNumBoleta,
             icono: Icon(
               Icons.assignment_sharp,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: SiipneStrings.numBoleta,
@@ -863,7 +863,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
                 controller: controller.controllerCedula,
                 icono: Icon(
                   Icons.assignment_sharp,
-                  color: Colors.black38,
+                  color: AppColors.colorIcons,
                   size: controller.sizeIcons,
                 ),
                 label: SiipneStrings.cedula,
@@ -918,7 +918,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerNumCitacion,
             icono: Icon(
               Icons.assignment_sharp,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: SiipneStrings.numCitacion,
@@ -940,7 +940,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerMotivo,
             icono: Icon(
               Icons.assignment_sharp,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: "Motivo",
@@ -961,7 +961,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerNumericoPersonal,
             icono: Icon(
               Icons.assignment_sharp,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: "Númerico del Personal",
@@ -982,7 +982,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerOrganizacion,
             icono: Icon(
               Icons.category,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: "Organización Social o Política",
@@ -994,7 +994,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerDirigente,
             icono: Icon(
               Icons.category,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: "Dirigente",
@@ -1011,7 +1011,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             },
             icono: Icon(
               Icons.assignment_sharp,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: "Cantidad",
@@ -1032,7 +1032,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerOrganizacion,
             icono: Icon(
               Icons.category,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: "Organización Social o Política",
@@ -1044,7 +1044,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerDirigente,
             icono: Icon(
               Icons.category,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: "Dirigente",
@@ -1056,7 +1056,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerCantidad,
             icono: Icon(
               Icons.assignment_sharp,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: "Cantidad",
@@ -1077,7 +1077,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerOrganizacion,
             icono: Icon(
               Icons.category,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: "Organización Social o Política",
@@ -1089,7 +1089,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerDirigente,
             icono: Icon(
               Icons.category,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: "Dirigente",
@@ -1101,7 +1101,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerCantidad,
             icono: Icon(
               Icons.assignment_sharp,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: "Cantidad",
@@ -1122,7 +1122,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerNombre,
             icono: Icon(
               Icons.assignment_sharp,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: "Nombre",
@@ -1134,7 +1134,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerCargo,
             icono: Icon(
               Icons.category,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: "Cargo/Función",
@@ -1146,7 +1146,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerGrado,
             icono: Icon(
               Icons.assignment_sharp,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: "Grado (Opcional)",
@@ -1166,7 +1166,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerNombre,
             icono: Icon(
               Icons.assignment_sharp,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: "Nombre",
@@ -1178,7 +1178,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerMedioComunicacion,
             icono: Icon(
               Icons.category,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: "Medio de Comunicación",
@@ -1199,7 +1199,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerFuncion,
             icono: Icon(
               Icons.assignment_sharp,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: "Función",
@@ -1211,10 +1211,11 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerNombre,
             icono: Icon(
               Icons.assignment_sharp,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: "Nombres",
+
             fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
             validar: Validate.validateNombre,
           ),
@@ -1232,7 +1233,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerInstalacion,
             icono: Icon(
               Icons.assignment_sharp,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: "Nombre Instalación",
@@ -1244,7 +1245,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerDescripcion,
             icono: Icon(
               Icons.assignment_sharp,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: "Descripción",
@@ -1265,7 +1266,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerDireccion,
             icono: Icon(
               Icons.assignment_sharp,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: "Dirección",
@@ -1277,7 +1278,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerDescripcion,
             icono: Icon(
               Icons.assignment_sharp,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: "Descripción",
@@ -1298,7 +1299,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerUnidad,
             icono: Icon(
               Icons.assignment_sharp,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: "Unidad",
@@ -1374,7 +1375,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             controller: controller.controllerNumerico,
             icono: Icon(
               Icons.assignment_sharp,
-              color: Colors.black38,
+              color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
             label: "Numérico",
