@@ -20,14 +20,15 @@ class TiposServiciosEjesPage extends GetView<TiposServiciosEjesController> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          SizedBox(
-            height: responsive.altoP(2),
-          ),
+          imgPerfilRedonda(size: 28, img: controller.user.foto),
+
+
+          SizedBox(height: 10),
           DesingTextNameUser(
             sexo:controller.user.sexo ,
               text:  controller.user.nombres),
           SizedBox(
-            height: responsive.altoP(2),
+            height: responsive.altoP(1),
           ),
 
           TextLineasWidget(
@@ -55,47 +56,56 @@ class TiposServiciosEjesPage extends GetView<TiposServiciosEjesController> {
 
   _getMenu(ResponsiveUtil responsive) {
     double separacionBtnMenu = 1.5;
-    return Obx(() => Column(
+    Widget wg= Obx(() => Row(
           children: [
             controller.tipoEjesActivos.value.tipoEjeRecintos
-                ? BtnMenuWidget(
-                    horizontal: false,
-                    colorFondo: Colors.white,
-                    img: SiipneImages.icon_abrir_rec_elec,
-                    title: 'SERVICIO EN RECINTOS',
-                    onTap: () {
-                      Get.toNamed(SiipneRoutes.CREAR_CODIGO_RECINTOS);
-                    })
+                ? Flexible(child: BtnMenuWidget(
+                horizontal: true,
+                colorFondo: Colors.white,
+                img: SiipneImages.icon_abrir_rec_elec,
+                title: 'SERVICIO EN RECINTOS',
+                onTap: () {
+                  Get.toNamed(SiipneRoutes.CREAR_CODIGO_RECINTOS);
+                }))
                 : Container(),
             SizedBox(
-              height: responsive.altoP(separacionBtnMenu),
+              width: responsive.anchoP(2),
             ),
             controller.tipoEjesActivos.value.tipoEjeUnidadesPoliciales
-                ? BtnMenuWidget(
-                    horizontal: false,
-                    img: SiipneImages.icon_agregar_personal,
-                    title: SiipneStrings.UNIDADESPOLICIALES,
-                    onTap: () {
+                ? Flexible(child: BtnMenuWidget(
+              horizontal: true,
+              img: SiipneImages.icon_agregar_personal,
+              title: SiipneStrings.UNIDADESPOLICIALES,
+              onTap: () {
 
-                      Get.toNamed(SiipneRoutes.CREAR_CODIGO_UNIDADES_POLI);
+                Get.toNamed(SiipneRoutes.CREAR_CODIGO_UNIDADES_POLI);
 
-                    },
-                  )
+              },
+            ))
                 : Container(),
-            SizedBox(
-              height: responsive.altoP(separacionBtnMenu),
-            ),
-            controller.tipoEjesActivos.value.tipoEjeOtros
-                ? BtnMenuWidget(
-                    img: SiipneImages.icon_registrar_novedades_rec_elec,
-                    title: 'OTROS',
-                    onTap: () {},
-                  )
-                : Container(),
-            SizedBox(
-              height: responsive.altoP(separacionBtnMenu),
-            ),
+
+
           ],
         ));
+
+
+    return Obx(() => Column(
+      children: [
+
+        wg,
+
+
+        controller.tipoEjesActivos.value.tipoEjeOtros
+            ? BtnMenuWidget(
+          img: SiipneImages.icon_registrar_novedades_rec_elec,
+          title: 'OTROS',
+          onTap: () {},
+        )
+            : Container(),
+        SizedBox(
+          height: responsive.altoP(separacionBtnMenu),
+        ),
+      ],
+    ));
   }
 }

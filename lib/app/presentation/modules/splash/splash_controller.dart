@@ -69,7 +69,7 @@ final UserEntities user=await _localStoreImpl.getUserModel();
   }
 
   _cargarPantallaLogin_InicioRapido() async {
-    await Future.delayed(const Duration(seconds: 2)).then((_) {});
+    await Future.delayed(const Duration(milliseconds: 100)).then((_) {});
 
     bool confHuella = await _localStoreImpl.getConfigHuella();
     String codePin = await _localStoreImpl.getPinCode();

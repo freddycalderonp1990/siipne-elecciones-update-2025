@@ -119,7 +119,7 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
                 colorTexto: Colors.white,
                 colorSombra: Colors.black,
                 title: widget.title!,
-                size: responsive.diagonalP(AppConfig.tamTextoTitulo),
+                size: responsive.diagonalP(AppConfig.tamTextoTitulo+0.4) ,
               ),
               Flexible(child: wgContenido),
             ],
@@ -153,12 +153,13 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
                             Flexible(
                                 child: Center(
                               child: Container(
+
                                 padding: EdgeInsets.symmetric(horizontal: 12),
                                 child: desingContenido(),
                               ),
                             )),
                             SizedBox(
-                              height: responsive.altoP(8),
+                              height: responsive.altoP(5),
                             )
                           ],
                         ),

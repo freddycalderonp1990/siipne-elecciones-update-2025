@@ -25,8 +25,10 @@ import '../values/app_colors.dart';
 import '../values/app_images.dart';
 
 class PhotoHelper {
-
-  static Future<GaleryCameraModel?> getDesingPictureGaleryOrCamera({required String titleImg}) async {
+  static Future<GaleryCameraModel?> getDesingPictureGaleryOrCamera({
+    required String titleImg,
+    required ValueChanged<bool> initPeticion,
+  }) async {
     final Completer<GaleryCameraModel?> completer = Completer();
 
     AwesomeDialog(
@@ -35,28 +37,28 @@ class PhotoHelper {
       context: Get.context!,
       dialogType: DialogType.info,
       headerAnimationLoop: false,
-      customHeader: Container(
-        child: Image.asset(SiipneImages.imgIconD),
-      ),
+      customHeader: Container(child: Image.asset(SiipneImages.imgIconD)),
       animType: AnimType.scale,
       title: "Registre una Fotografia",
       btnCancel: BtnIconWidget(
         onPressed: () async {
           Get.back();
+          initPeticion(true);
           GaleryCameraModel? data = await getImageGallery(titleImg);
-
-          completer.complete(data);  // Retorna la data al completar
-       // Cierra el diálogo
+          initPeticion(false);
+          completer.complete(data); // Retorna la data al completar
+          // Cierra el diálogo
         },
         titulo: "Galería",
       ),
       btnOk: BtnIconWidget(
         onPressed: () async {
+          initPeticion(true);
           Get.back();
           GaleryCameraModel? data = await getImageCamera(titleImg);
-         // Cierra el diálogo
+          // Cierra el diálogo
           completer.complete(data); // Retorna la data al completar
-
+          initPeticion(false);
         },
         titulo: "Cámara",
       ),
@@ -64,11 +66,9 @@ class PhotoHelper {
       showCloseIcon: true,
     ).show();
 
-    return completer.future; // Espera la selección del usuario antes de retornar
+    return completer
+        .future; // Espera la selección del usuario antes de retornar
   }
-
-
-
 
   static Future<GaleryCameraModel?> getImageGallery(String title) async {
     final ImagePicker _picker = ImagePicker();
@@ -85,8 +85,10 @@ class PhotoHelper {
     return getImagenResourse(title: title, imageFile: imageFile);
   }
 
-  static Future<GaleryCameraModel?> getImagenResourse(
-      {required String title, XFile? imageFile}) async {
+  static Future<GaleryCameraModel?> getImagenResourse({
+    required String title,
+    XFile? imageFile,
+  }) async {
     int tamImg = 900;
 
     if (imageFile != null) {
@@ -105,12 +107,13 @@ class PhotoHelper {
     }
   }
 
-  static Future<GaleryCameraModel> getResizeImg(
-      {required String title,
-      required Img.Image image,
-      required int tamImg,
-      bool mejorar = false,
-      bool mejorarVertical = false}) async {
+  static Future<GaleryCameraModel> getResizeImg({
+    required String title,
+    required Img.Image image,
+    required int tamImg,
+    bool mejorar = false,
+    bool mejorarVertical = false,
+  }) async {
     print('Alto: ${image.height}, Ancho ${image.width}');
 
     int altoImg = image.height;
@@ -153,8 +156,10 @@ class PhotoHelper {
 
           //Obtenemos el nuevo ancho
           double anchoImgNew = tamImg * relacionAspecto;
-          anchoImgNew =
-              UtilidadesUtil.redondearDouble(anchoImgNew, decimales: 0);
+          anchoImgNew = UtilidadesUtil.redondearDouble(
+            anchoImgNew,
+            decimales: 0,
+          );
 
           //Asiganmos los nuevos valores
           altoImg = tamImg;
@@ -171,8 +176,10 @@ class PhotoHelper {
 
           //Obtenemos el nuevo ancho
           double anchoImgNew = tamImg * relacionAspecto;
-          anchoImgNew =
-              UtilidadesUtil.redondearDouble(anchoImgNew, decimales: 0);
+          anchoImgNew = UtilidadesUtil.redondearDouble(
+            anchoImgNew,
+            decimales: 0,
+          );
 
           //Asiganmos los nuevos valores
           altoImg = tamImg;
@@ -198,10 +205,14 @@ class PhotoHelper {
       }
     }
 
-    Img.Image smallerImg =
-        Img.copyResize(image, height: altoImg, width: anchoImg);
+    Img.Image smallerImg = Img.copyResize(
+      image,
+      height: altoImg,
+      width: anchoImg,
+    );
 
-    String nameImg = "image_" +
+    String nameImg =
+        "image_" +
         title +
         "_" +
         rand.toString() +
@@ -212,21 +223,23 @@ class PhotoHelper {
       ..writeAsBytesSync(Img.encodeJpg(smallerImg, quality: 100));
 
     return GaleryCameraModel(
-        tamImg: tamImg,
-        title: title,
-        nombreImg: nameImg,
-        imageFile: compressImg,
-        image: image,
-        isHorizontal: isHorizontal,
-        isVertical: isVertical);
+      tamImg: tamImg,
+      title: title,
+      nombreImg: nameImg,
+      imageFile: compressImg,
+      image: image,
+      isHorizontal: isHorizontal,
+      isVertical: isVertical,
+    );
   }
 
   static Uint8List? convertStringToUint8List(String? fotoString) {
     try {
       Uint8List? imgDecode = null;
       if (fotoString != null && fotoString != '') {
-        final decodedBytes =
-            base64Decode(fotoString.toString().split(',').last);
+        final decodedBytes = base64Decode(
+          fotoString.toString().split(',').last,
+        );
         imgDecode = decodedBytes;
       }
       return imgDecode;
@@ -246,13 +259,13 @@ class GaleryCameraModel {
   final bool isHorizontal;
   final bool isVertical;
 
-  GaleryCameraModel(
-      {required this.title,
-      required this.tamImg,
-      required this.nombreImg,
-      required this.imageFile,
-      required this.image,
-      this.isVertical = false,
-      this.isHorizontal = false});
-
+  GaleryCameraModel({
+    required this.title,
+    required this.tamImg,
+    required this.nombreImg,
+    required this.imageFile,
+    required this.image,
+    this.isVertical = false,
+    this.isHorizontal = false,
+  });
 }

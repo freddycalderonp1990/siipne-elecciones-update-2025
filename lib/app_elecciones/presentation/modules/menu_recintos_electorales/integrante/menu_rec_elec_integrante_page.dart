@@ -58,6 +58,8 @@ class MenuRecElecIntegrantePage
           children: [
             Flexible(
               child: BtnMenuWidget(
+                  horizontal: true,
+
                   img: SiipneImages.icon_registrar_novedades_rec_elec,
                   title: SiipneStrings.recElecRegistrarNovedades,
                   onTap: () {
@@ -73,7 +75,7 @@ class MenuRecElecIntegrantePage
             ),
             Flexible(
               child: BtnMenuWidget(
-                  horizontal: false,
+                  horizontal: true,
                   img: SiipneImages.icon_abandonar_rec_elec,
                   title: "ABANDONAR CÓDIGO",
                   onTap: () {

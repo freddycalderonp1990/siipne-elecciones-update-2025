@@ -30,10 +30,11 @@ class MenuRecElecJefePage
           ),
           TextSombrasWidget(
             colorSombra: Colors.black,
-            colorTexto: Colors.white,
+            colorTexto: Colors.white ,
             title: "${controller.recintosElectoralesAbiertos.descProcElecc}",
           ),
           DesingTextNameUser(
+
               sexo: controller.user.sexo, text: controller.user.nombres),
           _getMenuJefe(responsive),
           SizedBox(
@@ -58,7 +59,7 @@ class MenuRecElecJefePage
           children: [
             Flexible(
               child: BtnMenuWidget(
-                  horizontal: false,
+                  horizontal: true,
                   img: SiipneImages.icon_agregar_personal,
                   title: SiipneStrings.recElecAgregarpersonal,
                   onTap: () {
@@ -73,6 +74,7 @@ class MenuRecElecJefePage
             ),
             Flexible(
               child: BtnMenuWidget(
+                  horizontal: true,
                   img: SiipneImages.icon_registrar_novedades_rec_elec,
                   title: SiipneStrings.recElecRegistrarNovedades,
                   onTap: () {
@@ -91,6 +93,7 @@ class MenuRecElecJefePage
           children: [
             Flexible(
               child: BtnMenuWidget(
+                  horizontal: true,
                   img: SiipneImages.icon_finalizar_rec_elec,
                   title: "FINALIZAR RECINTO",
                   onTap: () {
@@ -105,6 +108,7 @@ class MenuRecElecJefePage
             ),
             Flexible(
               child: BtnMenuWidget(
+                  horizontal: true,
                   img: SiipneImages.icon_eliminar_rec_elec,
                   title: "ELIMINAR CÓDIGO",
                   onTap: () {

@@ -166,6 +166,8 @@ class LoginController extends GetxController {
       String _user = this.controllerUser.text;
       String _pass = this.controllerPass.text;
 
+
+
       String clave = EncriptarUtil.generateSha512(_pass);
       _pass = EncriptarUtil.myEncryptPass(_pass);
       peticionServerState(true);
@@ -314,13 +316,13 @@ class LoginController extends GetxController {
       {required String user, required String pass}) async {
     String userTestApp = dotenv.env['USER_TEST_APP'] ?? 'test_app';
     String passTestApp = dotenv.env['PASS_TEST_APP'] ?? 'policiaecuador';
-    print("aquiii");
 
+    String _pass =  EncriptarUtil.myDecryptPass(pass);
 
-    String clave = EncriptarUtil.generateSha512(passTestApp);
-    clave = EncriptarUtil.myEncryptPass(passTestApp);
+    print("pasnormal  ${passTestApp}=${pass}");
+    print("_pass  ${_pass}=${passTestApp}");
 
-    if (user == userTestApp && pass == clave) {
+    if (user == userTestApp && _pass == passTestApp) {
       AppConfig.AmbienteUrl = Ambiente.prueba;
 
       AppConfig.isUserGoogleOrIos=true;
@@ -331,9 +333,9 @@ class LoginController extends GetxController {
     print("aquiii ${AppConfig.AmbienteUrlAnterior}");
     AppConfig.isUserGoogleOrIos=false;
 
-
     return false;
   }
+
 
 
   Future<bool> verificarUserTestAppSeguridades(

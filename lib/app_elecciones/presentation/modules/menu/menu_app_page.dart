@@ -15,20 +15,18 @@ class MenuAppPage extends GetView<MenuAppController> {
   Widget getContenido() {
     final responsive = ResponsiveUtil();
 
-
-
-
-
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           imgPerfilRedonda(
-            size: 25,
+            size: 27,
             img: controller.user.foto,
           ),
-
+          SizedBox(
+            height: responsive.altoP(2),
+          ),
           DesingTextNameUser(
               sexo:controller.user.sexo ,
               text:  controller.user.nombres),
@@ -60,26 +58,27 @@ class MenuAppPage extends GetView<MenuAppController> {
 
   _getMenu(ResponsiveUtil responsive) {
     double separacionBtnMenu = 1.5;
-    return Column(
+
+
+
+    return Row(
       children: [
-        BtnMenuWidget(
-            horizontal: false,
-            colorFondo: Colors.white,
-            img: SiipneImages.icon_abrir_rec_elec,
-            title: SiipneStrings.CREARCODIGO,
-            onTap: () => Get.toNamed(SiipneRoutes.SELECT_PROCESO_OPERATIVOS)),
+      Flexible(child:   BtnMenuWidget(
+          horizontal: true,
+          colorFondo: Colors.white ,
+          img: SiipneImages.icon_abrir_rec_elec,
+          title: SiipneStrings.CREARCODIGO,
+          onTap: () => Get.toNamed(SiipneRoutes.SELECT_PROCESO_OPERATIVOS)),),
         SizedBox(
-          height: responsive.altoP(separacionBtnMenu),
+          width: responsive.anchoP(2),
         ),
-        BtnMenuWidget(
-            horizontal: false,
-            colorFondo: Colors.white,
-            img: SiipneImages.icon_registrarse_rec_elect,
-            title: SiipneStrings.ANEXARSE,
-            onTap: () => Get.toNamed(SiipneRoutes.ANEXARSE)),
-        SizedBox(
-          height: responsive.altoP(separacionBtnMenu),
-        ),
+     Flexible(child:    BtnMenuWidget(
+         horizontal: true,
+         colorFondo: Colors.white,
+         img: SiipneImages.icon_registrarse_rec_elect,
+         title: SiipneStrings.ANEXARSE,
+         onTap: () => Get.toNamed(SiipneRoutes.ANEXARSE)),),
+
       ],
     );
   }

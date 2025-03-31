@@ -15,12 +15,15 @@ class DesingTextNameUser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String Bienvenido =
-    sexo == 'HOMBRE' ? "BIENVENIDO: " : "BIENVENIDA: ";
+    //sexo == 'HOMBRE' ? "BIENVENIDO: " : "BIENVENIDA: ";
+    sexo == 'HOMBRE' ? "" : " ";
     final responsive = ResponsiveUtil();
 
-    double sizeT=responsive.diagonalP(AppConfig.tamTextoTitulo-0.5);
+    double sizeT=responsive.diagonalP(AppConfig.tamTextoTitulo-0.1);
 
     return TextLineasWidget(
+
+      colorTexto: Colors.black,
       grosorLinea: 3,
       sizeTxt:sizeText==null?sizeT:sizeText!,
       title: Bienvenido+ text,

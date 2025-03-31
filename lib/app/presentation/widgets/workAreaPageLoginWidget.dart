@@ -104,7 +104,6 @@ class _WorkAreaPageLoginWidgetState extends State<WorkAreaPageLoginWidget> {
                             ))),
                   ],
                 ),
-
                 Obx(
                   () => CargandoWidget(
                     mostrar: widget.peticionServer.value,

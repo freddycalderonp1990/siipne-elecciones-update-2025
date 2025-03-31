@@ -68,6 +68,10 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
               controller
                   .mGaleryCameraModel
                   .value = await PhotoHelper.getDesingPictureGaleryOrCamera(
+
+                initPeticion: (value){
+                  controller.peticionServerState(value);
+                },
                 titleImg:
                     "ImgRecElectNovedades_id_${controller.selectNovedad.value.idDgoNovedadesElect}",
               );

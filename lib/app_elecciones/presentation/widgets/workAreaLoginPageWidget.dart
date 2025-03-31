@@ -62,7 +62,7 @@ class _WorkAreaLoginPageWidgetState extends State<WorkAreaLoginPageWidget> {
         widget.imgFondo == null
             ? AppImages.imgFondoDefault
             : widget.imgFondo,
-        fit: BoxFit.cover,
+        fit: BoxFit.fill,
       ),
     );
 

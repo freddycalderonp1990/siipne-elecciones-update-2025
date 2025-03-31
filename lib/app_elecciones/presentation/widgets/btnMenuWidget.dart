@@ -28,8 +28,7 @@ class _BtnMenuWidgetState extends State<BtnMenuWidget> {
     // TODO: implement build
     final responsive = ResponsiveUtil();
     final fontSize= responsive
-        .diagonalP(AppConfig.tamTexto);
-
+        .diagonalP(AppConfig.tamTexto-0.2);
 
 
     Widget horizontal= desing(wg: Row(
@@ -38,8 +37,8 @@ class _BtnMenuWidgetState extends State<BtnMenuWidget> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         Container(
-          width: responsive.anchoP(15),
-          height: responsive.anchoP(15),
+          width: responsive.anchoP(13),
+          height: responsive.anchoP(13),
           child: widget.img!=null? Image.asset(
             widget.img,
           ):Image.asset(
@@ -107,16 +106,15 @@ class _BtnMenuWidgetState extends State<BtnMenuWidget> {
         borderRadius: BorderRadius.circular(AppConfig.radioBordecajas),
       ),
       child: Material(
-        shadowColor: widget. colorFondo!=null?widget. colorFondo:Colors.white,
+        shadowColor:AppColors.colorAzulTitle,
         color:widget. colorFondo!=null?widget. colorFondo:Colors.white,
         borderRadius: BorderRadius.circular(20),
-        elevation: 2,
+        elevation: 8,
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
           onTap:widget.onTap,
           // handle your onTap here
           child: Container(
-
             margin:
             EdgeInsets.only(left: 20.0, right: 20.0,bottom: 10.0,top: 10),
             width: responsive.anchoP(70),
