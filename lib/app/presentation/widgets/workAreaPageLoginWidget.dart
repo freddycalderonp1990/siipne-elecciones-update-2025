@@ -120,8 +120,9 @@ class _WorkAreaPageLoginWidgetState extends State<WorkAreaPageLoginWidget> {
         top: responsive.altoP(20),
         right: 10,
         child: BtnIconWidget(
-          colorIcon: Colors.black,
-          colorTxt: Colors.black,
+          colorIcon: AppColors.colorIcons,
+          colorTxt: AppColors.colorIcons,
+          colorLineas: AppColors.colorIcons,
           colorBtn: Colors.white38,
           onPressed: widget.onPressedBtnHome,
           icon: Icons.menu,
@@ -151,7 +152,7 @@ class _WorkAreaPageLoginWidgetState extends State<WorkAreaPageLoginWidget> {
             colorTexto: Colors.white,
             colorSombra: Colors.black,
             title: widget.title,
-            size: responsive.diagonalP(AppConfig.tamTextoTitulo+0.5),
+            size: responsive.diagonalP(AppConfig.tamTextoTitulo+1),
           )
         : Container();
   }

@@ -133,58 +133,56 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
     return Scaffold(
         backgroundColor:
             AppColors.colorPrimary, // Cambia esto al color que desees
-        body: SafeArea(
-          child: GestureDetector(
-              onTap: () {
-                FocusScope.of(context).requestFocus(FocusNode());
-              },
-              child: Stack(
-                children: [
-                  getImgFondo(),
-                  getDesingImgProceso(),
-                  Column(
-                    children: [
-                      Expanded(
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: responsive.altoP(15),
-                            ),
-                            Flexible(
-                                child: Center(
-                              child: Container(
+        body: GestureDetector(
+            onTap: () {
+              FocusScope.of(context).requestFocus(FocusNode());
+            },
+            child: Stack(
+              children: [
+                getImgFondo(),
+                getDesingImgProceso(),
+                Column(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: responsive.altoP(15),
+                          ),
+                          Flexible(
+                              child: Center(
+                                child: Container(
 
-                                padding: EdgeInsets.symmetric(horizontal: 12),
-                                child: desingContenido(),
-                              ),
-                            )),
-                            SizedBox(
-                              height: responsive.altoP(5),
-                            )
-                          ],
-                        ),
+                                  padding: EdgeInsets.symmetric(horizontal: 12),
+                                  child: desingContenido(),
+                                ),
+                              )),
+                          SizedBox(
+                            height: responsive.altoP(5),
+                          )
+                        ],
                       ),
-                    ],
-                  ),
-
-                  widget.mostrarBtnAtras
-                      ? BtnAtrasWidget(
-                          pantallaIrAtras: widget.onPressBtnAtras,
-                        )
-                      : Container(),
-
-                  getBtnBuscar(),
-                  widget.mostrarBtnHome ? getBtnHome() : Container(),
-
-                  Obx(
-                    () => CargandoWidget(
-                      mostrar: widget.peticionServer.value,
                     ),
+                  ],
+                ),
+
+                widget.mostrarBtnAtras
+                    ? BtnAtrasWidget(
+                  pantallaIrAtras: widget.onPressBtnAtras,
+                )
+                    : Container(),
+
+                getBtnBuscar(),
+                widget.mostrarBtnHome ? getBtnHome() : Container(),
+
+                Obx(
+                      () => CargandoWidget(
+                    mostrar: widget.peticionServer.value,
                   ),
-                  // Condicional de Anuncio
-                ],
-              )),
-        ));
+                ),
+                // Condicional de Anuncio
+              ],
+            )));
   }
 
   Widget getBtnBuscar() {
@@ -205,11 +203,10 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
   Widget getBtnHome() {
     final responsive = ResponsiveUtil();
     return Positioned(
-        top: responsive.altoP(0),
+        top: responsive.altoP(2),
         right: 10,
         child: BtnIconWidget(
-          colorIcon: Colors.black,
-          colorTxt: Colors.black,
+
           onPressed: widget.onPressedBtnHome,
           icon: Icons.menu,
           titulo: "Home",

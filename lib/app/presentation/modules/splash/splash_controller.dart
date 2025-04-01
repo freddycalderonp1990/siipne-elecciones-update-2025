@@ -89,7 +89,7 @@ final UserEntities user=await _localStoreImpl.getUserModel();
 
 
     verificarPlataformaIos() {
-      //AppConfig.plataformIsIos = true;
+
       if (UtilidadesUtil.plataformaIsIos) {
         AppConfig.plataformIsIos = true;
       }
@@ -155,7 +155,8 @@ final UserEntities user=await _localStoreImpl.getUserModel();
       print("AppConfig.plataformIsIos= ${AppConfig.plataformIsIos}");
       print("pageAppsSelect= ${pageAppsSelect}");
       //Verificar si es IOS
-      if (AppConfig.plataformIsIos) {
+
+        if (AppConfig.plataformIsIos) {
         if (pageAppsSelect == PageAppsSelect.Bienvenida.toString()) {
           print("unooo");
           Get.offAllNamed(AppRoutes.BIENVENIDO);

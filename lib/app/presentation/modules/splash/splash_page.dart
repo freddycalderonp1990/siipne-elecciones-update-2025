@@ -15,6 +15,7 @@ class SplashPage extends GetView<SplashController> {
                   child: Stack(
                     children: [
                       Image.asset(
+
                         AppImages.splash,
                         fit: BoxFit
                             .cover, // Esto asegura que la imagen ocupe toda la pantalla
@@ -32,6 +33,10 @@ class SplashPage extends GetView<SplashController> {
 
                         ),
                       ),
+
+                      Center(
+                       child: Image.asset( AppImages.escudopolicia)
+                      )
                     ],
                   )),
             ));

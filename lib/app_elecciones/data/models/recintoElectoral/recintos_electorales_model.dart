@@ -32,8 +32,11 @@ class RecintosElectoralsModel {
       };
 }
 
+
+
 class RecintosElectoral {
   RecintosElectoral({
+    this.nomRecintoElecOnly='',
     this.numElectores = 0,
     this.numJuntMascu = 0,
     this.numJuntFeme = 0,
@@ -60,6 +63,7 @@ class RecintosElectoral {
   int idGenDivPolitica;
   String codRecintoElec;
   String nomRecintoElec;
+  String nomRecintoElecOnly;
   String direcRecintoElec;
   String latitud;
   String longitud;
@@ -87,6 +91,7 @@ class RecintosElectoral {
       idGenDivPolitica: ParseModel.parseToInt(json["idGenDivPolitica"]),
       codRecintoElec: ParseModel.parseToString(json["codRecintoElec"]),
       nomRecintoElec: nomRecinto,
+      nomRecintoElecOnly:       ParseModel.parseToString(json["nomRecintoElec"]),
       direcRecintoElec: ParseModel.parseToString(json["direcRecintoElec"] ),
       latitud: ParseModel.parseToString(json["latitud"] ),
       longitud: ParseModel.parseToString(json["longitud"] ),

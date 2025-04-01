@@ -3,17 +3,20 @@ part of '../pages.dart';
 class LoginPage extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
-    Widget mobile = Obx(()=>WorkAreaPageLoginWidget(imgFondo: AppImages.imgFondoDefault1,
-      mostrarBtnHome: controller.mostrarBtnHome.value,
-      onPressedBtnHome: () {
-        controller.setAppPageSelect(PageAppsSelect.Bienvenida);
-      },
-      title: "POLICÍA NACIONAL DEL ECUADOR",
-      mostrarVersion: true,
-      peticionServer: controller.peticionServerState,
+    Widget mobile = Obx(
+      () => WorkAreaPageLoginWidget(
+        imgFondo: AppImages.imgFondoDefault,
+        mostrarBtnHome: controller.mostrarBtnHome.value,
+        onPressedBtnHome: () {
+          controller.setAppPageSelect(PageAppsSelect.Bienvenida);
+        },
+        title: "POLICÍA NACIONAL DEL ECUADOR",
+        mostrarVersion: true,
+        peticionServer: controller.peticionServerState,
 
-      contenido: contenido(),
-    ));
+        contenido: contenido(),
+      ),
+    );
     return mobile;
     return GetBuilder<LoginController>(builder: (_c) => mobile);
   }
@@ -22,12 +25,10 @@ class LoginPage extends GetView<LoginController> {
     final responsive = ResponsiveUtil();
     return Column(
       children: [
-        SizedBox(
-          height: responsive.altoP(3),
-        ),
-       WgLogin(
+        SizedBox(height: responsive.altoP(3)),
+        WgLogin(
           completeTutorial: (value) {
-          //  controller.setShowTutorial(value);
+            //  controller.setShowTutorial(value);
           },
           onPressed: () => controller.login(),
           controllerPass: controller.controllerPass,
@@ -35,9 +36,7 @@ class LoginPage extends GetView<LoginController> {
           formKey: controller.formKey,
         ),
 
-        SizedBox(
-          height: responsive.altoP(2),
-        ),
+        SizedBox(height: responsive.altoP(2)),
       ],
     );
   }

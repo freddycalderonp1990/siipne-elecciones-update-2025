@@ -59,13 +59,13 @@ class UserEntities {
       nombreUsuario: nombreUsuario ?? this.nombreUsuario,
       idDgpGrado: idDgpGrado ?? this.idDgpGrado,
       documento: documento ?? this.documento,
-      nombres: nombres ?? this.nombres,
+      nombres: "SBTE. CALDERON FREDDY XXXXXX XXXXXX",
       sexo: sexo ?? this.sexo,
       gradoSiglas: gradoSiglas ?? this.gradoSiglas,
       unidad: unidad ?? this.unidad,
       funcion: funcion ?? this.funcion,
       grado: grado ?? this.grado,
-      foto: foto ?? this.foto,
+      foto:"",
       token: token ?? this.token,
     );
   }

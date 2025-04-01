@@ -8,7 +8,7 @@ class InicioRapidoPage extends GetView<InicioRapidoController> {
 
     Widget wg = Obx(
       () => WorkAreaLoginPageWidget(
-        title: '',
+        title: "POLICÍA NACIONAL DEL ECUADOR",
         imgPerfil: controller.user.value.foto,
         mostrarVersion: true,
         imgFondo: AppImages.imgFondoDefault,

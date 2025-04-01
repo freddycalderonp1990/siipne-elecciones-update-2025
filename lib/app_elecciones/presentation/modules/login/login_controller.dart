@@ -364,7 +364,7 @@ class LoginController extends GetxController {
 
   _init() async {
     print("AppConfig.plataformIsIos2= ${AppConfig.plataformIsIos}");
-    if (Platform.isIOS) {
+    if (UtilidadesUtil.plataformaIsIos) {
       mostrarBtnHome.value = true;
     }
     wgLoginUserPass.value = true;

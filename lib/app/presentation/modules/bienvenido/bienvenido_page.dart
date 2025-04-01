@@ -20,7 +20,7 @@ class BienvenidoPage extends GetView<BienvenidoController> {
           height: responsive.altoP(3),
         ),
         ContenedorDesingWidget(
-          anchoPorce: 90,
+          anchoPorce: 100,
           margin: EdgeInsets.all(5),
           child: DetalleTextWidget(
             textAlign: TextAlign.justify,
@@ -36,7 +36,7 @@ class BienvenidoPage extends GetView<BienvenidoController> {
           ),
         ),
         ContenedorDesingWidget(
-          anchoPorce: 90,
+          anchoPorce: 100,
           margin: EdgeInsets.all(1),
           child: Container(
             padding: EdgeInsets.all(10),
@@ -59,7 +59,7 @@ class BienvenidoPage extends GetView<BienvenidoController> {
                 colorIcon: Colors.white,
                 colorTxt: Colors.white,
                 onPressed: () {
-                  controller.setAppSiipne(PageAppsSelect.PoliKey);
+                  controller.setAppSiipne(PageAppsSelect.Siipne);
                 },
                 icon: Icons.check_circle,
                 titulo: "SI",
@@ -71,6 +71,7 @@ class BienvenidoPage extends GetView<BienvenidoController> {
                   colorBtn: AppColors.colorBotones,
                   colorIcon: Colors.white,
                   colorTxt: Colors.white,
+
                   onPressed: () {
                     controller.setAppSiipne(PageAppsSelect.Public);
                   },

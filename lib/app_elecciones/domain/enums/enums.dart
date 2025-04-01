@@ -1,6 +1,6 @@
 enum Ambiente { desarrollo, prueba, produccion }
 
-enum PageAppsSelect { PoliKey, Bienvenida, Public }
+enum PageAppsSelect { Siipne, Bienvenida, Public }
 
 enum ShowTutorial { Login, ClaveDigital, Finish }
 

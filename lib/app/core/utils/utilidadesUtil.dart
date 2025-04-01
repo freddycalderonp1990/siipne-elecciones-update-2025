@@ -106,6 +106,7 @@ class UtilidadesUtil {
   }
 
   static bool get plataformaIsIos {
+
     return GetPlatform.isIOS;
   }
 

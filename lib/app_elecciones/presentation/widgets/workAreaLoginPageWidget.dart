@@ -50,6 +50,20 @@ class _WorkAreaLoginPageWidgetState extends State<WorkAreaLoginPageWidget> {
     });
   }
 
+  Widget getTitle() {
+    final responsive = ResponsiveUtil();
+
+
+
+    return widget.title != ''
+        ? TextSombrasWidget(
+      colorTexto: Colors.white,
+      colorSombra: Colors.black,
+      title: widget.title,
+      size: responsive.diagonalP(AppConfig.tamTextoTitulo+1),
+    )
+        : Container();
+  }
   @override
   Widget build(BuildContext context) {
     final responsive = ResponsiveUtil();
@@ -66,16 +80,19 @@ class _WorkAreaLoginPageWidgetState extends State<WorkAreaLoginPageWidget> {
       ),
     );
 
+
     Widget wgImgPerfil = Center(
       child: Column(
         children: <Widget>[
-
+          getTitle(),
+          SizedBox(height: responsive.altoP(4),),
           widget.imgPerfil != null
               ? imgPerfilRedonda(
             size: 28,
             img: widget.imgPerfil,
           )
               : Container(height: responsive.altoP(5)),
+          SizedBox(height: responsive.altoP(1),),
           widget.name != ''
               ? Text(
             widget.name,
@@ -89,18 +106,7 @@ class _WorkAreaLoginPageWidgetState extends State<WorkAreaLoginPageWidget> {
                     : responsive.anchoP(widget.sizeTittle)),
           )
               : Container(),
-          widget.title != ''
-              ? Text(
-            widget.title,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Colors.black.withOpacity(0.9),
-                fontWeight: FontWeight.bold,
-                fontSize: widget.sizeTittle == 0
-                    ? responsive.anchoP(5)
-                    : responsive.anchoP(widget.sizeTittle)),
-          )
-              : Container(),
+
           widget.mostrarVersion
               ?
           TextLineasWidget(title: 'Versión: ' + version,colorTexto: Colors.black,sizeTxt: 10,grosorLinea: 2,)

@@ -24,15 +24,21 @@ class HomePage extends GetView<HomeController> {
 
       children: [
       Expanded(child: SizedBox()),
-      DetalleTextWidget(ancho: 100,
-          detalle: "La aplicación  te permitirá acceder a información "
+    ContenedorDesingWidget(
+    anchoPorce: 100,
+    margin: EdgeInsets.all(5),
+    child: DetalleTextWidget(
+    textAlign: TextAlign.justify,
+    todoElAncho: true,
+    padding: EdgeInsets.all(20),
+    detalle:"La aplicación  te permitirá acceder a información "
           "sobre las alertas comunitarias, "
           "con un acceso rápido al botón de emergencia. "
           "Además, podrás conocer "
           "importantes consejos y recursos sobre violencia de género,"
           " así como los servicios disponibles de la Policía Comunitaria. "
           "También incluye tips sobre medidas de autoprotección para tu seguridad "
-          "y bienestar, brindándote herramientas y conocimientos esenciales."),
+          "y bienestar, brindándote herramientas y conocimientos esenciales.")),
       SizedBox(height: 10,),
       BtnIconWidget(
         titulo: "INGRESAR",

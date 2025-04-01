@@ -42,3 +42,8 @@
 - Se agrega un dialogo para solicitar al usuario su clave de acceso al sistema cada vez que selecciona abandonar o eliminar un código
 - Se mejoró los mensaje haciendo enfasis de que si abandona no será considerado como justificativo ante el CNE
 
+### 2.0.0+37 
+- Interfaz Gráfica Renovada: Diseño más moderno, intuitivo y fácil de usar.
+- Automatización Mejorada: Procesos optimizados para mayor rapidez y eficiencia.
+- Mayor Estabilidad y Rendimiento: Correcciones de errores y mejoras en la velocidad.
+- Nuevas Funcionalidades: Incorporamos mejoras para hacer tu experiencia aún mejor.

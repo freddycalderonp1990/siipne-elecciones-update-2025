@@ -145,12 +145,15 @@ class CrearCodigoUnidadPoliController extends GetxController {
 
   msjCrearCodigo({required VoidCallback onPressed}) {
     bool isValid = formKey.currentState!.validate();
+
     if (!isValid) return;
-    String msj =
-        "¿Usted es la persona encargada o jefe designada a este recinto electoral?"
-        "\nRecuerde crear el código si se encuentra de servicio en el recinto electoral, para prevenir el mal uso todo será registrado."
-        "\n \nUtilice la aplicación con responsabilidad."
+    String unidad=selectRecintosElectoral.value.nomRecintoElecOnly;
+
+    String  msj="¿Usted va a generar el código para la ${unidad}?"
+        "\n\nAsegúrese de estar de servicio en la Unidad y de ser la persona encargada o la persona designada como jefe/a."
+        "\n\n Utilice la aplicación con responsabilidad, ya que toda actividad sera registrada y auditada."
         "\n\n¿Desea Continuar?";
+
 
     DialogosAwesome.getIconPolicia(
         title: "Crear Código", btnOkOnPress: onPressed, descripcion: msj);

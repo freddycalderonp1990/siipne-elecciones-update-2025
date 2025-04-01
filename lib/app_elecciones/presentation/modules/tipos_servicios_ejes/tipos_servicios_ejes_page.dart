@@ -12,6 +12,7 @@ class TiposServiciosEjesPage extends GetView<TiposServiciosEjesController> {
       contenido: getContenido(),
       peticionServer: controller.peticionServerState,
     );
+
   }
 
   Widget getContenido() {
