@@ -7,10 +7,8 @@ class MenuAppPage extends GetView<MenuAppController> {
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
       title: "MENÚ PRINCIPAL",
-      contenido: Container(
+      contenido:  getContenido(),
 
-        child: Center(child: getContenido()),
-      ),
       peticionServer: controller.peticionServerState,
     );
   }
@@ -23,12 +21,14 @@ class MenuAppPage extends GetView<MenuAppController> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          SizedBox(height: responsive.altoP(2)),
           imgPerfilRedonda(size: 27, img: controller.user.foto),
           SizedBox(height: responsive.altoP(2)),
           DesingTextNameUser(
             sexo: controller.user.sexo,
             text: controller.user.nombres,
           ),
+          SizedBox(height: responsive.altoP(2)),
           Container(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -39,7 +39,7 @@ class MenuAppPage extends GetView<MenuAppController> {
             ),
           ),
 
-          SizedBox(height: responsive.altoP(2)),
+          SizedBox(height: responsive.altoP(3)),
           BtnIconWidget(
             icon: Icons.exit_to_app,
             titulo: "SALIR",

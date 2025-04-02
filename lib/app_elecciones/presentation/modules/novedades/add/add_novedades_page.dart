@@ -35,7 +35,18 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
           getCombos(),
           SizedBox(height: responsive.altoP(0.4)),
           Obx(
-            () => wgCajasTexto(controller.selectTipoNovedad.value.descripcion),
+                () => FutureBuilder<Widget>(
+              future: wgCajasTexto(controller.selectTipoNovedad.value.descripcion),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return CircularProgressIndicator(); // Mientras carga
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}'); // En caso de error
+                } else {
+                  return snapshot.data ?? Container(); // Devuelve el widget construido
+                }
+              },
+            ),
           ),
           Obx(
             () => wgCajasTextoNovedades(
@@ -43,6 +54,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
               responsive,
             ),
           ),
+
           Obx(() {
             return controller.mostrarFoto.value
                 ? wgFoto(responsive)
@@ -103,6 +115,8 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
     );
 
     Widget wg = wgSolicitarFoto;
+
+
 
     return ContenedorDesingWidget(margin: EdgeInsets.only(top: 10), child: wg);
   }
@@ -231,11 +245,10 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
     );
   }
 
-  Widget wgCajasTexto(String novedadesPadres) {
+  Future<Widget> wgCajasTexto(String novedadesPadres) async  {
     Widget wg = Container();
     final responsive = ResponsiveUtil();
 
-    bool mostrarFoto = false;
     controller.validarForm = false;
 
     controller.registrarDatosPersona = false;
@@ -286,9 +299,8 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
         wg = Container();
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      controller.mostrarFoto.value = mostrarFoto;
-    });
+
+
 
     if (wg is Container) {
       return wg;
@@ -337,6 +349,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
         wg = wgTxtCedula(responsive: responsive, title: SiipneStrings.cedulaSP);
         controller.validarForm = true;
         mostrarFoto = true;
+
         controller.registrarDatosPersona = true;
 
         break;
@@ -621,6 +634,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      print("mostrar fotooooo ${mostrarFoto}");
       controller.mostrarFoto.value = mostrarFoto;
     });
 
