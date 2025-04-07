@@ -28,7 +28,7 @@ class MenuAppPage extends GetView<MenuAppController> {
             sexo: controller.user.sexo,
             text: controller.user.nombres,
           ),
-          SizedBox(height: responsive.altoP(2)),
+          SizedBox(height: responsive.altoP(2                                                     )),
           Container(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,

@@ -10,6 +10,7 @@ import '../app/presentation/blocs/location/location_bloc.dart';
 
 import '../app/dependency_injection_app.dart';
 
+import 'app/core/utils/seguridades/validate_SSL.dart';
 import 'app/core/values/app_colors.dart';
 import 'app/main_app.dart';
 import 'app/presentation/blocs/gps/gps_bloc.dart';
@@ -32,6 +33,15 @@ void main() async {
   await dotenv.load(fileName: ".env");
   AppRoutesMiUpc.setNameMenu(name: "Home");
   AppRoutesMiUpc.setPageInicio(AppRoutes.SPLASH_APP);
+
+
+  try{
+    //validamos si el certificado SSl corresponde al SIIPNE 3w
+    ValidateSSL validateSSL=ValidateSSL();
+    await validateSSL.validarSSl();
+  }catch(e){
+    print("error certificados $e");
+  }
 
   runApp(MultiBlocProvider(providers: [
     BlocProvider(create: (context) => GpsBloc()),
