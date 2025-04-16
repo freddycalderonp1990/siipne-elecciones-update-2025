@@ -17,6 +17,7 @@ import '../../../app/data/repository/data_repositories.dart';
 
 import 'package:latlong2/latlong.dart';
 import 'package:permission_handler/permission_handler.dart';
+import '../../../app/domain/enums/enums.dart';
 import '../../../app_elecciones/core/values/siipne_images.dart';
 
 import 'package:geolocator/geolocator.dart' as myGeolocator;
@@ -53,7 +54,7 @@ import '../../../feactures/user/domain/use_cases/get_data_user.dart';
 import '../../../feactures/user/domain/use_cases/local_store.dart';
 import '../../data/providers/remote/apis/api_constantes.dart';
 import '../../data/repository/data_repositories.dart';
-import '../../domain/enums/enums.dart';
+
 import '../../domain/request/request.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';

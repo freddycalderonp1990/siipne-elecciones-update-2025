@@ -26,7 +26,7 @@ import '../../../app_elecciones/core/siipne_config.dart';
 import '../../../app_elecciones/core/values/mensajes_string.dart';
 import '../../../app_elecciones/data/models/models.dart';
 import '../../../app_elecciones/data/repository/data_repositories.dart';
-import '../../../app_elecciones/domain/enums/enums.dart';
+
 
 import '../../../app_elecciones/domain/request/request.dart';
 
@@ -41,6 +41,7 @@ import '../../core/utils/device_info.dart';
 import '../../core/utils/prints_msj.dart';
 import '../../data/provider/providers_impl_app.dart';
 import '../../data/repository/data_repositories.dart';
+import '../../domain/enums/enums.dart';
 import '../routes/app_routes.dart';
 
 

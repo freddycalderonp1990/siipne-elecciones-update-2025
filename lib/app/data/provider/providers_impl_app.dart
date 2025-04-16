@@ -22,7 +22,7 @@ import 'package:siipnemovil2/feactures/user/domain/use_cases/local_store.dart';
 
 import '../../../app_elecciones/core/utils/photo_helper.dart';
 import '../../../app_elecciones/data/models/models.dart';
-import '../../../app_elecciones/domain/enums/enums.dart';
+
 import '../../../app_elecciones/domain/repositories/domain_repositories.dart';
 import '../../../feactures/user/domain/entities/user.dart';
 import '../../core/app_config.dart';
@@ -30,6 +30,7 @@ import '../../core/exceptions/exception_helper.dart';
 import '../../core/exceptions/exceptions.dart';
 import '../../core/utils/parse_model.dart';
 import '../../core/utils/prints_msj.dart';
+import '../../domain/enums/enums.dart';
 import '../../domain/repositories/domain_repositories.dart';
 
 

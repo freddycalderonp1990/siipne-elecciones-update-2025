@@ -1,9 +1,10 @@
-part of 'customWidgets.dart';
+part of '../custom_app_widgets.dart';
 
 class DialogosAwesome {
 
 
   static getDesingChangePass({
+
     required GlobalKey<FormState> formKey, // Asegurar el tipo correcto
     required TextEditingController controllerPass,
     VoidCallback? onPressed,
@@ -61,6 +62,7 @@ class DialogosAwesome {
 
 
                   LoginController loginController=Get.find();
+
                   String pass=controllerPass.text;
                   bool rersul=  await loginController.validarPass(pass);
 

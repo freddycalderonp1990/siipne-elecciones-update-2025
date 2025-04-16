@@ -8,5 +8,4 @@ abstract class UserRepository {
   Future<DataAuth> auth({required AuthRequest request});
 
 
-
 }

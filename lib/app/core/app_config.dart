@@ -5,7 +5,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart' as myGeolocator;
 import 'package:get/get.dart';
 
-import '../../app_elecciones/domain/enums/enums.dart';
+import '../domain/enums/enums.dart';
+
+
 
 class AppConfig {
   static var AmbienteUrl=getAmbiente( dotenv.env['AMBIENTE']??'DEV');

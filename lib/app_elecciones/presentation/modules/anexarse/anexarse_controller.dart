@@ -120,6 +120,8 @@ class AnexarseController extends GetxController {
       LatLng position = await locationBloc.getCurrentPosition();
       String ip = await DeviceInfo.getIp;
 
+      //se realiza esta validacion ya que en la web si  el idDgoTipoEje es = 1, se considera que este dentro del rango
+
       AddPersonalRequest request = AddPersonalRequest(
           idDgoCreaOpReci: idDgoCreaOpReci,
           idDgoProcElec: datosEncargado.value.idDgoProcElec,

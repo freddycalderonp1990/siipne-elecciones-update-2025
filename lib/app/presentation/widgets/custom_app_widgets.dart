@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:developer';
 
-import 'package:card_swiper/card_swiper.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -11,14 +9,15 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
+
 import '../../../app_elecciones/core/values/siipne_images.dart';
-import 'package:latlong2/latlong.dart' show LatLng;
+
 
 
 import '../../../app/core/utils/responsiveUtil.dart';
-import '../../../app/core/utils/utilidadesUtil.dart';
 
+
+import '../../../app_elecciones/presentation/modules/controllers.dart';
 import '../../../app_elecciones/presentation/widgets/customWidgets.dart';
 import '../../../app_elecciones/presentation/widgets/gps_access_screen.dart';
 import '../../core/app_config.dart';
@@ -59,3 +58,4 @@ part 'combos/combo_busqueda.dart';
 part 'combos/combo_con_busqueda.dart';
 part 'my_ubicacion_widget.dart';
 part 'text_lineas_widget.dart';
+part 'dialogos/awesome_dialog.dart';

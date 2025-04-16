@@ -3,24 +3,23 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:siipnemovil2/feactures/user/domain/use_cases/local_store.dart';
+
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import '../../../../../app/core/app_config.dart';
 import '../../../../../app/core/utils/tutorial_utils.dart';
 import '../../../../../app/core/utils/utilidadesUtil.dart';
-import '../../../../../app/core/values/app_colors.dart';
+
 import '../../../../../app/core/values/app_images.dart';
-import '../../../../../app/data/repository/data_repositories.dart';
+
+import '../../../../../app/domain/enums/enums.dart';
 import '../../../../../app/presentation/widgets/custom_app_widgets.dart';
-import '../../../../core/siipne_config.dart';
+
 import '../../../../../app/core/utils/responsiveUtil.dart';
-import '../../../../core/values/siipne_images.dart';
-import '../../../../core/values/siipne_strings.dart';
+
 import '../../../../core/values/tutorial_app_strings.dart';
-import '../../../../data/repository/data_repositories.dart';
-import '../../../../domain/enums/enums.dart';
-import '../../../../presentation/widgets/customWidgets.dart';
+
+
 import '../../controllers.dart';
 
 class WgLogin extends StatefulWidget {

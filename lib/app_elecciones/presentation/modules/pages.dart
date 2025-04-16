@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 
 import '../../../app/core/values/app_colors.dart';
+import '../../../app/domain/enums/enums.dart';
 import '../../../app/presentation/routes/app_routes.dart';
 
 import '../../../app/presentation/widgets/custom_app_widgets.dart';
@@ -41,7 +42,7 @@ import '../../core/values/siipne_colors.dart';
 import '../../core/values/siipne_images.dart';
 import '../../core/values/siipne_strings.dart';
 import '../../data/models/models.dart';
-import '../../domain/enums/enums.dart';
+
 import '../widgets/gps_access_screen.dart';
 import 'combo_dependiente/combo_dependiente_page.dart';
 import 'controllers.dart';

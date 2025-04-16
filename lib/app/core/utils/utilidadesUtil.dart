@@ -19,6 +19,7 @@ import 'package:flutter/material.dart';
 
 
 import '../../../app_elecciones/presentation/widgets/customWidgets.dart';
+import '../../presentation/widgets/custom_app_widgets.dart';
 
 class UtilidadesUtil {
 

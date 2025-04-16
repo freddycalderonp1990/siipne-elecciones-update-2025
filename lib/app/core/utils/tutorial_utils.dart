@@ -4,11 +4,12 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../../../app/presentation/widgets/custom_app_widgets.dart';
-import '../../../app_elecciones//domain/enums/enums.dart';
+
 import '../../core/utils/responsiveUtil.dart';
 
 import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
+import '../../domain/enums/enums.dart';
 import '../app_config.dart';
 import '../values/app_colors.dart';
 

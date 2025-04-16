@@ -3,7 +3,7 @@ import 'dart:io';
 
 
 import 'package:device_info_plus/device_info_plus.dart';
-//import 'package:device_information/device_information.dart'; //Imei
+
 import 'package:get/get_utils/src/platform/platform.dart';
 
 import 'package:network_info_plus/network_info_plus.dart';
@@ -14,6 +14,7 @@ import '../../../../../app/data/provider/providers_impl_app.dart';
 
 import '../../../app/core/utils/utilidadesUtil.dart';
 import '../../../app_elecciones//presentation/widgets/customWidgets.dart';
+import '../../presentation/widgets/custom_app_widgets.dart';
 import 'my_date.dart';
 
 class DeviceInfo {

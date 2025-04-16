@@ -6,6 +6,7 @@ class SiipneRoutes{
   static const LOGIN="/${name}login";
 
   static const MENU_APP="/${name}menu_app";
+
   static const SELECT_PROCESO_OPERATIVOS="/${name}select_proceso_operativo";
   static const TIPOS_SERVICIOS_EJES="/${name}tipos_servicios_ejes";
 

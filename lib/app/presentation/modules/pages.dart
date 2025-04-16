@@ -20,7 +20,7 @@ import '../../../app_elecciones//core/siipne_config.dart';
 
 
 import '../../../app_elecciones/data/models/models.dart';
-import '../../../app_elecciones/domain/enums/enums.dart';
+
 import '../../../app_elecciones/presentation/widgets/customWidgets.dart';
 
 
@@ -31,6 +31,7 @@ import '../../core/utils/encriptar_util.dart';
 import '../../core/utils/my_qr.dart';
 import '../../core/utils/utilidadesUtil.dart';
 import '../../core/values/app_colors.dart';
+import '../../domain/enums/enums.dart';
 import '../widgets/custom_app_widgets.dart';
 import 'controllers.dart';
 import 'home/local_widgets/desing_codigos_temporales.dart';

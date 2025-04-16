@@ -7,16 +7,20 @@ import 'package:get/get_utils/src/platform/platform.dart';
 import 'package:siipnemovil2/feactures/user/domain/entities/user.dart';
 import 'package:siipnemovil2/feactures/user/domain/use_cases/local_store.dart';
 
+import '../../../feactures/user/domain/use_cases/local_store.dart';
+
 import '../../../app_elecciones/core/siipne_config.dart';
 import '../../../app_elecciones/core/values/mensajes_string.dart';
 import '../../../app_elecciones/data/models/models.dart';
 import '../../../app_elecciones/data/repository/data_repositories.dart';
-import '../../../app_elecciones/domain/enums/enums.dart';
+
 import '../../../app_elecciones/presentation/routes/siipne_routes.dart';
 import '../../../app_elecciones/presentation/widgets/customWidgets.dart';
 import '../../data/model/models.dart';
 import '../../data/repository/data_repositories.dart';
+import '../../domain/enums/enums.dart';
 import '../../presentation/routes/app_routes.dart';
+import '../../presentation/widgets/custom_app_widgets.dart';
 import '../app_config.dart';
 import '../utils/utilidadesUtil.dart';
 import 'exceptions.dart';

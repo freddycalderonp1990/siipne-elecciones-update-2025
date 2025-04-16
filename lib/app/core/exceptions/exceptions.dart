@@ -1,7 +1,8 @@
 
 import '../../../app_elecciones/data/models/models.dart';
-import '../../../app_elecciones/domain/enums/enums.dart';
+
 import '../../core/app_config.dart';
+import '../../domain/enums/enums.dart';
 import 'exception_helper.dart';
 
 abstract class Failure implements Exception {

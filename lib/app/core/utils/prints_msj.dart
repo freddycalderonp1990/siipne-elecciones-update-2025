@@ -1,6 +1,7 @@
 import 'dart:developer';
 
-import '../../../app_elecciones/domain/enums/enums.dart';
+
+import '../../domain/enums/enums.dart';
 import '../app_config.dart';
 
 class PrintsMsj{

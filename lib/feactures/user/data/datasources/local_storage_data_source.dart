@@ -2,7 +2,8 @@ import 'dart:typed_data';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../app/core/utils/photo_helper.dart';
-import '../../../../app_elecciones/domain/enums/enums.dart';
+import '../../../../app/domain/enums/enums.dart';
+
 import '../../domain/entities/user.dart';
 
 abstract class LocalStorageDataSource {
