@@ -1,7 +1,9 @@
 import 'dart:async';
 
+
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:dropdown_search/dropdown_search.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,26 +12,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:get/get.dart';
 
-import '../../../app_elecciones/core/values/siipne_images.dart';
 
 
 
 import '../../../app/core/utils/responsiveUtil.dart';
 
 
-import '../../../app_elecciones/presentation/modules/controllers.dart';
-import '../../../app_elecciones/presentation/widgets/customWidgets.dart';
-import '../../../app_elecciones/presentation/widgets/gps_access_screen.dart';
+
+import '../../../feactures/gps/presentation/widgets/gps_access_screen.dart';
+import '../../../feactures/user/presentation/modules/controllers.dart';
 import '../../core/app_config.dart';
-import '../../core/utils/device_info.dart';
-import '../../core/utils/photo_helper.dart';
+import '../../core/utils/device_info_app.dart';
+
 import '../../core/values/app_colors.dart';
 import '../../core/values/app_images.dart';
 
 
-import '../blocs/location/location_bloc.dart';
 import 'img_perfil_redonda.dart';
-
 
 part 'btn_menu_img_widget.dart';
 
@@ -49,13 +48,15 @@ part 'botones_widget.dart';
 part 'dialogos_desing_widget.dart';
 part 'btn_icon_app_widget.dart';
 part 'text_sobras_widget.dart';
-part 'workAreaPageWidgetAndroid.dart';
+
 part 'workAreaPageWidget.dart';
-part 'workAreaPageLoginWidget.dart';
+
 
 
 part 'combos/combo_busqueda.dart';
 part 'combos/combo_con_busqueda.dart';
-part 'my_ubicacion_widget.dart';
+
 part 'text_lineas_widget.dart';
 part 'dialogos/awesome_dialog.dart';
+
+part 'btn_icon_widget.dart';

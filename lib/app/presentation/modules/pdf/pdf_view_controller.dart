@@ -55,8 +55,8 @@ class PdfViewController extends GetxController {
   }
 
   onError(error) {
-    if (AppConfig.AmbienteUrl != Ambiente.produccion &&
-        AppConfig.AmbienteUrl != Ambiente.prueba) {
+    if (AppConfig.AmbienteUrl != Ambiente.PROD&&
+        AppConfig.AmbienteUrl != Ambiente.TEST) {
       errorMessage.value = error.toString();
 
       errorMessage.value =
@@ -70,8 +70,8 @@ class PdfViewController extends GetxController {
   }
 
   onPageError(page, error) {
-    if (AppConfig.AmbienteUrl != Ambiente.produccion &&
-        AppConfig.AmbienteUrl != Ambiente.prueba) {
+    if (AppConfig.AmbienteUrl != Ambiente.PROD &&
+        AppConfig.AmbienteUrl != Ambiente.TEST) {
       errorMessage.value = '$page: ${error.toString()}';
       print('$page: ${error.toString()}');
     } else {

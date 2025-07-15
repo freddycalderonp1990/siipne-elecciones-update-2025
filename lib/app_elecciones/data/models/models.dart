@@ -1,6 +1,8 @@
 import 'dart:convert';
 
-import '../../../app/core/utils/parse_model.dart';
+import 'package:api_provider/core/utils/parse_model.dart';
+
+
 
 
 

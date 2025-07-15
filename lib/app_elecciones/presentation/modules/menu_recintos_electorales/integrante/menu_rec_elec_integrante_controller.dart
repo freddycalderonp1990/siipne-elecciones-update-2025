@@ -60,8 +60,8 @@ class MenuRecElecIntegranteController extends GetxController {
   Future<void> removePersonalOperativo() async {
     peticionServerState(true);
 
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
-      String ip = await DeviceInfo.getIp;
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
+      String ip = await DeviceInfoApp.getIp;
       final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
       LatLng position = await locationBloc.getCurrentPosition();
 
@@ -82,7 +82,7 @@ class MenuRecElecIntegranteController extends GetxController {
         DialogosAwesome.getSucess(
             descripcion: "Proceso realizado con éxito!", btnOkOnPress: () {
 
-          Get.offAllNamed(SiipneRoutes.MENU_APP);
+          Get.offAllNamed(EleccionesRoutes.MENU_APP);
         });
 
         return;

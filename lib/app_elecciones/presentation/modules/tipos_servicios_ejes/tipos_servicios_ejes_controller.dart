@@ -39,7 +39,7 @@ class TiposServiciosEjesController extends GetxController {
 
   Future<void> getTipoEjesActivosEnProcesoOperativos() async {
     peticionServerState(true);
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       tipoEjesActivos.value = await
           _eleccionesTipoEjesApiImpl.getTipoEjesActivosEnProcesoOperativos(
               usuario: user.idGenUsuario,
@@ -54,7 +54,7 @@ class TiposServiciosEjesController extends GetxController {
 
   Future<void> verificarSiPersonaEstaBloqueado() async {
     peticionServerState(true);
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       PerSituacion perSituacion = await
       _personaApiImpl.verificarSiPersonaEstaBloqueado(
         idGenPersona: user.idGenPersona,

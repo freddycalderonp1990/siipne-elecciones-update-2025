@@ -59,10 +59,10 @@ class MenuRecElecJefeController extends GetxController {
 
   Future<void> finalizarRecinto() async {
     peticionServerState(true);
-    String ip = await DeviceInfo.getIp;
+    String ip = await DeviceInfoApp.getIp;
 
     int codigo=recintosElectoralesAbiertos.idDgoCreaOpReci;
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       FinalizarRecintoRequest request = FinalizarRecintoRequest(
           usuario: user.idGenUsuario,
           ip: ip,
@@ -78,7 +78,7 @@ class MenuRecElecJefeController extends GetxController {
       if (dataResponse.insert) {
         DialogosAwesome.getSucess(
             descripcion: "El código ${codigo} fue finalizado con éxito!",btnOkOnPress: (){
-          Get.offAllNamed(SiipneRoutes.MENU_APP );
+          Get.offAllNamed(EleccionesRoutes.MENU_APP );
         });
         return;
       }
@@ -99,8 +99,8 @@ class MenuRecElecJefeController extends GetxController {
 
   Future<void> eliminarCodigoRecinto() async {
     peticionServerState(true);
-    String ip = await DeviceInfo.getIp;
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    String ip = await DeviceInfoApp.getIp;
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       EliminarRecintoRequest request = EliminarRecintoRequest(
           usuario: user.idGenUsuario,
           ip: ip,
@@ -115,7 +115,7 @@ class MenuRecElecJefeController extends GetxController {
 
         DialogosAwesome.getSucess(
             descripcion: "El código ${codigo} fue eliminado con éxito!",btnOkOnPress: (){
-          Get.offAllNamed(SiipneRoutes.MENU_APP );
+          Get.offAllNamed(EleccionesRoutes.MENU_APP );
         });
         return;
       }
@@ -141,7 +141,7 @@ class MenuRecElecJefeController extends GetxController {
   }
 
   goToPageReportePersonal() {
-    Get.toNamed(SiipneRoutes.REPORT_PERSONAL, arguments: {
+    Get.toNamed(EleccionesRoutes.REPORT_PERSONAL, arguments: {
       "recintosElectoralesAbiertos": recintosElectoralesAbiertos
     });
   }

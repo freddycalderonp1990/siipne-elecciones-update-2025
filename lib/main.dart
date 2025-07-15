@@ -2,19 +2,20 @@ import 'dart:io';
 
 import 'package:app_mi_upc/app_mi_upc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import '../app/presentation/blocs/calculadora/calculadora_bloc.dart';
-import '../app/presentation/blocs/location/location_bloc.dart';
 
-import '../app/dependency_injection_app.dart';
+import '../app/di_app.dart';
 
-import 'app/core/utils/seguridades/validate_SSL.dart';
-import 'app/core/values/app_colors.dart';
+import 'app/core/app_config.dart';
+
+import 'app/core/seguridades/validate_SSL.dart';
 import 'app/main_app.dart';
-import 'app/presentation/blocs/gps/gps_bloc.dart';
+
 import 'app/presentation/routes/app_routes.dart';
+import 'feactures/gps/presentation/bloc/gps/gps_bloc.dart';
+import 'feactures/gps/presentation/location/location_bloc.dart';
 //ok   asassa
 
 //solucion:OS Error:   CERTIFICATE_VERIFY_FAILED
@@ -30,24 +31,30 @@ class MyHttpOverrides extends HttpOverrides {
 void main() async {
   HttpOverrides.global = new MyHttpOverrides();
   DependencyInjectionApp();
+
   await dotenv.load(fileName: ".env");
+
+  AppConfig.init();
+
   AppRoutesMiUpc.setNameMenu(name: "Home");
   AppRoutesMiUpc.setPageInicio(AppRoutes.SPLASH_APP);
 
-
-  try{
+  try {
     //validamos si el certificado SSl corresponde al SIIPNE 3w
-    ValidateSSL validateSSL=ValidateSSL();
+    ValidateSSL validateSSL = ValidateSSL();
     await validateSSL.validarSSl();
-  }catch(e){
+  } catch (e) {
     print("error certificados $e");
   }
-
-  runApp(MultiBlocProvider(providers: [
-    BlocProvider(create: (context) => GpsBloc()),
-    BlocProvider(create: (context) => LocationBloc()),
-    BlocProvider(create: (context) => CalculadoraBloc()),
-  ], child: MyApp()));
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => GpsBloc()),
+        BlocProvider(create: (context) => LocationBloc()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

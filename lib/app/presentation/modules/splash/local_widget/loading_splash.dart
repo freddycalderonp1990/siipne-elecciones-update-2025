@@ -4,7 +4,6 @@ import '../../../../../app/core/utils/responsiveUtil.dart';
 import '../../../../../app/core/values/app_colors.dart';
 import '../../../../../app/presentation/widgets/custom_app_widgets.dart';
 
-import '../../../../../app_elecciones/core/siipne_config.dart';
 
 class LoadingSplash extends StatefulWidget {
   @override

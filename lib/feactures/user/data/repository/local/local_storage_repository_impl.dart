@@ -1,9 +1,11 @@
 import 'dart:typed_data';
 
-import 'package:siipnemovil2/feactures/user/domain/entities/user.dart';
 
+
+import '../../../domain/entities/user.dart';
 import '../../../domain/repository/local/local_storage_repository.dart';
-import '../../datasources/local_storage_data_source.dart';
+import '../../data_sources/local_storage_data_source.dart';
+
 
 class LocalStorageRepositoryImpl implements LocalStorageRepository {
   final LocalStorageDataSource localStorageDataSource;

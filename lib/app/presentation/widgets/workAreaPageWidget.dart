@@ -52,9 +52,9 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
   }
 
   _loadVersion() async {
-    String _version = await DeviceInfo.getVersionCodeNameApp;
-    String _namePhone = await DeviceInfo.getDeviceMarca;
-    _namePhone = _namePhone + " " + await DeviceInfo.getNameDevice;
+    String _version = await DeviceInfoApp.getVersionCodeNameApp;
+    String _namePhone = await DeviceInfoApp.getDeviceMarca;
+    _namePhone = _namePhone + " " + await DeviceInfoApp.getNameDevice;
     _namePhone = "";
 
     setState(() {
@@ -77,10 +77,13 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
 
   Widget getDesingImgProceso() {
     final responsive = ResponsiveUtil();
+    return Container();
+    /*
+    TODO: comentado
     return Obx(() {
-      if (SiipneImages.imgCabeceraProceso.value.length > 10) {
+      if (SiipneEleccionesImages.imgCabeceraProceso.value.length > 10) {
         var imgMemory = PhotoHelper.convertStringToUint8List(
-            SiipneImages.imgCabeceraProceso.value);
+            SiipneEleccionesImages.imgCabeceraProceso.value);
         // Puedes procesar imgCabeceraProceso y convertirla a un widget
         return imgMemory != null
             ? Positioned(
@@ -100,7 +103,7 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
       } else {
         return Container();
       }
-    });
+    });*/
   }
 
   Widget desingContenido() {
@@ -203,10 +206,9 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
   Widget getBtnHome() {
     final responsive = ResponsiveUtil();
     return Positioned(
-        top: responsive.altoP(2),
+        top: responsive.altoP(5),
         right: 10,
         child: BtnIconWidget(
-
           onPressed: widget.onPressedBtnHome,
           icon: Icons.menu,
           titulo: "Home",

@@ -14,7 +14,7 @@ class AppImages{
   static const anuncio1 = _rutaImg + "anuncio1.png";
   static const web = _rutaImg + "web.png";
   static const pdf = _rutaImg + "pdf.png";
-
+  static const imgLocationAccess = _rutaImg + "location_access.png";
 
 
 
@@ -30,6 +30,7 @@ class AppImages{
   static const ic_empresa = _rutaIcon + "ic_empresa.png";
 
 
+  static const imgIconD = _rutaIcon + "iconD.png";
 
 
 

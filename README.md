@@ -12,6 +12,10 @@ Tools • Dart 3.7.2 • DevTools 2.42.3
 
 Bienvenido a este proyecto Flutter. Consulta el [Changelog](CHANGELOG.md) para ver los cambios recientes.
 
+## AL USAR EL BIOMETRICO SE DEBE AGREGAR EN EL INFO.LITS DE  IOS
+
+	<key>NSFaceIDUsageDescription</key>
+	<string>La aplicación utiliza Face ID para brindar mayor seguridad al verificar la identidad al generar los códigos temporales.</string>
 
 
 ## Getting Started

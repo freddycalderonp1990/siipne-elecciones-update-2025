@@ -3,13 +3,13 @@ import 'dart:io';
 
 
 
-import 'device_info.dart';
+import 'device_info_app.dart';
 
 class MyFile{
 
 
   static Future<File> getFile(String name) async {
-    final path = await DeviceInfo.getLocalPath;
+    final path = await DeviceInfoApp.getLocalPath;
 
     name=name.replaceAll('-', '_');
     name=name.replaceAll('.jpg', '');

@@ -63,10 +63,10 @@ class TiposServiciosEjesPage extends GetView<TiposServiciosEjesController> {
                 ? Flexible(child: BtnMenuWidget(
                 horizontal: true,
                 colorFondo: Colors.white,
-                img: SiipneImages.icon_abrir_rec_elec,
+                img: SiipneEleccionesImages.icon_abrir_rec_elec,
                 title: 'SERVICIO EN RECINTOS',
                 onTap: () {
-                  Get.toNamed(SiipneRoutes.CREAR_CODIGO_RECINTOS);
+                  Get.toNamed(EleccionesRoutes.CREAR_CODIGO_RECINTOS);
                 }))
                 : Container(),
             SizedBox(
@@ -75,11 +75,11 @@ class TiposServiciosEjesPage extends GetView<TiposServiciosEjesController> {
             controller.tipoEjesActivos.value.tipoEjeUnidadesPoliciales
                 ? Flexible(child: BtnMenuWidget(
               horizontal: true,
-              img: SiipneImages.icon_agregar_personal,
+              img: SiipneEleccionesImages.icon_agregar_personal,
               title: SiipneStrings.UNIDADESPOLICIALES,
               onTap: () {
 
-                Get.toNamed(SiipneRoutes.CREAR_CODIGO_UNIDADES_POLI);
+                Get.toNamed(EleccionesRoutes.CREAR_CODIGO_UNIDADES_POLI);
 
               },
             ))
@@ -98,7 +98,7 @@ class TiposServiciosEjesPage extends GetView<TiposServiciosEjesController> {
 
         controller.tipoEjesActivos.value.tipoEjeOtros
             ? BtnMenuWidget(
-          img: SiipneImages.icon_registrar_novedades_rec_elec,
+          img: SiipneEleccionesImages.icon_registrar_novedades_rec_elec,
           title: 'OTROS',
           onTap: () {},
         )

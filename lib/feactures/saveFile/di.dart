@@ -1,6 +1,5 @@
 
 import 'package:get/get.dart';
-import 'package:tutorial_coach_mark/tutorial_coach_mark.dart';
 
 import 'data/datasources/file_remote_data_source.dart';
 import 'data/repository/file_repository_impl.dart';

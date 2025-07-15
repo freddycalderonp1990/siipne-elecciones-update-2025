@@ -37,7 +37,7 @@ class ComboDependienteController extends GetxController {
   Future<void> getSubsistemas({required int idGenUsuario}) async {
     print("consultando getSubsistemas");
     // peticionServerState(true);
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       listSubsistema.value = await _eleccionesTipoEjesApiImpl
           .getUnidadesPoliciales(usuario: idGenUsuario);
       if (listSubsistema.length == 0) {
@@ -58,7 +58,7 @@ class ComboDependienteController extends GetxController {
     print("consultando");
     peticionServerState(true);
     List<UnidadesPoliciale> list = [];
-    bool result = await ExceptionHelper.manejarErroresShowDialogo(() async {
+    bool result = await ExceptionDialogos.manejarErroresShowDialogo(() async {
       list = await _eleccionesTipoEjesApiImpl.getTipoEjePorIdPadre(
         usuario: idGenUsuario,
         idDgoTipoEje: idDgoTipoEje,

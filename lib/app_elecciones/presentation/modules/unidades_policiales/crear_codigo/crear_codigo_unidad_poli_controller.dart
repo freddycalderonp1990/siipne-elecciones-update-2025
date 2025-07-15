@@ -60,7 +60,7 @@ class CrearCodigoUnidadPoliController extends GetxController {
   Future<void> getSubsistemas() async {
     print("consultando");
      peticionServerState(true);
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       listSubsistema.value = await _eleccionesTipoEjesApiImpl
           .getUnidadesPoliciales(usuario: user.idGenUsuario);
       if (listSubsistema.length == 0) {
@@ -77,7 +77,7 @@ class CrearCodigoUnidadPoliController extends GetxController {
     print("consultando");
     peticionServerState(true);
     List<UnidadesPoliciale> list = [];
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       list = await _eleccionesTipoEjesApiImpl.getTipoEjePorIdPadre(
           usuario: user.idGenUsuario, idDgoTipoEje: idDgoTipoEje);
     });
@@ -108,7 +108,7 @@ class CrearCodigoUnidadPoliController extends GetxController {
     peticionServerState(true);
     cargaInicial.value = true;
 
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
       LatLng position = await locationBloc.getCurrentPosition();
 
@@ -167,11 +167,11 @@ class CrearCodigoUnidadPoliController extends GetxController {
 
     late AbrirRecintoElectoral _abrirRecintoElectoral;
 
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
       LatLng position = await locationBloc.getCurrentPosition();
 
-      String ip = await DeviceInfo.getIp;
+      String ip = await DeviceInfoApp.getIp;
 
       CreateCodeRecintoRequest request = CreateCodeRecintoRequest(
           usuario: user.idGenUsuario,
@@ -250,7 +250,7 @@ class CrearCodigoUnidadPoliController extends GetxController {
         Container(
           height: 100,
           width: 100,
-          child: Image.asset(SiipneImages.imgIconD),
+          child: Image.asset(AppImages.imgIconD),
         ),
         DetalleTextWidget(
           todoElAncho: true,
@@ -267,7 +267,7 @@ class CrearCodigoUnidadPoliController extends GetxController {
             icon: Icons.check_circle,
             titulo: "Aceptar",
             onPressed: () {
-              Get.offAllNamed(SiipneRoutes.MENU_APP);
+              Get.offAllNamed(EleccionesRoutes.MENU_APP);
             })
       ],
     );

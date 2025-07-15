@@ -71,7 +71,7 @@ class AnexarseController extends GetxController {
     }
     peticionServerState(true);
 
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       datosEncargado.value = await _eleccionesRecintosApiImpl
           .consultarDatosEncargadoRecintoPoridCreaRecinto(
               idDgoCreaOpReci: idDgoCreaOpReci);
@@ -105,7 +105,7 @@ class AnexarseController extends GetxController {
 
   Future<void> getUnidadesPolicialesById(int idDgoTipoEje) async {
     peticionServerState(true);
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       listUnidadesPoliciales.value = await _eleccionesTipoEjesApiImpl
           .getUnidadesPolicialesById(idDgoTipoEje: idDgoTipoEje);
     });
@@ -115,10 +115,10 @@ class AnexarseController extends GetxController {
   Future<void> registrarse() async {
     peticionServerState(true);
 
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
       LatLng position = await locationBloc.getCurrentPosition();
-      String ip = await DeviceInfo.getIp;
+      String ip = await DeviceInfoApp.getIp;
 
       //se realiza esta validacion ya que en la web si  el idDgoTipoEje es = 1, se considera que este dentro del rango
 
@@ -149,7 +149,7 @@ class AnexarseController extends GetxController {
 
       DialogosAwesome.getSucess(
           descripcion: "¡Proceso realizado con éxito!", btnOkOnPress: () {
-        Get.offAllNamed(SiipneRoutes.MENU_APP);
+        Get.offAllNamed(EleccionesRoutes.MENU_APP);
       });
     });
     peticionServerState(false);

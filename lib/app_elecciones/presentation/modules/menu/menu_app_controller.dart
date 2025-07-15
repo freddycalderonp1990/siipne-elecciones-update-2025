@@ -1,6 +1,6 @@
 part of '../controllers.dart';
 
-class MenuAppController extends GetxController {
+class MenuAppEleccionesController extends GetxController {
   final loginController = Get.find<LoginController>();
   final EleccionesProcesosApiImpl _eleccionesProcesosApiImpl =
       Get.find<EleccionesProcesosApiImpl>();
@@ -41,7 +41,7 @@ class MenuAppController extends GetxController {
 
   Future<void> verificarperAsignadoRecElectoral() async {
     peticionServerState(true);
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       int idGenPersona = user.idGenPersona;
       recintosElectoralesAbiertos = await _eleccionesRecintosApiImpl
           .verificarperAsignadoRecElectoral(idGenPersona: idGenPersona);
@@ -59,11 +59,11 @@ class MenuAppController extends GetxController {
       if (recintosElectoralesAbiertos.isJefe) {
         //Menu Recintos Electorales
         print('Menu Recintos Electorales');
-        goToPage(SiipneRoutes.MENU_RECINTOS_ELECTORALES_JEFE,);
+        goToPage(EleccionesRoutes.MENU_RECINTOS_ELECTORALES_JEFE,);
 
       } else {
         //Menu Unidades Policiales u Otros
-        goToPage(SiipneRoutes.MENU_RECINTOS_ELECTORALES_INTEGRANTE,);
+        goToPage(EleccionesRoutes.MENU_RECINTOS_ELECTORALES_INTEGRANTE,);
       }
 
   }
@@ -72,13 +72,13 @@ class MenuAppController extends GetxController {
     peticionServerState(true);
 
     List<DatosProcesoImg> listDatosProcesoImg = <DatosProcesoImg>[];
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       listDatosProcesoImg =
           await _eleccionesProcesosApiImpl.getProcesoActivoImgs();
     });
 
     if (listDatosProcesoImg.length > 0) {
-      SiipneImages.imgCabeceraProceso.value = listDatosProcesoImg[0].imgBase64;
+      SiipneEleccionesImages.imgCabeceraProceso.value = listDatosProcesoImg[0].imgBase64;
     }
 
     peticionServerState(false);

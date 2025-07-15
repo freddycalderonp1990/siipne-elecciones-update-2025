@@ -60,10 +60,10 @@ class MenuRecElecJefePage
             Flexible(
               child: BtnMenuWidget(
                   horizontal: true,
-                  img: SiipneImages.icon_agregar_personal,
+                  img: SiipneEleccionesImages.icon_agregar_personal,
                   title: SiipneStrings.recElecAgregarpersonal,
                   onTap: () {
-                    Get.toNamed(SiipneRoutes.ADD_PERSONAL, arguments: {
+                    Get.toNamed(EleccionesRoutes.ADD_PERSONAL, arguments: {
                       "recintosElectoralesAbiertos":
                           controller.recintosElectoralesAbiertos
                     });
@@ -75,10 +75,10 @@ class MenuRecElecJefePage
             Flexible(
               child: BtnMenuWidget(
                   horizontal: true,
-                  img: SiipneImages.icon_registrar_novedades_rec_elec,
+                  img: SiipneEleccionesImages.icon_registrar_novedades_rec_elec,
                   title: SiipneStrings.recElecRegistrarNovedades,
                   onTap: () {
-                    Get.toNamed(SiipneRoutes.ADD_NOVEDADES, arguments: {
+                    Get.toNamed(EleccionesRoutes.ADD_NOVEDADES, arguments: {
                       "recintosElectoralesAbiertos":
                           controller.recintosElectoralesAbiertos
                     });
@@ -94,7 +94,7 @@ class MenuRecElecJefePage
             Flexible(
               child: BtnMenuWidget(
                   horizontal: true,
-                  img: SiipneImages.icon_finalizar_rec_elec,
+                  img: SiipneEleccionesImages.icon_finalizar_rec_elec,
                   title: "FINALIZAR RECINTO",
                   onTap: () {
                     _dialogoFinalizarRecinto(
@@ -109,7 +109,7 @@ class MenuRecElecJefePage
             Flexible(
               child: BtnMenuWidget(
                   horizontal: true,
-                  img: SiipneImages.icon_eliminar_rec_elec,
+                  img: SiipneEleccionesImages.icon_eliminar_rec_elec,
                   title: "ELIMINAR CÓDIGO",
                   onTap: () {
                     String msj =

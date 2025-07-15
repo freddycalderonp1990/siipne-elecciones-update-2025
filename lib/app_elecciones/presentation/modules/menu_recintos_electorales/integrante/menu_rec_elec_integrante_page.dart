@@ -60,10 +60,10 @@ class MenuRecElecIntegrantePage
               child: BtnMenuWidget(
                   horizontal: true,
 
-                  img: SiipneImages.icon_registrar_novedades_rec_elec,
+                  img: SiipneEleccionesImages.icon_registrar_novedades_rec_elec,
                   title: SiipneStrings.recElecRegistrarNovedades,
                   onTap: () {
-                    Get.toNamed(SiipneRoutes.ADD_NOVEDADES, arguments: {
+                    Get.toNamed(EleccionesRoutes.ADD_NOVEDADES, arguments: {
                       "recintosElectoralesAbiertos":
                           controller.recintosElectoralesAbiertos,
                       "shorReporte": false
@@ -76,7 +76,7 @@ class MenuRecElecIntegrantePage
             Flexible(
               child: BtnMenuWidget(
                   horizontal: true,
-                  img: SiipneImages.icon_abandonar_rec_elec,
+                  img: SiipneEleccionesImages.icon_abandonar_rec_elec,
                   title: "ABANDONAR CÓDIGO",
                   onTap: () {
                     DialogosAwesome.getIconPolicia(

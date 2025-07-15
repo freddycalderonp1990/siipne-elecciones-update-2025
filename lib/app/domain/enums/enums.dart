@@ -1,4 +1,3 @@
-enum Ambiente { desarrollo, prueba, produccion }
 
 enum PageAppsSelect { Siipne, Bienvenida, Public }
 

@@ -1,7 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../app_elecciones/core/utils/photo_helper.dart';
+
+import '../../core/utils/photo_helper.dart';
 import '../../core/utils/responsiveUtil.dart';
 import '../../core/values/app_colors.dart';
 import '../../core/values/app_images.dart';

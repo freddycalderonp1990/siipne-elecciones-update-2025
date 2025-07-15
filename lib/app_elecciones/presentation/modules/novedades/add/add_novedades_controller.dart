@@ -135,7 +135,7 @@ class AddNovedadesController extends GetxController {
 
   Future<void> getNovedadesPadres() async {
     peticionServerState(true);
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       GetNovedadesPadresRequest request = GetNovedadesPadresRequest(
         idDgoProcElec: recintosElectoralesAbiertos.idDgoProcElec,
         idDgoReciElect: recintosElectoralesAbiertos.idDgoReciElect,
@@ -160,7 +160,7 @@ class AddNovedadesController extends GetxController {
 
     List<NovedadesElectorale> novedades = [];
 
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       GetNovedadesHijasRequest request = GetNovedadesHijasRequest(
         idDgoProcElec: recintosElectoralesAbiertos.idDgoProcElec,
         idDgoReciElect: recintosElectoralesAbiertos.idDgoReciElect,
@@ -195,7 +195,7 @@ class AddNovedadesController extends GetxController {
 
   goToPageReporteNovedades() {
     Get.toNamed(
-      SiipneRoutes.REPORT_NOVEDADES,
+      EleccionesRoutes.REPORT_NOVEDADES,
       arguments: {"recintosElectoralesAbiertos": recintosElectoralesAbiertos},
     );
   }
@@ -213,7 +213,7 @@ class AddNovedadesController extends GetxController {
 
     datosHora = datos;
 
-    selectHora = DateFormat(SiipneConfig.formatoSoloHora).format(selectedDate);
+    selectHora = DateFormat(SiipneEleccionesConfig.formatoSoloHora).format(selectedDate);
     ;
   }
 
@@ -229,7 +229,7 @@ class AddNovedadesController extends GetxController {
 
     datosMinuto = datos;
     selectMinuto = DateFormat(
-      SiipneConfig.formatoSoloMinuto,
+      SiipneEleccionesConfig.formatoSoloMinuto,
     ).format(selectedDate);
   }
 
@@ -245,7 +245,7 @@ class AddNovedadesController extends GetxController {
     }
 
     peticionServerState(true);
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       datosPerson.value = await _personaApiImpl.getDatosPersona(
         usuario: user.idGenUsuario,
         cedula: controllerCedula.text,
@@ -273,7 +273,7 @@ class AddNovedadesController extends GetxController {
 
   Future<bool> guardarImagen() async {
     bool insertImg = false;
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       String path = dotenv.env['PATH_IMG_APP_ELECCIONES'] ?? '';
 
       String nameFile = recintosElectoralesAbiertos.descProcElecc;
@@ -392,10 +392,10 @@ class AddNovedadesController extends GetxController {
 
     String resultInsert = "";
     peticionServerState(true);
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
       LatLng position = await locationBloc.getCurrentPosition();
-      String ip = await DeviceInfo.getIp;
+      String ip = await DeviceInfoApp.getIp;
 
       AddNovedadesRequest request = AddNovedadesRequest(
         idDgoPerAsigOpe: idDgoPerAsigOpe,

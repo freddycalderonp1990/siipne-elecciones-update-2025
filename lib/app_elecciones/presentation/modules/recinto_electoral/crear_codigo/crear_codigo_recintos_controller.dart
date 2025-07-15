@@ -51,7 +51,7 @@ class CrearCodigoRecintosController extends GetxController {
     // peticionServerState(true);
     cargaInicial.value = true;
 
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
       LatLng position = await locationBloc.getCurrentPosition();
 
@@ -131,11 +131,11 @@ class CrearCodigoRecintosController extends GetxController {
 
     late AbrirRecintoElectoral _abrirRecintoElectoral;
 
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
       LatLng position = await locationBloc.getCurrentPosition();
 
-      String ip = await DeviceInfo.getIp;
+      String ip = await DeviceInfoApp.getIp;
 
       CreateCodeRecintoRequest request = CreateCodeRecintoRequest(
           usuario: user.idGenUsuario,
@@ -214,7 +214,7 @@ class CrearCodigoRecintosController extends GetxController {
         Container(
           height: 100,
           width: 100,
-          child: Image.asset(SiipneImages.imgIconD),
+          child: Image.asset(AppImages.imgIconD),
         ),
         DetalleTextWidget(
           todoElAncho: true,
@@ -231,7 +231,7 @@ class CrearCodigoRecintosController extends GetxController {
             icon: Icons.check_circle,
             titulo: "Aceptar",
             onPressed: () {
-              Get.offAllNamed(SiipneRoutes.MENU_APP);
+              Get.offAllNamed(EleccionesRoutes.MENU_APP);
             })
       ],
     );

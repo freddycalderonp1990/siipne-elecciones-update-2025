@@ -42,7 +42,7 @@ class _BtnMenuWidgetState extends State<BtnMenuWidget> {
           child: widget.img!=null? Image.asset(
             widget.img,
           ):Image.asset(
-            SiipneImages.iconNoImg,
+            SiipneEleccionesImages.iconNoImg,
           ),
         ),
         SizedBox(
@@ -75,7 +75,7 @@ class _BtnMenuWidgetState extends State<BtnMenuWidget> {
           child: widget.img!=null? Image.asset(
             widget.img,
           ):Image.asset(
-            SiipneImages.iconNoImg,
+            SiipneEleccionesImages.iconNoImg,
           ),
         ),
         SizedBox(

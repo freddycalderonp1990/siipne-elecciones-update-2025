@@ -63,8 +63,8 @@ class ReportPersonController extends GetxController {
   Future<void> removePersonalOperativo(PersonalRecintoElectoral data) async {
     peticionServerState(true);
 
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
-      String ip = await DeviceInfo.getIp;
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
+      String ip = await DeviceInfoApp.getIp;
       final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
       LatLng position = await locationBloc.getCurrentPosition();
 
@@ -101,7 +101,7 @@ class ReportPersonController extends GetxController {
     peticionServerState(true);
     listPersonalActivo.clear();
 
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       List<PersonalRecintoElectoral> datos =
           await _personaApiImpl.consultarDatosPersonalAsignadoRecintoElectoral(
             idDgoReciElect: recintosElectoralesAbiertos.idDgoReciElect,

@@ -63,7 +63,7 @@ class ReportNovedadesController extends GetxController {
     peticionServerState(true);
     listNovedadesElectorales.clear();
 
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       GetNovedadesRegistradasdRequest request=GetNovedadesRegistradasdRequest(
         idDgoReciElect: recintosElectoralesAbiertos.idDgoReciElect,
         idDgoProcElec: recintosElectoralesAbiertos.idDgoProcElec,

@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../../app_elecciones/core/values/mensajes_string.dart';
-import '../../../app_elecciones//presentation/widgets/customWidgets.dart';
-import '../../presentation/widgets/custom_app_widgets.dart';
+
 
 class MyQr{
 

@@ -82,7 +82,7 @@ class AddPersonController extends GetxController {
     }
 
     peticionServerState(true);
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       datosPerson.value = await _personaApiImpl.getDatosPersona(
         idDgoProcElec: recintosElectoralesAbiertos.idDgoProcElec,
           usuario: user.idGenUsuario, cedula: controllerDocumento.text);
@@ -108,7 +108,7 @@ class AddPersonController extends GetxController {
 
   Future<void> getSubsistemas() async {
     peticionServerState(true);
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       listSubsistema.value = await _eleccionesTipoEjesApiImpl
           .getUnidadesPoliciales(usuario: user.idGenUsuario);
       if (listSubsistema.length == 0) {
@@ -125,7 +125,7 @@ class AddPersonController extends GetxController {
     print("consultando");
     peticionServerState(true);
     List<UnidadesPoliciale> list = [];
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       list = await _eleccionesTipoEjesApiImpl.getTipoEjePorIdPadre(
           usuario: user.idGenUsuario, idDgoTipoEje: idDgoTipoEje);
     });
@@ -154,10 +154,10 @@ class AddPersonController extends GetxController {
   Future<void> addPersona() async {
     peticionServerState(true);
 
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
       LatLng position = await locationBloc.getCurrentPosition();
-      String ip = await DeviceInfo.getIp;
+      String ip = await DeviceInfoApp.getIp;
       AddPersonalRequest request = AddPersonalRequest(
           idDgoCreaOpReci: recintosElectoralesAbiertos.idDgoCreaOpReci,
           idDgoProcElec: recintosElectoralesAbiertos.idDgoProcElec,
@@ -218,7 +218,7 @@ class AddPersonController extends GetxController {
   }
 
   goToPageReportePersonal() {
-    Get.toNamed(SiipneRoutes.REPORT_PERSONAL, arguments: {
+    Get.toNamed(EleccionesRoutes.REPORT_PERSONAL, arguments: {
       "recintosElectoralesAbiertos": recintosElectoralesAbiertos
     });
   }

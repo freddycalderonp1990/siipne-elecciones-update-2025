@@ -76,10 +76,10 @@ final UserEntities user=await _localStoreImpl.getUserModel();
     if (confHuella || codePin.length > 2) {
       print('SPLASH: CARGAR INICIO RAPIDO');
       // Get.offAllNamed(AppRoutes.LOGIN_RAPIDO);
-      Get.offAllNamed(SiipneRoutes.LOGIN_RAPIDO);
+      Get.offAllNamed(UserRoutes.LOGIN_RAPIDO);
     } else {
       print('SPLASH: CARGAR LOGIN');
-      Get.offAllNamed(SiipneRoutes.LOGIN);
+      Get.offAllNamed(UserRoutes.LOGIN);
     }
   }
 
@@ -102,7 +102,7 @@ final UserEntities user=await _localStoreImpl.getUserModel();
         bool isAndroid = GetPlatform.isAndroid;
         int versionCodeApp = 0;
 
-        versionCodeApp = int.parse(await DeviceInfo.getVersionCode);
+        versionCodeApp = int.parse(await DeviceInfoApp.getVersionCode);
         PrintsMsj.myLog(tag: tag, title: "verificarVersionApp", detalle: "iniciarConsulta");
         peticionServerState(true);
 
@@ -134,9 +134,9 @@ final UserEntities user=await _localStoreImpl.getUserModel();
             title: "ACTUALIZAR LA APP",
             descripcion: MensajesString.msjNuevaVersionApp,
             btnOkOnPress: () async {
-              String url = SiipneConfig.linkAppIos;
+              String url = AppConfig.linkAppIos;
               if (GetPlatform.isAndroid) {
-                url = SiipneConfig.linkAppAndroid;
+                url = AppConfig.linkAppAndroid;
               }
 
               await UtilidadesUtil.abrirUrl(url);

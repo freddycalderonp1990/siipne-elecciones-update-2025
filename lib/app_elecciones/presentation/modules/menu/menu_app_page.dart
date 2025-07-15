@@ -1,14 +1,13 @@
 part of '../pages.dart';
 
-class MenuAppPage extends GetView<MenuAppController> {
-  const MenuAppPage({Key? key}) : super(key: key);
+class MenuAppEleccionesPage extends GetView<MenuAppEleccionesController> {
+  const MenuAppEleccionesPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
-      title: "MENÚ PRINCIPAL",
+      title: "MENÚ ELECCIONES",
       contenido:  getContenido(),
-
       peticionServer: controller.peticionServerState,
     );
   }
@@ -59,9 +58,9 @@ class MenuAppPage extends GetView<MenuAppController> {
           child: BtnMenuWidget(
             horizontal: true,
             colorFondo: Colors.white,
-            img: SiipneImages.icon_abrir_rec_elec,
+            img: SiipneEleccionesImages.icon_abrir_rec_elec,
             title: SiipneStrings.CREARCODIGO,
-            onTap: () => Get.toNamed(SiipneRoutes.SELECT_PROCESO_OPERATIVOS),
+            onTap: () => Get.toNamed(EleccionesRoutes.SELECT_PROCESO_OPERATIVOS),
           ),
         ),
         SizedBox(width: responsive.anchoP(2)),
@@ -69,9 +68,9 @@ class MenuAppPage extends GetView<MenuAppController> {
           child: BtnMenuWidget(
             horizontal: true,
             colorFondo: Colors.white,
-            img: SiipneImages.icon_registrarse_rec_elect,
+            img: SiipneEleccionesImages.icon_registrarse_rec_elect,
             title: SiipneStrings.ANEXARSE,
-            onTap: () => Get.toNamed(SiipneRoutes.ANEXARSE),
+            onTap: () => Get.toNamed(EleccionesRoutes.ANEXARSE),
           ),
         ),
       ],

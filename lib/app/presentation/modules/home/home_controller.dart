@@ -3,7 +3,7 @@ part of '../controllers.dart';
 class HomeController extends GetxController {
   final LocalStoreUseCase _localStoreImpl = Get.find<LocalStoreUseCase>();
 
-  RxList<ApsQr> listApsQr = <ApsQr>[].obs;
+
   var controllerAppName = new TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -35,19 +35,8 @@ class HomeController extends GetxController {
   setAppPageSelect(PageAppsSelect value) async {
     await _localStoreImpl.setAppPageSelect(value.toString());
     print("holalalalalala");
-
     Get.offAllNamed(AppRoutes.SPLASH_APP);
   }
-
-  static const maxSeconds = 30;
-  RxInt seconds = maxSeconds.obs;
-  RxInt seconds2 = 0.obs;
-  RxDouble valueRadio = 100.0.obs;
-  Timer? timer;
-  RxBool generarCodes = true.obs;
-
-
-
 
 
 }

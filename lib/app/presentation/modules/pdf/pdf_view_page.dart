@@ -10,7 +10,6 @@ class PdfViewPage extends GetView<PdfViewController> {
     final responsive = ResponsiveUtil();
 
 
-
     return Scaffold(
 
 

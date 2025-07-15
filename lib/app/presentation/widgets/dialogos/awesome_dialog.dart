@@ -180,7 +180,7 @@ class DialogosAwesome {
       dialogType: DialogType.info,
       headerAnimationLoop: false,
       customHeader: Container(
-        child: Image.asset(SiipneImages.imgIconD),
+        child: Image.asset(AppImages.escudopolicia),
       ),
       animType: AnimType.scale,
       title: title,

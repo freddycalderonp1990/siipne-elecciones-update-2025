@@ -1,10 +1,10 @@
 part of '../bindings.dart';
 
-class MenuAppBinding extends Bindings {
+class MenuAppEleccionesBinding extends Bindings {
   @override
   void dependencies() {
     //Inyeccion de dependencias
-    Get.lazyPut(() => MenuAppController(), fenix: true);
+    Get.lazyPut(() => MenuAppEleccionesController(), fenix: true);
 
 
   }

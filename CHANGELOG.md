@@ -22,11 +22,12 @@
 - Se agrego el idDgpGrado, para ser inseerrtado en la tabla dgoPerAsigOpe
 - 
 
-### Agregar Nuevo Personal
+### Agregar Nuevo Personal 
 - Se permite agregar personal nuevo que aún no está registrado y no tiene grado en el **SIIPNE 3W**.
 - Estos registros se almacenan en la tabla temporal `dgoNoUsuarios`, donde se guardan junto con su grado y proceso.
 - Se realiza la verificación según la **cédula**, **estado** y **proceso**.
 - Importante: Si un usuario ya está registrado en un proceso diferente (por ejemplo, `9`), pero se crea el proceso `10`, no se encontrará a menos que coincidan los procesos.
+- al final no se considero pero la funcionalidad se encuentra implementada
 
 ### 🚀 Finalizar Recinto
 - Antes, solo validaba si era un recinto con la hora configurada para permitir su finalización.
@@ -47,3 +48,13 @@
 - Automatización Mejorada: Procesos optimizados para mayor rapidez y eficiencia.
 - Mayor Estabilidad y Rendimiento: Correcciones de errores y mejoras en la velocidad.
 - Nuevas Funcionalidades: Incorporamos mejoras para hacer tu experiencia aún mejor.
+
+### INICIO DEL DESARROLLO PARA CENSO POLICIAL 
+
+### 04-julio-2025
+- se cambia el auth del aplicativo al uri appmovil/apis/v2/auth/read.php el mismo que solo retorna el token
+- se obtiene los datos del usuario desde la uri appmovil/apis/v1/user/read.php
+
+### PROCESO CENSOS
+- select * from genEncPrueba
+- /Volumes/siipne/appmovil/clases/constantesModulos.php  - AGREGAR EL MODULO

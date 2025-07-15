@@ -92,7 +92,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20.0),
                 child: Image.asset(
-                  SiipneImages.icon_camara,
+                  SiipneEleccionesImages.icon_camara,
                   width: responsive.altoP(6.0),
                 ),
               ),

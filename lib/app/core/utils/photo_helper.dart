@@ -1,3 +1,6 @@
+// para importar import 'package:image/image.dart' as Img;
+// image: ^4.5.4 #Para trabajar con imagenes de la galeria
+
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
@@ -17,12 +20,14 @@ import 'package:path_provider/path_provider.dart';
 import '../../../../../app/core/utils/my_date.dart';
 import '../../../../../app/core/utils/responsiveUtil.dart';
 import '../../../../../app/core/utils/utilidadesUtil.dart';
-import '../../../../../app_elecciones/core/values/siipne_images.dart';
-import '../../../../../app_elecciones/presentation/widgets/customWidgets.dart';
 
+
+import '../../presentation/widgets/custom_app_widgets.dart';
 import '../app_config.dart';
 import '../values/app_colors.dart';
 import '../values/app_images.dart';
+
+//
 
 class PhotoHelper {
   static Future<GaleryCameraModel?> getDesingPictureGaleryOrCamera({
@@ -37,7 +42,7 @@ class PhotoHelper {
       context: Get.context!,
       dialogType: DialogType.info,
       headerAnimationLoop: false,
-      customHeader: Container(child: Image.asset(SiipneImages.imgIconD)),
+      customHeader: Container(child: Image.asset("TODO: SET FOTO")),
       animType: AnimType.scale,
       title: "Registre una Fotografia",
       btnCancel: BtnIconWidget(

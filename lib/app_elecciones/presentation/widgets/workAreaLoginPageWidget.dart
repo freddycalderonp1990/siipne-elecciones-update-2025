@@ -44,7 +44,7 @@ class _WorkAreaLoginPageWidgetState extends State<WorkAreaLoginPageWidget> {
   }
 
   _loadVersion() async {
-    String _version = await DeviceInfo.getVersionCodeNameApp;
+    String _version = await DeviceInfoApp.getVersionCodeNameApp;
     setState(() {
       version = _version;
     });
