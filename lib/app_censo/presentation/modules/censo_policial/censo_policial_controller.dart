@@ -3,7 +3,7 @@ part of '../controllers.dart';
 class CensoPolicialController extends GetxController {
   final loginController = Get.find<LoginController>();
 
-
+final TotpCensoController totpCensoController= Get.find<TotpCensoController>();
 
 
 

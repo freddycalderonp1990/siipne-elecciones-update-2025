@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../app/core/utils/responsiveUtil.dart';
 import '../../../../app/core/values/app_images.dart';
 
+import '../../../../app/domain/enums/enums.dart';
 import '../../../../app/presentation/widgets/custom_app_widgets.dart';
 import '../bloc/gps/gps_bloc.dart';
 import '../location/location_bloc.dart';
@@ -13,9 +14,10 @@ import '../location/location_bloc.dart';
 
 class GpsAccessScreen extends StatelessWidget {
   final Widget contenido;
+  final NamApps namApps;
 
 
-  const GpsAccessScreen({Key? key, required this.contenido}) : super(key: key);
+  const GpsAccessScreen({Key? key, required this.contenido, required this.namApps}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -52,21 +54,24 @@ class GpsAccessScreen extends StatelessWidget {
         }
 
         return !state.isGpsEnabled
-            ? const _EnableGpsMessage()
-            : const _AccessButton();
+            ? _EnableGpsMessage(namApps: namApps,)
+            :  _AccessButton(namApps: namApps,);
       },
     );
   }
 }
 
 class _AccessButton extends StatelessWidget {
+  final NamApps namApps;
   const _AccessButton({
-    Key? key,
+    Key? key, required this.namApps,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     return MensajePermisoGps(
+      namApps: namApps,
       title: 'PERMISOS NECESARIOS',
       onPressed: () {
         final gpsBloc = BlocProvider.of<GpsBloc>(context);
@@ -80,7 +85,9 @@ class _AccessButton extends StatelessWidget {
 class MensajePermisoGps extends StatelessWidget {
   final String title;
   final VoidCallback? onPressed;
-  const MensajePermisoGps({super.key, required this.title, this.onPressed});
+  final NamApps namApps;
+
+  const MensajePermisoGps({super.key, required this.title, this.onPressed, required this.namApps});
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +122,7 @@ class MensajePermisoGps extends StatelessWidget {
                     AppImages.imgLocationAccess,
                     height: responsive.diagonalP(8),
                   ),
-                  getWdMsjElecciones(),
+                  getMensajeGps(this.namApps),
                   SizedBox(
                     height: 5,
                   ),
@@ -133,6 +140,22 @@ class MensajePermisoGps extends StatelessWidget {
             ),
           )),
     );
+  }
+
+  Widget getMensajeGps(NamApps namApps ){
+    Widget wg=Container();
+    switch (namApps) {
+      case NamApps.Elecciones:
+        wg=getWdMsjElecciones();
+        break;
+      case NamApps.Censo:
+        wg=getWdMsjAppCenso();
+        break;
+      default:
+        wg=Container();
+    }
+
+    return wg;
   }
 
   Widget getWdMsjElecciones() {
@@ -158,16 +181,42 @@ class MensajePermisoGps extends StatelessWidget {
       ],
     );
   }
+
+  Widget getWdMsjAppCenso() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        TituloDetalleTextWidget(
+
+          title: "1)",
+          detalle: "Verificar los procesos de censo cercanos a tu ubicación.",
+        ),
+        TituloDetalleTextWidget(
+          title: "2)",
+          detalle:
+          "Mostrar las mesas según la ubicación donde te encuentres.",
+        ),
+
+      ],
+    );
+  }
 }
 
 class _EnableGpsMessage extends StatelessWidget {
+  final NamApps namApps;
+
   const _EnableGpsMessage({
-    Key? key,
+
+    Key? key, required this.namApps,
+
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MensajePermisoGps(
+      namApps: namApps,
+
       title: 'ACTIVE EL GPS',
     );
   }

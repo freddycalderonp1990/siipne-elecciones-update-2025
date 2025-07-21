@@ -8,7 +8,7 @@ class MenuAppCensoPage extends GetView<MenuAppCensoController> {
     return WorkAreaPageWidget(
       mostrarBtnAtras: true,
       title: "MENÚ CENSO",
-      contenido:  getContenido(),
+      contenido: getContenido(),
       peticionServer: controller.peticionServerState,
     );
   }
@@ -28,7 +28,7 @@ class MenuAppCensoPage extends GetView<MenuAppCensoController> {
             sexo: controller.user.sexo,
             text: controller.user.nombres,
           ),
-          SizedBox(height: responsive.altoP(2                                                     )),
+          SizedBox(height: responsive.altoP(2)),
           Container(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -51,29 +51,43 @@ class MenuAppCensoPage extends GetView<MenuAppCensoController> {
   }
 
   _getMenu(ResponsiveUtil responsive) {
-
-
-    return Row(
+    return Column(
       children: [
-        Flexible(
-          child: BtnMenuWidget(
-
-            horizontal: true,
-            colorFondo: Colors.white,
-
-            img: AppCensoImages.ic_iniciar_censo,
-            title:"INICIAR CENSO",
-            onTap: () => Get.toNamed(AppCensoRoutes.CENSO_POLICIAL),
-          ),
+        Row(
+          children: [
+            Flexible(
+              child: BtnMenuWidget(
+                horizontal: true,
+                colorFondo: Colors.white,
+                img: AppCensoImages.ic_iniciar_censo,
+                title: "INICIAR CENSO",
+                onTap: () => Get.toNamed(AppCensoRoutes.CENSO_POLICIAL),
+              ),
+            ),
+            SizedBox(width: responsive.anchoP(2)),
+            Flexible(
+              child: BtnMenuWidget(
+                horizontal: true,
+                colorFondo: Colors.white,
+                img: AppCensoImages.ic_historial_censo,
+                title: "HISTORIAL CENSOS",
+                onTap: () => Get.toNamed(AppCensoRoutes.HISTORIAL_CENSO),
+              ),
+            ),
+          ],
         ),
-        SizedBox(width: responsive.anchoP(2)),
-        Flexible(
+
+        SizedBox(height: responsive.altoP(1)),
+
+        Container(
+          padding: EdgeInsets.symmetric(horizontal: responsive.anchoP(15)),
+
           child: BtnMenuWidget(
             horizontal: true,
             colorFondo: Colors.white,
-            img: AppCensoImages.ic_historial_censo,
-            title: "HISTORIAL CENSOS",
-            onTap: () => Get.toNamed(AppCensoRoutes.HISTORIAL_CENSO),
+            img: AppCensoImages.ic_iniciar_censo,
+            title: "CENSISTA",
+            onTap: () => Get.toNamed(AppCensoRoutes.CENSISTA),
           ),
         ),
       ],

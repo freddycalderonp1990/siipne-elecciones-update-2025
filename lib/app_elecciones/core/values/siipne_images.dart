@@ -32,7 +32,7 @@ class SiipneEleccionesImages {
   static const icon_usuario = rutaIcon + "icon_usuario.png";
   static const icon_usuario2 = rutaIcon + "icon_usuario2.png";
   static const icon_clave = rutaIcon + "icon_clave.png";
-  static const icon_camara = rutaIcon + "icon_camara.png";
+
   static const icon_huella = rutaIcon + "icon_huella.png";
 
   //Imagen en base64

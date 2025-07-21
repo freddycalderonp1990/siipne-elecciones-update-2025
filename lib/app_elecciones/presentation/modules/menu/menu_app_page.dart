@@ -6,6 +6,7 @@ class MenuAppEleccionesPage extends GetView<MenuAppEleccionesController> {
   @override
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
+      mostrarBtnAtras: true,
       title: "MENÚ ELECCIONES",
       contenido:  getContenido(),
       peticionServer: controller.peticionServerState,

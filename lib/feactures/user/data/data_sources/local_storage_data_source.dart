@@ -58,6 +58,8 @@ abstract class LocalStorageDataSource {
 
   Future<void> clearAllData();
 
+
+
 }
 
 const _PREF_TOKEN = 'TOKEN';
@@ -262,6 +264,18 @@ class LocalStorageDataSourceImpl implements LocalStorageDataSource {
   Future<void> setShowDataUser(bool value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setBool(_PREF_SHOW_DATA_USER, value);
+  }
+
+  @override
+  Future<String> getFechaServer() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getString(_PREF_FECHA_SERVER) ?? '';
+  }
+
+  @override
+  Future<void> setFechaServer(String value) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(_PREF_FECHA_SERVER, value);
   }
 
 

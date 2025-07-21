@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:developer';
 
 
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -11,6 +13,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:get/get.dart';
+import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 
 
 
@@ -19,15 +22,19 @@ import '../../../app/core/utils/responsiveUtil.dart';
 
 
 
+
 import '../../../feactures/gps/presentation/widgets/gps_access_screen.dart';
 import '../../../feactures/user/presentation/modules/controllers.dart';
 import '../../core/app_config.dart';
 import '../../core/utils/device_info_app.dart';
 
+
+
 import '../../core/values/app_colors.dart';
 import '../../core/values/app_images.dart';
 
 
+import '../../domain/enums/enums.dart';
 import 'img_perfil_redonda.dart';
 
 part 'btn_menu_img_widget.dart';
@@ -60,3 +67,5 @@ part 'text_lineas_widget.dart';
 part 'dialogos/awesome_dialog.dart';
 
 part 'btn_icon_widget.dart';
+
+

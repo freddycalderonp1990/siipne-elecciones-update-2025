@@ -3,6 +3,8 @@ part of 'custom_app_widgets.dart';
 class WorkAreaPageWidget extends StatefulWidget {
   final RxBool peticionServer;
 
+  final NamApps namApps;
+
   final Widget contenido;
 
   final ValueChanged<String>? onChangedBusqueda;
@@ -32,7 +34,7 @@ class WorkAreaPageWidget extends StatefulWidget {
       this.mostrarBtnAtras = false,
       this.onChangedBusqueda,
       this.onPressBtnAtras,
-      this.showGps = false});
+      this.showGps = false,  this.namApps=NamApps.Elecciones});
 
   @override
   _WorkAreaPageWidgetState createState() => _WorkAreaPageWidgetState();
@@ -110,7 +112,7 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
     final responsive = ResponsiveUtil();
 
     Widget wgContenido = widget.showGps
-        ? GpsAccessScreen(contenido: widget.contenido)
+        ? GpsAccessScreen(contenido: widget.contenido,namApps: widget.namApps,)
         : widget.contenido;
 
     return widget.title != null

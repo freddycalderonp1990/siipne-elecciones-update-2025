@@ -78,6 +78,16 @@ dependencies:
   flutter_map: ^7.0.2 #0.9.0 #mapas openstreetmap (TRAE latlong)
   # END LIBREARIAS GPS
 
+
+  # NECESARIOS QR
+  qr_code_scanner_plus: ^2.0.10+1 #Qr Scan reemplaza a qr_code_scanner: ^1.0.1
+  zxing2: ^0.2.3 #Leer data de qr desde Galeria
+  qr_flutter: ^4.1.0 #Generar Qr
+  # END QR
+
+
+  syncfusion_flutter_gauges: ^28.2.5 #Diseño de clave digital
+
   api_provider:
    git:
       url: https://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@github.com/freddycalderonp1990/paquete_api_provider.git

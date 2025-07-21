@@ -128,4 +128,8 @@ class LocalStoreUseCase {
   Future<void> setUserModel(UserEntities user) async {
     return repository.setUserModel(user);
   }
+
+
+
+
 }

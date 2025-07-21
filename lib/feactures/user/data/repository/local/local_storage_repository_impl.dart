@@ -128,4 +128,6 @@ class LocalStorageRepositoryImpl implements LocalStorageRepository {
   Future<void> setUserModel(UserEntities user) async {
     return localStorageDataSource.setUserModel(user);
   }
+
+
 }

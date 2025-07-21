@@ -24,6 +24,8 @@ class AppConfig {
 
   }
 
+  static const String key_securiry_qr="*dG@p5Yh%j6BwTEGO"; // no modificar ya que este coincide con el del server
+
 
   //CONFIGUARA QUE PAGUINA MUESTRA LUEGO DEL LOGIN
   static const String showPageBeforeLogin= AppRoutes.MENU_APP;
@@ -52,7 +54,7 @@ class AppConfig {
   static  String formatoHora =  'HH:mm';
 
   static const String nameAppSiipne3w="SIIPNE-3W";
-  static const String key_securiry_qr="*dG@p5Yh%j6BwTEGO";
+
 
   static const double radioBotones = 15.0;
 

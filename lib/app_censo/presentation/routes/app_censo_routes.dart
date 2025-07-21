@@ -5,5 +5,6 @@ class AppCensoRoutes{
 
   static const CENSO_POLICIAL="/${name}censo_policial";
   static const HISTORIAL_CENSO="/${name}historial_censo";
+  static const CENSISTA="/${name}censista";
 
 }

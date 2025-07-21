@@ -1,4 +1,4 @@
-// Archivo generado automáticamente
-// Nombre: app_censo_config.dart
-// Fecha: 2025-07-15
+class AppCensoConfi{
+  static const int longitudValidarMesa=50; //longitud en metros para validar la mesa
+}
 

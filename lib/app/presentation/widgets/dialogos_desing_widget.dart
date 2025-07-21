@@ -1,6 +1,79 @@
 part of 'custom_app_widgets.dart';
 
 class DialogosDesingWidget {
+
+  static getDialogoXClaveTemporal({String title = '', Widget? contenido, Widget? botones,required VoidCallback onPressedX}) {
+    final responsive = ResponsiveUtil();
+    return showDialog(
+        barrierDismissible: false,
+        context: Get.context!,
+        builder: (BuildContext context) {
+          return Dialog(
+            insetPadding: EdgeInsets.all( 10),
+
+            // Elimina el padding horizontal
+            child:Stack(
+              children: <Widget>[
+                Container(
+                  padding: EdgeInsets.all(10),
+
+
+                  decoration: new BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.rectangle,
+                    borderRadius:
+                    BorderRadius.circular(AppConfig.radioBordecajas),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black26,
+                        blurRadius: 16.0,
+                        offset: const Offset(0.0, 16.0),
+                      ),
+                    ],
+                  ),
+                  child: SingleChildScrollView(child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Text(
+                        title,
+                        style: TextStyle(
+                            fontSize: responsive.diagonalP(2.5),
+                            fontWeight: FontWeight.w700,
+                            color: Colors.blueAccent),
+                      ),
+                      SizedBox(height: responsive.altoP(1)),
+                      contenido != null ? contenido : Container(),
+                      SizedBox(height: responsive.altoP(1)),
+                      Align(
+                        alignment: Alignment.center,
+                        child: botones != null ? botones : Container(),
+                      ),
+                    ],
+                  ),),
+                ),
+                Positioned(
+                  right: 0,
+                  top: 0,
+                  child: TextButton.icon(
+                      onPressed: onPressedX,
+                      icon: Icon(
+
+
+                        Icons.cancel,
+                        color: Colors.red,
+                        size: responsive.diagonalP(AppConfig.tamIcons),
+                      ),
+                      label: Container()),
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+
+
+
   static getDialogoX({String title = '', Widget? contenido, Widget? botones}) {
     final responsive = ResponsiveUtil();
     return showDialog(

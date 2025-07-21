@@ -28,6 +28,7 @@ class AppImages{
   static const icon_clave = _rutaIcon + "icon_clave.png";
   static const icon_huella= _rutaIcon + "icon_huella.png";
   static const ic_empresa = _rutaIcon + "ic_empresa.png";
+  static const icon_camara = _rutaIcon + "icon_camara.png";
 
 
   static const imgIconD = _rutaIcon + "iconD.png";

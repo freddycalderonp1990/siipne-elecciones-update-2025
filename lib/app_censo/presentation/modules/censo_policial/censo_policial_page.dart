@@ -6,7 +6,9 @@ class CensoPolicialPage extends GetView<CensoPolicialController> {
   @override
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
+      namApps: NamApps.Censo,//se estable el name para que el mensaje del Gps cambie con base a la app
       mostrarBtnAtras: true,
+      showGps: true,//indica que la app va a utilkizar el gps
       title: "CENSO POLICIAL",
       contenido:  getContenido(),
       peticionServer: controller.peticionServerState,
@@ -15,6 +17,12 @@ class CensoPolicialPage extends GetView<CensoPolicialController> {
 
   Widget getContenido() {
     final responsive = ResponsiveUtil();
+
+    return QrViewWidget(dataQrChange: (String dataQr) async {
+      print("dataaaa");
+      String nombreUsuario=controller.loginController.user.value.nombreUsuario;
+      await controller.totpCensoController.verificarDataQr(dataQr, nombreUsuario: nombreUsuario);
+    },);
 
     return SingleChildScrollView(
       child: Column(

@@ -25,6 +25,11 @@ class AppCensoPages {
         page: () => CensoPolicialPage(),
         binding: CensoPolicialBinding()),
 
+    AppPages.getPageConfig(
+        name: AppCensoRoutes.CENSISTA,
+        page: () => CensistaPage(),
+        binding: CensistaBinding()),
+
 
   ];
 }

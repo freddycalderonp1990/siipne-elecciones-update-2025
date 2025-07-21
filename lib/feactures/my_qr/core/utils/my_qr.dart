@@ -1,9 +1,43 @@
 import 'package:flutter/cupertino.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../../../../app/core/values/mensajes_string.dart';
+import '../../../../app/presentation/widgets/custom_app_widgets.dart';
+import '../../presentation/widgets/qr_view_widget.dart';
 
 
 class MyQr{
+
+
+  static showDialogoQr({required ValueChanged<String> dataQrChange}) async{
+
+
+    bool permisoCamera = await Permission.camera.isGranted;
+
+    if (!permisoCamera) {
+
+      DialogosAwesome.getWarning(
+          descripcion: MensajesString.msjPermisoCamara,
+          btnOkOnPress: () async {
+            permisoCamera = await _checkPermisoStatus();
+            if (permisoCamera) {
+              DialogosDesingWidget.getDialogoX(contenido: QrViewWidget(
+                dataQrChange: dataQrChange,
+              ));
+            }
+          });
+      return false;
+    }
+
+
+    if (permisoCamera) {
+      DialogosDesingWidget.getDialogoX(contenido: QrViewWidget(
+        dataQrChange: dataQrChange,
+      ));
+    }
+  }
+
+
 
 
   static Future<bool> _checkPermisoStatus() async {
