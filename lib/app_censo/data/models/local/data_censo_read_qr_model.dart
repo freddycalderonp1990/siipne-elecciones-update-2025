@@ -8,60 +8,65 @@ String dataReadQrModelToJson(DataCensoReadQrModel data) =>
     json.encode(data.toJson());
 
 class DataCensoReadQrModel {
-  final double latitud;
-  final double longitud;
-  final int idMesa;
   final int idProceso;
-  final int idCensado;
-  final int idCensista;
+  final int idDgpRecinto;
+  final int idMesa;
+  final double latitudMesa;
+  final double longitudMesa;
+  final int idGenPersonaCensado;
+  final int idGenPersonaCensista;
+  final String nameApp;
   final String generadoDe;
   final String fecha;
 
 
-  DataCensoReadQrModel({
+  DataCensoReadQrModel( {
 
     required this.generadoDe,
     required this.fecha,
-    required this.latitud,
-    required this.longitud,
+    required this.latitudMesa,
+    required this.longitudMesa,
     required this.idMesa,
     required this.idProceso,
-    required this.idCensado,
-    required this.idCensista,
+    required this.idGenPersonaCensado,
+    required this.idGenPersonaCensista,
+    required this.idDgpRecinto,required this.nameApp,
   });
   factory DataCensoReadQrModel.empty() => DataCensoReadQrModel(
 
     generadoDe: "",
     fecha: "",
-    latitud: 0,
-    longitud: 0,
+    latitudMesa: 0,
+    longitudMesa: 0,
     idMesa: 0,
     idProceso: 0,
-    idCensado: 0,
-    idCensista: 0,
+    idGenPersonaCensado: 0,
+    idGenPersonaCensista: 0, idDgpRecinto: 0, nameApp: '',
   );
 
   factory DataCensoReadQrModel.fromJson(Map<String, dynamic> json) =>
       DataCensoReadQrModel(
+        idDgpRecinto: ParseModel.parseToInt(json["idDgpRecinto"]),
+        nameApp:  ParseModel.parseToString(json["nameApp"]),
 
         generadoDe: ParseModel.parseToString(json["generadoDe"]),
         fecha: ParseModel.parseToString(json["fecha"]),
-        latitud: ParseModel.parseToDouble(json["latitud"]),
-        longitud: ParseModel.parseToDouble(json["longitud"]),
+        latitudMesa: ParseModel.parseToDouble(json["latitudMesa"]),
+        longitudMesa: ParseModel.parseToDouble(json["longitudMesa"]),
         idMesa:  ParseModel.parseToInt(json["idMesa"]),
-        idCensado:  ParseModel.parseToInt(json["idCensado"]),
-        idCensista:  ParseModel.parseToInt(json["idCensista"]),
+        idGenPersonaCensado:  ParseModel.parseToInt(json["idGenPersonaCensado"]),
+        idGenPersonaCensista:  ParseModel.parseToInt(json["idGenPersonaCensista"]),
         idProceso:  ParseModel.parseToInt(json["idProceso"]),
       );
 
   Map<String, dynamic> toJson() => {
     "generadoDe": generadoDe,
     "fecha": fecha,
-    "latitud": latitud,
-    "longitud": longitud,
+    "latitud": latitudMesa,
+    "longitud": longitudMesa,
     "idMesa": idMesa,
-    "idCensado": idCensado,
-    "idCensista": idCensista,
+    "idGenPersonaCensado": idGenPersonaCensado,
+    "idGenPersonaCensista": idGenPersonaCensista,
     "idProceso": idProceso,
   };
 }

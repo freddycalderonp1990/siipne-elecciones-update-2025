@@ -30,25 +30,27 @@ class CensadoModel {
 }
 
 class DataCensado {
-  final int idGenEncPrueba;
+  final int idGenProcesoCenso;
   final String descProceso;
   final int idDgpMesa;
   final String descMesa;
   final int idDgpRecinto;
   final String descRecinto;
+  final int idGenPersona;
   final String siglas;
   final String apenom;
   final int idDgpPerCenso;
   final bool censado;
   final String estadoCenso;
 
-  DataCensado({
-    required this.idGenEncPrueba,
+  DataCensado( {
+    required this.idGenProcesoCenso,
     required this.descProceso,
     required this.idDgpRecinto,
     required this.descRecinto,
     required this.idDgpMesa,
     required this.descMesa,
+    required this.idGenPersona,
     required this.siglas,
     required this.apenom,
     required this.idDgpPerCenso,
@@ -57,10 +59,11 @@ class DataCensado {
   });
 
   factory DataCensado.empty() => DataCensado(
-    idGenEncPrueba: 0,
+    idGenProcesoCenso: 0,
     descProceso: "",
     idDgpMesa: 0,
     descMesa: "",
+    idGenPersona: 0,
     siglas: "",
     apenom: "",
     idDgpPerCenso: 0,
@@ -69,7 +72,8 @@ class DataCensado {
     idDgpRecinto: 0, descRecinto: '',
   );
   factory DataCensado.fromJson(Map<String, dynamic> json) => DataCensado(
-    idGenEncPrueba: ParseModel.parseToInt(json["idGenEncPrueba"]),
+    idGenPersona: ParseModel.parseToInt(json["idGenPersona"]),
+    idGenProcesoCenso: ParseModel.parseToInt(json["idGenEncPrueba"]),
     descProceso: ParseModel.parseToString(json["descPrueba"]),
     idDgpMesa: ParseModel.parseToInt(json["idDgpMesa"]),
     descMesa: ParseModel.parseToString(json["descMesa"]),
@@ -83,7 +87,7 @@ class DataCensado {
   );
 
   Map<String, dynamic> toJson() => {
-    "idGenEncPrueba": idGenEncPrueba,
+    "idGenEncPrueba": idGenProcesoCenso,
     "descPrueba": descProceso,
     "idDgpMesa": idDgpMesa,
     "descMesa": descMesa,

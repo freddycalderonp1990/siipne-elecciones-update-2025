@@ -190,7 +190,7 @@ class CensistaPage extends GetView<CensistaController> {
                     controller.peticionServerState(value);
                   },
                   titleImg:
-                  "ImgCenso_id_${controller.dataCensado.value.idDgpPerCenso}",
+                  "",
                 );
               },
               child: ClipRRect(
@@ -228,6 +228,7 @@ class CensistaPage extends GetView<CensistaController> {
       titulo: "GUARDAR",
       onPressed: () {
         // Guardar lógica aquí
+        controller.featureGuardarFoto();
       },
     )
         : SizedBox.shrink());

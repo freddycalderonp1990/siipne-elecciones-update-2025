@@ -9,7 +9,7 @@ import '../../domain/request/file_request.dart';
 import '../models/file_model.dart';
 
 abstract class FileRemoteDataSource {
-  Future<bool> saveFile({required FileRequest request});
+  Future<DataFile> saveFile({required FileRequest request});
 
 }
 
@@ -17,7 +17,7 @@ class FileRemoteDataSourceImpl implements FileRemoteDataSource {
 
 
   @override
-  Future<bool> saveFile({required FileRequest request}) async {
+  Future<DataFile> saveFile({required FileRequest request}) async {
     Map<String, String>? body = {
       "path":request.path,
       "nameFile":request.nameFile

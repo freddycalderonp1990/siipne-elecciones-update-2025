@@ -58,3 +58,11 @@
 ### PROCESO CENSOS
 - select * from genEncPrueba
 - /Volumes/siipne/appmovil/clases/constantesModulos.php  - AGREGAR EL MODULO
+- qr/qrconfig.php se agrega PATH_CODIGO_QR_PNE_CENSO
+- /Volumes/siipne/clases/dobleFactor/claseAlgoritmoTOTP.php se modifica la funcion getKeySecurity
+- appmovil/apis/v2/saveFile/read.php se agrega la v2 de guardar archvios, esta retrona el nombre del archivo con el que es guardado
+- 
+### PROCESO CENSOS - IMPORTANTE 
+- 22/julio-2025 se cambia /Volumes/siipne/appmovil/apis/helper/responseApi.php, en el ok se asigna el code 204 (no data) cuando la variable data esta vacia o null
+- se debe revisar si esto afecta a las optras aplicaciones... puede estar saliendo un mensaje de error principlamente
+- revisar funcionalidad de siipone-elecciones

@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
@@ -22,11 +21,10 @@ import '../../../domain/usecases/local_store_censo.dart';
 import '../censo_policial/local_widgets/desing_clave_digital_censo.dart';
 
 class TotpCensoController extends GetxController {
-  final LocalStoreCensoUseCase _localStoreImpl = Get.find<LocalStoreCensoUseCase>();
-
+  final LocalStoreCensoUseCase _localStoreImpl =
+      Get.find<LocalStoreCensoUseCase>();
 
   final loginController = Get.find<LoginController>();
-
 
   GlobalKey keyWidgetShared = GlobalKey<RefreshIndicatorState>();
 
@@ -80,12 +78,14 @@ class TotpCensoController extends GetxController {
     }
 
     DateTime? fecha = await validateFechas(_fechaServer);
-    String _code = await AlgoritmoTOTPCenso.getCode(pass,
-        fecha_: fecha, fechaServer: tenemosFechaServer);
+    String _code = await AlgoritmoTOTPCenso.getCode(
+      pass,
+      fecha_: fecha,
+      fechaServer: tenemosFechaServer,
+    );
 
-    if(codeAnterior!=_code) {
-      codeAnterior=_code;
-
+    if (codeAnterior != _code) {
+      codeAnterior = _code;
     }
 
     return _code;
@@ -103,7 +103,6 @@ class TotpCensoController extends GetxController {
       return now;
     }
 
-
     DateTime fechaServer = DateTime.parse(_fechaServer);
 
     String _fechaCellPause = await _localStoreImpl.getFechaCellPauseCenso();
@@ -120,8 +119,6 @@ class TotpCensoController extends GetxController {
 
     return nuevaFecha;
   }
-
-
 
   int secondToNumber(int second) {
     // Validamos que el segundo esté dentro del rango [15, 44]
@@ -161,7 +158,6 @@ class TotpCensoController extends GetxController {
         valueRadio.value = resultado / maxSeconds;
         _codigo.value = await getCodeValidateTimeServer(pass);
         if (seconds.value == maxSeconds) {
-
           if (claveAbierta == false) {
             stopTimer();
           }
@@ -173,15 +169,13 @@ class TotpCensoController extends GetxController {
   void stopTimer() {
     valueRadio.value = 0;
     timer?.cancel();
-
   }
 
-  showClaveDigital(String nombreUsuario, String codeUnico) async {
-
-    String codeUnico = await _localStoreImpl.getCodeUnicoCenso(nombreUsuario);
+  showClaveDigital(String idGenPersonaUser, String codeUnico) async {
+    String codeUnico = await _localStoreImpl.getCodeUnicoCenso(idGenPersonaUser);
 
     if (codeUnico.length > 0) {
-      getDialogoClave(codeUnico, nombreUsuario: nombreUsuario);
+      getDialogoClave(codeUnico, idGenPersonaUser: idGenPersonaUser);
     } else {
       MyQr.showDialogoQr(
         dataQrChange: (String dataQr) async {
@@ -189,23 +183,22 @@ class TotpCensoController extends GetxController {
 
           if (!reciboDataQR) {
             reciboDataQR = true;
-            await verificarDataQr(dataQr, nombreUsuario: nombreUsuario);
+            await verificarDataQr(dataQr, idGenPersonaUser: idGenPersonaUser);
           }
         },
       );
     }
   }
 
-
-  Future<DataCensoReadQrModel> verificarDataQr(String dataQr,
-      {required String nombreUsuario}) async {
-
+  Future<DataCensoReadQrModel> verificarDataQr(
+    String dataQr, {
+    required String idGenPersonaUser,
+  }) async {
     DataCensoReadQrModel data = DataCensoReadQrModel.empty();
     print("verificarDataQr hola");
     print(dataQr);
 
     try {
-
       //verificar cual es el origen del Qr
       bool origenMovil = dataQr.contains(AppConfig.key_securiry_qr);
       String datosJsonDesencrypt = '';
@@ -223,66 +216,71 @@ class TotpCensoController extends GetxController {
 
       DataCensoReadQrModel data = dataReadQrModelFromJson(datosJsonDesencrypt);
 
-      int idUser=loginController.user.value.idGenUsuario;
+      int idGenPersona = loginController.user.value.idGenPersona;
       //se verifica que el codigo sea el mismo que generó el usuario
-      if (data.idCensado != idUser) {
+      if (data.idGenPersonaCensado != idGenPersona) {
         throw QRException(
-            cause:
-                "El código QR no es válido o el usuario es incorrecto. Por favor, intenta con otro código QR.");
+          cause:
+              "El código QR no es válido o el usuario es incorrecto. Por favor, intenta con otro código QR.",
+        );
       }
       //verificamos si es movil o web
       if (data.generadoDe != "WEB") {
         //Verificamos la fecha de caducidad por implementar
       }
 
-      String passCode = "${data.idCensado}${data.idProceso}${data.idMesa}";
+      String passCode =
+          "idGenPersonaCensado:${data.idGenPersonaCensado}-idProceso:${data.idProceso}-idDgpRecinto:${data.idDgpRecinto}-idMesa:${data.idMesa}-idGenPersonaCensista:";
 
-      DateTime now=DateTime.now();
+      DateTime now = DateTime.now();
       DateTime fechaQr = DateTime.parse(data.fecha);
       // Calcula la diferencia entre las dos fechas en segundos
       int diferenciaEnSegundos = now.difference(fechaQr).inDays;
       print("nowQR= ${now}   =    $fechaQr   ($diferenciaEnSegundos)");
       if (diferenciaEnSegundos >= AppConfig.duracionQRDay) {
         throw QRException(
-            cause:
-            "El código QR no es válido o ha expirado. Por favor, intenta con otro código QR.");
+          cause:
+              "El código QR no es válido o ha expirado. Por favor, intenta con otro código QR.",
+        );
       }
-
 
       //VALIDAMOS QUE EL USUARIO ESTE CERCA DE LA MESA
 
       final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
       LatLng position = await locationBloc.getCurrentPosition();
 
-
-      double distancia = myGeolocator.Geolocator.distanceBetween(position.latitude, position.longitude, data.latitud,data.longitud);
-
-
-      print(
-          '📍 Coordenadas:\n'
-              '➡️ Usuario: (${position.latitude}, ${position.longitude})\n'
-              '➡️ Mesa del censo: (${data.latitud}, ${data.longitud})'
+      double distancia = myGeolocator.Geolocator.distanceBetween(
+        position.latitude,
+        position.longitude,
+        data.latitudMesa,
+        data.longitudMesa,
       );
 
+      print(
+        '📍 Coordenadas:\n'
+        '➡️ Usuario: (${position.latitude}, ${position.longitude})\n'
+        '➡️ Mesa del censo: (${data.latitudMesa}, ${data.longitudMesa})',
+      );
 
       print("distancia ${distancia}");
-      if(distancia<AppCensoConfi.longitudValidarMesa){
+      if (distancia > AppCensoConfi.longitudValidarMesa) {
         throw QRException(
-            cause:
-            "Usted se encuentra fuera del rango permitido. Por favor, acérquese a la mesa del censo para continuar con el proceso.");
+          cause:
+              "Usted se encuentra fuera del rango permitido. Por favor, acérquese a la mesa del censo para continuar con el proceso.",
+        );
       }
 
-
-      _localStoreImpl.setCodeUnicoCenso(nombreUsuario, passCode);
+      _localStoreImpl.setCodeUnicoCenso(idGenPersonaUser, passCode);
       Get.back();
-      getDialogoClave(passCode, nombreUsuario: nombreUsuario);
+      getDialogoClave(passCode, idGenPersonaUser: idGenPersonaUser);
 
       return data;
     } on QRException catch (e) {
       getMsjErrorQr(e.cause);
     } catch (e) {
       getMsjErrorQr(
-          "El código QR no es válido. Por favor, intenta escanear uno nuevo. ${e}");
+        "El código QR no es válido. Por favor, intenta escanear uno nuevo. ${e}",
+      );
     }
     return data;
   }
@@ -292,33 +290,32 @@ class TotpCensoController extends GetxController {
     await Future.delayed(Duration(milliseconds: 100), () {});
 
     DialogosAwesome.getWarning(
-        descripcion: msj,
-        btnOkOnPress: () {
-          reciboDataQR = false;
-        });
+      descripcion: msj,
+      btnOkOnPress: () {
+        reciboDataQR = false;
+      },
+    );
   }
 
-  getDialogoClave(String pass, {required String nombreUsuario}) async {
+  getDialogoClave(String pass, {required String idGenPersonaUser}) async {
     String passQR = pass;
-    pass = pass + nombreUsuario;
-
+    pass = pass + idGenPersonaUser;
 
     await startTimer(pass);
     DialogosDesingWidget.getDialogoXClaveTemporal(
-        contenido: Obx(() => DesingClaveDigitalCenso(
-            onPressedVincularcell: () {
-
-            },
-            seconds: seconds.value,
-            valueRadio: valueRadio.value,
-            codigo: _codigo.value)),
-        onPressedX: () {
-          claveAbierta = false;
-            stopTimer();
-          Get.back();
-        });
+      contenido: Obx(
+        () => DesingClaveDigitalCenso(
+          onPressedVincularcell: () {},
+          seconds: seconds.value,
+          valueRadio: valueRadio.value,
+          codigo: _codigo.value,
+        ),
+      ),
+      onPressedX: () {
+        claveAbierta = false;
+        stopTimer();
+        Get.back();
+      },
+    );
   }
-
-
-
 }

@@ -181,4 +181,9 @@ Get.putAsync<ProfileController>(() async => ProfileController(await fetchUserPro
 
 
 
+api_provider:
+git:
+url: https://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@github.com/freddycalderonp1990/paquete_api_provider.git
+ref: v1.0.1 # Usa el tag o branch deseado
+
 

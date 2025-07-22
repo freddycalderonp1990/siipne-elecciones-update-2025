@@ -5,6 +5,7 @@
 import '../../domain/repository/file_repository.dart';
 import '../../domain/request/file_request.dart';
 import '../datasources/file_remote_data_source.dart';
+import '../models/file_model.dart';
 
 class FileRepositoryImpl implements FileRepository {
   final FileRemoteDataSource fileRemoteDataSource;
@@ -13,7 +14,7 @@ class FileRepositoryImpl implements FileRepository {
 
 
   @override
-  Future<bool> saveFile({required FileRequest request}) async {
+  Future<DataFile> saveFile({required FileRequest request}) async {
 
 
    return fileRemoteDataSource.saveFile(request: request);

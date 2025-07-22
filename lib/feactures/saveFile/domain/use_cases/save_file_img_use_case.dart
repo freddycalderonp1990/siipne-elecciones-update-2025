@@ -1,5 +1,6 @@
 
 
+import '../../data/models/file_model.dart';
 import '../repository/file_repository.dart';
 import '../request/file_request.dart';
 
@@ -8,7 +9,7 @@ class SaveFileImgUseCase {
 
   SaveFileImgUseCase({required this.repository});
 
-  Future<bool> call({required FileRequest request}) {
+  Future<DataFile> call({required FileRequest request}) {
     return repository.saveFile(request: request);
   }
 }

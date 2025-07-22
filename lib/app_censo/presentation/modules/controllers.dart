@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 
 import '../../../app/core/app_config.dart';
@@ -11,6 +12,9 @@ import '../../../app/presentation/widgets/custom_app_widgets.dart';
 import '../../../app_elecciones/data/models/models.dart';
 import '../../../app_elecciones/presentation/routes/elecciones_routes.dart';
 import '../../../feactures/my_qr/core/exceptions/qr_exception.dart';
+import '../../../feactures/saveFile/data/models/file_model.dart';
+import '../../../feactures/saveFile/domain/request/file_request.dart';
+import '../../../feactures/saveFile/domain/use_cases/save_file_img_use_case.dart';
 import '../../../feactures/user/core/utils/encriptar_util.dart';
 import '../../../feactures/user/domain/entities/user.dart';
 import '../../../feactures/user/domain/use_cases/local_store.dart';

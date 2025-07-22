@@ -20,8 +20,8 @@ class CensoPolicialPage extends GetView<CensoPolicialController> {
 
     return QrViewWidget(dataQrChange: (String dataQr) async {
       print("dataaaa");
-      String nombreUsuario=controller.loginController.user.value.nombreUsuario;
-      await controller.totpCensoController.verificarDataQr(dataQr, nombreUsuario: nombreUsuario);
+      String idGenPersonaUser=controller.loginController.user.value.idGenPersona.toString();
+      await controller.totpCensoController.verificarDataQr(dataQr, idGenPersonaUser: idGenPersonaUser);
     },);
 
     return SingleChildScrollView(

@@ -271,13 +271,14 @@ class AddNovedadesController extends GetxController {
     peticionServerState(false);
   }
 
-  Future<bool> guardarImagen() async {
-    bool insertImg = false;
+  Future<DataFile> guardarImagen() async {
+
+    DataFile dataFile=DataFile.empty();
     await ExceptionDialogos.manejarErroresShowDialogo(() async {
       String path = dotenv.env['PATH_IMG_APP_ELECCIONES'] ?? '';
 
       String nameFile = recintosElectoralesAbiertos.descProcElecc;
-      String token = recintosElectoralesAbiertos.descProcElecc;
+
       FileRequest request = FileRequest(
         file: mGaleryCameraModel.value!.imageFile,
         path: path,
@@ -285,10 +286,11 @@ class AddNovedadesController extends GetxController {
       );
 
       peticionServerState(true);
-      insertImg = await _saveFileImgUseCase(request: request);
+       dataFile= await _saveFileImgUseCase(request: request);
+
       peticionServerState(false);
 
-      if (!insertImg) {
+      if (!dataFile.result) {
         DialogosAwesome.getIconPolicia(
           title: "Guardar Imagen",
           descripcion: "No se pudo guardar la Imagen",
@@ -302,7 +304,7 @@ class AddNovedadesController extends GetxController {
     peticionServerState(false);
 
 
-    return insertImg;
+    return dataFile;
   }
 
   eventoRegistrarNovedadesElectorales() async {
@@ -349,9 +351,9 @@ class AddNovedadesController extends GetxController {
             btnOkOnPress: () {},
           );
         } else {
-          bool insertImg = await guardarImagen();
+          DataFile dataFile = await guardarImagen();
 
-          if (insertImg) {
+          if (dataFile.result) {
             await _RegistrarNovedades(
               idGenPersonaD: idGenPersonaD,
               nombreDetenido: nombreDetenido,
@@ -359,7 +361,7 @@ class AddNovedadesController extends GetxController {
               observacion: getObservacion(),
               idDgoPerAsigOpe: recintosElectoralesAbiertos.idDgoPerAsigOpe,
               idDgoNovedadesElect: idDgoNovedadesElect,
-              imagen: mGaleryCameraModel.value!.nombreImg,
+              imagen: dataFile.nameFile,
             );
           }
         }
