@@ -39,12 +39,7 @@ class MenuAppCensoPage extends GetView<MenuAppCensoController> {
             ),
           ),
 
-          SizedBox(height: responsive.altoP(3)),
-          BtnIconWidget(
-            icon: Icons.exit_to_app,
-            titulo: "SALIR",
-            onPressed: () => controller.cerrarSession(),
-          ),
+  
         ],
       ),
     );
@@ -79,7 +74,7 @@ class MenuAppCensoPage extends GetView<MenuAppCensoController> {
 
         SizedBox(height: responsive.altoP(1)),
 
-        Container(
+        Obx(()=>controller.dataMesasList.length>0?Container(
           padding: EdgeInsets.symmetric(horizontal: responsive.anchoP(15)),
 
           child: BtnMenuWidget(
@@ -89,7 +84,7 @@ class MenuAppCensoPage extends GetView<MenuAppCensoController> {
             title: "CENSISTA",
             onTap: () => Get.toNamed(AppCensoRoutes.CENSISTA),
           ),
-        ),
+        ):SizedBox.shrink(),)
       ],
     );
   }

@@ -169,8 +169,8 @@ class DialogosAwesome {
         IconData iconBtnSi= Icons.check_circle_outline,
         IconData iconBtnNo= Icons.cancel_outlined,
 
-        String titleBtnSi = 'Si',
-        String titleBtnNo = 'No',
+        String titleBtnSi = 'Aceptar',
+        String titleBtnNo = 'Cancelar',
         required String descripcion,
        required Function() btnOkOnPress,Function()? btnCancelOnPress}) {
     AwesomeDialog(
@@ -235,6 +235,20 @@ class DialogosAwesome {
 
   static getInformation(
       {String title = 'Información', required String descripcion,  Function()? btnOkOnPress,}) {
+
+
+    return       DialogosAwesome.getIconPolicia(
+      title: title,
+      descripcion: descripcion,
+      btnOkOnPress:  btnOkOnPress == null
+          ? () {
+        Get.back();
+      }:btnOkOnPress,
+      titleBtnSi: "Ok",
+      mostrarSegungoBtn: false,
+    );
+
+
     AwesomeDialog(
 
         dismissOnTouchOutside: false,

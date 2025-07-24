@@ -175,7 +175,7 @@ class TotpCensoController extends GetxController {
     String codeUnico = await _localStoreImpl.getCodeUnicoCenso(idGenPersonaUser);
 
     if (codeUnico.length > 0) {
-      getDialogoClave(codeUnico, idGenPersonaUser: idGenPersonaUser);
+      getDialogoClave(codeUnico);
     } else {
       MyQr.showDialogoQr(
         dataQrChange: (String dataQr) async {
@@ -230,7 +230,7 @@ class TotpCensoController extends GetxController {
       }
 
       String passCode =
-          "idGenPersonaCensado:${data.idGenPersonaCensado}-idProceso:${data.idProceso}-idDgpRecinto:${data.idDgpRecinto}-idMesa:${data.idMesa}-idGenPersonaCensista:";
+          "idGenPersonaCensado:${idGenPersonaUser}-idProceso:${data.idProceso}-idDgpRecinto:${data.idDgpRecinto}-idMesa:${data.idMesa}-idGenPersonaCensista:${data.idGenPersonaCensista}";
 
       DateTime now = DateTime.now();
       DateTime fechaQr = DateTime.parse(data.fecha);
@@ -272,7 +272,7 @@ class TotpCensoController extends GetxController {
 
       _localStoreImpl.setCodeUnicoCenso(idGenPersonaUser, passCode);
       Get.back();
-      getDialogoClave(passCode, idGenPersonaUser: idGenPersonaUser);
+      getDialogoClave(passCode);
 
       return data;
     } on QRException catch (e) {
@@ -297,9 +297,8 @@ class TotpCensoController extends GetxController {
     );
   }
 
-  getDialogoClave(String pass, {required String idGenPersonaUser}) async {
-    String passQR = pass;
-    pass = pass + idGenPersonaUser;
+  getDialogoClave(String pass) async {
+
 
     await startTimer(pass);
     DialogosDesingWidget.getDialogoXClaveTemporal(

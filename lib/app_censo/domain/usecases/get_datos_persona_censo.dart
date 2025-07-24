@@ -1,17 +1,12 @@
 
-
-
-
-import '../../data/models/models_censo.dart';
-import '../repositories/domain_repositories.dart';
-import '../request/request_censo.dart';
+part of 'censo_use_cases.dart';
 
 class GetDatosPersonaCenso {
   final CensoRepository repository;
 
   GetDatosPersonaCenso({required this.repository});
 
-  Future<DataCensado> call({required GetDatosPersonaCensoRequest request }) {
+  Future<List<DataCensado>> call({required GetDatosPersonaCensoRequest request }) {
     return repository.getDatosPersonaCenso(request: request);
   }
 }

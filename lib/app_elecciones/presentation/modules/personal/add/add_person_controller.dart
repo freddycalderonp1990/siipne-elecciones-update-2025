@@ -88,7 +88,7 @@ class AddPersonController extends GetxController {
           usuario: user.idGenUsuario, cedula: controllerDocumento.text);
       if (datosPerson.value.idGenPersona == 0) {
         DialogosAwesome.getInformation(
-            btnOkOnPress: () {},
+
             descripcion:
                 "No existe datos para el documento ${controllerDocumento.text}");
         return;
@@ -97,7 +97,7 @@ class AddPersonController extends GetxController {
       if (!datosPerson.value.poliRegistrado) {
         datosPerson.value = DatosPer.empty();
         DialogosAwesome.getInformation(
-          btnOkOnPress: () {},
+
           descripcion: 'Persona no es Servidor Policial',
         );
         return;

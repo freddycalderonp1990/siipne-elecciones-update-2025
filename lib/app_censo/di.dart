@@ -9,7 +9,8 @@ import 'data/repositories/censo_data_repositories.dart';
 import 'data/repositories/local/local_storage_censo_repository_impl.dart';
 import 'domain/repositories/domain_repositories.dart';
 import 'domain/repositories/local/local_storage_censo_repository.dart';
-import 'domain/usecases/get_datos_persona_censo.dart';
+
+import 'domain/usecases/censo_use_cases.dart';
 import 'domain/usecases/local_store_censo.dart';
 
 
@@ -22,6 +23,9 @@ class DependencyInjectionCenso extends Bindings{
     // Use cases
     Get.lazyPut<LocalStoreCensoUseCase>(()=>LocalStoreCensoUseCase(repository: Get.find()),fenix: true);
     Get.lazyPut<GetDatosPersonaCenso>(()=>GetDatosPersonaCenso(repository: Get.find()),fenix: true);
+    Get.lazyPut<GetDatosProcesosActivosByCensado>(()=>GetDatosProcesosActivosByCensado(repository: Get.find()),fenix: true);
+    Get.lazyPut<SaveFoto>(()=>SaveFoto(repository: Get.find()),fenix: true);
+    Get.lazyPut<GetMesesByIdusuario>(()=>GetMesesByIdusuario(repository: Get.find()),fenix: true);
 
 
     // Repository

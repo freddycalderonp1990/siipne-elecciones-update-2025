@@ -20,7 +20,7 @@ class ExceptionDialogos {
 
   static Future<bool> manejarErroresShowDialogo(
     Future<void> Function() funcion,
-  {String? msjNoData}
+  {String? msjNoData, bool showMsjNodata=true}
   ) async {
     try {
       await funcion();
@@ -67,13 +67,13 @@ class ExceptionDialogos {
         title: 'ERROR',
       );
     } on NoDataException catch (e) {
-      DialogosAwesome.getInformation(
-        btnOkOnPress: () {
-         // Get.back();
-        },
-        descripcion:msjNoData==null? e.msj:msjNoData,
-        title: 'SIN DATOS',
-      );
+      if(showMsjNodata){
+        DialogosAwesome.getInformation(
+
+          descripcion:msjNoData==null? e.msj:msjNoData,
+          title: 'SIN DATOS',
+        );
+      }
     } on TimeoutException catch (e) {
       DialogosAwesome.getIconPolicia(
         titleBtnSi: "Aceptar",

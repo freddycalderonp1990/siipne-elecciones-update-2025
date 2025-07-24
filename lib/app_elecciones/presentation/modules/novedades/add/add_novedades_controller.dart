@@ -252,7 +252,7 @@ class AddNovedadesController extends GetxController {
       );
       if (datosPerson.value.idGenPersona == 0) {
         DialogosAwesome.getInformation(
-          btnOkOnPress: () {},
+
           descripcion:
               "No existe datos para el documento ${controllerCedula.text}",
         );
@@ -262,7 +262,7 @@ class AddNovedadesController extends GetxController {
       if (!datosPerson.value.poliRegistrado && permitirAll == false) {
         datosPerson.value = DatosPer.empty();
         DialogosAwesome.getInformation(
-          btnOkOnPress: () {},
+
           descripcion: 'Persona no es Servidor Policial',
         );
         return;
@@ -321,7 +321,7 @@ class AddNovedadesController extends GetxController {
     if (registrarDatosPersona) {
       if (datosPerson.value.idGenPersona == 0) {
         DialogosAwesome.getInformation(
-          btnOkOnPress: () {},
+
           descripcion:
               "No ha ingresado una cédula valida...Seleccione el icono buscar para continuar.",
           title: 'Persona',

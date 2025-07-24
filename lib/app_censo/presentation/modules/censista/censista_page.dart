@@ -5,52 +5,73 @@ class CensistaPage extends GetView<CensistaController> {
 
   @override
   Widget build(BuildContext context) {
-    return WorkAreaPageWidget(
-      showGps: false,
-      mostrarBtnAtras: true,
-      title: "Censista",
-      contenido: Column(
-        children: [
-          Expanded(child: getContenido()),
+    return Obx(
+      () => WorkAreaPageWidget(
+        onPressBtnAtras: () {
+          if (controller.showBtnValidarFoto.value) {
+            controller.showBtnValidarFoto.value = false;
+          } else {
+            Get.back();
+          }
+        },
+        showGps: true,
+        mostrarBtnAtras: true,
+        title:
+            controller.showBtnValidarFoto.value
+                ? "Validar Fotografia"
+                : "Censista",
+        contenido: Column(
+          children: [
+            Expanded(child: getContenido()),
 
-          // 👇 Este Obx detecta cuando ya se cargó la imagen y hace scroll
-          Obx(() {
-            if (controller.mGaleryCameraModel.value != null) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                if (controller.scrollController.hasClients) {
-                  controller.scrollController.animateTo(
-                    controller.scrollController.position.maxScrollExtent,
-                    duration: const Duration(milliseconds: 400),
-                    curve: Curves.easeOut,
-                  );
-                }
-              });
-            }
-            return SizedBox.shrink();
-          }),
-        ],
+            // 👇 Este Obx detecta cuando ya se cargó la imagen y hace scroll
+            Obx(() {
+              if (controller.mGaleryCameraModel.value != null) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  if (controller.scrollController.hasClients) {
+                    controller.scrollController.animateTo(
+                      controller.scrollController.position.maxScrollExtent,
+                      duration: const Duration(milliseconds: 400),
+                      curve: Curves.easeOut,
+                    );
+                  }
+                });
+              }
+              return SizedBox.shrink();
+            }),
+          ],
+        ),
+        peticionServer: controller.peticionServerState,
       ),
-      peticionServer: controller.peticionServerState,
     );
   }
 
   Widget getContenido() {
     final responsive = ResponsiveUtil();
     String Bienvenido =
-    controller.user.sexo == 'HOMBRE' ? "BIENVENIDO: " : "BIENVENIDA: ";
+        controller.user.sexo == 'HOMBRE' ? "BIENVENIDO: " : "BIENVENIDA: ";
 
     return SingleChildScrollView(
       controller: controller.scrollController, // ✅ Scroll global
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(height: 10),
-          wgConsultarRecinto(),
-          SizedBox(height: 10),
-          wgDatosCenso(),
-        ],
+      child: Obx(
+        () =>
+            controller.showBtnValidarFoto.value
+                ? desingValidar()
+                : getContenidoCensado(),
       ),
+    );
+  }
+
+  Widget getContenidoCensado() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(height: 10),
+        wgConsultarRecinto(),
+        SizedBox(height: 10),
+        wgDatosCenso(),
+      ],
     );
   }
 
@@ -59,57 +80,62 @@ class CensistaPage extends GetView<CensistaController> {
 
     Widget wg = Column(
       children: [
-        Obx(() =>
-        controller.dataCensado.value.idDgpPerCenso > 0
-            ? ContenedorDesingWidget(
-          child: ExpansionTile(
-            collapsedIconColor: AppColors.colorAzul,
-            iconColor: AppColors.colorAzul,
-            initiallyExpanded: true,
-            title: Text(
-              'DATOS',
-              style: TextStyle(
-                color: AppColors.colorAzul,
-                fontSize: responsive.diagonalP(AppConfig.tamTexto),
-              ),
-            ),
-            children: [
-              Container(
-                margin: EdgeInsets.all(5),
-                child: Column(
-                  children: [
-                    TituloDetalleTextWidget(
-                      title: "Proceso: ",
-                      detalle: controller.dataCensado.value.descProceso,
+        Obx(
+          () =>
+              controller.dataCensado.value.idDgpPerCenso > 0
+                  ? ContenedorDesingWidget(
+                    child: ExpansionTile(
+                      collapsedIconColor: AppColors.colorAzul,
+                      iconColor: AppColors.colorAzul,
+                      initiallyExpanded: true,
+                      title: Text(
+                        'DATOS',
+                        style: TextStyle(
+                          color: AppColors.colorAzul,
+                          fontSize: responsive.diagonalP(AppConfig.tamTexto),
+                        ),
+                      ),
+                      children: [
+                        Container(
+                          margin: EdgeInsets.all(5),
+                          child: Column(
+                            children: [
+                              TituloDetalleTextWidget(
+                                title: "Proceso: ",
+                                detalle:
+                                    controller.dataCensado.value.descProceso,
+                              ),
+                              TituloDetalleTextWidget(
+                                title: "Recinto: ",
+                                detalle:
+                                    controller.dataCensado.value.descRecinto,
+                              ),
+                              TituloDetalleTextWidget(
+                                title: "Mesa: ",
+                                detalle: controller.dataCensado.value.descMesa,
+                              ),
+                              TituloDetalleTextWidget(
+                                title: "Censado: ",
+                                detalle:
+                                    "${controller.dataCensado.value.siglas} ${controller.dataCensado.value.apenom}",
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    TituloDetalleTextWidget(
-                      title: "Recinto: ",
-                      detalle: controller.dataCensado.value.descRecinto,
-                    ),
-                    TituloDetalleTextWidget(
-                      title: "Mesa: ",
-                      detalle: controller.dataCensado.value.descMesa,
-                    ),
-                    TituloDetalleTextWidget(
-                      title: "Censado: ",
-                      detalle: "${controller.dataCensado.value.siglas} ${controller.dataCensado.value.apenom}",
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        )
-            : Container(),
+                  )
+                  : Container(),
         ),
         wgFoto(),
         SizedBox(height: responsive.altoP(2)),
-        btnRegistrar(),
+        btnValidar(),
       ],
     );
 
-    return Obx(() =>
-    controller.dataCensado.value.idDgpPerCenso > 0 ? wg : Container());
+    return Obx(
+      () => controller.dataCensado.value.idDgpPerCenso > 0 ? wg : Container(),
+    );
   }
 
   Widget wgConsultarRecinto() {
@@ -174,23 +200,26 @@ class CensistaPage extends GetView<CensistaController> {
       margin: EdgeInsets.only(top: 10),
       child: Column(
         children: [
-          Obx(() => TituloTextWidget(
-            title: controller.mGaleryCameraModel.value == null
-                ? "Registre la Fotografía"
-                : "Cambiar la Fotografía",
-          )),
+          Obx(
+            () => TituloTextWidget(
+              title:
+                  controller.mGaleryCameraModel.value == null
+                      ? "Registre la Fotografía"
+                      : "Cambiar la Fotografía",
+            ),
+          ),
           SizedBox(height: responsive.altoP(1)),
           Material(
             child: InkWell(
               onTap: () async {
-                controller.mGaleryCameraModel.value =
-                await PhotoHelper.getDesingPictureGaleryOrCamera(
-                  onlyCamera: true,
+                controller
+                    .mGaleryCameraModel
+                    .value = await PhotoHelper.getDesingPictureGaleryOrCamera(
+                  onlyCamera: false,
                   initPeticion: (value) {
                     controller.peticionServerState(value);
                   },
-                  titleImg:
-                  "",
+                  titleImg: "",
                 );
               },
               child: ClipRRect(
@@ -202,17 +231,20 @@ class CensistaPage extends GetView<CensistaController> {
               ),
             ),
           ),
-          Obx(() => controller.mGaleryCameraModel.value == null
-              ? SizedBox.shrink()
-              : ClipRRect(
-            borderRadius: BorderRadius.circular(25.0),
-            child: Image.file(
-              controller.mGaleryCameraModel.value!.imageFile,
-              fit: BoxFit.fill,
-              height: responsive.altoP(27.0),
-              width: responsive.altoP(31.0),
-            ),
-          )),
+          Obx(
+            () =>
+                controller.mGaleryCameraModel.value == null
+                    ? SizedBox.shrink()
+                    : ClipRRect(
+                      borderRadius: BorderRadius.circular(25.0),
+                      child: Image.file(
+                        controller.mGaleryCameraModel.value!.imageFile,
+                        fit: BoxFit.fill,
+                        height: responsive.altoP(27.0),
+                        width: responsive.altoP(31.0),
+                      ),
+                    ),
+          ),
           SizedBox(height: responsive.altoP(1)),
         ],
       ),
@@ -220,20 +252,84 @@ class CensistaPage extends GetView<CensistaController> {
   }
 
   Widget btnRegistrar() {
+    return Obx(
+      () =>
+          controller.mGaleryCameraModel.value != null
+              ? BtnIconWidget(
+                icon: Icons.save,
+                titulo: "GUARDAR",
+                onPressed: () {
+                  DialogosAwesome.getWarningSiNo(
+                    descripcion:
+                        "¿Está seguro que desea continuar con el registro?",
+                    btnOkOnPress: () {
+                      controller.saveFotoServer();
+                    },
+                    btnCancelOnPress: () {},
+                  );
 
+                },
+              )
+              : SizedBox.shrink(),
+    );
+  }
 
-    return Obx(() => controller.mGaleryCameraModel.value != null
-        ? BtnIconWidget(
-      icon: Icons.save,
-      titulo: "GUARDAR",
-      onPressed: () {
-        // Guardar lógica aquí
-        controller.featureGuardarFoto();
-      },
-    )
-        : SizedBox.shrink());
+  Widget btnValidar() {
+    return Obx(
+      () =>
+          controller.mGaleryCameraModel.value != null
+              ? BtnIconWidget(
+                icon: Icons.save,
+                titulo: "VALIDAR",
+                onPressed: () {
+                  controller.showBtnValidarFoto.value = true;
+                },
+              )
+              : SizedBox.shrink(),
+    );
+  }
+
+  Widget desingValidar() {
+    final responsive = ResponsiveUtil();
+
+    final imgMemory = PhotoHelper.convertStringToUint8List(
+      controller.user.foto,
+    );
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(height: responsive.altoP(2)),
+        Row(
+          children: [
+            Expanded(
+              child: Column(
+                children: [
+                  TituloTextWidget(title: "SIIPNE"),
+                  ClipRRect(
+                    child: Image.file(
+                      controller.mGaleryCameraModel.value!.imageFile,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(width: 5),
+
+            Expanded(
+              child: Column(
+                children: [
+                  TituloTextWidget(title: "CAMARA"),
+                  ClipRRect(child: Image.memory(imgMemory!, fit: BoxFit.fill)),
+                ],
+              ),
+            ),
+          ],
+        ),
+        SizedBox(height: responsive.altoP(2)),
+        btnRegistrar(),
+      ],
+    );
   }
 }
-
-
-

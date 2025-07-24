@@ -24,7 +24,8 @@ class BtnAtrasWidget extends StatelessWidget {
                 : responsive.anchoP(5),
             padding: EdgeInsets.all(3),
             borderRadius: BorderRadius.circular(30),
-            color: Colors.black26,
+
+            color: Colors.black54,
             onPressed:pantallaIrAtras == null? () =>
                     Get.back()
                 :

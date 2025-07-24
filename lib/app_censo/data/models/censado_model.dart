@@ -8,7 +8,7 @@ String censadoModelToJson(CensadoModel data) => json.encode(data.toJson());
 class CensadoModel {
   final int statusCode;
   final String message;
-  final DataCensado dataCensado;
+  final List<DataCensado> dataCensado;
 
   CensadoModel({
     required this.statusCode,
@@ -19,31 +19,35 @@ class CensadoModel {
   factory CensadoModel.fromJson(Map<String, dynamic> json) => CensadoModel(
     statusCode: json["status_code"],
     message: json["message"],
-    dataCensado: DataCensado.fromJson(json["data"]),
+    dataCensado: List<DataCensado>.from(json["data"].map((x) => DataCensado.fromJson(x))),
+
   );
 
   Map<String, dynamic> toJson() => {
     "status_code": statusCode,
     "message": message,
-    "data": dataCensado.toJson(),
+    "data": List<dynamic>.from(dataCensado.map((x) => x.toJson())),
   };
 }
 
 class DataCensado {
   final int idGenProcesoCenso;
   final String descProceso;
-  final int idDgpMesa;
-  final String descMesa;
+  final String fechaIniProceso;
+  final String fechaFinProceso;
   final int idDgpRecinto;
   final String descRecinto;
+  final int idDgpMesa;
+  final String descMesa;
   final int idGenPersona;
   final String siglas;
   final String apenom;
   final int idDgpPerCenso;
   final bool censado;
   final String estadoCenso;
+  final String fecha;
 
-  DataCensado( {
+  DataCensado({
     required this.idGenProcesoCenso,
     required this.descProceso,
     required this.idDgpRecinto,
@@ -56,6 +60,9 @@ class DataCensado {
     required this.idDgpPerCenso,
     required this.censado,
     required this.estadoCenso,
+    required this.fechaIniProceso,
+    required this.fechaFinProceso,
+    required this.fecha,
   });
 
   factory DataCensado.empty() => DataCensado(
@@ -69,7 +76,11 @@ class DataCensado {
     idDgpPerCenso: 0,
     censado: false,
     estadoCenso: "",
-    idDgpRecinto: 0, descRecinto: '',
+    idDgpRecinto: 0,
+    descRecinto: '',
+    fechaIniProceso: '',
+    fechaFinProceso: '',
+    fecha: '',
   );
   factory DataCensado.fromJson(Map<String, dynamic> json) => DataCensado(
     idGenPersona: ParseModel.parseToInt(json["idGenPersona"]),
@@ -84,6 +95,9 @@ class DataCensado {
     estadoCenso: ParseModel.parseToString(json["estadoCenso"]),
     idDgpRecinto: ParseModel.parseToInt(json["idDgpRecinto"]),
     descRecinto: ParseModel.parseToString(json["descRecinto"]),
+    fechaIniProceso: ParseModel.parseToString(json["fechaIniProceso"]),
+    fechaFinProceso: ParseModel.parseToString(json["fechaFinProceso"]),
+    fecha: ParseModel.parseToString(json["fecha"]),
   );
 
   Map<String, dynamic> toJson() => {

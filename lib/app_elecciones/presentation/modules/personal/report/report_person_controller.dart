@@ -111,7 +111,7 @@ class ReportPersonController extends GetxController {
 
       if (datos.length == 0) {
         DialogosAwesome.getInformation(
-            descripcion: "No existen datos que mostrar", btnOkOnPress: () {});
+            descripcion: "No existen datos que mostrar", );
         return;
       }
 
