@@ -24,8 +24,7 @@ class AppConfig {
 
   }
 
-  static const String key_securiry_qr="*dG@p5Yh%j6BwTEGO"; // no modificar ya que este coincide con el del server
-
+  static  String key_securiry_qr= dotenv.env['SECRET_KEY_SECURITY_QR']??"*dG@p5Yh%j6BwTEGO"; // no modificar ya que este coincide con el del server
 
   //CONFIGUARA QUE PAGUINA MUESTRA LUEGO DEL LOGIN
   static const String showPageBeforeLogin= AppRoutes.MENU_APP;
@@ -37,9 +36,9 @@ class AppConfig {
   static final AmbienteUrlAnterior=AmbienteUrl;
 
 
-  static const String linkAppAndroid =
+  static  String linkAppAndroid =dotenv.env['LINK_APP_SIIPNE_ELECCIONES_ANDROID'] ??
       "https://play.google.com/store/apps/details?id=ecuador.policianacional.dntic.siipnemovil2";
-  static const String linkAppIos =
+  static  String linkAppIos =dotenv.env['LINK_APP_SIIPNE_ELECCIONES_IOS'] ??
       "https://apps.apple.com/ec/app/siipnemovil-2/id1552944115";
 
   static bool isUserGoogleOrIos=false;

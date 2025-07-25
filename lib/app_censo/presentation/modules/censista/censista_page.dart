@@ -14,6 +14,7 @@ class CensistaPage extends GetView<CensistaController> {
             Get.back();
           }
         },
+        namApps: NamApps.Censo,
         showGps: true,
         mostrarBtnAtras: true,
         title:
@@ -47,18 +48,14 @@ class CensistaPage extends GetView<CensistaController> {
   }
 
   Widget getContenido() {
-    final responsive = ResponsiveUtil();
-    String Bienvenido =
-        controller.user.sexo == 'HOMBRE' ? "BIENVENIDO: " : "BIENVENIDA: ";
-
-    return SingleChildScrollView(
-      controller: controller.scrollController, // ✅ Scroll global
-      child: Obx(
-        () =>
-            controller.showBtnValidarFoto.value
-                ? desingValidar()
-                : getContenidoCensado(),
-      ),
+    return Obx(
+      () =>
+          controller.showBtnValidarFoto.value
+              ? desingValidar()
+              : SingleChildScrollView(
+                controller: controller.scrollController, // ✅ Scroll global
+                child: getContenidoCensado(),
+              ),
     );
   }
 
@@ -267,7 +264,6 @@ class CensistaPage extends GetView<CensistaController> {
                     },
                     btnCancelOnPress: () {},
                   );
-
                 },
               )
               : SizedBox.shrink(),
@@ -299,34 +295,41 @@ class CensistaPage extends GetView<CensistaController> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        SizedBox(height: responsive.altoP(2)),
-        Row(
-          children: [
-            Expanded(
-              child: Column(
-                children: [
-                  TituloTextWidget(title: "SIIPNE"),
-                  ClipRRect(
-                    child: Image.file(
-                      controller.mGaleryCameraModel.value!.imageFile,
-                      fit: BoxFit.fill,
+        Expanded(
+          child: Column(
+            children: [
+              Expanded(
+                child: Column(
+                  children: [
+                    TituloTextWidget(title: "CAMARA"),
+                    Expanded(
+                      child: ClipRRect(
+                        child: Image.file(
+                          controller.mGaleryCameraModel.value!.imageFile,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            SizedBox(width: 5),
-
-            Expanded(
-              child: Column(
-                children: [
-                  TituloTextWidget(title: "CAMARA"),
-                  ClipRRect(child: Image.memory(imgMemory!, fit: BoxFit.fill)),
-                ],
+              SizedBox(width: 5),
+              Expanded(
+                child: Column(
+                  children: [
+                    TituloTextWidget(title: "SIIPNE"),
+                    Expanded(
+                      child: ClipRRect(
+                        child: Image.memory(imgMemory!, fit: BoxFit.fill),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
+
         SizedBox(height: responsive.altoP(2)),
         btnRegistrar(),
       ],

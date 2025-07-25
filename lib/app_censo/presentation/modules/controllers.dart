@@ -16,9 +16,9 @@ import '../../../app/core/utils/responsiveUtil.dart';
 import '../../../app/presentation/widgets/custom_app_widgets.dart';
 
 import '../../../feactures/gps/presentation/location/location_bloc.dart';
-import '../../../feactures/saveFile/data/models/file_model.dart';
-import '../../../feactures/saveFile/domain/request/file_request.dart';
-import '../../../feactures/saveFile/domain/use_cases/save_file_img_use_case.dart';
+import '../../../feactures/save_file/data/models/file_model.dart';
+import '../../../feactures/save_file/domain/request/file_request.dart';
+import '../../../feactures/save_file/domain/use_cases/save_file_img_use_case.dart';
 
 import '../../../feactures/user/domain/entities/user.dart';
 

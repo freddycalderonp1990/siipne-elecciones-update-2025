@@ -7,38 +7,44 @@ class SplashPage extends GetView<SplashController> {
   Widget build(BuildContext context) {
     final responsive = ResponsiveUtil();
     return GetBuilder<SplashController>(
-        builder: (_) => Scaffold(
-              body: Container(
-                  height: double.infinity,
-                  width: double.infinity,
-                  color: Colors.transparent,
-                  child: Stack(
-                    children: [
-                      Image.asset(
-
-                        AppImages.splash,
-                        fit: BoxFit
+      builder:
+          (_) => Scaffold(
+            body: Container(
+              height: double.infinity,
+              width: double.infinity,
+              color: Colors.transparent,
+              child: Stack(
+                children: [
+                  Image.asset(
+                    AppImages.splash,
+                    fit:
+                        BoxFit
                             .cover, // Esto asegura que la imagen ocupe toda la pantalla
-                        width: double.infinity,
-                        height: double.infinity,
-                      ),
-                      Positioned(
-                        bottom: responsive.altoP(15),
-                        left: 0,
-                        right: 0,
-                        child: Column(
-                          children: [
-                            CargandoWidget(mostrar: true,color: Colors.transparent,)
-                          ],
+                    width: double.infinity,
+                    height: double.infinity,
+                  ),
+                  Positioned(
+                    bottom: responsive.altoP(15),
+                    left: 0,
+                    right: 0,
+                    child: Column(
+                      children: [
 
+                        Obx(
+                          () => CargandoWidget(
+                            mostrar: controller.peticionServerState.value,
+                            color: Colors.transparent,
+                          ),
                         ),
-                      ),
+                      ],
+                    ),
+                  ),
 
-                      Center(
-                       child: Image.asset( AppImages.escudopolicia)
-                      )
-                    ],
-                  )),
-            ));
+                  Center(child: Image.asset(AppImages.escudopolicia)),
+                ],
+              ),
+            ),
+          ),
+    );
   }
 }

@@ -15,6 +15,7 @@ import 'package:app_mi_upc/app_mi_upc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:get/get.dart';
 
@@ -25,12 +26,17 @@ import 'package:path_provider/path_provider.dart';
 
 
 
+import '../../../feactures/app_moviles/data/models/apps_model.dart';
+import '../../../feactures/app_moviles/domain/request/verificar_update_request.dart';
+import '../../../feactures/app_moviles/domain/use_cases/verificar_update_app.dart';
 import '../../../feactures/user/domain/entities/user.dart';
 import '../../../feactures/user/domain/use_cases/local_store.dart';
 import '../../../feactures/user/presentation/modules/controllers.dart';
 import '../../../feactures/user/presentation/routes/user_routes.dart';
 import '../../core/app_config.dart';
 
+import '../../core/exceptions/exception_dialogos.dart';
+import '../../core/utils/device_info.dart';
 import '../../core/utils/device_info_app.dart';
 
 
