@@ -152,7 +152,7 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
                       child: Column(
                         children: [
                           SizedBox(
-                            height: responsive.altoP(15),
+                            height: responsive.altoP(10),
                           ),
                           Flexible(
                               child: Center(

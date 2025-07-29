@@ -3,12 +3,15 @@ part of '../controllers.dart';
 class CensistaController extends GetxController {
   final loginController = Get.find<LoginController>();
   final SaveFileImgUseCase _saveFileImgUseCase = Get.find();
+  final GetFotoDgpByDocumentoUseCase _getFotoDgpByDocumentoUseCase= Get.find();
   final SaveFoto _saveFoto = Get.find();
 
   final GetDatosPersonaCenso getDatosPersonaCenso = Get.find();
 
   RxList<DataCensado> dataCensadoList = <DataCensado>[].obs;
   Rx<DataCensado> dataCensado = DataCensado.empty().obs;
+
+  Rx<DataFoto> dataFotoDgp=DataFoto.empty().obs;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   var controllerCodigoCenso = new TextEditingController();
@@ -68,7 +71,7 @@ class CensistaController extends GetxController {
         );
         dataCensadoList.value = await getDatosPersonaCenso(request: request);
         dataCensado.value = dataCensadoList[0];
-        if (!dataCensado.value.censado) {
+        if (dataCensado.value.censado) {
           String name =
               "${dataCensado.value.siglas}. ${dataCensado.value.apenom}";
           DialogosAwesome.getInformation(
@@ -77,6 +80,23 @@ class CensistaController extends GetxController {
           dataCensadoList.clear();
           dataCensado.value = DataCensado.empty();
         }
+      },
+    );
+
+    peticionServerState(false);
+  }
+
+
+  Future<void> getFotoDgpByDocumento() async {
+
+    peticionServerState(true);
+
+    await ExceptionDialogos.manejarErroresShowDialogo(
+      msjNoData: "No existen datos que mostrar...",
+          () async {
+        dataFotoDgp.value = await _getFotoDgpByDocumentoUseCase(documento: dataCensado.value.documento);
+
+
       },
     );
 
@@ -158,5 +178,13 @@ class CensistaController extends GetxController {
     });
 
     peticionServerState(false);
+  }
+
+
+  validarFoto() async{
+    await getFotoDgpByDocumento();
+
+      showBtnValidarFoto.value = true;
+
   }
 }

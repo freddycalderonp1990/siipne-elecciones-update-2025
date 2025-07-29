@@ -39,6 +39,7 @@ class DataCensado {
   final String descRecinto;
   final int idDgpMesa;
   final String descMesa;
+  final String documento;
   final int idGenPersona;
   final String siglas;
   final String apenom;
@@ -54,6 +55,7 @@ class DataCensado {
     required this.descRecinto,
     required this.idDgpMesa,
     required this.descMesa,
+    required this.documento,
     required this.idGenPersona,
     required this.siglas,
     required this.apenom,
@@ -70,6 +72,7 @@ class DataCensado {
     descProceso: "",
     idDgpMesa: 0,
     descMesa: "",
+    documento: "",
     idGenPersona: 0,
     siglas: "",
     apenom: "",
@@ -83,6 +86,7 @@ class DataCensado {
     fecha: '',
   );
   factory DataCensado.fromJson(Map<String, dynamic> json) => DataCensado(
+    documento: ParseModel.parseToString(json["documento"]),
     idGenPersona: ParseModel.parseToInt(json["idGenPersona"]),
     idGenProcesoCenso: ParseModel.parseToInt(json["idGenEncPrueba"]),
     descProceso: ParseModel.parseToString(json["descPrueba"]),

@@ -1,5 +1,8 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:siipnemovil2/app_censo/data/models/models_censo.dart';
 import 'package:siipnemovil2/app_censo/presentation/modules/bindings.dart';
 
 import '../../../app/core/app_config.dart';
@@ -17,6 +20,7 @@ import '../../../app_elecciones/presentation/widgets/customWidgets.dart';
 import '../../../feactures/my_qr/presentation/widgets/qr_view_widget.dart';
 import '../../core/values/app_censo_images.dart';
 import '../routes/app_censo_routes.dart';
+import '../widgets/custom_app_censo_widgets.dart';
 import 'controllers.dart';
 
 part 'menu/menu_app_censo_page.dart';

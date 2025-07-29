@@ -15,6 +15,8 @@ import '../../../app/core/utils/photo_helper.dart';
 import '../../../app/core/utils/responsiveUtil.dart';
 import '../../../app/presentation/widgets/custom_app_widgets.dart';
 
+import '../../../feactures/foto_dgp/data/models/foto_model.dart';
+import '../../../feactures/foto_dgp/domain/use_cases/get_foto_dgp_by_documento.dart';
 import '../../../feactures/gps/presentation/location/location_bloc.dart';
 import '../../../feactures/save_file/data/models/file_model.dart';
 import '../../../feactures/save_file/domain/request/file_request.dart';

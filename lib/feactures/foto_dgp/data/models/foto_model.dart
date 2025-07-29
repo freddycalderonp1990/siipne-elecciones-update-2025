@@ -38,6 +38,8 @@ class DataFoto {
     required this.foto,
   });
 
+  factory DataFoto.empty()=>DataFoto(foto: "");
+
   factory DataFoto.fromJson(Map<String, dynamic> json) => DataFoto(
     foto: ParseModel.parseToString( json["foto"]),
   );

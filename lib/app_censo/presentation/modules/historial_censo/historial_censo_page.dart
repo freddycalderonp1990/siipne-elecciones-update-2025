@@ -5,7 +5,7 @@ class HistorialCensoPage extends GetView<HistorialCensoController> {
 
   @override
   Widget build(BuildContext context) {
-    return WorkAreaPageWidget(
+    return WorkAreaPageCensoWidget(
       mostrarBtnAtras: true,
       title: "HISTORIAL CENSO",
       contenido:  getContenido(),

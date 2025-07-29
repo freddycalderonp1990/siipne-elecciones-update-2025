@@ -6,7 +6,7 @@ class CensistaPage extends GetView<CensistaController> {
   @override
   Widget build(BuildContext context) {
     return Obx(
-      () => WorkAreaPageWidget(
+      () => WorkAreaPageCensoWidget(
         onPressBtnAtras: () {
           if (controller.showBtnValidarFoto.value) {
             controller.showBtnValidarFoto.value = false;
@@ -14,7 +14,6 @@ class CensistaPage extends GetView<CensistaController> {
             Get.back();
           }
         },
-        namApps: NamApps.Censo,
         showGps: true,
         mostrarBtnAtras: true,
         title:
@@ -209,6 +208,17 @@ class CensistaPage extends GetView<CensistaController> {
           Material(
             child: InkWell(
               onTap: () async {
+                if (controller.dataCensado.value.estadoCenso != "iniciado") {
+                  DialogosAwesome.getInformation(
+                    descripcion:
+                        "Para continuar, asegúrese de que el censista, haya completado su registro en el sistema SIIPNE 3W."
+                        "\nSolo después podrá registrar la fotografía.",
+                  );
+                  controller.dataCensado.value = DataCensado.empty();
+                  controller.dataCensadoList.clear();
+                  return;
+                }
+
                 controller
                     .mGaleryCameraModel
                     .value = await PhotoHelper.getDesingPictureGaleryOrCamera(
@@ -278,7 +288,7 @@ class CensistaPage extends GetView<CensistaController> {
                 icon: Icons.save,
                 titulo: "VALIDAR",
                 onPressed: () {
-                  controller.showBtnValidarFoto.value = true;
+                  controller.validarFoto();
                 },
               )
               : SizedBox.shrink(),
@@ -288,8 +298,8 @@ class CensistaPage extends GetView<CensistaController> {
   Widget desingValidar() {
     final responsive = ResponsiveUtil();
 
-    final imgMemory = PhotoHelper.convertStringToUint8List(
-      controller.user.foto,
+    final Uint8List? imgMemory = PhotoHelper.convertStringToUint8List(
+      controller.dataFotoDgp.value.foto,
     );
 
     return Column(
@@ -301,7 +311,15 @@ class CensistaPage extends GetView<CensistaController> {
               Expanded(
                 child: Column(
                   children: [
-                    TituloTextWidget(title: "CAMARA"),
+                    TextSombrasWidget(
+                      title: "FOTO CAMARA",
+                      size: responsive.diagonalP(
+                        AppConfig.tamTextoTitulo + 0.5,
+                      ),
+
+
+
+                    ),
                     Expanded(
                       child: ClipRRect(
                         child: Image.file(
@@ -317,11 +335,28 @@ class CensistaPage extends GetView<CensistaController> {
               Expanded(
                 child: Column(
                   children: [
-                    TituloTextWidget(title: "SIIPNE"),
-                    Expanded(
-                      child: ClipRRect(
-                        child: Image.memory(imgMemory!, fit: BoxFit.fill),
+                    TextSombrasWidget(
+                      title: "FOTO DEL SIIPNE",
+                      size: responsive.diagonalP(
+                        AppConfig.tamTextoTitulo + 0.5,
                       ),
+
+
+
+                    ),
+                    Expanded(
+                      child:
+                          imgMemory != null
+                              ? ClipRRect(
+                                child: Image.memory(
+                                  imgMemory,
+                                  fit: BoxFit.fill,
+                                ),
+                              )
+                              : Container(
+                                color: AppColors.colorAzul,
+                                child: Image.asset(AppImages.iconNoImg),
+                              ),
                     ),
                   ],
                 ),
