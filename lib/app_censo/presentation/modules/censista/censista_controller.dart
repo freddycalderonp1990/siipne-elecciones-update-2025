@@ -36,6 +36,7 @@ class CensistaController extends GetxController {
 
   @override
   void onReady() {
+
     // TODO: Donde la vista ya se presento
     super.onReady();
   }
@@ -153,6 +154,7 @@ class CensistaController extends GetxController {
       LatLng position = await locationBloc.getCurrentPosition();
 
       UpdateFotoPerCensoRequest request = UpdateFotoPerCensoRequest(
+        idGenUsuario: user.idGenUsuario,
         idDgpPerCenso: idDgpPerCenso,
         nameFotografia: dataFile.nameFile,
         latitud: position.latitude,

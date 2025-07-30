@@ -7,10 +7,12 @@ class UpdateFotoPerCensoRequest {
   final double latitud;
   final double longitud;
   final String ip;
+  final int idGenUsuario;
 
   UpdateFotoPerCensoRequest({
 
     required this.idDgpPerCenso,
+    required this.idGenUsuario,
     required this.nameFotografia,
     required this.latitud,
     required this.longitud,
@@ -24,6 +26,7 @@ class UpdateFotoPerCensoRequest {
       "latitud": latitud,
       "longitud": longitud,
       "ip": ip,
+      "idGenUsuario": idGenUsuario,
     };
   }
 }

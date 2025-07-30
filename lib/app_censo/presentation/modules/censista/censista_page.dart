@@ -317,8 +317,6 @@ class CensistaPage extends GetView<CensistaController> {
                         AppConfig.tamTextoTitulo + 0.5,
                       ),
 
-
-
                     ),
                     Expanded(
                       child: ClipRRect(
