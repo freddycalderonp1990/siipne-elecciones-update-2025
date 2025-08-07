@@ -3,7 +3,7 @@ part of '../controllers.dart';
 class MenuAppCensoController extends GetxController {
   final loginController = Get.find<LoginController>();
 
-  GetMesesByIdusuario getMesesByIdusuario = Get.find();
+  GetMesasByIdusuarioUseCase getMesasByIdusuarioUseCase = Get.find();
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -41,7 +41,7 @@ class MenuAppCensoController extends GetxController {
       GetMesasByIdusuarioRequest request = GetMesasByIdusuarioRequest(
         idGenUsuario: user.idGenUsuario,
       );
-      dataMesasList.value = await getMesesByIdusuario(request: request);
+      dataMesasList.value = await getMesasByIdusuarioUseCase(request: request);
     });
 
     peticionServerState(false);

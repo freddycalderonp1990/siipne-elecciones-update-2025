@@ -1,10 +1,10 @@
 
 part of 'censo_use_cases.dart';
 
-class GetDatosProcesosActivosByCensado {
+class FetchActiveProcessesByCensusPersonUseCase {
   final CensoRepository repository;
 
-  GetDatosProcesosActivosByCensado({required this.repository});
+  FetchActiveProcessesByCensusPersonUseCase({required this.repository});
 
   Future<List<DataCensado>> call({required GetDatosProcesosActivosRequest request }) {
     return repository.getDatosProcesosActivosByCensado(request: request);

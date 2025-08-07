@@ -1,10 +1,10 @@
 
 part of 'censo_use_cases.dart';
 
-class GetDatosPersonaCenso {
+class FetchCensusPersonDataUseCase {
   final CensoRepository repository;
 
-  GetDatosPersonaCenso({required this.repository});
+  FetchCensusPersonDataUseCase({required this.repository});
 
   Future<List<DataCensado>> call({required GetDatosPersonaCensoRequest request }) {
     return repository.getDatosPersonaCenso(request: request);

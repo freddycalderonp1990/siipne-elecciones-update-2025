@@ -4,9 +4,9 @@ class CensistaController extends GetxController {
   final loginController = Get.find<LoginController>();
   final SaveFileImgUseCase _saveFileImgUseCase = Get.find();
   final GetFotoDgpByDocumentoUseCase _getFotoDgpByDocumentoUseCase= Get.find();
-  final SaveFoto _saveFoto = Get.find();
+  final SaveCensusPersonPhotoUseCase _SaveCensusPersonPhotoUseCase = Get.find();
 
-  final GetDatosPersonaCenso getDatosPersonaCenso = Get.find();
+  final FetchCensusPersonDataUseCase getDatosPersonaCenso = Get.find();
 
   RxList<DataCensado> dataCensadoList = <DataCensado>[].obs;
   Rx<DataCensado> dataCensado = DataCensado.empty().obs;
@@ -140,7 +140,7 @@ class CensistaController extends GetxController {
     return dataFile;
   }
 
-  Future<void> saveFotoServer() async {
+  Future<void> SaveCensusPersonPhotoUseCaseServer() async {
     DataFile dataFile = await featureGuardarFoto();
     if (!dataFile.result) {
       return;
@@ -162,7 +162,7 @@ class CensistaController extends GetxController {
         ip: ip,
       );
 
-      bool result = await _saveFoto(request: request);
+      bool result = await _SaveCensusPersonPhotoUseCase(request: request);
       if (!result) {
         DialogosAwesome.getWarning(
           descripcion: "No se pudo completar el registro",
@@ -182,10 +182,8 @@ class CensistaController extends GetxController {
     peticionServerState(false);
   }
 
-
   validarFoto() async{
     await getFotoDgpByDocumento();
-
       showBtnValidarFoto.value = true;
 
   }

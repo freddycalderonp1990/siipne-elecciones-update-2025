@@ -6,7 +6,7 @@ class CensoPolicialController extends GetxController {
   final TotpCensoController totpCensoController =
       Get.find<TotpCensoController>();
 
-  final GetDatosProcesosActivosByCensado getDatosProcesosActivosByCensado =
+  final FetchActiveProcessesByCensusPersonUseCase getDatosProcesosActivosByCensado =
       Get.find();
 
   RxList<DataCensado> dataCensado = <DataCensado>[].obs;

@@ -3,10 +3,10 @@ part of 'censo_use_cases.dart';
 
 
 
-class SaveFoto {
+class SaveCensusPersonPhotoUseCase {
   final CensoRepository repository;
 
-  SaveFoto({required this.repository});
+  SaveCensusPersonPhotoUseCase({required this.repository});
 
   Future<bool> call({required UpdateFotoPerCensoRequest request }) {
     return repository.updateFoto(request: request);

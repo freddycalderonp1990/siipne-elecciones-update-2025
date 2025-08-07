@@ -15,7 +15,6 @@ class LocalStoreCensoUseCase {
   }
 
 
-
   Future<void> setFechaServer(String value) async {
     return repository.setFechaServer(value);
   }

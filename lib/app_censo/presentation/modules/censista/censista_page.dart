@@ -222,7 +222,7 @@ class CensistaPage extends GetView<CensistaController> {
                 controller
                     .mGaleryCameraModel
                     .value = await PhotoHelper.getDesingPictureGaleryOrCamera(
-                  onlyCamera: false,
+                  onlyCamera: true,
                   initPeticion: (value) {
                     controller.peticionServerState(value);
                   },
@@ -270,7 +270,7 @@ class CensistaPage extends GetView<CensistaController> {
                     descripcion:
                         "¿Está seguro que desea continuar con el registro?",
                     btnOkOnPress: () {
-                      controller.saveFotoServer();
+                      controller.SaveCensusPersonPhotoUseCaseServer();
                     },
                     btnCancelOnPress: () {},
                   );

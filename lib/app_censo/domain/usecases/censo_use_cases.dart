@@ -2,7 +2,7 @@ import '../../data/models/models_censo.dart';
 import '../repositories/domain_repositories.dart';
 import '../request/request_censo.dart';
 
-part 'get_datos_persona_censo.dart';
-part 'get_datos_procesos_activos_by_censado.dart';
-part 'update_foto.dart';
-part 'get_meses_by_idUsuario.dart';
+part 'fetch_census_person_data_use_case.dart';
+part 'fetch_active_processes_by_census_person_use_case.dart';
+part 'save_census_person_photo_use_case.dart';
+part 'get_mesas_by_idUsuario_use_case.dart';

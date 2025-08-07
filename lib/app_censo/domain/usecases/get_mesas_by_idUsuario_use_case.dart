@@ -1,9 +1,9 @@
 part of 'censo_use_cases.dart';
 
-class GetMesesByIdusuario {
+class GetMesasByIdusuarioUseCase {
   final CensoRepository repository;
 
-  GetMesesByIdusuario({required this.repository});
+  GetMesasByIdusuarioUseCase({required this.repository});
 
   Future<List<DataCensado>> call({
     required GetMesasByIdusuarioRequest request,
