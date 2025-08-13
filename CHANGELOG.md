@@ -66,3 +66,7 @@
 - 22/julio-2025 se cambia /Volumes/siipne/appmovil/apis/helper/responseApi.php, en el ok se asigna el code 204 (no data) cuando la variable data esta vacia o null
 - se debe revisar si esto afecta a las optras aplicaciones... puede estar saliendo un mensaje de error principlamente
 - revisar funcionalidad de siipone-elecciones
+
+
+### 13 agosto del 2025 - obtener menu para la app
+- {{URL}}appmovil/apis/v1/menuApps/read.php, realiza la validadion para mostrar lkos botones 

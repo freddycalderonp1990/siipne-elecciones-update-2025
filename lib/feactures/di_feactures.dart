@@ -5,6 +5,7 @@
 
 import 'app_moviles/di.dart';
 import 'foto_dgp/di.dart';
+import 'menu_app/di.dart';
 import 'save_file/di.dart';
 import 'user/di.dart';
 
@@ -16,7 +17,7 @@ class DependencyInjectionFeactures {
     DependencyInjectionSaveFile.init();
     DependencyInjectionAppsMoviles.init();
     DependencyInjectionFotoDgp.init();
-
+    DependencyInjectionMenuApps.init();
 
   }
 
