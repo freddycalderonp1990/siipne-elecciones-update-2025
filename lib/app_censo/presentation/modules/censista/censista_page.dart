@@ -18,7 +18,7 @@ class CensistaPage extends GetView<CensistaController> {
         mostrarBtnAtras: true,
         title:
             controller.showBtnValidarFoto.value
-                ? "Validar Fotografia"
+                ? "Registrar Fotografia"
                 : "Censista",
         contenido: Column(
           children: [
@@ -286,7 +286,7 @@ class CensistaPage extends GetView<CensistaController> {
           controller.mGaleryCameraModel.value != null
               ? BtnIconWidget(
                 icon: Icons.save,
-                titulo: "VALIDAR",
+                titulo: "SIGUIENTE",
                 onPressed: () {
                   controller.validarFoto();
                 },

@@ -4,8 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:siipnemovil2/app_censo/presentation/modules/censo_policial/local_widgets/desing_datos_censo.dart';
 
 
 import '../../../app/core/exceptions/exception_dialogos.dart';
@@ -31,9 +33,11 @@ import '../../domain/request/request_censo.dart';
 import '../../domain/usecases/censo_use_cases.dart';
 
 
+import '../routes/app_censo_routes.dart';
 import 'totpCenso/totp_censo_controller.dart';
 
 part 'menu/menu_app_censo_controller.dart';
 part 'historial_censo/historial_censo_controller.dart';
 part 'censo_policial/censo_policial_controller.dart';
 part 'censista/censista_controller.dart';
+part 'censista/validate_mesa/validate_mesa_controller.dart';

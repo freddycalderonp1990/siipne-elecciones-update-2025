@@ -30,6 +30,12 @@ class AppCensoPages {
         page: () => CensistaPage(),
         binding: CensistaBinding()),
 
+    AppPages.getPageConfig(
+        name: AppCensoRoutes.VALIDATE_MESA,
+        page: () => ValidateMesaPage(),
+        binding: ValidateMesaBinding()),
+
+
 
   ];
 }

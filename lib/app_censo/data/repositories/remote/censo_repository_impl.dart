@@ -13,8 +13,12 @@ class CensoRepositoryImpl extends CensoRepository {
   }
 
   @override
-  Future<List<DataCensado>> getDatosProcesosActivosByCensado({required GetDatosProcesosActivosRequest request}) async{
-    return this.censoRemoteDataSource.getDatosProcesosActivosByCensado(request: request);
+  Future<List<DataProceso>> getDatosProcesosActivosByCensado({
+    required GetDatosProcesosActivosRequest request,
+  }) async {
+    return this.censoRemoteDataSource.getDatosProcesosActivosByCensado(
+      request: request,
+    );
   }
 
   @override
@@ -23,7 +27,16 @@ class CensoRepositoryImpl extends CensoRepository {
   }
 
   @override
-  Future<List<DataCensado>> getMesasByIdUsuario({required GetMesasByIdusuarioRequest request}) async {
+  Future<List<DataMesa>> getMesasByIdUsuario({
+    required GetMesasByIdusuarioRequest request,
+  }) async {
     return this.censoRemoteDataSource.getMesasByIdUsuario(request: request);
+  }
+
+  @override
+  Future<bool> updateCoordenadasMesa({
+    required UpdateCoordenadasMesaRequest request,
+  }) async {
+    return this.censoRemoteDataSource.updateCoordenadasMesa(request: request);
   }
 }

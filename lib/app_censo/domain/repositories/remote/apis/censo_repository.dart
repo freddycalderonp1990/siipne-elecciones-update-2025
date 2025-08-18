@@ -6,7 +6,7 @@ abstract class CensoRepository {
   //Se define que cosas quiero hacer
   //se definen los contartos
 
-  Future<List<DataCensado>> getMesasByIdUsuario({
+  Future<List<DataMesa>> getMesasByIdUsuario({
     required GetMesasByIdusuarioRequest request,
   });
 
@@ -14,7 +14,7 @@ abstract class CensoRepository {
     required GetDatosPersonaCensoRequest request,
   });
 
-  Future<List<DataCensado>> getDatosProcesosActivosByCensado({
+  Future<List<DataProceso>> getDatosProcesosActivosByCensado({
     required GetDatosProcesosActivosRequest request,
   });
 
@@ -22,6 +22,9 @@ abstract class CensoRepository {
     required UpdateFotoPerCensoRequest request,
   });
 
+  Future<bool> updateCoordenadasMesa({
+    required UpdateCoordenadasMesaRequest request,
+  });
 
 
 

@@ -70,3 +70,10 @@
 
 ### 13 agosto del 2025 - obtener menu para la app
 - {{URL}}appmovil/apis/v1/menuApps/read.php, realiza la validadion para mostrar lkos botones 
+
+
+### 18 agosto del 2025 - MESAS CENSO
+- pensar en mostrar las mesas en un mapa con la fianlidad de validar que se encuentran configuradas de manera contria caso contrario poder arrastras
+- que latitud y longitud permita guardar vacios en la web con la finalidad que sea el censista que valide las coordenads de las mesas
+- validar que la latidu y longitud no este vacia.. si esta vacia al escanear el qr indicarle que las coordenadas de la mesa no son las correctas
+- Implementacion del api para actualizar las coordenadas de la mesa (listo)

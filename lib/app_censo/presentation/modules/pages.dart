@@ -21,9 +21,11 @@ import '../../../feactures/my_qr/presentation/widgets/qr_view_widget.dart';
 import '../../core/values/app_censo_images.dart';
 import '../routes/app_censo_routes.dart';
 import '../widgets/custom_app_censo_widgets.dart';
+import 'censista/validate_mesa/local_widget/desing_mapa.dart';
 import 'controllers.dart';
 
 part 'menu/menu_app_censo_page.dart';
 part 'historial_censo/historial_censo_page.dart';
 part 'censo_policial/censo_policial_page.dart';
 part 'censista/censista_page.dart';
+part 'censista/validate_mesa/validate_mesa_page.dart';

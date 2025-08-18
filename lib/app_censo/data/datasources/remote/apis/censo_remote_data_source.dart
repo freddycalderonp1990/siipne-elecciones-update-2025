@@ -4,7 +4,7 @@ abstract class CensoRemoteDataSource {
   //Se define que cosas quiero hacer
   //se definen los contartos
 
-  Future<List<DataCensado>> getMesasByIdUsuario({
+  Future<List<DataMesa>> getMesasByIdUsuario({
     required GetMesasByIdusuarioRequest request,
   });
 
@@ -12,11 +12,15 @@ abstract class CensoRemoteDataSource {
     required GetDatosPersonaCensoRequest request,
   });
 
-  Future<List<DataCensado>> getDatosProcesosActivosByCensado({
+  Future<List<DataProceso>> getDatosProcesosActivosByCensado({
     required GetDatosProcesosActivosRequest request,
   });
 
   Future<bool> updateFoto({required UpdateFotoPerCensoRequest request});
+
+  Future<bool> updateCoordenadasMesa({
+    required UpdateCoordenadasMesaRequest request,
+  });
 }
 
 class CensoRemoteDataSourceImpl implements CensoRemoteDataSource {
@@ -39,7 +43,7 @@ class CensoRemoteDataSourceImpl implements CensoRemoteDataSource {
   }
 
   @override
-  Future<List<DataCensado>> getDatosProcesosActivosByCensado({
+  Future<List<DataProceso>> getDatosProcesosActivosByCensado({
     required GetDatosProcesosActivosRequest request,
   }) async {
     Map<String, dynamic> body =
@@ -51,7 +55,7 @@ class CensoRemoteDataSourceImpl implements CensoRemoteDataSource {
 
     return await ExceptionHelper.manejarErroresParseJsonException(() async {
       // Parsear y retornar el modelo correspondiente
-      return censadoModelFromJson(json).dataCensado;
+      return procesoModelFromJson(json).dataProceso;
     });
   }
 
@@ -73,7 +77,7 @@ class CensoRemoteDataSourceImpl implements CensoRemoteDataSource {
   }
 
   @override
-  Future<List<DataCensado>> getMesasByIdUsuario({required GetMesasByIdusuarioRequest request}) async {
+  Future<List<DataMesa>> getMesasByIdUsuario({required GetMesasByIdusuarioRequest request}) async {
 
       Map<String, dynamic> body =
       HeadAppCensoRequest(
@@ -84,7 +88,24 @@ class CensoRemoteDataSourceImpl implements CensoRemoteDataSource {
 
       return await ExceptionHelper.manejarErroresParseJsonException(() async {
         // Parsear y retornar el modelo correspondiente
-        return censadoModelFromJson(json).dataCensado;
+        return mesasModelFromJson(json).dataMesa;
       });
+  }
+
+  @override
+  Future<bool> updateCoordenadasMesa({required UpdateCoordenadasMesaRequest request})  async{
+    Map<String, dynamic> body =
+    HeadAppCensoRequest(
+      uri: CensoApiConstantes.MESA_UPDATE_COORDENADAS,
+      bodyRequest: request.toJson(),
+    ).toJson();
+    String json = await UrlApiProviderAppCenso.patch(body: body);
+
+    return await ExceptionHelper.manejarErroresParseJsonException(() async {
+      // Parsear y retornar el modelo correspondiente
+      final responseData = jsonDecode(json);
+      bool resultado = responseData['data'] == true;
+      return resultado;
+    });
   }
 }

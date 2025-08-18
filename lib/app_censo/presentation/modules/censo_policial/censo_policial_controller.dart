@@ -6,10 +6,10 @@ class CensoPolicialController extends GetxController {
   final TotpCensoController totpCensoController =
       Get.find<TotpCensoController>();
 
-  final FetchActiveProcessesByCensusPersonUseCase getDatosProcesosActivosByCensado =
-      Get.find();
+  final FetchActiveProcessesByCensusPersonUseCase
+  getDatosProcesosActivosByCensado = Get.find();
 
-  RxList<DataCensado> dataCensado = <DataCensado>[].obs;
+
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
@@ -25,7 +25,7 @@ class CensoPolicialController extends GetxController {
 
   @override
   void onReady() async {
-    await getDatosProcesoByCensado();
+
     // TODO: Donde la vista ya se presento
     super.onReady();
   }
@@ -37,7 +37,7 @@ class CensoPolicialController extends GetxController {
     super.onClose();
   }
 
-  Future<void> getDatosProcesoByCensado() async {
+ /* Future<void> getDatosProcesoByCensado() async {
     peticionServerState(true);
     await ExceptionDialogos.manejarErroresShowDialogo(
       msjNoData:
@@ -57,7 +57,7 @@ class CensoPolicialController extends GetxController {
 
       bool finalizado = data.estadoCenso.toLowerCase() == "finalizado";
 
-      if(finalizado) {
+      if (finalizado) {
         DialogosAwesome.getIconPolicia(
           title: "INFORMACIÓN",
           descripcion: "${user.nombres}\n\n USTED YA FUE CENSADO",
@@ -68,75 +68,32 @@ class CensoPolicialController extends GetxController {
           titleBtnSi: "ACEPTAR",
           mostrarSegungoBtn: false,
         );
+      } else {
+        DialogosDesingWidget.getDialogo(
+          contenido: DesingDatosCenso(
+            dataCensado: dataCensado,
+            onPressed: () {
+              Get.back();
+            },
+          ),
+          barrierDismissible: false,
+        );
       }
-      else{
-        DialogosDesingWidget.getDialogo(contenido: wgDatosCenso(data),barrierDismissible: false);
-      }
-
-
     } else {
       Get.back(); //este cierra el mensaje que se muestra en manejarErroresShowDialogo y permite mostrar el siguinete dialogo
       DialogosAwesome.getInformation(
         descripcion:
             "No existen procesos activos o no está asignado a una mesa.",
-        btnOkOnPress: (){
+        btnOkOnPress: () {
           Get.back();
           Get.back();
-        }
+        },
       );
-
-
-
-
-
     }
 
     peticionServerState(false);
   }
-
-  Widget wgDatosCenso(DataCensado dataCensado) {
-    final responsive = ResponsiveUtil();
-
-
-
-    Widget wg = Column(
-      children: [
-        Container(
-          margin: EdgeInsets.all(5),
-          child: Column(
-            children: [
-              SizedBox(height: responsive.altoP(1)),
-              TituloDetalleTextWidget(
-                title: "Proceso: ",
-                detalle: dataCensado.descProceso,
-              ),
-              TituloDetalleTextWidget(
-                title: "Recinto: ",
-                detalle: dataCensado.descRecinto,
-              ),
-              TituloDetalleTextWidget(
-                title: "Mesa: ",
-                detalle: dataCensado.descMesa,
-              ),
-            ],
-          ),
-        ),
-
-        SizedBox(height: responsive.altoP(2)),
-
-        BtnIconWidget(
-          icon: Icons.navigate_next_outlined,
-          titulo: "CONTINUAR",
-          onPressed: () {
-            Get.back();
-          },
-        ),
-      ],
-    );
-
-    return wg;
-  }
-
+*/
   cerrarSession() {
     Get.back();
   }

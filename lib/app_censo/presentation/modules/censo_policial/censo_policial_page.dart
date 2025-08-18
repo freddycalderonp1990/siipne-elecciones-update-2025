@@ -6,7 +6,6 @@ class CensoPolicialPage extends GetView<CensoPolicialController> {
   @override
   Widget build(BuildContext context) {
     return WorkAreaPageCensoWidget(
-
       mostrarBtnAtras: true,
       showGps: true,//indica que la app va a utilkizar el gps
       title: "CENSO POLICIAL",

@@ -26,7 +26,7 @@ void main() {
 
   // Datos de prueba que el mock devolverá simulando una respuesta real
   final testData = [
-    DataCensado(
+    DataProceso(
       idGenProcesoCenso: 1,
       descProceso: 'Proceso Test',
       fechaIniProceso: '2025-08-01',

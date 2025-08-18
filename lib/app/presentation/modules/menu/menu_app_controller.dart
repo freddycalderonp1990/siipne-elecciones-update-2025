@@ -15,7 +15,7 @@ class MenuAppController extends GetxController {
   @override
   void onInit() async {
     user=loginController.user.value;
-    await getMenuAppUseCase();
+    await getDatosMenuApp();
 
     super.onInit();
   }

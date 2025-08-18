@@ -2,6 +2,10 @@ part of '../controllers.dart';
 
 class MenuAppCensoController extends GetxController {
   final loginController = Get.find<LoginController>();
+  final FetchActiveProcessesByCensusPersonUseCase
+  getDatosProcesosActivosByCensado = Get.find();
+
+  RxList<DataProceso> dataProcesos = <DataProceso>[].obs;
 
   GetMesasByIdusuarioUseCase getMesasByIdusuarioUseCase = Get.find();
 
@@ -10,12 +14,15 @@ class MenuAppCensoController extends GetxController {
   late UserEntities user;
 
   RxBool peticionServerState = false.obs;
-  RxList<DataCensado> dataMesasList = <DataCensado>[].obs;
+  RxList<DataMesa> dataMesasList = <DataMesa>[].obs;
+
+  RxBool finalizaCenso = true.obs;
 
   @override
   void onInit() async {
     user = loginController.user.value;
     await getDatosMesas();
+    getDatosProcesoByCensado();
 
     super.onInit();
   }
@@ -37,17 +44,91 @@ class MenuAppCensoController extends GetxController {
     peticionServerState(true);
     await ExceptionDialogos.manejarErroresShowDialogo(
       showMsjNodata: false,
-            () async {
-      GetMesasByIdusuarioRequest request = GetMesasByIdusuarioRequest(
-        idGenUsuario: user.idGenUsuario,
-      );
-      dataMesasList.value = await getMesasByIdusuarioUseCase(request: request);
-    });
+      () async {
+        GetMesasByIdusuarioRequest request = GetMesasByIdusuarioRequest(
+          idGenUsuario: user.idGenUsuario,
+        );
+        dataMesasList.value = await getMesasByIdusuarioUseCase(
+          request: request,
+        );
+      },
+    );
 
     peticionServerState(false);
   }
 
   cerrarSession() {
     Get.back();
+  }
+
+  Future<void> getDatosProcesoByCensado() async {
+    peticionServerState(true);
+    await ExceptionDialogos.manejarErroresShowDialogo(
+      msjNoData:
+          "No existen procesos activos o no está asignado a una mesa. 204",
+      () async {
+        GetDatosProcesosActivosRequest request = GetDatosProcesosActivosRequest(
+          idGenPersonaCensado: user.idGenPersona,
+        );
+        dataProcesos.value = await getDatosProcesosActivosByCensado(
+          request: request,
+        );
+      },
+    );
+
+    for (int i = 0; i < dataProcesos.length; i++) {
+      DataProceso data = dataProcesos[i];
+      bool finalizado = data.estadoCenso.toLowerCase() == "finalizado";
+
+      if (!finalizado) {
+        finalizaCenso.value = false;
+
+        DialogosDesingWidget.getDialogoX(
+          contenido: DesingDatosCenso(
+            dataProcesos: dataProcesos,
+            onPressed: () {
+              Get.back();
+              goToPageIniciarCenso();
+            },
+          ),
+        );
+
+        break;
+      }
+    }
+
+    peticionServerState(false);
+  }
+
+  Future<bool> validarMesasCenso(List<DataMesa> dataMesasList) async {
+   await getDatosMesas();
+
+    bool mesasvalidadas = true;
+    for (int i = 0; i < dataMesasList.length; i++) {
+      DataMesa data = dataMesasList[i];
+      if (data.latitud == 0 || data.longitud == 0) {
+        mesasvalidadas = false;
+        //Muestra cuando no tiene latitud ni longitud la mesa
+        DialogosAwesome.getWarning(
+          descripcion:
+              "Para continuar, debe configurar las coordenadas de la ubicación de su mesa.\n[${data.descMesa}]"
+              "\nAsegúrese de estar en el lugar exacto donde se realizará el censo para evitar inconvenientes.",
+          btnOkOnPress: () {
+            Get.toNamed(AppCensoRoutes.VALIDATE_MESA,arguments:{"mesa": data}  );
+          },
+        );
+        break;
+      }
+    }
+    if(mesasvalidadas){
+      Get.toNamed(AppCensoRoutes.CENSISTA);
+    }
+    return mesasvalidadas;
+  }
+
+  goToPageIniciarCenso() {
+
+
+    Get.toNamed(AppCensoRoutes.CENSO_POLICIAL );
   }
 }

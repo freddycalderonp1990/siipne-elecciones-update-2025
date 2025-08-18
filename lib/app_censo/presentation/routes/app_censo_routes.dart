@@ -7,4 +7,6 @@ class AppCensoRoutes{
   static const HISTORIAL_CENSO="/${name}historial_censo";
   static const CENSISTA="/${name}censista";
 
+  static const VALIDATE_MESA="/${name}validateMesa";
+
 }

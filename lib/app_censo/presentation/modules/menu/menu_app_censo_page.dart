@@ -38,8 +38,6 @@ class MenuAppCensoPage extends GetView<MenuAppCensoController> {
               ],
             ),
           ),
-
-  
         ],
       ),
     );
@@ -48,6 +46,14 @@ class MenuAppCensoPage extends GetView<MenuAppCensoController> {
   _getMenu(ResponsiveUtil responsive) {
     return Column(
       children: [
+        BtnMenuWidget(
+          horizontal: true,
+          colorFondo: Colors.white,
+          img: AppCensoImages.ic_iniciar_censo,
+          title: "validar",
+          onTap: () => Get.toNamed(AppCensoRoutes.VALIDATE_MESA),
+        ),
+
         Row(
           children: [
             Flexible(
@@ -56,7 +62,7 @@ class MenuAppCensoPage extends GetView<MenuAppCensoController> {
                 colorFondo: Colors.white,
                 img: AppCensoImages.ic_iniciar_censo,
                 title: "INICIAR CENSO",
-                onTap: () => Get.toNamed(AppCensoRoutes.CENSO_POLICIAL),
+                onTap: () =>controller. goToPageIniciarCenso(),
               ),
             ),
             SizedBox(width: responsive.anchoP(2)),
@@ -74,18 +80,32 @@ class MenuAppCensoPage extends GetView<MenuAppCensoController> {
 
         SizedBox(height: responsive.altoP(1)),
 
-        Obx(()=>controller.dataMesasList.length>0?Container(
-          padding: EdgeInsets.symmetric(horizontal: responsive.anchoP(15)),
+        Obx(
+          () =>
+              controller.dataMesasList.length > 0
+                  ? Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: responsive.anchoP(15),
+                    ),
 
-          child: BtnMenuWidget(
-            horizontal: true,
-            colorFondo: Colors.white,
-            img: AppCensoImages.ic_iniciar_censo,
-            title: "CENSISTA",
-            onTap: () => Get.toNamed(AppCensoRoutes.CENSISTA),
-          ),
-        ):SizedBox.shrink(),)
+                    child: BtnMenuWidget(
+                      horizontal: true,
+                      colorFondo: Colors.white,
+                      img: AppCensoImages.ic_iniciar_censo,
+                      title: "CENSISTA",
+                   onTap: (){
+                        controller.validarMesasCenso(controller.dataMesasList);
+                   },
+                   //  onTap: () => Get.toNamed(AppCensoRoutes.CENSISTA),
+                    ),
+                  )
+                  : SizedBox.shrink(),
+        ),
+
+
       ],
     );
   }
+
+
 }

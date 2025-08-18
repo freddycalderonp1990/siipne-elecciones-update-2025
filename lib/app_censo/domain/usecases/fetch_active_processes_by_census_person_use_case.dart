@@ -6,7 +6,7 @@ class FetchActiveProcessesByCensusPersonUseCase {
 
   FetchActiveProcessesByCensusPersonUseCase({required this.repository});
 
-  Future<List<DataCensado>> call({required GetDatosProcesosActivosRequest request }) {
+  Future<List<DataProceso>> call({required GetDatosProcesosActivosRequest request }) {
     return repository.getDatosProcesosActivosByCensado(request: request);
   }
 }
