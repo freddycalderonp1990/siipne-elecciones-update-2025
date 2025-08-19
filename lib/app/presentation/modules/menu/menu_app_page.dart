@@ -92,7 +92,7 @@ class MenuAppPage extends GetView<MenuAppController> {
               controller.dataMenuApp.value.siipneElecciones
                   ? BtnMenuWidget(
                     horizontal: true,
-                    img: AppImages.imgIconD,
+                    img: SiipneEleccionesImages.ic_elecciones,
                     title: "ELECCIONES",
                     onTap: () {
                       Get.toNamed(EleccionesRoutes.MENU_APP);
@@ -107,7 +107,7 @@ class MenuAppPage extends GetView<MenuAppController> {
               controller.dataMenuApp.value.siipneCenso
                   ? BtnMenuWidget(
                     horizontal: true,
-                    img: AppImages.escudopolicia,
+                    img: AppCensoImages.ic_censo,
                     title: "CENSO POLICIAL",
                     onTap: () {
                       Get.toNamed(AppCensoRoutes.MENU_APP);

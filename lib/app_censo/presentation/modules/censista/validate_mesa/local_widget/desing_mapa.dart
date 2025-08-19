@@ -198,7 +198,7 @@ class _DesingMapaState extends State<DesingMapa> {
   Widget btnGuardar(){
     return
       BtnIconWidget(
-        icon: Icons.navigate_next_outlined,
+        icon: Icons.save,
         titulo: "GUARDAR",
         onPressed: widget.onPressedSave,
 

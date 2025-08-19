@@ -26,6 +26,9 @@ class DependencyInjectionCenso extends Bindings{
     Get.lazyPut<FetchActiveProcessesByCensusPersonUseCase>(()=>FetchActiveProcessesByCensusPersonUseCase(repository: Get.find()),fenix: true);
     Get.lazyPut<SaveCensusPersonPhotoUseCase>(()=>SaveCensusPersonPhotoUseCase(repository: Get.find()),fenix: true);
     Get.lazyPut<GetMesasByIdusuarioUseCase>(()=>GetMesasByIdusuarioUseCase(repository: Get.find()),fenix: true);
+    Get.lazyPut<UpdateMesaCoordinatesUseCase>(()=>UpdateMesaCoordinatesUseCase(repository: Get.find()),fenix: true);
+    Get.lazyPut<FetchDataHistoryCensusUseCase>(()=>FetchDataHistoryCensusUseCase(repository: Get.find()),fenix: true);
+
 
 
     // Repository

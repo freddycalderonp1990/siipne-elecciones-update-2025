@@ -44,68 +44,94 @@ class MenuAppCensoPage extends GetView<MenuAppCensoController> {
   }
 
   _getMenu(ResponsiveUtil responsive) {
-    return Column(
-      children: [
-        BtnMenuWidget(
-          horizontal: true,
-          colorFondo: Colors.white,
-          img: AppCensoImages.ic_iniciar_censo,
-          title: "validar",
-          onTap: () => Get.toNamed(AppCensoRoutes.VALIDATE_MESA),
-        ),
-
-        Row(
-          children: [
-            Flexible(
-              child: BtnMenuWidget(
-                horizontal: true,
-                colorFondo: Colors.white,
-                img: AppCensoImages.ic_iniciar_censo,
-                title: "INICIAR CENSO",
-                onTap: () =>controller. goToPageIniciarCenso(),
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 10),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Obx(
+                () =>
+                    controller.showBtnIniciarCenso.value
+                        ? Expanded(
+                          child: BtnMenuWidget(
+                            horizontal: true,
+                            colorFondo: Colors.white,
+                            img: AppCensoImages.ic_iniciar_censo,
+                            title: "INICIAR CENSO",
+                            onTap: () {
+                              if (controller.isCensista.value) {
+                                DialogosDesingWidget.getDialogoX(
+                                  title: "Iniciar Censo",
+                                  contenido: _getOpcionesParaCensista(
+                                    responsive,
+                                  ),
+                                );
+                              } else {
+                                controller.goToPageIniciarCenso();
+                              }
+                            },
+                          ),
+                        )
+                        : SizedBox.shrink(),
               ),
-            ),
-            SizedBox(width: responsive.anchoP(2)),
-            Flexible(
-              child: BtnMenuWidget(
-                horizontal: true,
-                colorFondo: Colors.white,
-                img: AppCensoImages.ic_historial_censo,
-                title: "HISTORIAL CENSOS",
-                onTap: () => Get.toNamed(AppCensoRoutes.HISTORIAL_CENSO),
+              Obx(
+                () =>
+                    controller.showBtnIniciarCenso.value
+                        ? SizedBox(width: responsive.anchoP(2))
+                        : SizedBox.shrink(),
               ),
-            ),
-          ],
-        ),
-
-        SizedBox(height: responsive.altoP(1)),
-
-        Obx(
-          () =>
-              controller.dataMesasList.length > 0
-                  ? Container(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: responsive.anchoP(15),
-                    ),
-
-                    child: BtnMenuWidget(
-                      horizontal: true,
-                      colorFondo: Colors.white,
-                      img: AppCensoImages.ic_iniciar_censo,
-                      title: "CENSISTA",
-                   onTap: (){
-                        controller.validarMesasCenso(controller.dataMesasList);
-                   },
-                   //  onTap: () => Get.toNamed(AppCensoRoutes.CENSISTA),
-                    ),
-                  )
-                  : SizedBox.shrink(),
-        ),
-
-
-      ],
+              Expanded(
+                child: BtnMenuWidget(
+                  horizontal: true,
+                  colorFondo: Colors.white,
+                  img: AppCensoImages.ic_historial_censo,
+                  title: "HISTORIAL CENSOS",
+                  onTap: () => Get.toNamed(AppCensoRoutes.HISTORIAL_CENSO),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
+  _getOpcionesParaCensista(ResponsiveUtil responsive) {
+    return Container(
+      child: Column(
+        children: [
+          TextSombrasWidget(
+            title: "Seleccione cómo desea participar en el censo",
+          ),
 
+          BtnMenuWidget(
+            horizontal: true,
+            colorFondo: Colors.white,
+            img: AppCensoImages.ic_censista,
+            title: "Quiero censar",
+            onTap: () {
+              Get.back();
+              controller.validarMesasCenso(controller.dataMesasList);
+            },
+          ),
+
+          SizedBox(height: 8),
+
+          controller.showBtnQuieroSerCensado.value
+              ? BtnMenuWidget(
+                horizontal: true,
+                colorFondo: Colors.white,
+                img: AppCensoImages.ic_censo,
+                title: "Quiero ser censado",
+                onTap: () {
+                  Get.back();
+                  controller.goToPageIniciarCenso();
+                },
+              )
+              : SizedBox.shrink(),
+        ],
+      ),
+    );
+  }
 }

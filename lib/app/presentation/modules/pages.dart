@@ -10,6 +10,7 @@ import 'package:flutter_pdfview/flutter_pdfview.dart';
 
 
 import 'package:get/get.dart';
+import 'package:siipnemovil2/app_censo/core/values/app_censo_images.dart';
 import 'package:siipnemovil2/app_censo/presentation/routes/app_censo_routes.dart';
 
 import '../../../app/core/utils/responsiveUtil.dart';

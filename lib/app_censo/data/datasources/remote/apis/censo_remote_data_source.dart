@@ -21,6 +21,10 @@ abstract class CensoRemoteDataSource {
   Future<bool> updateCoordenadasMesa({
     required UpdateCoordenadasMesaRequest request,
   });
+
+  Future<List<DataHistoryCenso>> getDatosHistoryCensos({
+    required int idPerCensado,
+  });
 }
 
 class CensoRemoteDataSourceImpl implements CensoRemoteDataSource {
@@ -106,6 +110,21 @@ class CensoRemoteDataSourceImpl implements CensoRemoteDataSource {
       final responseData = jsonDecode(json);
       bool resultado = responseData['data'] == true;
       return resultado;
+    });
+  }
+
+  @override
+  Future<List<DataHistoryCenso>> getDatosHistoryCensos({required int idPerCensado}) async {
+    Map<String, dynamic> body =
+    HeadAppCensoRequest(
+      uri: CensoApiConstantes.CENSO_HISTORIAL_BY_IDPERCENSADO,
+      bodyRequest: {
+        "idPerCensado": idPerCensado},
+    ).toJson();
+    String json = await UrlApiProviderAppCenso.post(body: body);
+    return await ExceptionHelper.manejarErroresParseJsonException(() async {
+      // Parsear y retornar el modelo correspondiente
+      return historyCensoModelFromJson(json).dataHistoryCenso;
     });
   }
 }

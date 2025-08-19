@@ -117,7 +117,7 @@ class DialogosDesingWidget {
                     style: TextStyle(
                         fontSize: responsive.diagonalP(2.5),
                         fontWeight: FontWeight.w700,
-                        color: Colors.blueAccent),
+                        color: AppColors.colorAzul),
                   ),
                   SizedBox(height: responsive.altoP(1)),
                   contenido != null ? contenido : Container(),

@@ -23,6 +23,7 @@ import '../routes/app_censo_routes.dart';
 import '../widgets/custom_app_censo_widgets.dart';
 import 'censista/validate_mesa/local_widget/desing_mapa.dart';
 import 'controllers.dart';
+import 'historial_censo/local_widgets/desing_history_censos.dart';
 
 part 'menu/menu_app_censo_page.dart';
 part 'historial_censo/historial_censo_page.dart';

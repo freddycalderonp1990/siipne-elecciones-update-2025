@@ -2,6 +2,8 @@ part of '../../controllers.dart';
 
 class ValidateMesaController extends GetxController {
   final loginController = Get.find<LoginController>();
+
+  final UpdateMesaCoordinatesUseCase updateMesaCoordinatesUseCase=Get.find();
   RxBool peticionServerState = false.obs;
   late UserEntities user;
 
@@ -63,6 +65,42 @@ class ValidateMesaController extends GetxController {
     ubicacion.value = await locationBloc.getCurrentPosition();
 
     mapController.move(ubicacion.value, 18);
+    peticionServerState(false);
+  }
+
+
+  Future<void> updateMesaCoordinates() async {
+
+    peticionServerState(true);
+
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
+      String ip = await DeviceInfoApp.getIp;
+
+
+      UpdateCoordenadasMesaRequest request = UpdateCoordenadasMesaRequest(
+        usuario: user.idGenUsuario,
+        latitud: ubicacion.value.latitude,
+        longitud: ubicacion.value.longitude,
+        ip: ip, idDgpMesa: dataMesa.idDgpMesa,
+      );
+
+      bool result = await updateMesaCoordinatesUseCase(request: request);
+      if (!result) {
+        DialogosAwesome.getWarning(
+          descripcion: "No se pudo completar el registro",
+        );
+        return;
+      }
+
+      DialogosAwesome.getInformation(
+        descripcion: "Las coordenadas fueron registradas con éxito.",
+        btnOkOnPress: () {
+          Get.back();
+          Get.back();
+        },
+      );
+    });
+
     peticionServerState(false);
   }
 

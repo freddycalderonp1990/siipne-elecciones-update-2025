@@ -18,11 +18,16 @@ class MenuAppCensoController extends GetxController {
 
   RxBool finalizaCenso = true.obs;
 
+  RxBool showBtnIniciarCenso = false.obs;
+  RxBool showBtnQuieroSerCensado = false.obs;
+  RxBool isCensista = false.obs;
+
   @override
   void onInit() async {
     user = loginController.user.value;
+
+     await  getDatosProcesoByCensado();
     await getDatosMesas();
-    getDatosProcesoByCensado();
 
     super.onInit();
   }
@@ -51,6 +56,12 @@ class MenuAppCensoController extends GetxController {
         dataMesasList.value = await getMesasByIdusuarioUseCase(
           request: request,
         );
+
+        if(dataMesasList.length>0){
+          isCensista.value=true;
+          showBtnIniciarCenso.value=true;
+
+        }
       },
     );
 
@@ -81,6 +92,10 @@ class MenuAppCensoController extends GetxController {
       bool finalizado = data.estadoCenso.toLowerCase() == "finalizado";
 
       if (!finalizado) {
+        showBtnIniciarCenso.value=true;
+        showBtnQuieroSerCensado.value=true;
+
+
         finalizaCenso.value = false;
 
         DialogosDesingWidget.getDialogoX(
@@ -127,8 +142,6 @@ class MenuAppCensoController extends GetxController {
   }
 
   goToPageIniciarCenso() {
-
-
     Get.toNamed(AppCensoRoutes.CENSO_POLICIAL );
   }
 }

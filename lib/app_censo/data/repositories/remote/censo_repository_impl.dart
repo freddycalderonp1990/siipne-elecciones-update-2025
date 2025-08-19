@@ -39,4 +39,10 @@ class CensoRepositoryImpl extends CensoRepository {
   }) async {
     return this.censoRemoteDataSource.updateCoordenadasMesa(request: request);
   }
+
+  @override
+  Future<List<DataHistoryCenso>> getDatosHistoryCensos({required int idPerCensado}) async {
+    // TODO: implement getDatosHistoryCensos
+    return this.censoRemoteDataSource.getDatosHistoryCensos(idPerCensado: idPerCensado);
+  }
 }

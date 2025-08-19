@@ -12,4 +12,6 @@ class CensoApiConstantes {
 
   static const MESA_UPDATE_COORDENADAS = "v1-patch-coordenadas-mesas";
 
+  static const CENSO_HISTORIAL_BY_IDPERCENSADO = "v1-historial-censos";
+
 }

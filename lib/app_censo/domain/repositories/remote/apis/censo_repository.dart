@@ -18,12 +18,18 @@ abstract class CensoRepository {
     required GetDatosProcesosActivosRequest request,
   });
 
+
+
   Future<bool> updateFoto({
     required UpdateFotoPerCensoRequest request,
   });
 
   Future<bool> updateCoordenadasMesa({
     required UpdateCoordenadasMesaRequest request,
+  });
+
+  Future<List<DataHistoryCenso>> getDatosHistoryCensos({
+    required int idPerCensado,
   });
 
 

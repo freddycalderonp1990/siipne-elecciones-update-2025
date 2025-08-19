@@ -15,6 +15,10 @@ class AppCensoImages {
   static const ic_historial_censo = rutaIcon + "ic_historial_censo.png";
   static const ic_iniciar_censo = rutaIcon + "ic_iniciar_censo.png";
 
+  static const ic_censista = rutaIcon + "ic_censista.png";
+
+  static const ic_censo = rutaIcon + "ic_censo.png";
+
 
 
 

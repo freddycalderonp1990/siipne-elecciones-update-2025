@@ -14,13 +14,13 @@ class AppColors{
   static const Color colorBotonesWidget = Colors.lightBlue;
   static const Color colorBordeBotones = Colors.blueAccent;
 
-
   static const Color colorBordecajas = colorAzul;
   static const Color colorBotones = AppColors.colorAzul;
 
   static const Color colorFondo = colorAzul;
 
   static const Color colorIcons = colorAzul;
+
 
 
   //hexadecimal #164987
@@ -47,6 +47,7 @@ class AppColors{
 
   //PLOMO INSTITUCIONAL
 
+  //hexadecimal #A7A9AC
 
   static const int _basePlomo = 0xA7A9AC; // Color base sin opacidad
 

@@ -53,7 +53,7 @@ class DesingDatosCenso extends StatelessWidget {
   Widget wgDatosCenso( DataProceso  data,BuildContext context) {
     final responsive = ResponsiveUtil();
     bool censado=data.estadoCenso.toUpperCase()=="FINALIZADO";
-    censado=true;
+   // censado=true;
 
     Widget wg = Column(
       children: [
