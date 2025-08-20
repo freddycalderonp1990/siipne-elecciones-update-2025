@@ -130,4 +130,25 @@ class EleccionesNovedadesApiProviderImpl extends EleccionesNovedadesRepository {
       return [];
     });
   }
+
+  @override
+  Future<DataNovedadesUdga> verificarNovedadesUdgaPolicialRegistradas({
+    required int idGenPersona,
+  })async {
+    HeadEleccionesRequest _headEleccionesRequest = HeadEleccionesRequest(
+      uri: ApiConstantes.ELECCIONES_VERIFICA_PER_NOV_REGISTRADAS,
+      bodyRequest: {"idGenPersona":idGenPersona},
+    );
+
+    String json = await UrlApiProviderSiipneMovil.post(
+      body: _headEleccionesRequest.toJson(),
+    );
+
+    return await ExceptionHelper.manejarErroresParseJsonException(() async {
+
+        // Obtener los datos del modelo en formato String
+       return  novedadesUdgaPolicialModelFromJson(json).dataNovedadesUdga;
+
+    });
+  }
 }

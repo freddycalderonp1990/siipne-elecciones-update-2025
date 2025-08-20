@@ -93,6 +93,23 @@ class DialogosAwesome {
       {String title = 'ERROR',
         required String descripcion,
         Function()? btnOkOnPress}) {
+
+    Color colorWarning=Color(0xFFEA4236);
+
+    return       DialogosAwesome.getIconPolicia(
+      colorBtnSi: colorWarning,
+      colorCircleImg: colorWarning,
+      colorTitle: colorWarning,
+      title: title,
+      descripcion: descripcion,
+      btnOkOnPress:  btnOkOnPress == null
+          ? () {
+        Get.back();
+      }:btnOkOnPress,
+      titleBtnSi: "Ok",
+      mostrarSegungoBtn: false,
+    );
+
     AwesomeDialog(
         dismissOnTouchOutside: false,
         dismissOnBackKeyPress: false,
@@ -133,10 +150,31 @@ class DialogosAwesome {
   }
 
   static getWarning(
-      {String title = 'Advertencia',
+      {String title = 'ADVERTENCIA',
         String titleBtnOk = 'Ok',
         required String descripcion,
         Function()? btnOkOnPress}) {
+
+    Color colorWarning=Color(0xFFF46B40);
+
+    return       DialogosAwesome.getIconPolicia(
+      colorBtnSi: colorWarning,
+      colorCircleImg: colorWarning,
+      colorTitle: colorWarning,
+      title: title,
+      descripcion: descripcion,
+      btnOkOnPress:  btnOkOnPress == null
+          ? () {
+        Get.back();
+      }:btnOkOnPress,
+      titleBtnSi: "Ok",
+      mostrarSegungoBtn: false,
+    );
+
+
+
+
+
     AwesomeDialog(
         dismissOnTouchOutside: false,
         dismissOnBackKeyPress: false,
@@ -163,6 +201,9 @@ class DialogosAwesome {
       {
         bool mostrarSegungoBtn=true,
         Color colorBtnSi=AppColors.colorBotones,
+        Color colorTitle=AppColors.colorAzul,
+        Color colorCircleImg=AppColors.colorAzul,
+        String imgString=AppImages.escudopolicia,
 
         required String title ,
 
@@ -180,10 +221,25 @@ class DialogosAwesome {
       dialogType: DialogType.info,
       headerAnimationLoop: false,
       customHeader: Container(
-        child: Image.asset(AppImages.escudopolicia),
+        width: 80,
+        height: 80,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(color: colorCircleImg, width: 3),
+        ),
+        child: Center(
+          child: Image.asset(
+            imgString,
+            width: 60, // Ajusta el tamaño para que no se recorte
+            height: 60,
+            fit: BoxFit.contain, // Mantiene proporciones
+          ),
+        ),
       ),
       animType: AnimType.scale,
       title: title,
+      titleTextStyle: TextStyle(color: colorTitle,fontWeight: FontWeight.bold,fontSize: 18),
+
       btnCancel: BtnIconWidget(
         colorBtn: colorBtnSi,
         icon: iconBtnSi,
@@ -234,10 +290,14 @@ class DialogosAwesome {
   }
 
   static getInformation(
-      {String title = 'Información', required String descripcion,  Function()? btnOkOnPress,}) {
+      {String title = 'INFORMACIÓN', required String descripcion,  Function()? btnOkOnPress,}) {
 
+    Color colorWarning=AppColors.colorAzul;
 
     return       DialogosAwesome.getIconPolicia(
+      colorBtnSi: colorWarning,
+      colorCircleImg: colorWarning,
+      colorTitle: colorWarning,
       title: title,
       descripcion: descripcion,
       btnOkOnPress:  btnOkOnPress == null

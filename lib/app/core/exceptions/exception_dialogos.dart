@@ -57,14 +57,11 @@ class ExceptionDialogos {
         },
       );
     } on ParseJsonException catch (e) {
-      DialogosAwesome.getIconPolicia(
-        titleBtnSi: "Aceptar",
-        mostrarSegungoBtn: false,
+      DialogosAwesome.getError(
         btnOkOnPress: () {
           Get.back();
         },
         descripcion: e.msj,
-        title: 'ERROR',
       );
     } on NoDataException catch (e) {
       if(showMsjNodata){

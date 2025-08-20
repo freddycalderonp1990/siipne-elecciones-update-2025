@@ -77,3 +77,10 @@
 - que latitud y longitud permita guardar vacios en la web con la finalidad que sea el censista que valide las coordenads de las mesas
 - validar que la latidu y longitud no este vacia.. si esta vacia al escanear el qr indicarle que las coordenadas de la mesa no son las correctas
 - Implementacion del api para actualizar las coordenadas de la mesa (listo)
+
+### 20 agosto del 2025
+- se modifican para validar si tiene novedades regiostradas para la app siipne elecciones
+  /Volumes/siipne/appmovil/siipneElecciones/app_elecciones/controller/controllerNovedadesApi.php
+  /Volumes/siipne/appmovil/siipneElecciones/app_elecciones/controller/controllerAuthElecciones.php
+  /Volumes/siipne/appmovil/siipneElecciones/app_elecciones/clases/buscarOpcAppElecciones.php
+  /Volumes/siipne/appmovil/siipneElecciones/app_elecciones/clases/constante.php

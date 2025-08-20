@@ -6,6 +6,10 @@ class MenuAppController extends GetxController {
   final  GetMenuAppUseCase getMenuAppUseCase=Get.find();
 
 
+  final EleccionesNovedadesApiImpl _eleccionesNovedadesApiImpl =
+  Get.find<EleccionesNovedadesApiImpl>();
+
+
   late UserEntities  user;
 
 
@@ -47,6 +51,33 @@ class MenuAppController extends GetxController {
     );
     peticionServerState(false);
   }
+
+
+  Future<void> verificarNovedadesUdgaPolicialRegistradas() async {
+    peticionServerState(true);
+
+
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
+
+      DataNovedadesUdga data =
+      await _eleccionesNovedadesApiImpl.verificarNovedadesUdgaPolicialRegistradas(idGenPersona: user.idGenPersona);
+
+      if (data.session == false) {
+        String msj=data.motivo.replaceAll("No Puede iniciar Session", "");
+        msj="No puede continuar, ya que tiene registrado lo siguiente:\n${msj}";
+        DialogosAwesome.getError(
+            descripcion: msj);
+        return;
+      }
+
+      Get.toNamed(EleccionesRoutes.MENU_APP);
+
+
+
+    });
+    peticionServerState(false);
+  }
+
 
 
 

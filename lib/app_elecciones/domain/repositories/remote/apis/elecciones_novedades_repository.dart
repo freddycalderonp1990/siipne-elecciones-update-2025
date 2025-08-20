@@ -22,4 +22,9 @@ abstract class EleccionesNovedadesRepository {
     required GetNovedadesRegistradasdRequest request,
   });
 
+
+  Future<DataNovedadesUdga> verificarNovedadesUdgaPolicialRegistradas({
+    required int idGenPersona,
+  });
+
 }

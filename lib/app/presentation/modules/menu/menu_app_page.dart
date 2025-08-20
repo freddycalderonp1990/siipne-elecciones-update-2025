@@ -88,15 +88,14 @@ class MenuAppPage extends GetView<MenuAppController> {
     return Column(
       children: [
         Obx(
+
           () =>
               controller.dataMenuApp.value.siipneElecciones
                   ? BtnMenuWidget(
                     horizontal: true,
                     img: SiipneEleccionesImages.ic_elecciones,
                     title: "ELECCIONES",
-                    onTap: () {
-                      Get.toNamed(EleccionesRoutes.MENU_APP);
-                    },
+                    onTap: () => controller.verificarNovedadesUdgaPolicialRegistradas(),
                   )
                   : const SizedBox.shrink(),
         ),

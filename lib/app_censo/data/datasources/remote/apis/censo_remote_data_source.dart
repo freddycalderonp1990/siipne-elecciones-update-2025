@@ -67,7 +67,7 @@ class CensoRemoteDataSourceImpl implements CensoRemoteDataSource {
   Future<bool> updateFoto({required UpdateFotoPerCensoRequest request}) async {
     Map<String, dynamic> body =
         HeadAppCensoRequest(
-          uri: CensoApiConstantes.CENSO_UPDATE_FOTO_PER_CENSO,
+          uri: CensoApiConstantes.CENSO_REGISTRE,
           bodyRequest: request.toJson(),
         ).toJson();
     String json = await UrlApiProviderAppCenso.patch(body: body);
