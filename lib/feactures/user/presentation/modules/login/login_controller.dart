@@ -235,7 +235,7 @@ class LoginController extends GetxController {
 
     if (checkAccesoBiometrico) {
       if (verificaCredecniales) {
-        DialogosAwesome.getInformationSiNo(
+        DialogosAwesome.getWarningSiNo(
           descripcion: "¿Desea configurar el acceso biometrico.?",
           btnCancelOnPress: () async {
             _localStoreUseCase.setLoginInit(false);
@@ -252,7 +252,6 @@ class LoginController extends GetxController {
                     "Se ha configurado con éxito el acceso biométrico.",
                 title: 'Acceso Biométrico',
                 btnOkOnPress: () {
-                  Get.back();
                   _localStoreUseCase.setLoginInit(true);
                   _localStoreUseCase.setConfigHuella(true);
 
@@ -266,7 +265,6 @@ class LoginController extends GetxController {
                   _localStoreUseCase.setLoginInit(false);
                   _localStoreUseCase.setConfigHuella(false);
 
-                  Get.back();
                   InciarPantalla();
                 },
               );

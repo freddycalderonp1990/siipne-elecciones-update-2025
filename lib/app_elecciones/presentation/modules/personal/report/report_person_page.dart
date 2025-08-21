@@ -86,10 +86,8 @@ class ReportPersonPage extends GetView<ReportPersonController> {
               PersonalRecintoElectoral data = listPersonal[i];
               return DisingPersonal(
                 onTap: () {
-                  DialogosAwesome.getWarningSiNo(descripcion: "¿Está seguro que desea inactivar a \n"
+                  DialogosAwesome.getWarningSiNo(descripcion: "¿Está seguro/a que desea inactivar a \n"
                       "${data.personal} del operarivo?",
-                      btnCancelOnPress: (){},
-
                       btnOkOnPress: (){
                         controller.removePersonalOperativo(data);
                       });

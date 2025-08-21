@@ -147,9 +147,7 @@ class InicioRapidoController extends GetxController {
       } else {
         DialogosAwesome.getError(
             descripcion: "Error al configurar, su huella no coincide.",
-            btnOkOnPress: () {
-              Get.back();
-            });
+           );
       }
     }
   }
@@ -159,7 +157,7 @@ class InicioRapidoController extends GetxController {
       bool confHuella = await _localStoreUseCase.getConfigHuella();
 
       if (!confHuella) {
-        DialogosAwesome.getInformationSiNo(
+        DialogosAwesome.getWarningSiNo(
             descripcion: "¿Desea configurar el acceso biometrico.?",
             btnOkOnPress: () {
               _setBiometrico();

@@ -56,16 +56,16 @@ class CrearCodigoUnidadPoliController extends GetxController {
     super.onClose();
   }
 
-
   Future<void> getSubsistemas() async {
     print("consultando");
-     peticionServerState(true);
+    peticionServerState(true);
     await ExceptionDialogos.manejarErroresShowDialogo(() async {
       listSubsistema.value = await _eleccionesTipoEjesApiImpl
           .getUnidadesPoliciales(usuario: user.idGenUsuario);
       if (listSubsistema.length == 0) {
         DialogosAwesome.getInformation(
-            descripcion: "No existen Unidades Policiales");
+          descripcion: "No existen Unidades Policiales",
+        );
         return;
       }
     });
@@ -73,36 +73,42 @@ class CrearCodigoUnidadPoliController extends GetxController {
   }
 
   Future<List<UnidadesPoliciale>> getTipoEjesPoridDgoTipoEje(
-      int idDgoTipoEje) async {
+    int idDgoTipoEje,
+  ) async {
     print("consultando");
     peticionServerState(true);
     List<UnidadesPoliciale> list = [];
     await ExceptionDialogos.manejarErroresShowDialogo(() async {
       list = await _eleccionesTipoEjesApiImpl.getTipoEjePorIdPadre(
-          usuario: user.idGenUsuario, idDgoTipoEje: idDgoTipoEje);
+        usuario: user.idGenUsuario,
+        idDgoTipoEje: idDgoTipoEje,
+      );
     });
     peticionServerState(false);
     return list;
   }
 
   Future<void> getEjesDireccionesPoliciales(int idDgoTipoEje) async {
-    listDireccionesPoliciales.value =
-        await getTipoEjesPoridDgoTipoEje(idDgoTipoEje);
+    listDireccionesPoliciales.value = await getTipoEjesPoridDgoTipoEje(
+      idDgoTipoEje,
+    );
     if (listDireccionesPoliciales.length == 0) {
       DialogosAwesome.getInformation(
-          descripcion: "No existen Direcciones Policiales");
+        descripcion: "No existen Direcciones Policiales",
+      );
     }
   }
 
   Future<void> getEjesUnidadesPoliciales(int idDgoTipoEje) async {
-    listUnidadesPoliciales.value =
-        await getTipoEjesPoridDgoTipoEje(idDgoTipoEje);
+    listUnidadesPoliciales.value = await getTipoEjesPoridDgoTipoEje(
+      idDgoTipoEje,
+    );
     if (listUnidadesPoliciales.length == 0) {
       DialogosAwesome.getInformation(
-          descripcion: "No existen Unidades Policiales");
+        descripcion: "No existen Unidades Policiales",
+      );
     }
   }
-
 
   Future<void> getRecintosElectorales(int idDgoTipoEje) async {
     peticionServerState(true);
@@ -115,21 +121,25 @@ class CrearCodigoUnidadPoliController extends GetxController {
       //le asigno 1 porque es el id que le corresponde a recintos electorales
       //para solo mostrar los recintos electorales
 
-
       RecintoCercanosRequest request = RecintoCercanosRequest(
-          latitud: position.latitude,
-          longitud: position.longitude,
-          idDgoProcElec: selectProcesoOperativoController
-              .selectProcesosOperativo.value.idDgoProcElec,
-          idDgoTipoEje: idDgoTipoEje);
+        latitud: position.latitude,
+        longitud: position.longitude,
+        idDgoProcElec:
+            selectProcesoOperativoController
+                .selectProcesosOperativo
+                .value
+                .idDgoProcElec,
+        idDgoTipoEje: idDgoTipoEje,
+      );
 
       listRecintosElectorales.value = await _eleccionesRecintosApiImpl
           .getRecintosElectoralesCercanos(request: request);
 
       if (listRecintosElectorales.length == 0) {
-        continuar.value=false;
+        continuar.value = false;
         DialogosAwesome.getInformation(
-            descripcion: "No existen Unidades Policiales Cercanas",);
+          descripcion: "No existen Unidades Policiales Cercanas",
+        );
         return;
       }
       continuar.value = true;
@@ -138,23 +148,23 @@ class CrearCodigoUnidadPoliController extends GetxController {
     peticionServerState(false);
   }
 
-
-
-
   msjCrearCodigo({required VoidCallback onPressed}) {
     bool isValid = formKey.currentState!.validate();
 
     if (!isValid) return;
-    String unidad=selectRecintosElectoral.value.nomRecintoElecOnly;
+    String unidad = selectRecintosElectoral.value.nomRecintoElecOnly;
 
-    String  msj="¿Usted va a generar el código para la ${unidad}?"
+    String msj =
+        "¿Usted va a generar el código para la ${unidad}?"
         "\n\nAsegúrese de estar de servicio en la Unidad y de ser la persona encargada o la persona designada como jefe/a."
         "\n\n Utilice la aplicación con responsabilidad, ya que toda actividad sera registrada y auditada."
         "\n\n¿Desea Continuar?";
 
-
-    DialogosAwesome.getIconPolicia(
-        title: "Crear Código", btnOkOnPress: onPressed, descripcion: msj);
+    DialogosAwesome.getWarning(
+      title: "Crear Código",
+      btnOkOnPress: onPressed,
+      descripcion: msj,
+    );
   }
 
   Future<void> crearCodigo() async {
@@ -172,46 +182,51 @@ class CrearCodigoUnidadPoliController extends GetxController {
       String ip = await DeviceInfoApp.getIp;
 
       CreateCodeRecintoRequest request = CreateCodeRecintoRequest(
-          usuario: user.idGenUsuario,
-          idGenPersona: user.idGenPersona,
-          idDgoReciElect: selectRecintosElectoral.value.idDgoReciElect,
-          latitud: position.latitude,
-          longitud: position.longitude,
-          idDgoProcElec: selectProcesoOperativoController
-              .selectProcesosOperativo.value.idDgoProcElec,
-          idDgoReciUnidadPolicial: selectRecintosElectoral.value.idDgoReciElect,
-          telefono: controllerTelefono.text,
-          ip: ip,
-          idDgpGrado: user.idDgpGrado,
-          idDgoTipoEje: selectDireccionPoliciales.value.idDgoTipoEje);
+        usuario: user.idGenUsuario,
+        idGenPersona: user.idGenPersona,
+        idDgoReciElect: selectRecintosElectoral.value.idDgoReciElect,
+        latitud: position.latitude,
+        longitud: position.longitude,
+        idDgoProcElec:
+            selectProcesoOperativoController
+                .selectProcesosOperativo
+                .value
+                .idDgoProcElec,
+        idDgoReciUnidadPolicial: selectRecintosElectoral.value.idDgoReciElect,
+        telefono: controllerTelefono.text,
+        ip: ip,
+        idDgpGrado: user.idDgpGrado,
+        idDgoTipoEje: selectDireccionPoliciales.value.idDgoTipoEje,
+      );
 
-      _abrirRecintoElectoral =
-          await _eleccionesRecintosApiImpl.crearCodigo(request: request);
+      _abrirRecintoElectoral = await _eleccionesRecintosApiImpl.crearCodigo(
+        request: request,
+      );
     });
     peticionServerState(false);
 
     if (_abrirRecintoElectoral.idDgoCreaOpReci == 0) {
       DialogosAwesome.getWarning(
-          descripcion:
-              "No se pudo completar la acción. Por favor, inténtelo nuevamente.",
-          );
+        descripcion:
+            "No se pudo completar la acción. Por favor, inténtelo nuevamente.",
+      );
       return;
     }
 
     if (_abrirRecintoElectoral.estado == "A") {
-      String msj = user.nombres +
+      String msj =
+          user.nombres +
           "\n\nYa existe un código (${_abrirRecintoElectoral.idDgoCreaOpReci}) asignado a:\n" +
           selectRecintosElectoral.value.nomRecintoElec +
           "\nFECHA DE INICIO: " +
           _abrirRecintoElectoral.fechaIni +
           "\n\nSi usted necesita abrir el código en este Recinto, comuníquese con: \n[${_abrirRecintoElectoral.apenom}] para que lo elimine o finalice.";
 
-      DialogosAwesome.getIconPolicia(
+      DialogosAwesome.showIconPolicia(
         colorBtnSi: AppColors.colorVerde_80,
         mostrarSegungoBtn: false,
         title: "Información",
         btnOkOnPress: () {
-          Get.back();
           UtilidadesUtil.lanzarLlamada(_abrirRecintoElectoral.telefono);
         },
         descripcion: msj,
@@ -226,7 +241,8 @@ class CrearCodigoUnidadPoliController extends GetxController {
             content: SingleChildScrollView(
               // Permite que el contenido se ajuste automáticamente
               child: getDesingCompartirCodigo(
-                  _abrirRecintoElectoral.idDgoCreaOpReci),
+                _abrirRecintoElectoral.idDgoCreaOpReci,
+              ),
             ),
           ),
         ),
@@ -243,8 +259,9 @@ class CrearCodigoUnidadPoliController extends GetxController {
           MainAxisSize.min, // Ajusta el tamaño del diálogo al contenido
       children: [
         TextLineasWidget(
-            title: "INFORMACIÓN",
-            sizeTxt: responsive.diagonalP(AppConfig.tamTextoTitulo)),
+          title: "INFORMACIÓN",
+          sizeTxt: responsive.diagonalP(AppConfig.tamTextoTitulo),
+        ),
         Container(
           height: 100,
           width: 100,
@@ -258,15 +275,14 @@ class CrearCodigoUnidadPoliController extends GetxController {
           title: "${idDgoCreaOpReci}",
           sizeTxt: responsive.diagonalP(AppConfig.tamTextoTitulo + 1.5),
         ),
-        SizedBox(
-          height: responsive.altoP(2),
-        ),
+        SizedBox(height: responsive.altoP(2)),
         BtnIconWidget(
-            icon: Icons.check_circle,
-            titulo: "Aceptar",
-            onPressed: () {
-              Get.offAllNamed(EleccionesRoutes.MENU_APP);
-            })
+          icon: Icons.check_circle,
+          titulo: "Aceptar",
+          onPressed: () {
+            Get.offAllNamed(EleccionesRoutes.MENU_APP);
+          },
+        ),
       ],
     );
   }

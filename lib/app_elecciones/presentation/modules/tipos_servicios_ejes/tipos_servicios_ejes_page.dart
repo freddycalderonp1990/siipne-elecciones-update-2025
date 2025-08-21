@@ -21,15 +21,10 @@ class TiposServiciosEjesPage extends GetView<TiposServiciosEjesController> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          imgPerfilRedonda(size: 28, img: controller.user.foto),
-
-
-          SizedBox(height: 10),
-          DesingTextNameUser(
-            sexo:controller.user.sexo ,
-              text:  controller.user.nombres),
-          SizedBox(
-            height: responsive.altoP(1),
+          DesingFotoNameWidget(
+            img: controller.user.foto,
+            sexo: controller.user.sexo,
+            nombres: controller.user.nombres,
           ),
 
           TextLineasWidget(

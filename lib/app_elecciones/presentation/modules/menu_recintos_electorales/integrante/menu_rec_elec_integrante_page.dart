@@ -24,17 +24,17 @@ class MenuRecElecIntegrantePage
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          imgPerfilRedonda(
-            size: 20,
+          DesingFotoNameWidget(
             img: controller.user.foto,
+            sexo: controller.user.sexo,
+            nombres: controller.user.nombres,
           ),
           TextSombrasWidget(
             colorSombra: Colors.black,
             colorTexto: Colors.white,
             title: "${controller.recintosElectoralesAbiertos.descProcElecc}",
           ),
-          DesingTextNameUser(
-              sexo: controller.user.sexo, text: controller.user.nombres),
+
           _getMenu(responsive),
           SizedBox(
             height: responsive.altoP(1),
@@ -79,18 +79,15 @@ class MenuRecElecIntegrantePage
                   img: SiipneEleccionesImages.icon_abandonar_rec_elec,
                   title: "ABANDONAR CÓDIGO",
                   onTap: () {
-                    DialogosAwesome.getIconPolicia(
+                    DialogosAwesome.getWarningSiNo(
                         title: "ABANDONAR CÓDIGO",
                         descripcion:
-                            "¿Esta seguro que desea abandonar el Operativo.?\n\n"
+                            "¿Está seguro/a que desea abandonar el Operativo.?\n\n"
                                 "Si abandona, no será considerado para el justificativo ante el CNE."
                                 "\nDeberá anexarse a un nuevo código y no abandonar, ya que esta acción es automática al finalizar el proceso electoral"
-                                "\n\n¿ESTÁ SEGURO?",
+                                "\n\n¿ESTÁ SEGURO/A?",
 
                         btnOkOnPress: () {
-                          Get.back();
-
-
 
                           Get.back();
                           DialogosAwesome.getDesingChangePass(
@@ -103,7 +100,6 @@ class MenuRecElecIntegrantePage
                               title: "ABANDONAR CÓDIGO",
                               descripcion: "Para abandonar el código ${controller.recintosElectoralesAbiertos.idDgoCreaOpReci}, ingrese su clave de seguridad"
                           );
-
 
 
                         });

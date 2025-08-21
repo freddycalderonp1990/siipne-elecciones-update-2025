@@ -149,6 +149,7 @@ class AnexarseController extends GetxController {
 
       DialogosAwesome.getSucess(
           descripcion: "¡Proceso realizado con éxito!", btnOkOnPress: () {
+
         Get.offAllNamed(EleccionesRoutes.MENU_APP);
       });
     });

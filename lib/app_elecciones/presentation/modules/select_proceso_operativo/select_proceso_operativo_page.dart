@@ -36,13 +36,10 @@ class SelectProcesoOperativoPage
                     : Container(),
           ),
 
-          imgPerfilRedonda(size: 28, img: controller.user.foto),
-
-
-          SizedBox(height: 10),
-          DesingTextNameUser(
+          DesingFotoNameWidget(
+            img: controller.user.foto,
             sexo: controller.user.sexo,
-            text: controller.user.nombres,
+            nombres: controller.user.nombres,
           ),
           Container(
             padding: EdgeInsets.all(5),

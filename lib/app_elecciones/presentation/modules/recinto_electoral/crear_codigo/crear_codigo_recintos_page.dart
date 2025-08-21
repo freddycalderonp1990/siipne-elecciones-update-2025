@@ -276,7 +276,6 @@ class CrearCodigoRecintosPage extends GetView<CrearCodigoRecintosController> {
                     onPressed:
                         () => controller.msjCrearCodigo(
                           onPressed: () {
-                            Get.back();
                             controller.crearCodigo();
                           },
                         ),

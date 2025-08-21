@@ -728,7 +728,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
                   DialogosAwesome.getWarningSiNo(
                     title: '¿Desea continuar con el registro?',
                     descripcion: 'Registro de Novedad:\n\n${descripcion}',
-                    btnCancelOnPress: () {},
+
                     btnOkOnPress: () {
                       controller.eventoRegistrarNovedadesElectorales();
                     },

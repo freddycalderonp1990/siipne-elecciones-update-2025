@@ -68,7 +68,7 @@ class GpsController extends GetxController {
           btnOkOnPress: () {
             checkGpsPermisoStatus("aaa");
           },
-          btnCancelOnPress: () {});
+         );
       return msj;
     } else {
       String msj =

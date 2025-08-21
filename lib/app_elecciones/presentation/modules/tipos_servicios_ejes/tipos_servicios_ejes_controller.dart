@@ -54,14 +54,17 @@ class TiposServiciosEjesController extends GetxController {
 
   Future<void> verificarSiPersonaEstaBloqueado() async {
     peticionServerState(true);
-    await ExceptionDialogos.manejarErroresShowDialogo(() async {
-      PerSituacion perSituacion = await
-      _personaApiImpl.verificarSiPersonaEstaBloqueado(
-        idGenPersona: user.idGenPersona,
+   try {
+     PerSituacion perSituacion = await
+     _personaApiImpl.verificarSiPersonaEstaBloqueado(
+         idGenPersona: user.idGenPersona,
 
-          idDgoProcElec: selectProcesoOperativoController
-              .selectProcesosOperativo.value.idDgoProcElec);
-    });
+         idDgoProcElec: selectProcesoOperativoController
+             .selectProcesosOperativo.value.idDgoProcElec);
+   }catch(e){
+     peticionServerState(false);
+   }
+
     peticionServerState(false);
 
     getTipoEjesActivosEnProcesoOperativos();

@@ -114,7 +114,6 @@ class ExceptionDialogos {
       title: "ACTUALIZAR LA APP",
       descripcion: MensajesString.msjNuevaVersionApp,
       btnOkOnPress: () {
-        Get.back();
         if (GetPlatform.isAndroid) {
           UtilidadesUtil.abrirUrl(AppConfig.linkAppAndroid);
           print('App Android');

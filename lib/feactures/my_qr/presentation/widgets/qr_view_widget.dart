@@ -214,7 +214,7 @@ class _QrViewWidgetState extends State<QrViewWidget> {
         } else {
           DialogosAwesome.getWarning(
             descripcion: "El código QR no es válido. Por favor, intenta escanear uno nuevo.",
-            btnOkOnPress: () {},
+
           );
         }
       }

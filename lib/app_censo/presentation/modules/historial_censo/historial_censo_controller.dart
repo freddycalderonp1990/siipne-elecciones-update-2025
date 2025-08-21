@@ -46,12 +46,9 @@ class HistorialCensoController extends GetxController {
         );
 
         if (listHistoryCenso.length == 0) {
-          DialogosAwesome.getIconPolicia(
+          DialogosAwesome.getWarning(
             title: "Censos",
             descripcion: "No existen censos que mostrar",
-            btnOkOnPress: () {
-              Get.back();
-            },
           );
         }
       },

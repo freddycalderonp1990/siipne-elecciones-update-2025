@@ -268,11 +268,11 @@ class CensistaPage extends GetView<CensistaController> {
                 onPressed: () {
                   DialogosAwesome.getWarningSiNo(
                     descripcion:
-                        "¿Está seguro que desea continuar con el registro?",
+                        "¿Está seguro/a que desea continuar con el registro?",
                     btnOkOnPress: () {
                       controller.SaveCensusPersonPhotoUseCaseServer();
                     },
-                    btnCancelOnPress: () {},
+
                   );
                 },
               )

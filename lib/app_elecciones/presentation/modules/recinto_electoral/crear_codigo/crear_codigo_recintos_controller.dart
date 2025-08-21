@@ -117,9 +117,7 @@ class CrearCodigoRecintosController extends GetxController {
         "\n\n Utilice la aplicación con responsabilidad, ya que toda actividad sera registrada y auditada."
         "\n\n¿Desea Continuar?";
 
-
-
-    DialogosAwesome.getIconPolicia(
+    DialogosAwesome.getWarningSiNo(
         title: "Crear Código", btnOkOnPress: onPressed, descripcion: msj);
   }
 
@@ -172,12 +170,11 @@ class CrearCodigoRecintosController extends GetxController {
           _abrirRecintoElectoral.fechaIni +
           "\n\nSi usted necesita abrir el código en este Recinto, comuníquese con: \n[${_abrirRecintoElectoral.apenom}] para que lo elimine o finalice.";
 
-      DialogosAwesome.getIconPolicia(
+      DialogosAwesome.showIconPolicia(
         colorBtnSi: AppColors.colorVerde_80,
         mostrarSegungoBtn: false,
         title: "Información",
         btnOkOnPress: () {
-          Get.back();
           UtilidadesUtil.lanzarLlamada(_abrirRecintoElectoral.telefono);
         },
         descripcion: msj,

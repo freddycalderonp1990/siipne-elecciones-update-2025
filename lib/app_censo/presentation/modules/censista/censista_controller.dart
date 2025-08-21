@@ -125,14 +125,10 @@ class CensistaController extends GetxController {
       peticionServerState(false);
 
       if (!dataFile.result) {
-        DialogosAwesome.getIconPolicia(
+        DialogosAwesome.getError(
           title: "Guardar Imagen",
           descripcion:
               "No se pudo guardar la Imagen. Intente de nuevo o contacte al administrador.",
-          btnOkOnPress: () {
-            Get.back();
-          },
-          mostrarSegungoBtn: false,
         );
       }
     });
@@ -173,7 +169,6 @@ class CensistaController extends GetxController {
       DialogosAwesome.getInformation(
         descripcion: "La fotografia fue guardada con éxito.",
         btnOkOnPress: () {
-          Get.back();
           Get.back();
         },
       );

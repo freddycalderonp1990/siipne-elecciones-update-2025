@@ -37,7 +37,7 @@ class MyGps {
           btnOkOnPress: () async {
             await  openAppSettings();
           },
-          btnCancelOnPress: () {});
+    );
       return false;
     }
 
@@ -69,9 +69,7 @@ class MyGps {
           "Necesitamos acceder a la ubicación del Dispositivo.\n\n Por favor active el GPS - Ubicación  de su dispositivo";
       DialogosAwesome.getWarning(
           descripcion: msj,
-          btnOkOnPress: () {
-            Get.back();
-          });
+        );
       return false;
     }
 

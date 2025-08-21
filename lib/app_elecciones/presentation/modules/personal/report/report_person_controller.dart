@@ -85,14 +85,14 @@ class ReportPersonController extends GetxController {
 
       if (result) {
         DialogosAwesome.getSucess(
-            descripcion: "Proceso realizado con éxito!", btnOkOnPress: () {});
+            descripcion: "Proceso realizado con éxito!");
         reportPersona();
         return;
       }
 
       DialogosAwesome.getWarning(
           descripcion: "Ocurrio un error vuelva a intentar",
-          btnOkOnPress: () {});
+          );
     });
     peticionServerState(false);
   }

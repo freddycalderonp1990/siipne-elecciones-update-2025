@@ -12,13 +12,10 @@ class ValidateMesaPage extends GetView<ValidateMesaController> {
               "¿Está seguro de registrar estas coordenadas?"
               "\n\nVerifique que se encuentre exactamente en el lugar donde se realizará el censo, ya que estas coordenadas serán utilizadas para validar su proximidad."
               "\nEn caso de presentar inconvenientes, comuníquese con el administrador de la DNATH.";
-          DialogosAwesome.getIconPolicia(
+          DialogosAwesome.getWarningSiNo(
             title: "Guardar",
             descripcion: msj,
-            titleBtnSi: "SI",
-            titleBtnNo: "NO",
             btnOkOnPress: () {
-              Get.back();
               controller.updateMesaCoordinates();
             },
           );

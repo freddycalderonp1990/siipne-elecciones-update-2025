@@ -75,8 +75,9 @@ class MenuAppCensoController extends GetxController {
   Future<void> getDatosProcesoByCensado() async {
     peticionServerState(true);
     await ExceptionDialogos.manejarErroresShowDialogo(
+      showMsjNodata: false,
       msjNoData:
-          "No existen procesos activos o no está asignado a una mesa. 204",
+          "No existen procesos activos o no está asignado a una mesa.",
       () async {
         GetDatosProcesosActivosRequest request = GetDatosProcesosActivosRequest(
           idGenPersonaCensado: user.idGenPersona,
@@ -129,7 +130,6 @@ class MenuAppCensoController extends GetxController {
               "Para continuar, debe configurar las coordenadas de la ubicación de su mesa.\n[${data.descMesa}]"
               "\nAsegúrese de estar en el lugar exacto donde se realizará el censo para evitar inconvenientes.",
           btnOkOnPress: () {
-
             Get.toNamed(AppCensoRoutes.VALIDATE_MESA,arguments:{"mesa": data}  );
           },
         );

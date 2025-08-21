@@ -60,11 +60,11 @@ class AddPersonPage extends GetView<AddPersonController> {
         
         if(controller.datosPerson.value.idGenPersona>0){
           DialogosAwesome.getInformationSiNo(
-              descripcion: "¿Está seguro de registrar a\n${controller.datosPerson.value.siglas} "
+              descripcion: "¿Está seguro/a de registrar a\n${controller.datosPerson.value.siglas} "
                   "${controller.datosPerson.value.apenom}?",
               btnOkOnPress: (){
             controller.addPersona();
-          },btnCancelOnPress: (){});
+          });
         }
 
       },

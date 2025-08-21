@@ -20,12 +20,10 @@ class HistorialCensoPage extends GetView<HistorialCensoController> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        SizedBox(height: responsive.altoP(2)),
-        imgPerfilRedonda(size: 27, img: controller.user.foto),
-        SizedBox(height: responsive.altoP(2)),
-        DesingTextNameUser(
+        DesingFotoNameWidget(
+          img: controller.user.foto,
           sexo: controller.user.sexo,
-          text: controller.user.nombres,
+          nombres: controller.user.nombres,
         ),
 
         Expanded(

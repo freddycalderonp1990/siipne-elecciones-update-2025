@@ -78,6 +78,7 @@ class MenuRecElecJefeController extends GetxController {
       if (dataResponse.insert) {
         DialogosAwesome.getSucess(
             descripcion: "El código ${codigo} fue finalizado con éxito!",btnOkOnPress: (){
+
           Get.offAllNamed(EleccionesRoutes.MENU_APP );
         });
         return;
@@ -113,6 +114,7 @@ class MenuRecElecJefeController extends GetxController {
 
         DialogosAwesome.getSucess(
             descripcion: "El código ${codigo} fue eliminado con éxito!",btnOkOnPress: (){
+
           Get.offAllNamed(EleccionesRoutes.MENU_APP );
         });
         return;

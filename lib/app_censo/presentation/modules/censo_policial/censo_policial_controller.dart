@@ -62,7 +62,7 @@ class CensoPolicialController extends GetxController {
           title: "INFORMACIÓN",
           descripcion: "${user.nombres}\n\n USTED YA FUE CENSADO",
           btnOkOnPress: () {
-            Get.back();
+
             Get.back();
           },
           titleBtnSi: "ACEPTAR",
@@ -85,7 +85,7 @@ class CensoPolicialController extends GetxController {
         descripcion:
             "No existen procesos activos o no está asignado a una mesa.",
         btnOkOnPress: () {
-          Get.back();
+
           Get.back();
         },
       );

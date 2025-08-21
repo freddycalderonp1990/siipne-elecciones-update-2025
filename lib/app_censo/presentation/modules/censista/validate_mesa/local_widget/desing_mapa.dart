@@ -56,7 +56,7 @@ class _DesingMapaState extends State<DesingMapa> {
               onTap: (tapPosition, point) {
                 print("Tap en mapa");
 
-                widget.tapComplete(point);
+               // widget.tapComplete(point);
                 //   widget.mapController.move(point, 18);
               },
               initialCenter: widget.ubicacion,
@@ -91,22 +91,9 @@ class _DesingMapaState extends State<DesingMapa> {
           width: 90,
           rotate: true,
           point: widget.ubicacion,
-          child: GestureDetector(
-            onPanUpdate: (details) {
-              // POSICIÓN DEL DEDO -> OFFSET LOCAL DEL MAPA
-              final box =
-                  _mapKey.currentContext!.findRenderObject() as RenderBox;
-              final local = box.globalToLocal(details.globalPosition);
-
-              // OFFSET -> LatLng (API nueva)
-              final latLng = widget.mapController.camera.offsetToCrs(local);
-
-              widget.tapComplete(latLng); // actualiza tu estado arriba
-            },
-            child: getBtnCustomIcon(
-              icon: Icons.person_pin_circle_rounded,
-              ontap: () {},
-            ),
+          child: getBtnCustomIcon(
+            icon: Icons.person_pin_circle_rounded,
+            ontap: () {},
           ),
         ),
       ],

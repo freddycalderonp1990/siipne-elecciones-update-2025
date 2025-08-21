@@ -84,3 +84,9 @@
   /Volumes/siipne/appmovil/siipneElecciones/app_elecciones/controller/controllerAuthElecciones.php
   /Volumes/siipne/appmovil/siipneElecciones/app_elecciones/clases/buscarOpcAppElecciones.php
   /Volumes/siipne/appmovil/siipneElecciones/app_elecciones/clases/constante.php
+  /Volumes/siipne/appmovil/siipneElecciones/app_elecciones/controller/controllerRecintoPersonal.php
+
+### 21 agosto del 2025
+- Cambios en el diseño de los dialogos
+- Cambios en el desing del cargando
+- Agregar la funcionalidad de mostrar o ocultar datos

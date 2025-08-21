@@ -44,7 +44,7 @@ part 'btnMenuWidget.dart';
 
 
 part 'workAreaLoginPageWidget.dart';
-part 'desing_text_name_user.dart';
+
 part 'wg_txt_telefono.dart';
 
 

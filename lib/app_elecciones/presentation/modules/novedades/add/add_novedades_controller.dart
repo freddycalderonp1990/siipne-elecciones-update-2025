@@ -291,13 +291,9 @@ class AddNovedadesController extends GetxController {
       peticionServerState(false);
 
       if (!dataFile.result) {
-        DialogosAwesome.getIconPolicia(
+        DialogosAwesome.getError(
           title: "Guardar Imagen",
           descripcion: "No se pudo guardar la Imagen",
-          btnOkOnPress: () {
-            Get.back();
-          },
-          mostrarSegungoBtn: false,
         );
       }
     });
@@ -425,6 +421,7 @@ class AddNovedadesController extends GetxController {
       DialogosAwesome.getSucess(
         descripcion: "Registro de Novedad con éxito",
         btnOkOnPress: () {
+
           clearData();
         },
       );

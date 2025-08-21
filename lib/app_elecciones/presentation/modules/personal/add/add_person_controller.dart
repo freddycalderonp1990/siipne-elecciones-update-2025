@@ -189,7 +189,9 @@ class AddPersonController extends GetxController {
           (recintosElectoralesAbiertos.codigoRecinto == result.codigoRecinto)) {
         DialogosAwesome.getSucess(
             descripcion: "Registro realizado con éxito!.",
-            btnOkOnPress: () => cleardatos());
+            btnOkOnPress: () {
+              cleardatos();
+            });
         return;
       } else {
         DialogosAwesome.getWarning(

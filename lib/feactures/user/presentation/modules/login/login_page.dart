@@ -13,6 +13,7 @@ class LoginPage extends GetView<LoginController> {
         title: "POLICÍA NACIONAL DEL ECUADOR",
         mostrarVersion: true,
         peticionServer: controller.peticionServerState,
+
         contenido: contenido(),
       ),
     );

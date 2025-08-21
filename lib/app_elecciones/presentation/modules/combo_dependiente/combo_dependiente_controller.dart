@@ -68,14 +68,10 @@ class ComboDependienteController extends GetxController {
 
 
     if (result && list.length == 0) {
-      DialogosAwesome.getIconPolicia(
+      DialogosAwesome.getInformation(
         title: "Sin Datos",
         descripcion: descripcion,
-        titleBtnSi: "Aceptar",
-        btnOkOnPress: () {
-          Get.back();
-        },
-        mostrarSegungoBtn: false,
+
       );
     }
     return list;

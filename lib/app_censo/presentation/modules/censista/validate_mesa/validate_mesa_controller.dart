@@ -45,9 +45,7 @@ class ValidateMesaController extends GetxController {
         dataMesa = arguments['mesa']
         as DataMesa;
       } catch (e) {
-        DialogosAwesome.getError(descripcion: "1 No existe datos valido para la mesa ",btnOkOnPress: (){
-          Get.back();
-        });
+        DialogosAwesome.getError(descripcion: "1 No existe datos valido para la mesa ");
       }
     } else {
       DialogosAwesome.getError(descripcion: "No existe datos valido para la mesa ",btnOkOnPress: (){
@@ -95,7 +93,6 @@ class ValidateMesaController extends GetxController {
       DialogosAwesome.getInformation(
         descripcion: "Las coordenadas fueron registradas con éxito.",
         btnOkOnPress: () {
-          Get.back();
           Get.back();
         },
       );
