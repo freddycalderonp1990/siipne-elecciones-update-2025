@@ -1,92 +1,90 @@
-# Changelog
+# 📌 Changelog
 
-## [2.0.0] - Elecciones 2025 - Segunda Vuelta - 13-abrir-2025
+## [2.0.0] – Elecciones 2025 – Segunda Vuelta (13-abril-2025)
 
-### Bloqueo de Acceso
+### 🔒 Bloqueo de Acceso
 - Implementación del bloqueo de acceso para anexarse o crear código.
 - En la tabla `dgoPerAsigOpe`, se considera el campo `situacion` con los siguientes valores:
-  - `'F'` = Franco  
-  - `'NU'` = Novedad UDGA  
-  - `'OR'` = Pertenece a Otro Recinto  
-- Para aplicar el bloqueo, los registros deben cumplir las siguientes condiciones:
+  - `F` → Franco
+  - `NU` → Novedad UDGA
+  - `OR` → Pertenece a Otro Recinto
+- Condiciones para aplicar el bloqueo:
   - `idGenEstadop = 'N'`
   - `delLog = 'N'`
-  - El bloqueo es según el proceso.
+- El bloqueo aplica según el proceso correspondiente.
 
-### Abandonar Código
-- Al momento de que el usuario abandone un código o el jefe lo expulse desde la aplicación, se realizan los siguientes cambios:
-  - Se asigna la situación `AR` = Abandono Recinto.  
-  - En la observación, se registra: **"ABANDONAR OPERATIVO (DESDE MÓVIL)"**.
+### 🚪 Abandonar Código
+- Cuando un usuario abandona un código o el jefe lo expulsa desde la aplicación:
+  - Se asigna la situación `AR` (Abandono Recinto).
+  - En la observación se registra: **"ABANDONAR OPERATIVO (DESDE MÓVIL)"**.
 
-## CREAR CODIGO Y AGREGAR PERSONAL
-- Se agrego el idDgpGrado, para ser inseerrtado en la tabla dgoPerAsigOpe
-- 
-
-### Agregar Nuevo Personal 
-- Se permite agregar personal nuevo que aún no está registrado y no tiene grado en el **SIIPNE 3W**.
-- Estos registros se almacenan en la tabla temporal `dgoNoUsuarios`, donde se guardan junto con su grado y proceso.
-- Se realiza la verificación según la **cédula**, **estado** y **proceso**.
-- Importante: Si un usuario ya está registrado en un proceso diferente (por ejemplo, `9`), pero se crea el proceso `10`, no se encontrará a menos que coincidan los procesos.
-- al final no se considero pero la funcionalidad se encuentra implementada
+### ➕ Crear Código y Agregar Personal
+- Se agregó el campo `idDgpGrado` para ser insertado en la tabla `dgoPerAsigOpe`.
+- Se habilitó la creación de nuevos registros de personal que no tienen grado en **SIIPNE 3W**, los cuales se almacenan en la tabla temporal `dgoNoUsuarios`.
+- Validaciones mediante **cédula**, **estado** y **proceso**.
+- Nota: Si un usuario está registrado en un proceso distinto, no será encontrado a menos que los procesos coincidan.
 
 ### 🚀 Finalizar Recinto
-- Antes, solo validaba si era un recinto con la hora configurada para permitir su finalización.
-- Ahora, la validación se basa en la hora configurada para determinar si el usuario puede finalizar un recinto.
+- Anteriormente solo validaba por la hora configurada del recinto.
+- Ahora la validación determina si el usuario puede finalizar un recinto en función de la hora registrada.
 
-### ✅ Validaciones Comprobadas
-- Si el usuario crea o ya tiene un código activo e intenta generar uno nuevo, se verifica la existencia del código y se le redirige al código activo correspondiente.
-- Si el usuario intenta anexarse a un código y ya está anexado o ha creado uno previamente, se le redirige al código que le corresponde.
-- El usuario **no puede tener dos códigos activos** en el mismo proceso ni estar anexado a dos códigos simultáneamente.
-### 🚀 API Save FILE - 26-MARZO-2025
-- Creacion de un api para guardar la imagenes
-### ABANDONAR Y ELIMINAR CÓDIGO - 27-MARZO-2025
-- Se agrega un dialogo para solicitar al usuario su clave de acceso al sistema cada vez que selecciona abandonar o eliminar un código
-- Se mejoró los mensaje haciendo enfasis de que si abandona no será considerado como justificativo ante el CNE
+### ✅ Validaciones Clave
+- Si el usuario ya tiene un código activo e intenta generar uno nuevo, se redirige al código existente.
+- No es posible tener **dos códigos activos en el mismo proceso** ni estar anexado a más de un código de forma simultánea.
 
-### 2.0.0+37 
-- Interfaz Gráfica Renovada: Diseño más moderno, intuitivo y fácil de usar.
-- Automatización Mejorada: Procesos optimizados para mayor rapidez y eficiencia.
-- Mayor Estabilidad y Rendimiento: Correcciones de errores y mejoras en la velocidad.
-- Nuevas Funcionalidades: Incorporamos mejoras para hacer tu experiencia aún mejor.
+### 🖼️ API Save File (26-marzo-2025)
+- Creación de una API para almacenar imágenes.
 
-### INICIO DEL DESARROLLO PARA CENSO POLICIAL 
+### 🔑 Abandonar y Eliminar Código (27-marzo-2025)
+- Nuevo diálogo para solicitar la clave de acceso cada vez que se selecciona **abandonar** o **eliminar** un código.
+- Mensajes mejorados enfatizando que el abandono **no será considerado justificativo ante el CNE**.
 
-### 04-julio-2025
-- se cambia el auth del aplicativo al uri appmovil/apis/v2/auth/read.php el mismo que solo retorna el token
-- se obtiene los datos del usuario desde la uri appmovil/apis/v1/user/read.php
+### 🎨 Interfaz Renovada – 2.0.0+37
+- Diseño gráfico actualizado: más moderno, intuitivo y fácil de usar.
+- Optimización de procesos para mayor rapidez y eficiencia.
+- Mejoras de estabilidad y rendimiento.
+- Incorporación de nuevas funcionalidades.
 
-### PROCESO CENSOS
-- select * from genEncPrueba
-- /Volumes/siipne/appmovil/clases/constantesModulos.php  - AGREGAR EL MODULO
-- qr/qrconfig.php se agrega PATH_CODIGO_QR_PNE_CENSO
-- /Volumes/siipne/clases/dobleFactor/claseAlgoritmoTOTP.php se modifica la funcion getKeySecurity
-- appmovil/apis/v2/saveFile/read.php se agrega la v2 de guardar archvios, esta retrona el nombre del archivo con el que es guardado
-- 
-### PROCESO CENSOS - IMPORTANTE 
-- 22/julio-2025 se cambia /Volumes/siipne/appmovil/apis/helper/responseApi.php, en el ok se asigna el code 204 (no data) cuando la variable data esta vacia o null
-- se debe revisar si esto afecta a las optras aplicaciones... puede estar saliendo un mensaje de error principlamente
-- revisar funcionalidad de siipone-elecciones
+---
 
+## [2.1.0] – Censo Policial
 
-### 13 agosto del 2025 - obtener menu para la app
-- {{URL}}appmovil/apis/v1/menuApps/read.php, realiza la validadion para mostrar lkos botones 
+### 🔑 04-julio-2025
+- Cambio en autenticación:
+  - Nuevo endpoint: `appmovil/apis/v2/auth/read.php` (retorna únicamente el token).
+  - Datos del usuario obtenidos desde: `appmovil/apis/v1/user/read.php`.
 
+### 🗂️ Proceso Censos
+- Query inicial: `SELECT * FROM genEncPrueba`.
+- Actualización de rutas:
+  - `/Volumes/siipne/appmovil/clases/constantesModulos.php` → agregado el módulo correspondiente.
+  - `qr/qrconfig.php` → agregado `PATH_CODIGO_QR_PNE_CENSO`.
+  - `/Volumes/siipne/clases/dobleFactor/claseAlgoritmoTOTP.php` → modificación de `getKeySecurity`.
+  - `appmovil/apis/v2/saveFile/read.php` → nueva versión de guardar archivos (retorna el nombre del archivo).
 
-### 18 agosto del 2025 - MESAS CENSO
-- pensar en mostrar las mesas en un mapa con la fianlidad de validar que se encuentran configuradas de manera contria caso contrario poder arrastras
-- que latitud y longitud permita guardar vacios en la web con la finalidad que sea el censista que valide las coordenads de las mesas
-- validar que la latidu y longitud no este vacia.. si esta vacia al escanear el qr indicarle que las coordenadas de la mesa no son las correctas
-- Implementacion del api para actualizar las coordenadas de la mesa (listo)
+### 📌 Cambio Importante (22-julio-2025)
+- En `/Volumes/siipne/appmovil/apis/helper/responseApi.php`:
+  - Ahora se retorna **HTTP 204 (No Content)** cuando `data` está vacío o `null`.
+- Pendiente de revisión: impacto en aplicaciones dependientes (posible error de interpretación).
 
-### 20 agosto del 2025
-- se modifican para validar si tiene novedades regiostradas para la app siipne elecciones
-  /Volumes/siipne/appmovil/siipneElecciones/app_elecciones/controller/controllerNovedadesApi.php
-  /Volumes/siipne/appmovil/siipneElecciones/app_elecciones/controller/controllerAuthElecciones.php
-  /Volumes/siipne/appmovil/siipneElecciones/app_elecciones/clases/buscarOpcAppElecciones.php
-  /Volumes/siipne/appmovil/siipneElecciones/app_elecciones/clases/constante.php
-  /Volumes/siipne/appmovil/siipneElecciones/app_elecciones/controller/controllerRecintoPersonal.php
+### 📋 13-agosto-2025 – Menú de Aplicación
+- `appmovil/apis/v1/menuApps/read.php` → validación para mostrar u ocultar botones en la interfaz.
 
-### 21 agosto del 2025
-- Cambios en el diseño de los dialogos
-- Cambios en el desing del cargando
-- Agregar la funcionalidad de mostrar o ocultar datos
+### 🗺️ 18-agosto-2025 – Mesas de Censo
+- Posibilidad de mostrar mesas en un mapa para validar su correcta configuración.
+- Latitud y longitud pueden guardarse vacíos desde la web (validación posterior por el censista).
+- Validación al escanear QR: si las coordenadas son incorrectas, se notifica al usuario.
+- Implementación de API para actualizar coordenadas de mesas.
+
+### 🔍 20-agosto-2025 – Validaciones en Elecciones
+- Actualizaciones en validación de novedades para la app **SIIPNE Elecciones** en:
+  - `controllerNovedadesApi.php`
+  - `controllerAuthElecciones.php`
+  - `buscarOpcAppElecciones.php`
+  - `constante.php`
+  - `controllerRecintoPersonal.php`
+
+### 🎨 21-agosto-2025 – Mejoras de Interfaz
+- Cambios en el diseño de los **diálogos**.
+- Actualización del diseño del **cargando**.
+- Nueva funcionalidad para **mostrar u ocultar datos**.  
