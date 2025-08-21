@@ -29,25 +29,18 @@ class ExceptionDialogos {
       _verificarIntentosFallidosClave();
       DialogosAwesome.getError(
         descripcion: "Usuario / Clave incorrecta",
-        btnOkOnPress: () {
-          // Get.back();
-        },
       );
     } on TokenException catch (e) {
       DialogosAwesome.getWarning(
         descripcion: e.msj,
-        btnOkOnPress: () {
-          // Get.back();
-        },
+
       );
     } on UpdateAppException catch (e) {
       mensajeActualizarApp();
     } on ServerException catch (e) {
       DialogosAwesome.getError(
         descripcion: e.message,
-        btnOkOnPress: () {
-          // Get.back();
-        },
+
       );
     } on CloseRecintoException catch (e) {
       DialogosAwesome.getWarning(
@@ -58,29 +51,19 @@ class ExceptionDialogos {
       );
     } on ParseJsonException catch (e) {
       DialogosAwesome.getError(
-        btnOkOnPress: () {
-          Get.back();
-        },
         descripcion: e.msj,
       );
     } on NoDataException catch (e) {
       if(showMsjNodata){
         DialogosAwesome.getInformation(
-
           descripcion:msjNoData==null? e.msj:msjNoData,
           title: 'SIN DATOS',
         );
       }
     } on TimeoutException catch (e) {
-      DialogosAwesome.getIconPolicia(
-        titleBtnSi: "Aceptar",
-        mostrarSegungoBtn: false,
-        btnOkOnPress: () {
-          Get.back();
-        },
+      DialogosAwesome.getError(
         descripcion:
             "Tiempo de Espera Superado.\nIntente nuevamente o contacte al administrador.",
-        title: 'ERROR',
       );
     } catch (e, t) {
       String msj = ExceptionHelper.setMensaje(
@@ -89,14 +72,8 @@ class ExceptionDialogos {
         msjException: "Error: ${e} - Linea: ${t}",
       );
 
-      DialogosAwesome.getIconPolicia(
-        titleBtnSi: "Aceptar",
-        mostrarSegungoBtn: false,
-        btnOkOnPress: () {
-          Get.back();
-        },
+      DialogosAwesome.getError(
         descripcion: msj,
-        title: 'ERROR',
       );
     }
     return false; // Hubo un error

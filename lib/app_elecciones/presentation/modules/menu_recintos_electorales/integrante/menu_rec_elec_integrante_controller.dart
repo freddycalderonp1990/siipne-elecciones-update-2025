@@ -90,7 +90,7 @@ class MenuRecElecIntegranteController extends GetxController {
 
       DialogosAwesome.getWarning(
           descripcion: "Ocurrio un error vuelva a intentar",
-          btnOkOnPress: () {});
+          );
     });
     peticionServerState(false);
   }

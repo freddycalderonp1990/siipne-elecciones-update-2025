@@ -177,7 +177,7 @@ class AddPersonController extends GetxController {
       if (result.idDgoPerAsigOpe == 0) {
         DialogosAwesome.getWarning(
             descripcion: "No se pudo completar el registro",
-            btnOkOnPress: () {});
+            );
         return;
       }
 
@@ -197,7 +197,7 @@ class AddPersonController extends GetxController {
                 "${datosPerson.value.siglas}.${datosPerson.value.apenom} "
                 "\n\nya se encuentra asignado a \n${result.nomRecintoElec}"
                 " \n\n Para poder ser asignado abandone el recinto anterior y vuelva a intentar",
-            btnOkOnPress: () {});
+            );
         return;
       }
     });

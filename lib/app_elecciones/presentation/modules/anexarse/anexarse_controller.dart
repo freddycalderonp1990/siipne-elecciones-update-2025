@@ -82,7 +82,7 @@ class AnexarseController extends GetxController {
 
       if (datosEncargado.value.idDgoReciElect == 0) {
         DialogosAwesome.getWarning(
-            btnOkOnPress: () {},
+
             title: "Anexarse",
             descripcion: "No existen Operativos con este Código");
         return;
@@ -140,7 +140,7 @@ class AnexarseController extends GetxController {
       if (result.idDgoPerAsigOpe == 0) {
         DialogosAwesome.getWarning(
             descripcion: "No se pudo completar el registro",
-            btnOkOnPress: () {});
+           );
         return;
       }
 

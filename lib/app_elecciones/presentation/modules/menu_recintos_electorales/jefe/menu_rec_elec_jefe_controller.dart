@@ -87,9 +87,7 @@ class MenuRecElecJefeController extends GetxController {
           "\n\nLa Hora para finalizar es ${dataResponse.horaValidate}.";
 
 
-      DialogosAwesome.getWarning(descripcion: msj,btnOkOnPress: (){
-
-      });
+      DialogosAwesome.getWarning(descripcion: msj);
 
 
     });

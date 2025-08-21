@@ -348,7 +348,7 @@ class AddNovedadesController extends GetxController {
           DialogosAwesome.getWarning(
             descripcion: "Selecione una Imagen",
             title: "Imagen",
-            btnOkOnPress: () {},
+
           );
         } else {
           DataFile dataFile = await guardarImagen();
@@ -432,13 +432,13 @@ class AddNovedadesController extends GetxController {
       DialogosAwesome.getWarning(
         descripcion:
             "Ya existe una novedad registrada con este documento ${controllerCedula.text}",
-        btnOkOnPress: () {},
+
       );
     } else {
       DialogosAwesome.getError(
         descripcion:
             "No se pudo Registrar la Novedad. Vuelva a intentar o contacte con el administrador del sistema.",
-        btnOkOnPress: () {},
+
       );
     }
   }

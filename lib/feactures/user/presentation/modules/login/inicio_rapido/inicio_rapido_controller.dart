@@ -189,7 +189,7 @@ class InicioRapidoController extends GetxController {
           }
         } else {
           DialogosAwesome.getWarning(
-              descripcion: "No existe biometrico", btnOkOnPress: () {});
+              descripcion: "No existe biometrico");
         }
       }
 

@@ -194,7 +194,7 @@ class CrearCodigoUnidadPoliController extends GetxController {
       DialogosAwesome.getWarning(
           descripcion:
               "No se pudo completar la acción. Por favor, inténtelo nuevamente.",
-          btnOkOnPress: () {});
+          );
       return;
     }
 
