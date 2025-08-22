@@ -170,9 +170,10 @@ class CrearCodigoRecintosController extends GetxController {
           _abrirRecintoElectoral.fechaIni +
           "\n\nSi usted necesita abrir el código en este Recinto, comuníquese con: \n[${_abrirRecintoElectoral.apenom}] para que lo elimine o finalice.";
 
+
       DialogosAwesome.showIconPolicia(
         colorBtnSi: AppColors.colorVerde_80,
-        mostrarSegungoBtn: false,
+        mostrarSegungoBtn: true,
         title: "Información",
         btnOkOnPress: () {
           UtilidadesUtil.lanzarLlamada(_abrirRecintoElectoral.telefono);

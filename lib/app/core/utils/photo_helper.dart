@@ -45,7 +45,22 @@ class PhotoHelper {
       context: Get.context!,
       dialogType: DialogType.info,
       headerAnimationLoop: false,
-      customHeader: Container(child: Image.asset(AppImages.imgIconD)),
+      customHeader: Container(
+        width: 80,
+        height: 80,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(color: AppColors.colorAzul, width: 3),
+        ),
+        child: Center(
+          child: Image.asset(
+            AppImages.escudopolicia,
+            width: 60, // Ajusta el tamaño para que no se recorte
+            height: 60,
+            fit: BoxFit.contain, // Mantiene proporciones
+          ),
+        ),
+      ),
       animType: AnimType.scale,
       title: "Registre una Fotografia",
       btnCancel:onlyCamera?null: BtnIconWidget(

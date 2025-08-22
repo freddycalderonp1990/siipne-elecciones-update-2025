@@ -9,7 +9,7 @@ class ValidateMesaPage extends GetView<ValidateMesaController> {
       () => DesingMapa(
         onPressedSave: () {
           String msj =
-              "¿Está seguro de registrar estas coordenadas?"
+              "¿Está seguro/a de registrar estas coordenadas?"
               "\n\nVerifique que se encuentre exactamente en el lugar donde se realizará el censo, ya que estas coordenadas serán utilizadas para validar su proximidad."
               "\nEn caso de presentar inconvenientes, comuníquese con el administrador de la DNATH.";
           DialogosAwesome.getWarningSiNo(

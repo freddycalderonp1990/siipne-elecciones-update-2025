@@ -2,11 +2,12 @@ part of '../custom_app_widgets.dart';
 
 class DialogosAwesome {
 
+  static  bool isDiaslogoShow= false;
+
  static Color colorWarning=Color(0xFFF46B40);
  static Color colorInformacion=AppColors.colorAzul;
  static Color colorError=Color(0xFFEA4236);
  static Color colorSucess=Color(0xFF10C26E);
-
 
 
 
@@ -55,6 +56,10 @@ class DialogosAwesome {
        String titleBtnNo = 'Cancelar',
        required String descripcion,
        required Function() btnOkOnPress,Function()? btnCancelOnPress}) {
+
+   if(isDiaslogoShow){
+     return;
+   }
    AwesomeDialog(
      dismissOnTouchOutside: false,
 
@@ -87,8 +92,12 @@ class DialogosAwesome {
        colorBtn: colorBtnSi,
        icon: iconBtnSi,
        onPressed: (){
+         isDiaslogoShow=false;
           Get.back();
-         btnOkOnPress();
+          if(btnOkOnPress!=null){
+            btnOkOnPress();
+          }
+
        },
        titulo: titleBtnSi,
      ),
@@ -97,8 +106,15 @@ class DialogosAwesome {
 
        colorBtn: AppColors.colorRojo_60,
        icon: iconBtnNo,
-       onPressed: btnCancelOnPress!=null?btnCancelOnPress: () {
-         Get.back();
+       onPressed: () {
+         if (btnCancelOnPress != null) {
+           isDiaslogoShow = false;
+           Get.back();
+           btnCancelOnPress(); // Ejecuta la función si está definida
+         } else {
+           isDiaslogoShow = false;
+           Get.back();
+         }
        },
        titulo: titleBtnNo,
      ),
@@ -122,7 +138,7 @@ class DialogosAwesome {
      descripcion: descripcion,
      btnOkOnPress:  btnOkOnPress == null
          ? () {
-       Get.back();
+
      }:btnOkOnPress,
      titleBtnSi: "ACEPTAR",
      mostrarSegungoBtn: false,
@@ -144,14 +160,14 @@ class DialogosAwesome {
      descripcion: descripcion,
      btnOkOnPress:  btnOkOnPress == null
          ? () {
-       Get.back();
+
      }:btnOkOnPress,
      titleBtnSi: "Si",
      mostrarSegungoBtn: true,
      titleBtnNo: "No",
      btnCancelOnPress: btnCancelOnPress == null
          ? () {
-       Get.back();
+
      }:btnCancelOnPress,
    );
 
@@ -174,7 +190,7 @@ class DialogosAwesome {
       descripcion: descripcion,
       btnOkOnPress:  btnOkOnPress == null
           ? () {
-        Get.back();
+
       }:btnOkOnPress,
       titleBtnSi: "ACEPTAR",
       mostrarSegungoBtn: false,
@@ -194,7 +210,7 @@ class DialogosAwesome {
       descripcion: descripcion,
       btnOkOnPress:  btnOkOnPress == null
           ? () {
-        Get.back();
+
       }:btnOkOnPress,
       titleBtnSi: "ACEPTAR",
       mostrarSegungoBtn: false,
@@ -215,7 +231,7 @@ class DialogosAwesome {
       descripcion: descripcion,
       btnOkOnPress:  btnOkOnPress == null
           ? () {
-        Get.back();
+
       }:btnOkOnPress,
       titleBtnSi: "Ok",
       mostrarSegungoBtn: false,
@@ -240,14 +256,14 @@ class DialogosAwesome {
       descripcion: descripcion,
       btnOkOnPress:  btnOkOnPress == null
           ? () {
-        Get.back();
+
       }:btnOkOnPress,
       titleBtnNo: "No",
       titleBtnSi: "SI",
       mostrarSegungoBtn: true,
       btnCancelOnPress: btnCancelOnPress == null
           ? () {
-        Get.back();
+
       }:btnCancelOnPress,
     );
   }

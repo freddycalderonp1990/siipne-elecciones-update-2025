@@ -224,13 +224,10 @@ class TotpCensoController extends GetxController {
               "El código QR no es válido o el usuario es incorrecto. Por favor, intenta con otro código QR.",
         );
       }
-      //verificamos si es movil o web
-      if (data.generadoDe != "WEB") {
-        //Verificamos la fecha de caducidad por implementar
-      }
+
 
       String passCode =
-          "idGenPersonaCensado:${idGenPersonaUser}-idProceso:${data.idProceso}-idDgpRecinto:${data.idDgpRecinto}-idMesa:${data.idMesa}-idGenPersonaCensista:${data.idGenPersonaCensista}";
+          "idGenPersonaCensado:${idGenPersonaUser}-idProceso:${data.idProceso}-idDgpRecinto:${data.idDgpRecinto}-idGenPersonaCensista:${data.idGenPersonaCensista}";
 
       DateTime now = DateTime.now();
       DateTime fechaQr = DateTime.parse(data.fecha);
@@ -244,6 +241,20 @@ class TotpCensoController extends GetxController {
         );
       }
 
+      print(
+        '📍 Coordenadas:\n'
+
+            '➡️ Mesa del censo: (${data.latitudMesa}, ${data.longitudMesa})',
+      );
+
+      if (data.latitudMesa.toString().length <= 3 || data.longitudMesa.toString().length <= 3  ) {
+        throw QRException(
+          cause:
+          "Las coordenadas de la mesa no se encuentran configuradas de manera correcta. \nConsulte con Talento Humano o el administrador del sistema",
+        );
+      }
+
+
       //VALIDAMOS QUE EL USUARIO ESTE CERCA DE LA MESA
 
       final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
@@ -256,11 +267,13 @@ class TotpCensoController extends GetxController {
         data.longitudMesa,
       );
 
+
       print(
         '📍 Coordenadas:\n'
-        '➡️ Usuario: (${position.latitude}, ${position.longitude})\n'
-        '➡️ Mesa del censo: (${data.latitudMesa}, ${data.longitudMesa})',
+            '➡️ Usuario: (${position.latitude}, ${position.longitude})\n'
+            '➡️ Mesa del censo: (${data.latitudMesa}, ${data.longitudMesa})',
       );
+
 
       print("distancia ${distancia}");
       if (distancia > AppCensoConfi.longitudValidarMesa) {
@@ -289,7 +302,7 @@ class TotpCensoController extends GetxController {
     Get.back();
     await Future.delayed(Duration(milliseconds: 100), () {});
 
-    DialogosAwesome.getWarning(
+    DialogosAwesome.getError(
       descripcion: msj,
       btnOkOnPress: () {
         reciboDataQR = false;

@@ -93,7 +93,7 @@ class CensistaController extends GetxController {
     peticionServerState(true);
 
     await ExceptionDialogos.manejarErroresShowDialogo(
-      msjNoData: "No existen datos que mostrar...",
+      msjNoData: "No se encontro una fotografia que mostrar...",
           () async {
         dataFotoDgp.value = await _getFotoDgpByDocumentoUseCase(documento: dataCensado.value.documento);
 
@@ -166,11 +166,14 @@ class CensistaController extends GetxController {
         return;
       }
 
-      DialogosAwesome.getInformation(
-        descripcion: "La fotografia fue guardada con éxito.",
-        btnOkOnPress: () {
+      DialogosAwesome.getSucess(
+        descripcion: "El censo ha finalizado correctamente.",
+        btnOkOnPress: (){
           Get.back();
-        },
+
+        }
+
+
       );
     });
 

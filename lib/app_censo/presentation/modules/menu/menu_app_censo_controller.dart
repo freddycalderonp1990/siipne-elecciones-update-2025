@@ -90,12 +90,11 @@ class MenuAppCensoController extends GetxController {
 
     for (int i = 0; i < dataProcesos.length; i++) {
       DataProceso data = dataProcesos[i];
-      bool finalizado = data.estadoCenso.toLowerCase() == "finalizado";
+      bool finalizado = data.estadoCenso.toLowerCase() == "asignado";
 
-      if (!finalizado) {
+      if (finalizado) {
         showBtnIniciarCenso.value=true;
         showBtnQuieroSerCensado.value=true;
-
 
         finalizaCenso.value = false;
 

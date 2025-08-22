@@ -155,13 +155,13 @@ class CrearCodigoUnidadPoliController extends GetxController {
     String unidad = selectRecintosElectoral.value.nomRecintoElecOnly;
 
     String msj =
-        "¿Usted va a generar el código para la ${unidad}?"
-        "\n\nAsegúrese de estar de servicio en la Unidad y de ser la persona encargada o la persona designada como jefe/a."
+
+        "Asegúrese de estar de servicio en la Unidad y de ser la persona encargada o la persona designada como jefe/a."
         "\n\n Utilice la aplicación con responsabilidad, ya que toda actividad sera registrada y auditada."
         "\n\n¿Desea Continuar?";
 
-    DialogosAwesome.getWarning(
-      title: "Crear Código",
+    DialogosAwesome.getWarningSiNo(
+      title: "¿Usted va a generar el código para la ${unidad}?",
       btnOkOnPress: onPressed,
       descripcion: msj,
     );
@@ -224,7 +224,7 @@ class CrearCodigoUnidadPoliController extends GetxController {
 
       DialogosAwesome.showIconPolicia(
         colorBtnSi: AppColors.colorVerde_80,
-        mostrarSegungoBtn: false,
+        mostrarSegungoBtn: true,
         title: "Información",
         btnOkOnPress: () {
           UtilidadesUtil.lanzarLlamada(_abrirRecintoElectoral.telefono);

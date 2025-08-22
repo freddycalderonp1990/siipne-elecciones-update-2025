@@ -211,7 +211,7 @@ class CensistaPage extends GetView<CensistaController> {
                 if (controller.dataCensado.value.estadoCenso != "iniciado") {
                   DialogosAwesome.getInformation(
                     descripcion:
-                        "Para continuar, asegúrese de que el censista, haya completado su registro en el sistema SIIPNE 3W."
+                        "Para continuar, asegúrese de que se  haya completado el registro del formulario en el sistema SIIPNE 3W."
                         "\nSolo después podrá registrar la fotografía.",
                   );
                   controller.dataCensado.value = DataCensado.empty();
@@ -267,8 +267,9 @@ class CensistaPage extends GetView<CensistaController> {
                 titulo: "GUARDAR",
                 onPressed: () {
                   DialogosAwesome.getWarningSiNo(
+                    title: "¿Está seguro que desea finalizar el proceso de censo?",
                     descripcion:
-                        "¿Está seguro/a que desea continuar con el registro?",
+                        "Al confirmar, se guardará la foto registrada y el censo quedará concluido.",
                     btnOkOnPress: () {
                       controller.SaveCensusPersonPhotoUseCaseServer();
                     },

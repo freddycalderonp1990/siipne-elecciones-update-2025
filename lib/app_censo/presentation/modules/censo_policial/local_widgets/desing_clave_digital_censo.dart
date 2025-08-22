@@ -404,25 +404,8 @@ class _DesingClaveDigitalCensoState extends State<DesingClaveDigitalCenso>
         ),
         iconDetalle("Se genera una clave nueva cada 30 segundos"),
         iconDetalle("Esta clave es válida para el censo"),
-        iconDetalle("Se genera incluso sin conexión a internet."),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(
-              Icons.help,
-              color: AppColors.colorAzul_60,
-            ),
 
 
-            Text(
-              "Ayuda",
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.colorAzul_60,
-                  fontSize: responsive.diagonalP(AppConfig.tamTextoTitulo)),
-            )
-          ],
-        ),
 
       ],
     );
