@@ -28,6 +28,8 @@ class UrlApiProviderAppCenso{
 
     UrlApiProviderApp _urlApiProviderApp = UrlApiProviderApp();
     String url = HostAppCenso.gethost();
+
+
     return _urlApiProviderApp.get(
       url: url,
       segmento: segmento,

@@ -25,6 +25,10 @@ abstract class CensoRemoteDataSource {
   Future<List<DataHistoryCenso>> getDatosHistoryCensos({
     required int idPerCensado,
   });
+
+  Future<String> downloadPdfCenso({
+    required DownloadPdfCensoRequest request,
+  });
 }
 
 class CensoRemoteDataSourceImpl implements CensoRemoteDataSource {
@@ -81,28 +85,31 @@ class CensoRemoteDataSourceImpl implements CensoRemoteDataSource {
   }
 
   @override
-  Future<List<DataMesa>> getMesasByIdUsuario({required GetMesasByIdusuarioRequest request}) async {
+  Future<List<DataMesa>> getMesasByIdUsuario({
+    required GetMesasByIdusuarioRequest request,
+  }) async {
+    Map<String, dynamic> body =
+        HeadAppCensoRequest(
+          uri: CensoApiConstantes.CENSO_GET_MESAS_BY_IDUSER,
+          bodyRequest: request.toJson(),
+        ).toJson();
+    String json = await UrlApiProviderAppCenso.post(body: body);
 
-      Map<String, dynamic> body =
-      HeadAppCensoRequest(
-        uri: CensoApiConstantes.CENSO_GET_MESAS_BY_IDUSER,
-        bodyRequest: request.toJson(),
-      ).toJson();
-      String json = await UrlApiProviderAppCenso.post(body: body);
-
-      return await ExceptionHelper.manejarErroresParseJsonException(() async {
-        // Parsear y retornar el modelo correspondiente
-        return mesasModelFromJson(json).dataMesa;
-      });
+    return await ExceptionHelper.manejarErroresParseJsonException(() async {
+      // Parsear y retornar el modelo correspondiente
+      return mesasModelFromJson(json).dataMesa;
+    });
   }
 
   @override
-  Future<bool> updateCoordenadasMesa({required UpdateCoordenadasMesaRequest request})  async{
+  Future<bool> updateCoordenadasMesa({
+    required UpdateCoordenadasMesaRequest request,
+  }) async {
     Map<String, dynamic> body =
-    HeadAppCensoRequest(
-      uri: CensoApiConstantes.MESA_UPDATE_COORDENADAS,
-      bodyRequest: request.toJson(),
-    ).toJson();
+        HeadAppCensoRequest(
+          uri: CensoApiConstantes.MESA_UPDATE_COORDENADAS,
+          bodyRequest: request.toJson(),
+        ).toJson();
     String json = await UrlApiProviderAppCenso.patch(body: body);
 
     return await ExceptionHelper.manejarErroresParseJsonException(() async {
@@ -114,17 +121,31 @@ class CensoRemoteDataSourceImpl implements CensoRemoteDataSource {
   }
 
   @override
-  Future<List<DataHistoryCenso>> getDatosHistoryCensos({required int idPerCensado}) async {
+  Future<List<DataHistoryCenso>> getDatosHistoryCensos({
+    required int idPerCensado,
+  }) async {
     Map<String, dynamic> body =
-    HeadAppCensoRequest(
-      uri: CensoApiConstantes.CENSO_HISTORIAL_BY_IDPERCENSADO,
-      bodyRequest: {
-        "idPerCensado": idPerCensado},
-    ).toJson();
+        HeadAppCensoRequest(
+          uri: CensoApiConstantes.CENSO_HISTORIAL_BY_IDPERCENSADO,
+          bodyRequest: {"idPerCensado": idPerCensado},
+        ).toJson();
     String json = await UrlApiProviderAppCenso.post(body: body);
     return await ExceptionHelper.manejarErroresParseJsonException(() async {
       // Parsear y retornar el modelo correspondiente
       return historyCensoModelFromJson(json).dataHistoryCenso;
     });
+  }
+
+  @override
+  Future<String> downloadPdfCenso({
+    required DownloadPdfCensoRequest request,
+  }) async {
+    String segmento =
+        "personal/modulos/censo/imprimeFichaCensoMovil.php";
+
+    UrlApiProviderApp _urlApiProviderApp = UrlApiProviderApp();
+    String url = HostApp.gethost(segmento: '');
+
+    return await _urlApiProviderApp.downloadPdf(url: url, segmento: segmento,body:request.toJson() );
   }
 }

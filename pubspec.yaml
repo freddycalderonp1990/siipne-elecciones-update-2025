@@ -53,7 +53,7 @@ dependencies:
   #network_info_plus: ^6.1.4 #Obtener ip del celular (se deben asiganr permisos para IOS)
   #package_info_plus: ^8.3.0 #obtener version code de la app
   #end librerias del paquete mi upc
-  path_provider: ^2.1.5 #Obtiene el directorio actual del app instalado
+
   #END Utilidades - device_info_app.dart
 
 
@@ -89,7 +89,7 @@ dependencies:
   syncfusion_flutter_gauges: ^28.2.5 #Diseño de clave digital
 
   api_provider:
-    path: /Users/policianacional/AndroidStudioProjects/paquete_api_provider
+    path: /Users/policianacional/AndroidStudioProjects/paquete_api_provider  # trae http y  path_provider:
 
   app_mi_upc:
     git:

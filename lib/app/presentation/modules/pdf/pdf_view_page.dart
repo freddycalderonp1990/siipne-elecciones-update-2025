@@ -10,6 +10,7 @@ class PdfViewPage extends GetView<PdfViewController> {
     final responsive = ResponsiveUtil();
 
 
+
     return Scaffold(
 
 
@@ -27,7 +28,25 @@ class PdfViewPage extends GetView<PdfViewController> {
                   ],
                 ),
               ),
+              Expanded(
+                  child: Material(
+                    color: Colors.transparent,
+                    borderRadius: BorderRadius.circular(AppConfig.radioBotones),
+                    child: InkWell(
+                        onTap: () {
+                          UtilidadesUtil.compartirPdf(controller.path.value);
+                        },
+                        borderRadius: BorderRadius.circular(
+                            AppConfig.radioBotones),
+                        child: Row(
 
+                            children: [
+                              Flexible(child: Text("Compartir",style: TextStyle(color: Colors.white),),),
+                              SizedBox(width: 2,),
+                              Icon(Icons.share,color: Colors.white,)
+
+                            ])),
+                  ))
             ],
           ),
 
@@ -41,7 +60,6 @@ class PdfViewPage extends GetView<PdfViewController> {
           ),
         ),
         body: ContenedorDesingWidget(
-
 
             margin: EdgeInsets.all(5),
             child: Container(
@@ -61,30 +79,7 @@ class PdfViewPage extends GetView<PdfViewController> {
             )));
   }
 
-  Widget getBtnZoom() {
-    Widget wgZoom = Column(
-      children: <Widget>[
-        getBtnCustomIcon(
-            icon: Icons.zoom_in,
-            colorIcon: AppColors.colorAzul_10,
-            colorRelleno: Colors.white,
-            ontap: () {
 
-            },
-            size: 40),
-        getBtnCustomIcon(
-            icon: Icons.zoom_out,
-            colorIcon: AppColors.colorAzul_10,
-            colorRelleno: Colors.white,
-            ontap: () {
-
-            },
-            size: 40)
-      ],
-    );
-
-    return  wgZoom;
-  }
 
   Widget contenido() {
     return Obx(() =>
@@ -96,6 +91,7 @@ class PdfViewPage extends GetView<PdfViewController> {
               controller.path.value.length > 0
                   ? PDFView(
                 filePath: controller.path.value,
+
                 enableSwipe: true,
                 swipeHorizontal: true,
                 autoSpacing: true,
@@ -127,59 +123,50 @@ class PdfViewPage extends GetView<PdfViewController> {
               )
                   : Container()
                   : Center(
-                child: ContenedorDesingWidget(
-                  child: Container(
-                      padding: EdgeInsets.all(5),
-                      margin: EdgeInsets.all(5),
-                      child: Text(
-                        controller.errorMessage.value,
-                        overflow: TextOverflow.fade,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red.withOpacity(0.7)),
-                      )),
-                  margin: EdgeInsets.all(10),
-                  anchoPorce: 80,
-                ),
+                child: getDesingError(),
               )
             ],
           ),
         ));
   }
 
+  getDesingError(){
+    return   Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+      Container(
+        width: 80,
+        height: 80,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(color:DialogosAwesome.colorError, width: 3),
+        ),
+        child: Center(
+          child: Image.asset(
+            DialogosAwesome.imgDefault,
+            width: 60, // Ajusta el tamaño para que no se recorte
+            height: 60,
+            fit: BoxFit.contain, // Mantiene proporciones
+          ),
+        ),
+      ),
+     
+   SizedBox(height: 10,),
 
-   Widget getBtnCustomIcon(
-      {required GestureTapCallback ontap,
-        required double size,
-        required Color colorIcon,
-        required Color colorRelleno,
-        required IconData icon}) {
-    return CupertinoButton(
-        borderRadius: BorderRadius.circular(20),
-        padding: EdgeInsets.all(1),
-        onPressed: ontap,
-        child: ClipRRect(
-            borderRadius: BorderRadius.circular(20),
-            child: Container(
-              height: size,
-              width: size,
-              decoration: BoxDecoration(
-                  border: Border.all(color: colorIcon, width: 0.5),
-                  color: colorRelleno,
-                  borderRadius: BorderRadius.circular(50)),
-              child: Container(
-                child: size > 38
-                    ? Icon(
-                  icon,
-                  color: colorRelleno,
-                  size: size - 20,
-                )
-                    : Container(),
-                margin: EdgeInsets.all(2),
-                decoration: BoxDecoration(
-                    color: colorIcon, borderRadius: BorderRadius.circular(50)),
-              ),
-            )));
+     Container(
+            padding: EdgeInsets.all(5),
+            margin: EdgeInsets.all(5),
+            child: Text(
+              controller.errorMessage.value,
+              overflow: TextOverflow.fade,
+              textAlign: TextAlign.justify,
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: DialogosAwesome.colorError),
+            )),
+
+
+    ],);
   }
 }

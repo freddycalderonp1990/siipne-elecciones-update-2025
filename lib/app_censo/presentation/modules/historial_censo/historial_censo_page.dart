@@ -28,8 +28,20 @@ class HistorialCensoPage extends GetView<HistorialCensoController> {
 
         Expanded(
           child: Obx(
-            () => DesingHistoryCensos(
-              listHistoryCenso: controller.listHistoryCenso.value,
+            () => ListView.builder(
+              itemCount: controller.listHistoryCenso.value.length,
+              itemBuilder: (context, index) {
+                DataHistoryCenso data = controller.listHistoryCenso[index];
+                return DesingHistoryCensos(
+                  data: data,
+                  index: index + 1,
+                  onPressed: () {
+
+                    DownloadPdfCensoRequest request = DownloadPdfCensoRequest(idPerCensista: data.idGenPersona, idPerCensado: data.idDgpPerCenso);
+                    controller.descargarPdfCenso(request: request);
+                  },
+                );
+              },
             ),
           ),
         ),

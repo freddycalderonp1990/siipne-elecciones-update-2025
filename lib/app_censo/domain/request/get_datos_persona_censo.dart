@@ -8,7 +8,6 @@ class GetDatosPersonaCensoRequest {
   GetDatosPersonaCensoRequest({
     required this.idDgpPerCenso,
     required this.idGenUsuarioCensista,
-
   });
 
   /// Método para convertir el objeto a JSON

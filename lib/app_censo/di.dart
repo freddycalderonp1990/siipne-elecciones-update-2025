@@ -28,6 +28,7 @@ class DependencyInjectionCenso extends Bindings{
     Get.lazyPut<GetMesasByIdusuarioUseCase>(()=>GetMesasByIdusuarioUseCase(repository: Get.find()),fenix: true);
     Get.lazyPut<UpdateMesaCoordinatesUseCase>(()=>UpdateMesaCoordinatesUseCase(repository: Get.find()),fenix: true);
     Get.lazyPut<FetchDataHistoryCensusUseCase>(()=>FetchDataHistoryCensusUseCase(repository: Get.find()),fenix: true);
+    Get.lazyPut<DownloadPdfCensoUseCase>(()=>DownloadPdfCensoUseCase(repository: Get.find()),fenix: true);
 
 
 

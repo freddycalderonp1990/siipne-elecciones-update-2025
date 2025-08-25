@@ -21,6 +21,8 @@ import '../../../app_elecciones/core/values/siipne_images.dart';
 import '../../../app_elecciones/presentation/routes/elecciones_routes.dart';
 import '../../../feactures/user/presentation/widgets/user_custom_widgets.dart';
 
+import '../../core/app_config.dart';
+import '../../core/utils/utilidadesUtil.dart';
 import '../../core/values/app_colors.dart';
 
 import '../../domain/enums/enums.dart';

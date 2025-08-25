@@ -15,6 +15,7 @@ import '../../../app/core/utils/device_info_app.dart';
 import '../../../app/core/utils/photo_helper.dart';
 
 import '../../../app/core/utils/responsiveUtil.dart';
+import '../../../app/presentation/routes/app_routes.dart';
 import '../../../app/presentation/widgets/custom_app_widgets.dart';
 
 import '../../../feactures/foto_dgp/data/models/foto_model.dart';

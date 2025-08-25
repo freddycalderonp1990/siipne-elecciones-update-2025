@@ -19,6 +19,7 @@ import '../../../app_elecciones/presentation/routes/elecciones_routes.dart';
 import '../../../app_elecciones/presentation/widgets/customWidgets.dart';
 import '../../../feactures/my_qr/presentation/widgets/qr_view_widget.dart';
 import '../../core/values/app_censo_images.dart';
+import '../../domain/request/request_censo.dart';
 import '../routes/app_censo_routes.dart';
 import '../widgets/custom_app_censo_widgets.dart';
 import 'censista/validate_mesa/local_widget/desing_mapa.dart';

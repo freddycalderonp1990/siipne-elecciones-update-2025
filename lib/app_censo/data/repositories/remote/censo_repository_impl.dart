@@ -45,4 +45,9 @@ class CensoRepositoryImpl extends CensoRepository {
     // TODO: implement getDatosHistoryCensos
     return this.censoRemoteDataSource.getDatosHistoryCensos(idPerCensado: idPerCensado);
   }
+
+  @override
+  Future<String> downloadPdfCenso({required DownloadPdfCensoRequest request}) async {
+    return await this.censoRemoteDataSource.downloadPdfCenso(request: request);
+  }
 }

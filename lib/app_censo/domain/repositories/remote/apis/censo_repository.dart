@@ -1,7 +1,5 @@
 part of '../../domain_repositories.dart';
 
-
-
 abstract class CensoRepository {
   //Se define que cosas quiero hacer
   //se definen los contartos
@@ -18,11 +16,7 @@ abstract class CensoRepository {
     required GetDatosProcesosActivosRequest request,
   });
 
-
-
-  Future<bool> updateFoto({
-    required UpdateFotoPerCensoRequest request,
-  });
+  Future<bool> updateFoto({required UpdateFotoPerCensoRequest request});
 
   Future<bool> updateCoordenadasMesa({
     required UpdateCoordenadasMesaRequest request,
@@ -32,6 +26,7 @@ abstract class CensoRepository {
     required int idPerCensado,
   });
 
-
-
+  Future<String> downloadPdfCenso({
+    required DownloadPdfCensoRequest request,
+  });
 }

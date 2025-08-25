@@ -9,6 +9,8 @@ class DialogosAwesome {
  static Color colorError=Color(0xFFEA4236);
  static Color colorSucess=Color(0xFF10C26E);
 
+ static String imgDefault=AppImages.escudopolicia;
+
 
 
  static showIconPolicia(

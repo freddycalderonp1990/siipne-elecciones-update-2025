@@ -88,3 +88,16 @@
 - Cambios en el diseño de los **diálogos**.
 - Actualización del diseño del **cargando**.
 - Nueva funcionalidad para **mostrar u ocultar datos**.  
+
+
+### 🎨 21-agosto-2025 – PDF
+- Se implemnta la funcionalidad de descargar los pdf del censo 
+- se agrega la carpeta pdf en al app principal para vizualizar los pdfs descargados
+- Se implemnta la funcionalidad en el paquete api provider para descargar pdf, medodo   
+  Future<String> downloadPdf({
+  required String segmento,
+  required String url,
+  Object? body,
+  String namePdf="miPdf"
+
+  }),

@@ -3,21 +3,23 @@ import 'package:flutter/material.dart';
 import '../../../../../app/core/values/app_colors.dart';
 import '../../../../../app/presentation/widgets/custom_app_widgets.dart';
 import '../../../../data/models/models_censo.dart';
+import '../../../../domain/request/request_censo.dart';
+import '../../controllers.dart';
 
 class DesingHistoryCensos extends StatelessWidget {
-  final List<DataHistoryCenso> listHistoryCenso;
+  final DataHistoryCenso data;
+  final int index;
 
-  const DesingHistoryCensos({super.key, required this.listHistoryCenso});
+  final VoidCallback onPressed;
+
+
+  const DesingHistoryCensos({super.key, required this.data, required this.index, required this.onPressed, });
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: listHistoryCenso.length,
-      itemBuilder: (context, index) {
-        DataHistoryCenso data = listHistoryCenso[index];
-        return _getDesingHistorialCenso(data: data, i: index + 1);
-      },
-    );
+
+    return _getDesingHistorialCenso(data: data,i: index);
+
   }
 
   _getDesingHistorialCenso({required DataHistoryCenso data, required int i}) {
@@ -53,7 +55,7 @@ class DesingHistoryCensos extends StatelessWidget {
                     colorIcon: AppColors.colorRojo,
                     icon: Icons.picture_as_pdf,
 
-                    onPressed: () {}, // onPressed puede ser null
+                    onPressed: onPressed, // onPressed puede ser null
                   ),
                 )
                 : SizedBox.shrink(),

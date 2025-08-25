@@ -5,6 +5,8 @@ class HistorialCensoController extends GetxController {
   final FetchDataHistoryCensusUseCase fetchDataHistoryCensusUseCase =
       Get.find();
 
+  final DownloadPdfCensoUseCase downloadPdfCensoUseCase = Get.find();
+
   RxList<DataHistoryCenso> listHistoryCenso = <DataHistoryCenso>[].obs;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -59,5 +61,22 @@ class HistorialCensoController extends GetxController {
 
   cerrarSession() {
     Get.back();
+  }
+
+  descargarPdfCenso({required DownloadPdfCensoRequest request}) async {
+    peticionServerState(true);
+
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
+      String ruta = await downloadPdfCensoUseCase(request: request);
+
+      peticionServerState(false);
+      if (ruta == "") {
+        DialogosAwesome.getError(descripcion: "Error al descargar el PDF");
+      } else {
+        Get.toNamed(AppRoutes.PDFVIEW, arguments: {'pathPdf': ruta});
+      }
+    });
+
+    peticionServerState(false);
   }
 }

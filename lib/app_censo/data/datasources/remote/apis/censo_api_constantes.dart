@@ -14,4 +14,6 @@ class CensoApiConstantes {
 
   static const CENSO_HISTORIAL_BY_IDPERCENSADO = "v1-historial-censos";
 
+
+
 }
