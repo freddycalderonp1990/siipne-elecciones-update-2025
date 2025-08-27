@@ -6,7 +6,7 @@ class FetchCensusPersonDataUseCase {
 
   FetchCensusPersonDataUseCase({required this.repository});
 
-  Future<List<DataCensado>> call({required GetDatosPersonaCensoRequest request }) {
+  Future<List<DataPerCenso>> call({required GetDatosPersonaCensoRequest request }) {
     return repository.getDatosPersonaCenso(request: request);
   }
 }

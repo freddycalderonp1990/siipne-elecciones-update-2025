@@ -4,11 +4,11 @@ abstract class CensoRemoteDataSource {
   //Se define que cosas quiero hacer
   //se definen los contartos
 
-  Future<List<DataMesa>> getMesasByIdUsuario({
+  Future<DataMesaResponse> getMesasByIdUsuario({
     required GetMesasByIdusuarioRequest request,
   });
 
-  Future<List<DataCensado>> getDatosPersonaCenso({
+  Future<List<DataPerCenso>> getDatosPersonaCenso({
     required GetDatosPersonaCensoRequest request,
   });
 
@@ -33,7 +33,7 @@ abstract class CensoRemoteDataSource {
 
 class CensoRemoteDataSourceImpl implements CensoRemoteDataSource {
   @override
-  Future<List<DataCensado>> getDatosPersonaCenso({
+  Future<List<DataPerCenso>> getDatosPersonaCenso({
     required GetDatosPersonaCensoRequest request,
   }) async {
     Map<String, dynamic> body =
@@ -46,7 +46,7 @@ class CensoRemoteDataSourceImpl implements CensoRemoteDataSource {
 
     return await ExceptionHelper.manejarErroresParseJsonException(() async {
       // Parsear y retornar el modelo correspondiente
-      return censadoModelFromJson(json).dataCensado;
+      return censadoModelFromJson(json).dataPerCenso;
     });
   }
 
@@ -85,9 +85,10 @@ class CensoRemoteDataSourceImpl implements CensoRemoteDataSource {
   }
 
   @override
-  Future<List<DataMesa>> getMesasByIdUsuario({
+  Future<DataMesaResponse> getMesasByIdUsuario({
     required GetMesasByIdusuarioRequest request,
   }) async {
+
     Map<String, dynamic> body =
         HeadAppCensoRequest(
           uri: CensoApiConstantes.CENSO_GET_MESAS_BY_IDUSER,
@@ -97,7 +98,7 @@ class CensoRemoteDataSourceImpl implements CensoRemoteDataSource {
 
     return await ExceptionHelper.manejarErroresParseJsonException(() async {
       // Parsear y retornar el modelo correspondiente
-      return mesasModelFromJson(json).dataMesa;
+      return mesasModelFromJson(json).dataMesaResponse;
     });
   }
 

@@ -4,11 +4,11 @@ abstract class CensoRepository {
   //Se define que cosas quiero hacer
   //se definen los contartos
 
-  Future<List<DataMesa>> getMesasByIdUsuario({
+  Future<DataMesaResponse> getMesasByIdUsuario({
     required GetMesasByIdusuarioRequest request,
   });
 
-  Future<List<DataCensado>> getDatosPersonaCenso({
+  Future<List<DataPerCenso>> getDatosPersonaCenso({
     required GetDatosPersonaCensoRequest request,
   });
 

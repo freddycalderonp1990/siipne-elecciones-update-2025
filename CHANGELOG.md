@@ -51,19 +51,19 @@
 
 ### 🔑 04-julio-2025
 - Cambio en autenticación:
-  - Nuevo endpoint: `appmovil/apis/v2/auth/read.php` (retorna únicamente el token).
-  - Datos del usuario obtenidos desde: `appmovil/apis/v1/user/read.php`.
+  - Nuevo endpoint: `appmovil/apis/v2/auth/read.php` (retorna únicamente el token). (incluida en formulario)
+  - Datos del usuario obtenidos desde: `appmovil/apis/v1/user/read.php`. (incluida en formulario)
 
 ### 🗂️ Proceso Censos
 - Query inicial: `SELECT * FROM genEncPrueba`.
 - Actualización de rutas:
   - `/Volumes/siipne/appmovil/clases/constantesModulos.php` → agregado el módulo correspondiente.
-  - `qr/qrconfig.php` → agregado `PATH_CODIGO_QR_PNE_CENSO`.
-  - `/Volumes/siipne/clases/dobleFactor/claseAlgoritmoTOTP.php` → modificación de `getKeySecurity`.
-  - `appmovil/apis/v2/saveFile/read.php` → nueva versión de guardar archivos (retorna el nombre del archivo).
+  - `qr/qrconfig.php` → agregado `PATH_CODIGO_QR_PNE_CENSO`. (incluida en formulario)
+  - `/Volumes/siipne/clases/dobleFactor/claseAlgoritmoTOTP.php` → modificación de `getKeySecurity`. (incluida en formulario)
+  - `appmovil/apis/v2/saveFile/read.php` → nueva versión de guardar archivos (retorna el nombre del archivo). (incluida en formulario)
 
 ### 📌 Cambio Importante (22-julio-2025)
-- En `/Volumes/siipne/appmovil/apis/helper/responseApi.php`:
+- En `/Volumes/siipne/appmovil/apis/helper/responseApi.php`: (incluida en formulario)
   - Ahora se retorna **HTTP 204 (No Content)** cuando `data` está vacío o `null`.
 - Pendiente de revisión: impacto en aplicaciones dependientes (posible error de interpretación).
 
@@ -78,11 +78,11 @@
 
 ### 🔍 20-agosto-2025 – Validaciones en Elecciones
 - Actualizaciones en validación de novedades para la app **SIIPNE Elecciones** en:
-  - `controllerNovedadesApi.php`
-  - `controllerAuthElecciones.php`
-  - `buscarOpcAppElecciones.php`
-  - `constante.php`
-  - `controllerRecintoPersonal.php`
+  - `siipne/appmovil/siipneElecciones/app_elecciones/controller/controllerNovedadesApi.php`
+  - `siipne/appmovil/siipneElecciones/app_elecciones/controller/controllerAuthElecciones.php`
+  - `siipne/appmovil/siipneElecciones/app_elecciones/clases/buscarOpcAppElecciones.phpp`
+  - `siipne/appmovil/siipneElecciones/app_elecciones/clases/constante.php`
+  - `siipne/appmovil/siipneElecciones/app_elecciones/controller/controllerRecintoPersonal.php`
 
 ### 🎨 21-agosto-2025 – Mejoras de Interfaz
 - Cambios en el diseño de los **diálogos**.
@@ -90,8 +90,8 @@
 - Nueva funcionalidad para **mostrar u ocultar datos**.  
 
 
-### 🎨 21-agosto-2025 – PDF
-- Se implemnta la funcionalidad de descargar los pdf del censo 
+### 🎨 21-agosto-2025 – PDF 
+- Se implementa la funcionalidad de descargar los pdf del censo 
 - se agrega la carpeta pdf en al app principal para vizualizar los pdfs descargados
 - Se implemnta la funcionalidad en el paquete api provider para descargar pdf, medodo   
   Future<String> downloadPdf({

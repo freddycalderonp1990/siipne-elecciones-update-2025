@@ -6,7 +6,7 @@ class CensoRepositoryImpl extends CensoRepository {
   CensoRepositoryImpl({required this.censoRemoteDataSource});
 
   @override
-  Future<List<DataCensado>> getDatosPersonaCenso({
+  Future<List<DataPerCenso>> getDatosPersonaCenso({
     required GetDatosPersonaCensoRequest request,
   }) async {
     return this.censoRemoteDataSource.getDatosPersonaCenso(request: request);
@@ -27,7 +27,7 @@ class CensoRepositoryImpl extends CensoRepository {
   }
 
   @override
-  Future<List<DataMesa>> getMesasByIdUsuario({
+  Future<DataMesaResponse> getMesasByIdUsuario({
     required GetMesasByIdusuarioRequest request,
   }) async {
     return this.censoRemoteDataSource.getMesasByIdUsuario(request: request);

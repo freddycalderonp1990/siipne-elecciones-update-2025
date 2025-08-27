@@ -8,8 +8,8 @@ class CensistaController extends GetxController {
 
   final FetchCensusPersonDataUseCase getDatosPersonaCenso = Get.find();
 
-  RxList<DataCensado> dataCensadoList = <DataCensado>[].obs;
-  Rx<DataCensado> dataCensado = DataCensado.empty().obs;
+  RxList<DataPerCenso> dataPerCensoList = <DataPerCenso>[].obs;
+  Rx<DataPerCenso> dataPerCenso = DataPerCenso.empty().obs;
 
   Rx<DataFoto> dataFotoDgp=DataFoto.empty().obs;
 
@@ -27,6 +27,8 @@ class CensistaController extends GetxController {
 
   RxBool showBtnValidarFoto=false.obs;
 
+  bool isCensoTodos=false;
+
   @override
   void onInit() async {
     controllerCodigoCenso.text = "93498";
@@ -35,8 +37,8 @@ class CensistaController extends GetxController {
   }
 
   @override
-  void onReady() {
-
+  void onReady() async {
+    await getDataToPage();
     // TODO: Donde la vista ya se presento
     super.onReady();
   }
@@ -46,6 +48,30 @@ class CensistaController extends GetxController {
     // TODO: implement onClose
 
     super.onClose();
+  }
+
+
+  getDataToPage() async {
+    // Recibe los argumentos
+    final arguments = Get.arguments as Map<String, dynamic>?;
+
+    // Verifica que los argumentos no sean nulos y que contengan la clave 'data'
+    if (arguments != null &&
+        arguments.containsKey('isCensoTodos')) {
+      try {
+        isCensoTodos = arguments['isCensoTodos']
+        as bool;
+      } catch (e) {
+       // DialogosAwesome.getError(descripcion: "1 No existe datos valido para la mesa ");
+      }
+    } else {
+      /*
+      DialogosAwesome.getError(descripcion: "No existe datos valido para la mesa ",btnOkOnPress: (){
+        Future.delayed(Duration.zero, () {
+          Navigator.pop(Get.context!);
+        });
+      });*/
+    }
   }
 
   Future<void> consultarDatosSegunCodigo() async {
@@ -69,17 +95,17 @@ class CensistaController extends GetxController {
         GetDatosPersonaCensoRequest request = GetDatosPersonaCensoRequest(
           idDgpPerCenso: idDgpPerCenso,
           idGenUsuarioCensista: user.idGenUsuario,
+          isCensoTodos: isCensoTodos
         );
-        dataCensadoList.value = await getDatosPersonaCenso(request: request);
-        dataCensado.value = dataCensadoList[0];
-        if (dataCensado.value.censado) {
-          String name =
-              "${dataCensado.value.siglas}. ${dataCensado.value.apenom}";
+        dataPerCensoList.value = await getDatosPersonaCenso(request: request);
+        dataPerCenso.value = dataPerCensoList[0];
+        if (dataPerCenso.value.censado) {
+
           DialogosAwesome.getInformation(
-            descripcion: "${name}\n\nYA SE ENCUENTRA CENSADO",
+            descripcion: "${dataPerCenso.value.nameCensado}\n\nYA SE ENCUENTRA CENSADO",
           );
-          dataCensadoList.clear();
-          dataCensado.value = DataCensado.empty();
+          dataPerCensoList.clear();
+          dataPerCenso.value = DataPerCenso.empty();
         }
       },
     );
@@ -95,8 +121,7 @@ class CensistaController extends GetxController {
     await ExceptionDialogos.manejarErroresShowDialogo(
       msjNoData: "No se encontro una fotografia que mostrar...",
           () async {
-        dataFotoDgp.value = await _getFotoDgpByDocumentoUseCase(documento: dataCensado.value.documento);
-
+        dataFotoDgp.value = await _getFotoDgpByDocumentoUseCase(documento: dataPerCenso.value.documentoCensado);
 
       },
     );
@@ -110,8 +135,8 @@ class CensistaController extends GetxController {
       String path = dotenv.env['PATH_IMG_APP_CENSO'] ?? '';
 
       String nameFile =
-          "Censo_${dataCensado.value.idGenProcesoCenso}_idPer_${dataCensado.value.idGenPersona}_idDgpPerCenso_" +
-          dataCensado.value.idDgpPerCenso.toString() +
+          "Censo_${dataPerCenso.value.idProceso}_C.C_${dataPerCenso.value.documentoCensado}_idDgpPerCenso_" +
+          dataPerCenso.value.idDgpPerCenso.toString() +
           "_";
       FileRequest request = FileRequest(
         file: mGaleryCameraModel.value!.imageFile,

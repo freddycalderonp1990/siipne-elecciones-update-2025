@@ -78,7 +78,7 @@ class CensistaPage extends GetView<CensistaController> {
       children: [
         Obx(
           () =>
-              controller.dataCensado.value.idDgpPerCenso > 0
+              controller.dataPerCenso.value.idDgpPerCenso > 0
                   ? ContenedorDesingWidget(
                     child: ExpansionTile(
                       collapsedIconColor: AppColors.colorAzul,
@@ -99,21 +99,21 @@ class CensistaPage extends GetView<CensistaController> {
                               TituloDetalleTextWidget(
                                 title: "Proceso: ",
                                 detalle:
-                                    controller.dataCensado.value.descProceso,
+                                    controller.dataPerCenso.value.proceso,
                               ),
                               TituloDetalleTextWidget(
                                 title: "Recinto: ",
                                 detalle:
-                                    controller.dataCensado.value.descRecinto,
+                                    controller.dataPerCenso.value.recintoAsignado,
                               ),
                               TituloDetalleTextWidget(
                                 title: "Mesa: ",
-                                detalle: controller.dataCensado.value.descMesa,
+                                detalle: controller.dataPerCenso.value.mesaAsignado,
                               ),
                               TituloDetalleTextWidget(
                                 title: "Censado: ",
                                 detalle:
-                                    "${controller.dataCensado.value.siglas} ${controller.dataCensado.value.apenom}",
+                                    "${controller.dataPerCenso.value.nameCensado}",
                               ),
                             ],
                           ),
@@ -130,7 +130,7 @@ class CensistaPage extends GetView<CensistaController> {
     );
 
     return Obx(
-      () => controller.dataCensado.value.idDgpPerCenso > 0 ? wg : Container(),
+      () => controller.dataPerCenso.value.idDgpPerCenso > 0 ? wg : Container(),
     );
   }
 
@@ -208,14 +208,14 @@ class CensistaPage extends GetView<CensistaController> {
           Material(
             child: InkWell(
               onTap: () async {
-                if (controller.dataCensado.value.estadoCenso != "iniciado") {
+                if (controller.dataPerCenso.value.estadoCenso != "iniciado") {
                   DialogosAwesome.getInformation(
                     descripcion:
                         "Para continuar, asegúrese de que se  haya completado el registro del formulario en el sistema SIIPNE 3W."
                         "\nSolo después podrá registrar la fotografía.",
                   );
-                  controller.dataCensado.value = DataCensado.empty();
-                  controller.dataCensadoList.clear();
+                  controller.dataPerCenso.value = DataPerCenso.empty();
+                  controller.dataPerCensoList.clear();
                   return;
                 }
 

@@ -23,28 +23,31 @@ void main() {
   final testRequest = GetDatosPersonaCensoRequest(
     idDgpPerCenso: 1,
     idGenUsuarioCensista: 1,
+    isCensoTodos: true
   );
 
   // Datos de prueba que el mock devolverá simulando una respuesta real
   final testData = [
-    DataCensado(
-      idGenProcesoCenso: 1,
-      descProceso: 'Proceso Test',
-      fechaIniProceso: '2025-08-01',
-      fechaFinProceso: '2025-08-02',
-      idDgpRecinto: 10,
-      descRecinto: 'Recinto Test',
-      idDgpMesa: 5,
-      descMesa: 'Mesa 1',
-      documento: '1234567890',
-      idGenPersona: 100,
-      siglas: 'SBTE',
-      apenom: 'Freddy Calderón',
-      idDgpPerCenso: 1,
-      censado: true,
-      estadoCenso: 'Activo',
-      fecha: '2025-08-01',
-    ),
+    DataPerCenso(idProceso: 1,
+        proceso: "PROCESO TEST",
+        recintoAsignado: "RECINTO 1",
+        idDgpMesaAsignado: 1,
+        mesaAsignado: "MESA 1",
+          idDgpPerCenso: 1,
+        lugarAsignacion: "QUITO",
+        nameCensistaAsignado: "Freddy Calderón",
+        recintoCenso: "RECINTO 1",
+        mesaCensado: "MESA 2",
+        lugarCenso: "MANTA",
+        nameCensista: "JORGE TUSA",
+        documentoCensado: "1234567890",
+        nameCensado: "JAIRO POZO",
+        censado: true,
+        estadoCenso: "finalizado",
+        fechaRegistroCenso: "2025-08-27 09:38:58",
+        latitudCenso: -0.1973285,
+        longitudCenso: -78.5114214,
+        descCausaNCs: "", obsNoCenso: ""),
   ];
 
 

@@ -5,7 +5,7 @@ class GetMesasByIdusuarioUseCase {
 
   GetMesasByIdusuarioUseCase({required this.repository});
 
-  Future<List<DataMesa>> call({
+  Future<DataMesaResponse> call({
     required GetMesasByIdusuarioRequest request,
   }) {
     return repository.getMesasByIdUsuario(request: request);
