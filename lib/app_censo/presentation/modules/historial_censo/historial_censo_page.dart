@@ -37,7 +37,7 @@ class HistorialCensoPage extends GetView<HistorialCensoController> {
                   index: index + 1,
                   onPressed: () {
 
-                    DownloadPdfCensoRequest request = DownloadPdfCensoRequest(idPerCensista: data.idGenPersona, idPerCensado: data.idDgpPerCenso);
+                    DownloadPdfCensoRequest request = DownloadPdfCensoRequest(idPerCensista: data.idPerCensista, idPerCensado: data.idPerCensado);
                     controller.descargarPdfCenso(request: request);
                   },
                 );

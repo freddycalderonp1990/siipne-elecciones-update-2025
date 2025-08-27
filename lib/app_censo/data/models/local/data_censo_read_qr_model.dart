@@ -10,6 +10,7 @@ String dataReadQrModelToJson(DataCensoReadQrModel data) =>
 class DataCensoReadQrModel {
   final int idProceso;
   final int idDgpRecinto;
+  final int idMesa;
   final double latitudMesa;
   final double longitudMesa;
   final int idGenPersonaCensado;
@@ -19,6 +20,7 @@ class DataCensoReadQrModel {
   DataCensoReadQrModel({
     required this.idProceso,
     required this.idDgpRecinto,
+    required this.idMesa,
     required this.latitudMesa,
     required this.longitudMesa,
     required this.idGenPersonaCensado,
@@ -27,6 +29,7 @@ class DataCensoReadQrModel {
   });
 
   factory DataCensoReadQrModel.empty() => DataCensoReadQrModel(
+    idMesa: 0,
     idProceso: 0,
     idDgpRecinto: 0,
     latitudMesa: 0,
@@ -41,11 +44,12 @@ class DataCensoReadQrModel {
     return DataCensoReadQrModel(
       idProceso: ParseModel.parseToInt(json[0]),
       idDgpRecinto: ParseModel.parseToInt(json[1]),
-      latitudMesa: ParseModel.parseToDouble(json[2]),
-      longitudMesa: ParseModel.parseToDouble(json[3]),
-      idGenPersonaCensado: ParseModel.parseToInt(json[4]),
-      idGenPersonaCensista: ParseModel.parseToInt(json[5]),
-      fecha: ParseModel.parseToString(json[6]),
+      idMesa:  ParseModel.parseToInt(json[2]),
+      latitudMesa: ParseModel.parseToDouble(json[3]),
+      longitudMesa: ParseModel.parseToDouble(json[4]),
+      idGenPersonaCensado: ParseModel.parseToInt(json[5]),
+      idGenPersonaCensista: ParseModel.parseToInt(json[6]),
+      fecha: ParseModel.parseToString(json[7]),
     );
   }
 
@@ -53,6 +57,7 @@ class DataCensoReadQrModel {
   List<dynamic> toJson() => [
     idProceso,
     idDgpRecinto,
+    idMesa,
     latitudMesa,
     longitudMesa,
     idGenPersonaCensado,

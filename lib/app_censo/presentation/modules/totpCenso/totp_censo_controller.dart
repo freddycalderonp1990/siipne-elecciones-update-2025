@@ -227,7 +227,9 @@ class TotpCensoController extends GetxController {
 
 
       String passCode =
-          "idGenPersonaCensado:${idGenPersonaUser}-idProceso:${data.idProceso}-idDgpRecinto:${data.idDgpRecinto}-idGenPersonaCensista:${data.idGenPersonaCensista}";
+          "idGenPersonaCensado:${idGenPersonaUser}-idProceso:${data.idProceso}-idDgpRecinto:${data.idDgpRecinto}-idMesa:${data.idMesa}-idGenPersonaCensista:${data.idGenPersonaCensista}";
+
+
 
       DateTime now = DateTime.now();
       DateTime fechaQr = DateTime.parse(data.fecha);

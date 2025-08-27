@@ -90,8 +90,8 @@ class MenuAppCensoController extends GetxController {
         );
       },
     );
-
     for (int i = 0; i < dataProcesos.length; i++) {
+
       DataProceso data = dataProcesos[i];
       bool finalizado = data.estadoCenso.toLowerCase() == "asignado";
 

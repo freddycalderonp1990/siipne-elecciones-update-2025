@@ -28,15 +28,21 @@ class DesingHistoryCensos extends StatelessWidget {
     Widget wg = Column(
       children: [
         TextSombrasWidget(title: "${i}"),
-        TituloDetalleTextWidget(title: "Proceso: ", detalle: data.descProceso),
-        TituloDetalleTextWidget(title: "Recinto: ", detalle: data.descRecinto),
-        TituloDetalleTextWidget(title: "Mesa: ", detalle: data.descMesa),
+        TituloDetalleTextWidget(title: "Proceso: ", detalle: data.proceso),
+        TituloDetalleTextWidget(title: "Recinto del Censo: ", detalle: data.recintoCenso),
+        TituloDetalleTextWidget(title: "Mesa del Censo: ", detalle: data.mesaCensado),
 
         censado
-            ? TituloDetalleTextWidget(
-              title: "Fecha Censo: ",
-              detalle: data.fechaRegistroCenso,
-            )
+            ? Column(children: [
+          TituloDetalleTextWidget(
+            title: "Censado Por: ",
+            detalle: data.nameCensista,
+          ),
+             TituloDetalleTextWidget(
+            title: "Fecha Censo: ",
+            detalle: data.fechaRegistroCenso,
+          )
+        ],)
             : SizedBox.shrink(),
         Row(
           children: [
