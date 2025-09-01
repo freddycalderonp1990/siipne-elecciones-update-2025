@@ -2,7 +2,6 @@ part of '../../../providers_impl.dart';
 
 class UrlApiProviderSiipneMovil {
 
-
   static Future<String> post(
       {String segmento = '',
         Object? body,
