@@ -6,6 +6,7 @@ class MenuAppCensoPage extends GetView<MenuAppCensoController> {
   @override
   Widget build(BuildContext context) {
     return WorkAreaPageCensoWidget(
+      showGps: true,
       mostrarBtnAtras: true,
       title: "MENÚ CENSO",
       contenido: getContenido(),

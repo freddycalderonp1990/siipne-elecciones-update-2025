@@ -213,23 +213,42 @@ class DeviceInfoApp {
     return detalle;
   }
 
-  static Future<String> get getIp async {
 
-    try{
+
+
+  static Future<String> get getIp async {
+    try {
       final info = NetworkInfo();
 
       String ipAddress = "0.0.0.0";
-      var wifiIP = await info.getWifiIP(); // 192.168.1.43
+      String fuente = "desconocida";
 
-      if (wifiIP != null) {
-        ipAddress = wifiIP.toString();
+      // Intentar obtener IP de Wi-Fi
+      String? wifiIP = await info.getWifiIP();
+      if (wifiIP != null && wifiIP.isNotEmpty) {
+        ipAddress = wifiIP;
+        fuente = "Wi-Fi";
+      } else {
+        // Si no hay Wi-Fi, buscar IP de la red celular
+        for (var interface in await NetworkInterface.list()) {
+          for (var addr in interface.addresses) {
+            if (addr.type == InternetAddressType.IPv4 &&
+                !addr.isLoopback &&
+                !addr.isLinkLocal) {
+              ipAddress = addr.address;
+              fuente = "Red móvil";
+              break;
+            }
+          }
+          if (ipAddress != "0.0.0.0") break;
+        }
       }
 
-      String plataforma = getPlataforma;
-      return plataforma + " IP: " + ipAddress;
+      String plataforma = getPlataforma; // tu método para detectar plataforma
+      return "$plataforma IP ($fuente): $ipAddress";
     } catch (e) {
       String plataforma = getPlataforma;
-      return plataforma + " IP: " + "no-ip-web";
+      return "$plataforma IP: no disponible";
     }
   }
 
