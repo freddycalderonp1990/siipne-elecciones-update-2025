@@ -39,7 +39,9 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
               future: wgCajasTexto(controller.selectTipoNovedad.value.descripcion),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator(); // Mientras carga
+                  return
+
+                    CargandoWidget(mostrar: true,color: Colors.transparent); // Mientras carga
                 } else if (snapshot.hasError) {
                   return Text('Error: ${snapshot.error}'); // En caso de error
                 } else {

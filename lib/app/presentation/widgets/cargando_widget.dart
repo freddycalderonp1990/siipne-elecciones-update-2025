@@ -3,8 +3,9 @@ part of 'custom_app_widgets.dart';
 class CargandoWidget extends StatefulWidget {
   final bool mostrar;
   final Color? color;
+  final String titulo;
 
-  const CargandoWidget({required this.mostrar, this.color=AppColors.colorAzul_40});
+  const CargandoWidget({required this.mostrar, this.color=AppColors.colorAzul_40,  this.titulo="Cargando"});
 
   @override
   _CargandoWidgetState createState() => _CargandoWidgetState();
@@ -53,6 +54,7 @@ class _CargandoWidgetState extends State<CargandoWidget> {
                 ),
 
                 TextoCargandoAnimado(
+                  titulo: widget.titulo,
                   style: TextStyle(
                     color: Colors.white,
                     shadows: [Shadow(color: Colors.black, offset: Offset(1, 1), blurRadius: 2)],
@@ -69,8 +71,9 @@ class _CargandoWidgetState extends State<CargandoWidget> {
 
 class TextoCargandoAnimado extends StatefulWidget {
   final TextStyle? style;
+  final String titulo;
 
-  const TextoCargandoAnimado({Key? key, this.style}) : super(key: key);
+  const TextoCargandoAnimado({Key? key, this.style, required this.titulo}) : super(key: key);
 
   @override
   _TextoCargandoAnimadoState createState() => _TextoCargandoAnimadoState();
@@ -101,7 +104,7 @@ class _TextoCargandoAnimadoState extends State<TextoCargandoAnimado> {
   Widget build(BuildContext context) {
     String dots = '.' * _dotCount;
     return Text(
-      'Cargando$dots',
+      '${widget.titulo}$dots',
       style: widget.style ?? TextStyle(color: Colors.white, fontSize: 18),
     );
   }

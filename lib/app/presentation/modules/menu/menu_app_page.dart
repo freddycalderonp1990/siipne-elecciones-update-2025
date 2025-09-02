@@ -6,7 +6,7 @@ class MenuAppPage extends GetView<MenuAppController> {
   @override
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
-      title: "MENÚ PRINCIPAL",
+      title: "MENÚ PRINCIPAL ",
       contenido: _getContenidoConRefresh(),
 
       peticionServer: controller.peticionServerState,

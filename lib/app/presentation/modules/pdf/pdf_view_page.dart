@@ -119,7 +119,7 @@ class PdfViewPage extends GetView<PdfViewController> {
               controller.errorMessage.value.isEmpty
                   ? !controller.isReady.value
                   ? Center(
-                child: CircularProgressIndicator(),
+                child: CargandoWidget(mostrar: true,color: Colors.transparent),
               )
                   : Container()
                   : Center(

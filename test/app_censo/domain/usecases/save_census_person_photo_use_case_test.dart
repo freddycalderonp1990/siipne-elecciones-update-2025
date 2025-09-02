@@ -22,11 +22,11 @@ void main() {
   // Creamos un objeto request con datos fijos para usar en el test
   final testRequest = UpdateFotoPerCensoRequest(
     idDgpPerCenso: 1,
-    idGenUsuario: 1,
+    idUsuarioCensista: 1,
     nameFotografia: "fotoCenso1.jpg",
     latitud: -0.196839,
     longitud: -78.5115531,
-    ip: "local ip",
+    ip: "local ip", gradoCensista: 'SBTE',
   );
 
   // Datos de prueba que el mock devolverá simulando una respuesta real

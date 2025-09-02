@@ -3,7 +3,7 @@ part of '../controllers.dart';
 class CensistaController extends GetxController {
   final loginController = Get.find<LoginController>();
   final SaveFileImgUseCase _saveFileImgUseCase = Get.find();
-  final GetFotoDgpByDocumentoUseCase _getFotoDgpByDocumentoUseCase= Get.find();
+  final GetFotoDgpByDocumentoUseCase _getFotoDgpByDocumentoUseCase = Get.find();
   final SaveCensusPersonPhotoUseCase _SaveCensusPersonPhotoUseCase = Get.find();
 
   final FetchCensusPersonDataUseCase getDatosPersonaCenso = Get.find();
@@ -11,7 +11,7 @@ class CensistaController extends GetxController {
   RxList<DataPerCenso> dataPerCensoList = <DataPerCenso>[].obs;
   Rx<DataPerCenso> dataPerCenso = DataPerCenso.empty().obs;
 
-  Rx<DataFoto> dataFotoDgp=DataFoto.empty().obs;
+  Rx<DataFoto> dataFotoDgp = DataFoto.empty().obs;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   var controllerCodigoCenso = new TextEditingController();
@@ -25,9 +25,9 @@ class CensistaController extends GetxController {
 
   int idDgpPerCenso = 0;
 
-  RxBool showBtnValidarFoto=false.obs;
+  RxBool showBtnValidarFoto = false.obs;
 
-  bool isCensoTodos=false;
+  bool isCensoTodos = false;
 
   @override
   void onInit() async {
@@ -50,19 +50,16 @@ class CensistaController extends GetxController {
     super.onClose();
   }
 
-
   getDataToPage() async {
     // Recibe los argumentos
     final arguments = Get.arguments as Map<String, dynamic>?;
 
     // Verifica que los argumentos no sean nulos y que contengan la clave 'data'
-    if (arguments != null &&
-        arguments.containsKey('isCensoTodos')) {
+    if (arguments != null && arguments.containsKey('isCensoTodos')) {
       try {
-        isCensoTodos = arguments['isCensoTodos']
-        as bool;
+        isCensoTodos = arguments['isCensoTodos'] as bool;
       } catch (e) {
-       // DialogosAwesome.getError(descripcion: "1 No existe datos valido para la mesa ");
+        // DialogosAwesome.getError(descripcion: "1 No existe datos valido para la mesa ");
       }
     } else {
       /*
@@ -95,14 +92,14 @@ class CensistaController extends GetxController {
         GetDatosPersonaCensoRequest request = GetDatosPersonaCensoRequest(
           idDgpPerCenso: idDgpPerCenso,
           idGenUsuarioCensista: user.idGenUsuario,
-          isCensoTodos: isCensoTodos
+          isCensoTodos: isCensoTodos,
         );
         dataPerCensoList.value = await getDatosPersonaCenso(request: request);
         dataPerCenso.value = dataPerCensoList[0];
         if (dataPerCenso.value.censado) {
-
           DialogosAwesome.getInformation(
-            descripcion: "${dataPerCenso.value.nameCensado}\n\nYA SE ENCUENTRA CENSADO",
+            descripcion:
+                "${dataPerCenso.value.nameCensado}\n\nYA SE ENCUENTRA CENSADO",
           );
           dataPerCensoList.clear();
           dataPerCenso.value = DataPerCenso.empty();
@@ -113,16 +110,15 @@ class CensistaController extends GetxController {
     peticionServerState(false);
   }
 
-
   Future<void> getFotoDgpByDocumento() async {
-
     peticionServerState(true);
 
     await ExceptionDialogos.manejarErroresShowDialogo(
       msjNoData: "No se encontro una fotografia que mostrar...",
-          () async {
-        dataFotoDgp.value = await _getFotoDgpByDocumentoUseCase(documento: dataPerCenso.value.documentoCensado);
-
+      () async {
+        dataFotoDgp.value = await _getFotoDgpByDocumentoUseCase(
+          documento: dataPerCenso.value.documentoCensado,
+        );
       },
     );
 
@@ -175,12 +171,13 @@ class CensistaController extends GetxController {
       LatLng position = await locationBloc.getCurrentPosition();
 
       UpdateFotoPerCensoRequest request = UpdateFotoPerCensoRequest(
-        idGenUsuario: user.idGenUsuario,
+        idUsuarioCensista: user.idGenUsuario,
         idDgpPerCenso: idDgpPerCenso,
         nameFotografia: dataFile.nameFile,
         latitud: position.latitude,
         longitud: position.longitude,
         ip: ip,
+        gradoCensista: user.gradoSiglas,
       );
 
       bool result = await _SaveCensusPersonPhotoUseCase(request: request);
@@ -193,21 +190,17 @@ class CensistaController extends GetxController {
 
       DialogosAwesome.getSucess(
         descripcion: "El censo ha finalizado correctamente.",
-        btnOkOnPress: (){
+        btnOkOnPress: () {
           Get.back();
-
-        }
-
-
+        },
       );
     });
 
     peticionServerState(false);
   }
 
-  validarFoto() async{
+  validarFoto() async {
     await getFotoDgpByDocumento();
-      showBtnValidarFoto.value = true;
-
+    showBtnValidarFoto.value = true;
   }
 }

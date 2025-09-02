@@ -37,8 +37,9 @@ class GpsAccessScreen extends StatelessWidget {
                     paddin: EdgeInsets.all(10),
                     child: Column(
                       children: [
-                        Text("Obteniendo Coordenadas Espere..."),
-                        CircularProgressIndicator(),
+
+
+                        CargandoWidget(mostrar: true,color: Colors.transparent,titulo: "Obteniendo Coordenadas Espere",),
                       ],
                     ),
                   ),

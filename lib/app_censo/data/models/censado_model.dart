@@ -38,12 +38,15 @@ class DataPerCenso {
   final String mesaAsignado;
   final int idDgpPerCenso;
   final String lugarAsignacion;
+  final String gradoCensistaAsignado;
   final String nameCensistaAsignado;
   final String recintoCenso;
   final String mesaCensado;
   final String lugarCenso;
+  final String gradoCensista;
   final String nameCensista;
   final String documentoCensado;
+  final String gradoCensado;
   final String nameCensado;
   final bool censado;
   final String estadoCenso;
@@ -53,7 +56,9 @@ class DataPerCenso {
   final String descCausaNCs;
   final String obsNoCenso;
 
-  DataPerCenso({
+  DataPerCenso( {
+    required this.gradoCensistaAsignado,required this.gradoCensista,required this.gradoCensado,
+
     required this.idProceso,
     required this.proceso,
     required this.recintoAsignado,
@@ -95,7 +100,7 @@ class DataPerCenso {
     latitudCenso: 0,
     longitudCenso: 0,
     descCausaNCs: "",
-    obsNoCenso: "",
+    obsNoCenso: "", gradoCensistaAsignado: '', gradoCensista: '', gradoCensado: '',
   );
   factory DataPerCenso.fromJson(Map<String, dynamic> json) => DataPerCenso(
     idProceso: ParseModel.parseToInt(json["idProceso"]),
@@ -120,7 +125,9 @@ class DataPerCenso {
     longitudCenso: ParseModel.parseToDouble(json["longitudCenso"]),
     descCausaNCs: ParseModel.parseToString(json["descCausaNCs"]),
     obsNoCenso: ParseModel.parseToString(json["obsNoCenso"]),
-
+    gradoCensistaAsignado: ParseModel.parseToString(json["gradoCensistaAsignado"]),
+    gradoCensista: ParseModel.parseToString(json["gradoCensista"]),
+    gradoCensado: ParseModel.parseToString(json["gradoCensado"]),
 
   );
 
