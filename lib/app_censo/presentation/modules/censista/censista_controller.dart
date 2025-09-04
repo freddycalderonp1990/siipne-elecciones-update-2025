@@ -31,7 +31,6 @@ class CensistaController extends GetxController {
 
   @override
   void onInit() async {
-    controllerCodigoCenso.text = "93498";
     user = loginController.user.value;
     super.onInit();
   }

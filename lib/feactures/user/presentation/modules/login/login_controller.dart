@@ -34,8 +34,7 @@ class LoginController extends GetxController {
 
   @override
   void onReady() {
-    controllerUser.text="cpfn1206762401";
-    controllerPass.text="1206762401";
+
     _init();
     verificarCredenciales();
     super.onReady();

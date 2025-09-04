@@ -12,14 +12,16 @@ class DesingHistoryCensos extends StatelessWidget {
 
   final VoidCallback onPressed;
 
-
-  const DesingHistoryCensos({super.key, required this.data, required this.index, required this.onPressed, });
+  const DesingHistoryCensos({
+    super.key,
+    required this.data,
+    required this.index,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
-
-    return _getDesingHistorialCenso(data: data,i: index);
-
+    return _getDesingHistorialCenso(data: data, i: index);
   }
 
   _getDesingHistorialCenso({required DataHistoryCenso data, required int i}) {
@@ -29,20 +31,28 @@ class DesingHistoryCensos extends StatelessWidget {
       children: [
         TextSombrasWidget(title: "${i}"),
         TituloDetalleTextWidget(title: "Proceso: ", detalle: data.proceso),
-        TituloDetalleTextWidget(title: "Recinto del Censo: ", detalle: data.recintoCenso),
-        TituloDetalleTextWidget(title: "Mesa del Censo: ", detalle: data.mesaCensado),
+        TituloDetalleTextWidget(
+          title: "Recinto del Censo: ",
+          detalle: data.recintoCenso,
+        ),
+        TituloDetalleTextWidget(
+          title: "Mesa del Censo: ",
+          detalle: data.mesaCensado,
+        ),
 
         censado
-            ? Column(children: [
-          TituloDetalleTextWidget(
-            title: "Censado Por: ",
-            detalle: data.nameCensista,
-          ),
-             TituloDetalleTextWidget(
-            title: "Fecha Censo: ",
-            detalle: data.fechaRegistroCenso,
-          )
-        ],)
+            ? Column(
+              children: [
+                TituloDetalleTextWidget(
+                  title: "Censado Por: ",
+                  detalle: data.nameCensista,
+                ),
+                TituloDetalleTextWidget(
+                  title: "Fecha Censo: ",
+                  detalle: data.fechaRegistroCenso,
+                ),
+              ],
+            )
             : SizedBox.shrink(),
         Row(
           children: [

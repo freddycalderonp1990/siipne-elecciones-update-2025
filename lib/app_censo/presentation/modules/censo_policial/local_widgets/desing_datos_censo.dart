@@ -41,7 +41,7 @@ class DesingDatosCenso extends StatelessWidget {
           TextSombrasWidget(
             colorTexto: AppColors.colorPlomo,
             title:
-                "Ha sido designado con la siguiente información. Por favor, verifique los datos y continúe con el censo.",
+                "Por favor, verifique los datos y continúe con el censo.",
           ),
 
           Flexible(child: wg),
