@@ -26,7 +26,7 @@ void main() {
     nameFotografia: "fotoCenso1.jpg",
     latitud: -0.196839,
     longitud: -78.5115531,
-    ip: "local ip", gradoCensista: 'SBTE',
+    ip: "local ip", gradoCensista: 'SBTE', idUsuarioCensado: 1,
   );
 
   // Datos de prueba que el mock devolverá simulando una respuesta real

@@ -8,9 +8,10 @@ class UpdateFotoPerCensoRequest {
   final double longitud;
   final String ip;
   final int idUsuarioCensista;
+  final int idUsuarioCensado;
   final String gradoCensista;
 
-  UpdateFotoPerCensoRequest({
+  UpdateFotoPerCensoRequest( {
 
     required this.idDgpPerCenso,
     required this.idUsuarioCensista,
@@ -18,7 +19,8 @@ class UpdateFotoPerCensoRequest {
     required this.latitud,
     required this.longitud,
     required this.ip,
-    required this.gradoCensista
+    required this.gradoCensista,
+    required this.idUsuarioCensado,
   });
 
   Map<String, dynamic> toJson() {
@@ -30,6 +32,7 @@ class UpdateFotoPerCensoRequest {
       "ip": ip,
       "idUsuarioCensista": idUsuarioCensista,
       "gradoCensista": gradoCensista,
+      "idUsuarioCensado": idUsuarioCensado,
     };
   }
 }

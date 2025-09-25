@@ -31,9 +31,10 @@ class AppConfig {
 
 
   static var AmbienteUrl=ApiConfig.AmbienteUrl;
+  static final AmbienteUrlAnterior=AmbienteUrl;
 
   static const int intentosFallidosLogin=3;
-  static final AmbienteUrlAnterior=AmbienteUrl;
+
 
 
   static  String linkAppAndroid =dotenv.env['LINK_APP_SIIPNE_ELECCIONES_ANDROID'] ??

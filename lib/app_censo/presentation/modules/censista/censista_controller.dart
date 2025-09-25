@@ -163,6 +163,12 @@ class CensistaController extends GetxController {
     }
 
     peticionServerState(true);
+    if (dataPerCenso.value.idGenUsuarioCensado == 0) {
+      DialogosAwesome.getWarning(
+        descripcion: "El usuario del censado no puedo ser 0",
+      );
+      return;
+    }
 
     await ExceptionDialogos.manejarErroresShowDialogo(() async {
       String ip = await DeviceInfoApp.getIp;
@@ -170,8 +176,9 @@ class CensistaController extends GetxController {
       LatLng position = await locationBloc.getCurrentPosition();
 
       UpdateFotoPerCensoRequest request = UpdateFotoPerCensoRequest(
+        idUsuarioCensado: dataPerCenso.value.idGenUsuarioCensado,
         idUsuarioCensista: user.idGenUsuario,
-        idDgpPerCenso: idDgpPerCenso,
+        idDgpPerCenso: dataPerCenso.value.idDgpPerCenso,
         nameFotografia: dataFile.nameFile,
         latitud: position.latitude,
         longitud: position.longitude,
