@@ -47,6 +47,7 @@ void main() {
         fechaRegistroCenso: "2025-08-27 09:38:58",
         latitudCenso: -0.1973285,
         longitudCenso: -78.5114214,
+        idGenUsuarioCensado: 1,
         descCausaNCs: "", obsNoCenso: "", gradoCensistaAsignado: '', gradoCensista: '', gradoCensado: ''),
   ];
 
