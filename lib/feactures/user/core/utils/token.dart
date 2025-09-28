@@ -1,5 +1,7 @@
 
 import 'dart:convert';
+
+import 'package:api_provider/core/utils/parse_model.dart';
 class TokenUtil{
 
 
@@ -16,7 +18,9 @@ class TokenUtil{
       String normalized = base64.normalize(payload);
       final payloadMap = json.decode(utf8.decode(base64Url.decode(normalized)));
 
-      return payloadMap['data']?['idGenUsuario'];
+      print("payload es ${payloadMap['data']['idGenUsuario']}");
+
+      return ParseModel.parseToInt(payloadMap['data']?['idGenUsuario']);
     } catch (e) {
       print('Error al decodificar el token: $e');
       return 0;

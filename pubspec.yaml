@@ -89,7 +89,10 @@ dependencies:
   syncfusion_flutter_gauges: ^28.2.5 #Diseño de clave digital
 
   api_provider:
-    path: /Users/policianacional/AndroidStudioProjects/paquete_api_provider  # trae http y  path_provider:
+    git:
+      url: https://github.com/freddycalderonp1990/paquete_api_provider.git
+      ref: v1.0.2 # Usa el tag o branch deseado
+
 
   app_mi_upc:
     git:

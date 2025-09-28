@@ -94,6 +94,7 @@ class LoginController extends GetxController {
 
     int idGenUsuario = TokenUtil.extractIdGenUsuario(dataAuth.token);
 
+
     //consultamos los datos del usuario
     userResponse = await getDataUserUseCase(
       token: dataAuth.token,
