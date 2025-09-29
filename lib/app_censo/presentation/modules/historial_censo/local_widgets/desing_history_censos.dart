@@ -27,6 +27,7 @@ class DesingHistoryCensos extends StatelessWidget {
   _getDesingHistorialCenso({required DataHistoryCenso data, required int i}) {
     bool censado = data.estadoCenso.toUpperCase() == "FINALIZADO";
 
+
     Widget wg = Column(
       children: [
         TextSombrasWidget(title: "${i}"),
@@ -60,7 +61,7 @@ class DesingHistoryCensos extends StatelessWidget {
               flex: 3,
               child: TituloDetalleTextWidget(
                 title: "Censado: ",
-                detalle: censado ? "SI" : "NO",
+                detalle: data.censado ? "SI" : "NO",
               ),
             ),
             censado
