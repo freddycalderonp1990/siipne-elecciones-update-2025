@@ -168,6 +168,9 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
                         ],
                       ),
                     ),
+                    SizedBox(
+                      height: MediaQuery.of(context).padding.bottom,
+                    ),
                   ],
                 ),
 

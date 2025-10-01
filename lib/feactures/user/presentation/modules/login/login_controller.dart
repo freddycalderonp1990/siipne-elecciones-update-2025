@@ -299,18 +299,20 @@ class LoginController extends GetxController {
     print("_pass  ${_pass}=${passTestApp}");
 
     if (user == userTestApp && _pass == passTestApp) {
-      AppConfig.AmbienteUrl = Ambiente.TEST;
+      ApiConfig.AmbienteUrl = Ambiente.TEST;
 
       AppConfig.isUserGoogleOrIos = true;
+      print("es usuario de google ${ApiConfig.AmbienteUrl}");
       return true;
     }
 
-    AppConfig.AmbienteUrl = AppConfig.AmbienteUrlAnterior;
-    print("aquiii ${AppConfig.AmbienteUrlAnterior}");
+    ApiConfig.AmbienteUrl = ApiConfig.AmbienteUrlAnterior;
+    print("aquiii ${ApiConfig.AmbienteUrlAnterior}");
     AppConfig.isUserGoogleOrIos = false;
 
     return false;
   }
+
 
   Future<bool> verificarUserTestAppSeguridades({
     required String user,
@@ -322,7 +324,7 @@ class LoginController extends GetxController {
         dotenv.env['PASS_TEST_SEGURIDADES_APP'] ?? 'policiaecuador';
 
     if (user == userTestApp && pass == passTestApp) {
-      AppConfig.AmbienteUrl = Ambiente.PROD;
+      ApiConfig.AmbienteUrl = Ambiente.PROD;
 
       return true;
     }

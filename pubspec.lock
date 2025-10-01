@@ -20,11 +20,9 @@ packages:
   api_provider:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "v1.0.2"
-      resolved-ref: "5c6f21d753779b1cfc6887c7cf2ff99a4fb3bb69"
-      url: "https://github.com/freddycalderonp1990/paquete_api_provider.git"
-    source: git
+      path: "/Users/policianacional/AndroidStudioProjects/paquete_api_provider"
+      relative: false
+    source: path
     version: "0.0.1"
   app_mi_upc:
     dependency: "direct main"

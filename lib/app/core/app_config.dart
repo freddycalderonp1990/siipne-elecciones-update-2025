@@ -21,6 +21,7 @@ class AppConfig {
   static init(){
 
     ApiConfig.AmbienteUrl=ApiConfig.setAmbiente( ambiente: dotenv.env['AMBIENTE']??'DEV');
+    ApiConfig.AmbienteUrlAnterior=ApiConfig.AmbienteUrl;
 
   }
 
@@ -30,8 +31,8 @@ class AppConfig {
   static const String showPageBeforeLogin= AppRoutes.MENU_APP;
 
 
-  static var AmbienteUrl=ApiConfig.AmbienteUrl;
-  static final AmbienteUrlAnterior=AmbienteUrl;
+ // static var AmbienteUrl=ApiConfig.AmbienteUrl;
+
 
   static const int intentosFallidosLogin=3;
 

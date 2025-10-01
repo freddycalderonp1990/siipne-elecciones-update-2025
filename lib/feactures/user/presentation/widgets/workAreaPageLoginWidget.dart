@@ -99,10 +99,17 @@ class _WorkAreaPageLoginWidgetState extends State<WorkAreaPageLoginWidget> {
                                     widget.contenido != null
                                         ? widget.contenido
                                         : Container(),
+
+
+
                                   ],
                                 ),
                               ),
                             ))),
+
+                    SizedBox(
+                      height: MediaQuery.of(context).padding.bottom,
+                    ),
                   ],
                 ),
                 Obx(
