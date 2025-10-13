@@ -1,8 +1,11 @@
 part of '../../controllers.dart';
 
 class AddNovedadesController extends GetxController {
-  final idNovedadBoletaCaptura =
+  final idNovedadBoletaCaptura1 =
       15; //id de la base de datos que tiene registrado como Boleta de captura
+
+  final idNovedadFlagrancia1=
+  108; //id de la base de datos que tiene registrado como Boleta de captura
 
   final loginController = Get.find<LoginController>();
 

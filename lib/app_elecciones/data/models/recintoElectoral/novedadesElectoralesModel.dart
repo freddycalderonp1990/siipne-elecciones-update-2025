@@ -38,17 +38,20 @@ class NovedadesElectorale {
     required this.dgoIdDgoNovedadesElect,
     required this.descripcion,
     required this.idGenEstado,
+    required this.tieneHijos
   });
 
   int idDgoNovedadesElect;
   int dgoIdDgoNovedadesElect;
   String descripcion;
   int idGenEstado;
+  bool tieneHijos;
 
   factory NovedadesElectorale.empty() => NovedadesElectorale(
       idDgoNovedadesElect: 0,
       dgoIdDgoNovedadesElect: 0,
       descripcion: "",
+      tieneHijos: false,
       idGenEstado: 0);
   factory NovedadesElectorale.fromJson(Map<String, dynamic> json) =>
       NovedadesElectorale(
@@ -57,6 +60,7 @@ class NovedadesElectorale {
             ParseModel.parseToInt(json["dgo_idDgoNovedadesElect"]),
         descripcion: ParseModel.parseToString(json["descripcion"]),
         idGenEstado: ParseModel.parseToInt(json["idGenEstado"]),
+        tieneHijos: ParseModel.parseToBool(json["tieneHijos"],valueCompareTrue: 'SI'),
       );
 
   Map<String, dynamic> toJson() => {

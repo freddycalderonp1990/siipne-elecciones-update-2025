@@ -1,5 +1,7 @@
 # siipnemovil2
 
+actualiza las librerias
+flutter pub upgrade --major-versions
 
 
 Flutter 3.29.2 • channel stable • https://github.com/flutter/flutter.git

@@ -13,16 +13,13 @@ import 'package:siipnemovil2/app_censo/domain/usecases/censo_use_cases.dart';
 // Creamos una clase Mock que simula el repositorio real
 // Esto nos permite controlar qué devuelve sin usar la implementación real
 class MockCensoRepository extends Mock implements CensoRepository {}
-
 void main() {
   // Declaramos variables para el caso de uso y el mock del repositorio
   late FetchActiveProcessesByCensusPersonUseCase useCase;
   late MockCensoRepository mockRepository;
 
   // Creamos un objeto request con datos fijos para usar en el test
-  final testRequest = GetDatosProcesosActivosRequest(
-       idGenPersonaCensado: 1,
-  );
+  final testRequest = GetDatosProcesosActivosRequest(idGenPersonaCensado: 1);
 
   // Datos de prueba que el mock devolverá simulando una respuesta real
   final testData = [
@@ -46,26 +43,27 @@ void main() {
     ),
   ];
 
-
-
-
   // Configuramos esta función para que se ejecute antes de cada test
   setUp(() {
     // Inicializamos un nuevo mock del repositorio antes de cada test
     mockRepository = MockCensoRepository();
 
     // Creamos el caso de uso inyectando el mock (inyección de dependencias)
-    useCase = FetchActiveProcessesByCensusPersonUseCase(repository: mockRepository);
+    useCase = FetchActiveProcessesByCensusPersonUseCase(
+      repository: mockRepository,
+    );
   });
 
-  group('Use Case datos Procesos Activos Por Censado', ()
-  {
+  group('Use Case datos Procesos Activos Por Censado', () {
     // Definimos un test con una descripción clara
     test('retorna lista de DataCensado desde el repositorio', () async {
       // Configuramos el mock para que, cuando se llame con testRequest,
       // devuelva la lista testData simulando una respuesta async
-      when(() => mockRepository.getDatosProcesosActivosByCensado(request: testRequest))
-          .thenAnswer((_) async => testData);
+      when(
+        () => mockRepository.getDatosProcesosActivosByCensado(
+          request: testRequest,
+        ),
+      ).thenAnswer((_) async => testData);
 
       // Ejecutamos el caso de uso con el request de prueba
       final result = await useCase.call(request: testRequest);
@@ -75,8 +73,11 @@ void main() {
 
       // Verificamos que el método del repositorio se haya llamado exactamente una vez
       // con el request esperado
-      verify(() => mockRepository.getDatosProcesosActivosByCensado(request: testRequest))
-          .called(1);
+      verify(
+        () => mockRepository.getDatosProcesosActivosByCensado(
+          request: testRequest,
+        ),
+      ).called(1);
     });
   });
 }

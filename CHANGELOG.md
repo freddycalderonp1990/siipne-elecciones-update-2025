@@ -101,3 +101,9 @@
   String namePdf="miPdf"
 
   }),
+
+## [2.0.0] – Elecciones 2025 – Consulta Popular Vuelta (init-13-octubre-2025)
+
+### 🎨 Modificacion de Sql para saber si las novedades tienen registrado hijos
+
+- 

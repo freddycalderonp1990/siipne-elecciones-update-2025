@@ -7,7 +7,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
       mostrarBtnAtras: true,
-      title: "REGISTRAR NOVEDADES",
+      title: "REGISTRAR NOVEDADES2",
       showGps: true,
       contenido: getContenido(),
       peticionServer: controller.peticionServerState,
@@ -142,7 +142,6 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
       paddin: EdgeInsets.all(5),
       child: Obx(()=>ComboBusqueda(
         selectValue: controller.selectTipoNovedad.value,
-
         showClearButton: false,
         datos: controller.listTipoNovedades,
         displayField:
@@ -152,10 +151,8 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
           controller.selectTipoNovedad.value = NovedadesElectorale.empty();
           controller.selectNovedad.value = NovedadesElectorale.empty();
           controller.selectDelito.value = NovedadesElectorale.empty();
-
           if (value != null) {
             controller.selectTipoNovedad.value = value;
-
             controller.getNovedadesHijas(value.idDgoNovedadesElect);
             return;
           }
@@ -189,12 +186,17 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
                     if (value != null) {
                       controller.selectNovedad.value = value;
 
-                      if (controller.idNovedadBoletaCaptura ==
-                          value.idDgoNovedadesElect) {
+
+
+                      if (value.tieneHijos) {
+
                         controller.getNovedadesDelito(
                           value.idDgoNovedadesElect,
                         );
-                      } else if (controller
+                      }
+
+
+                      else if (controller
                               .selectNovedad
                               .value
                               .idDgoNovedadesElect >
@@ -214,20 +216,17 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
   Widget getComboDelito() {
     return Obx(
       () =>
-          controller.selectNovedad.value.idDgoNovedadesElect > 0 &&
-                  controller.idNovedadBoletaCaptura ==
-                      controller.selectNovedad.value.idDgoNovedadesElect
+          controller.selectNovedad.value.idDgoNovedadesElect > 0 && controller.selectNovedad.value.tieneHijos
               ? ContenedorDesingWidget(
                 paddin: EdgeInsets.all(5),
                 child: ComboBusqueda(
                   selectValue: controller.selectDelito.value,
-
                   showClearButton: false,
                   datos: controller.listDelito,
                   displayField:
                       (item) =>
                           item.descripcion, // Aquí decides mostrar "nombres"
-                  searchHint: "Delito",
+                  searchHint:  controller.selectNovedad.value.descripcion,
                   complete: (value) {
                     controller.selectDelito.value = NovedadesElectorale.empty();
                     controller.mostrarBtnGuardar(false);
