@@ -19,16 +19,18 @@ class AnexarsePage extends GetView<AnexarseController> {
     String Bienvenido =
         controller.user.sexo == 'HOMBRE' ? "BIENVENIDO: " : "BIENVENIDA: ";
 
-    return SingleChildScrollView(child: Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SizedBox(height: 10),
-        wgConsultarRecinto(),
-        SizedBox(height: 10),
-        wgDatosRecinto(),
-      ],
-    ),);
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(height: 10),
+          wgConsultarRecinto(),
+          SizedBox(height: 10),
+          wgDatosRecinto(),
+        ],
+      ),
+    );
   }
 
   Widget wgDatosRecinto() {
@@ -79,12 +81,9 @@ class AnexarsePage extends GetView<AnexarseController> {
                   : Container(),
         ),
 
-        Obx(
-          () =>
-              controller.datosEncargado.value.idDgoTipoEje == 1
-                  ? getDesingCombosPolicial()
-                  : getComboInstalacionesUnidadesPoliciales(),
-        ),
+
+                   getComboInstalacionesUnidadesPoliciales(),
+
         SizedBox(height: 10),
         btnRegistrar(),
       ],
@@ -154,6 +153,7 @@ class AnexarsePage extends GetView<AnexarseController> {
   }
 
   Widget getComboInstalacionesUnidadesPoliciales() {
+    final responsive = ResponsiveUtil();
     return ContenedorDesingWidget(
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 10),
@@ -166,7 +166,7 @@ class AnexarsePage extends GetView<AnexarseController> {
                     "Seleccione la Unidad a la que pertenece el Servidor Policial ",
                 textAlign: TextAlign.center,
               ),
-              getComboEjesUnidadesPolicialesOnly(),
+              getCombosDinamicos(responsive),
             ],
           ),
         ),
@@ -174,37 +174,10 @@ class AnexarsePage extends GetView<AnexarseController> {
     );
   }
 
-  Widget getComboEjesUnidadesPolicialesOnly() {
-    return ContenedorDesingWidget(
-      paddin: EdgeInsets.all(5),
-
-      child: ComboBusqueda(
-        selectValue: controller.selectUnidadPolicial.value,
-        
-        showClearButton: false,
-        datos: controller.listUnidadesPoliciales,
-        displayField: (item) => item.ejePadre, // Aquí decides mostrar "nombres"
-        searchHint: "Unidad Policial",
-        complete: (value) {
-          controller.selectUnidadPolicial.value = DatosUnidadesId.empty();
-          controller.select_save_IdDgoTipoEje.value=0;
-
-          if (value != null) {
-            controller.selectUnidadPolicial.value = value;
-            controller.select_save_IdDgoTipoEje.value=value.idDgoTipoEje;
-            return;
-          }
-        },
-        textSeleccioneUndato: "Seleccione una Unidad",
-      ),
-    );
-  }
-
   Widget btnRegistrar() {
     return Obx(
       () =>
-          controller.select_save_IdDgoTipoEje.value > 0
-
+          controller.dynamicComboUnidadesPoliciales.showBtnGuardar == true
               ? BtnIconWidget(
                 icon: Icons.open_in_browser_outlined,
                 titulo: "REGISTRAR",
@@ -214,148 +187,12 @@ class AnexarsePage extends GetView<AnexarseController> {
     );
   }
 
-  Widget getDesingCombosPolicial() {
-    final responsive = ResponsiveUtil();
-    return Obx(
-      () =>
-          controller.datosEncargado.value.idDgoTipoEje > 0
-              ? ContenedorDesingWidget(
-                paddin: EdgeInsets.all(5),
-                child: Column(
-                  children: [
-                    getComboSubsistema(),
-                    SizedBox(height: responsive.altoP(0.4)),
-                    getComboDireccionesPoliciales(),
-                    SizedBox(height: responsive.altoP(0.4)),
-                    getComboEjesUnidadesPoliciales(),
-                  ],
-                ),
-              )
-              : Container(),
+  Widget getCombosDinamicos(ResponsiveUtil responsive) {
+    return DynamicComboWidget(
+      controller: controller.dynamicComboUnidadesPoliciales,
+      responsive: responsive,
     );
   }
 
-  Widget getComboSubsistema() {
-    return ComboBusqueda(
-      selectValue: controller.comboDependienteController.selectSubsistema.value,
-      
-      showClearButton: false,
-      datos: controller.comboDependienteController.listSubsistema,
-      displayField:
-          (item) => item.descripcion, // Aquí decides mostrar "nombres"
-      searchHint: "Subsistema",
-      complete: (value) {
-        controller.comboDependienteController.selectSubsistema.value =
-            UnidadesPoliciale.empty();
-        controller.comboDependienteController.selectDireccionPoliciales.value =
-            UnidadesPoliciale.empty();
-        controller.comboDependienteController.selectUnidadPolicial.value =
-            UnidadesPoliciale.empty();
 
-        if (value != null) {
-          controller.comboDependienteController.selectSubsistema.value = value;
-
-          controller.getEjesDireccionesPoliciales(value.idDgoTipoEje);
-          return;
-        }
-      },
-      textSeleccioneUndato: "Seleccione un Subsistema",
-    );
-  }
-
-  Widget getComboDireccionesPoliciales() {
-    return Obx(
-      () =>
-          controller
-                      .comboDependienteController
-                      .selectSubsistema
-                      .value
-                      .idDgoTipoEje >
-                  0
-              ? ComboBusqueda(
-                selectValue:
-                    controller
-                        .comboDependienteController
-                        .selectDireccionPoliciales
-                        .value,
-                
-                showClearButton: false,
-                datos:
-                    controller
-                        .comboDependienteController
-                        .listDireccionesPoliciales,
-                displayField:
-                    (item) =>
-                        item.descripcion, // Aquí decides mostrar "nombres"
-                searchHint: "Dirección",
-                complete: (value) {
-                  controller
-                      .comboDependienteController
-                      .selectDireccionPoliciales
-                      .value = UnidadesPoliciale.empty();
-                  controller
-                      .comboDependienteController
-                      .selectUnidadPolicial
-                      .value = UnidadesPoliciale.empty();
-                  if (value != null) {
-                    controller.getEjesUnidadesPoliciales(value.idDgoTipoEje);
-                    controller
-                        .comboDependienteController
-                        .selectDireccionPoliciales
-                        .value = value;
-                    return;
-                  }
-                },
-                textSeleccioneUndato: "Seleccione una Dirección",
-              )
-              : Container(),
-    );
-  }
-
-  Widget getComboEjesUnidadesPoliciales() {
-    return Obx(
-      () =>
-          controller
-                      .comboDependienteController
-                      .selectDireccionPoliciales
-                      .value
-                      .idDgoTipoEje >
-                  0
-              ? ComboBusqueda(
-                selectValue:
-                    controller
-                        .comboDependienteController
-                        .selectUnidadPolicial
-                        .value,
-                
-                showClearButton: false,
-                datos:
-                    controller
-                        .comboDependienteController
-                        .listUnidadesPoliciales,
-                displayField:
-                    (item) =>
-                        item.descripcion, // Aquí decides mostrar "nombres"
-                searchHint: "Unidad Policial",
-                complete: (value) {
-                  controller
-                      .comboDependienteController
-                      .selectUnidadPolicial
-                      .value = UnidadesPoliciale.empty();
-                  controller.select_save_IdDgoTipoEje.value=0;
-                  if (value != null) {
-                    controller
-                        .comboDependienteController
-                        .selectUnidadPolicial
-                        .value = value;
-
-                    controller.select_save_IdDgoTipoEje.value=value.idDgoTipoEje;
-                    return;
-                  }
-                },
-                textSeleccioneUndato: "Seleccione una Unidad",
-              )
-              : Container(),
-    );
-  }
 }

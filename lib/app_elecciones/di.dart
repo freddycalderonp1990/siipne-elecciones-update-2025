@@ -32,7 +32,6 @@ class DependencyInjectionSiipneElecciones extends Bindings{
 
 
 
-    Get.lazyPut<ComboDependienteController> (() => ComboDependienteController(), fenix: true);
 
 
 

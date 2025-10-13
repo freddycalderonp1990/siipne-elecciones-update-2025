@@ -2,163 +2,112 @@ part of '../../controllers.dart';
 
 class CrearCodigoRecintosController extends GetxController {
   final loginController = Get.find<LoginController>();
-
-
-  final comboDependienteController=Get.find<ComboDependienteController>();
-
-  final selectProcesoOperativoController =
-      Get.find<SelectProcesoOperativoController>();
+  final selectProcesoOperativoController = Get.find<SelectProcesoOperativoController>();
 
   final EleccionesRecintosApiImpl _eleccionesRecintosApiImpl =
-      Get.find<EleccionesRecintosApiImpl>();
+  Get.find<EleccionesRecintosApiImpl>();
 
-  final EleccionesTipoEjesApiImpl _eleccionesTipoEjesApiImpl =
-      Get.find<EleccionesTipoEjesApiImpl>();
-
+  final dynamicComboUnidadesPoliciales = Get.put(DynamicComboController());
 
 
+
+  late UserEntities user;
+  RxBool peticionServerState = false.obs;
+  RxBool cargaInicial = false.obs;
+
+  /// 🟦 Datos base
   RxList<RecintosElectoral> listRecintosElectorales = <RecintosElectoral>[].obs;
   Rx<RecintosElectoral> selectRecintosElectoral = RecintosElectoral().obs;
 
-  late UserEntities user;
-  RxBool cargaInicial = false.obs;
 
-  RxBool peticionServerState = false.obs;
 
-  var controllerTelefono = new TextEditingController();
+
+
+
+  var controllerTelefono = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
   @override
   void onInit() async {
     user = loginController.user.value;
 
+    await dynamicComboUnidadesPoliciales.init(idGenUsuario: user.idGenUsuario);
+
+    // 👇 sincroniza el RxBool externo
+    dynamicComboUnidadesPoliciales.peticionServerStateExterna = peticionServerState;
+    getDatos();
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    // TODO: Donde la vista ya se presento
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    // TODO: implement onClose
-    super.onClose();
-  }
-
-  Future<void> getRecintosElectorales() async {
-    // peticionServerState(true);
-    cargaInicial.value = true;
-
-    await ExceptionDialogos.manejarErroresShowDialogo(() async {
-      final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
-      LatLng position = await locationBloc.getCurrentPosition();
-
-      //le asigno 1 porque es el id que le corresponde a recintos electorales
-      //para solo mostrar los recintos electorales
-      int idDgoTipoEje = 1;
-
-      RecintoCercanosRequest request = RecintoCercanosRequest(
-          latitud: position.latitude,
-          longitud: position.longitude,
-          idDgoProcElec: selectProcesoOperativoController
-              .selectProcesosOperativo.value.idDgoProcElec,
-          idDgoTipoEje: idDgoTipoEje);
-
-      listRecintosElectorales.value = await _eleccionesRecintosApiImpl
-          .getRecintosElectoralesCercanos(request: request);
-
-      if (listRecintosElectorales.length == 0) {
-        DialogosAwesome.getInformation(
-            descripcion: "No existen Recintos Electorales Cercanos");
-        return;
-      }
-    });
-
-    // peticionServerState(false);
-  }
-
-  Future<void> getSubsistemas() async {
-
-   await comboDependienteController.getSubsistemas(idGenUsuario: user.idGenUsuario);
-
-  }
-
-  Future<void> getEjesDireccionesPoliciales(int idDgoTipoEje) async {
-    peticionServerState(true);
-    await  comboDependienteController.getEjesDireccionesPoliciales(idDgoTipoEje: idDgoTipoEje, idGenUsuario:user. idGenUsuario);
-    peticionServerState(false);
-  }
-
-  Future<void> getEjesUnidadesPoliciales(int idDgoTipoEje) async {
-    peticionServerState(true);
-   await comboDependienteController.getEjesUnidadesPoliciales(idDgoTipoEje: idDgoTipoEje, idGenUsuario:user. idGenUsuario);
-   peticionServerState(false);
-  }
-
+  // 🔹 Cargar datos iniciales
   Future<void> getDatos() async {
     peticionServerState(true);
-    List<dynamic> resultados = await Future.wait([
+    await Future.wait([
       getRecintosElectorales(),
-      getSubsistemas(),
+
     ]);
     peticionServerState(false);
   }
 
-  msjCrearCodigo({required VoidCallback onPressed}) {
-    bool isValid = formKey.currentState!.validate();
-    if (!isValid) return;
+  Future<void> getRecintosElectorales() async {
+    cargaInicial.value = true;
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
+      final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
+      LatLng pos = await locationBloc.getCurrentPosition();
 
-    String recinto=selectRecintosElectoral.value.nomRecintoElecOnly;
-
-    String  msj="¿Usted va a generar el código para el recinto electoral ${recinto}?"
-    "\n\nAsegúrese de estar de servicio en este recinto y de ser la persona encargada o la persona designada como jefe/a."
-        "\n\n Utilice la aplicación con responsabilidad, ya que toda actividad sera registrada y auditada."
-        "\n\n¿Desea Continuar?";
-
-    DialogosAwesome.getWarningSiNo(
-        title: "Crear Código", btnOkOnPress: onPressed, descripcion: msj);
+      RecintoCercanosRequest req = RecintoCercanosRequest(
+        latitud: pos.latitude,
+        longitud: pos.longitude,
+        idDgoProcElec:
+        selectProcesoOperativoController.selectProcesosOperativo.value.idDgoProcElec,
+        idDgoTipoEje: 1,
+      );
+      listRecintosElectorales.value =
+      await _eleccionesRecintosApiImpl.getRecintosElectoralesCercanos(request: req);
+    });
   }
 
+  // 🔹 Crear código
   Future<void> crearCodigo() async {
-    bool isValid = formKey.currentState!.validate();
-    if (!isValid) return;
-
+    if (!formKey.currentState!.validate()) return;
     peticionServerState(true);
-
     late AbrirRecintoElectoral _abrirRecintoElectoral;
 
     await ExceptionDialogos.manejarErroresShowDialogo(() async {
       final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
-      LatLng position = await locationBloc.getCurrentPosition();
-
+      LatLng pos = await locationBloc.getCurrentPosition();
       String ip = await DeviceInfoApp.getIp;
 
-      CreateCodeRecintoRequest request = CreateCodeRecintoRequest(
-          usuario: user.idGenUsuario,
-          idGenPersona: user.idGenPersona,
-          idDgoReciElect: selectRecintosElectoral.value.idDgoReciElect,
-          latitud: position.latitude,
-          longitud: position.longitude,
-          idDgoProcElec: selectProcesoOperativoController
-              .selectProcesosOperativo.value.idDgoProcElec,
-          idDgoReciUnidadPolicial: selectRecintosElectoral.value.idDgoReciElect,
-          telefono: controllerTelefono.text,
-          ip: ip,
-          idDgpGrado: user.idDgpGrado,
-          idDgoTipoEje:comboDependienteController. selectUnidadPolicial.value.idDgoTipoEje);
+      final ultimo = dynamicComboUnidadesPoliciales. seleccionados.lastWhere((e) => e.idDgoTipoEje > 0,
+          orElse: () => UnidadesPoliciale.empty());
+
+      CreateCodeRecintoRequest req = CreateCodeRecintoRequest(
+        usuario: user.idGenUsuario,
+        idGenPersona: user.idGenPersona,
+        idDgoReciElect: selectRecintosElectoral.value.idDgoReciElect,
+        latitud: pos.latitude,
+        longitud: pos.longitude,
+        idDgoProcElec:
+        selectProcesoOperativoController.selectProcesosOperativo.value.idDgoProcElec,
+        idDgoReciUnidadPolicial: selectRecintosElectoral.value.idDgoReciElect,
+        telefono: controllerTelefono.text,
+        ip: ip,
+        idDgpGrado: user.idDgpGrado,
+        idDgoTipoEje: ultimo.idDgoTipoEje,
+      );
 
       _abrirRecintoElectoral =
-          await _eleccionesRecintosApiImpl.crearCodigo(request: request);
+      await _eleccionesRecintosApiImpl.crearCodigo(request: req);
     });
     peticionServerState(false);
 
+
+
     if (_abrirRecintoElectoral.idDgoCreaOpReci == 0) {
       DialogosAwesome.getWarning(
-          descripcion:
-              "No se pudo completar la acción. Por favor, inténtelo nuevamente.",
-         );
+        descripcion:
+        "No se pudo completar la acción. Por favor, inténtelo nuevamente.",
+      );
       return;
     }
 
@@ -195,16 +144,17 @@ class CrearCodigoRecintosController extends GetxController {
           ),
         ),
         barrierDismissible:
-            false, // Evita que se cierre al tocar fuera del diálogo
+        false, // Evita que se cierre al tocar fuera del diálogo
       );
     }
   }
+
 
   getDesingCompartirCodigo(int idDgoCreaOpReci) {
     final responsive = ResponsiveUtil();
     return Column(
       mainAxisSize:
-          MainAxisSize.min, // Ajusta el tamaño del diálogo al contenido
+      MainAxisSize.min, // Ajusta el tamaño del diálogo al contenido
       children: [
         TextLineasWidget(
             title: "INFORMACIÓN",
@@ -235,11 +185,6 @@ class CrearCodigoRecintosController extends GetxController {
     );
   }
 
-  goToPage(String name) {
-    Get.offNamed(name);
-  }
 
-  cerrarSession() {
-    Get.toNamed(AppRoutes.SPLASH_APP);
-  }
+
 }
