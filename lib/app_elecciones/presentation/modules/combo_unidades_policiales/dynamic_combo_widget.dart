@@ -1,10 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
-import '../../app/core/utils/responsiveUtil.dart';
-import '../../app/presentation/widgets/custom_app_widgets.dart';
-import 'dynamic_combo_controller.dart';
-
+part of '../pages.dart';
 
 class DynamicComboWidget extends StatelessWidget {
   final DynamicComboController controller;

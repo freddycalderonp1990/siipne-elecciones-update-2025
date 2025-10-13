@@ -1,10 +1,4 @@
-import 'package:get/get.dart';
-
-import '../../app/core/exceptions/exception_dialogos.dart';
-import '../../app/presentation/widgets/custom_app_widgets.dart';
-import '../data/models/models.dart';
-import '../data/repository/data_repositories.dart';
-import '../presentation/modules/controllers.dart';
+part of '../controllers.dart';
 
 class DynamicComboController extends GetxController {
   RxList<List<UnidadesPoliciale>> niveles = <List<UnidadesPoliciale>>[].obs;

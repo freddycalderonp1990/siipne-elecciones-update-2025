@@ -30,8 +30,6 @@ import '../../../app/core/utils/photo_helper.dart';
 import '../../../app/core/utils/responsiveUtil.dart';
 
 
-
-
 import '../../../app/presentation/routes/app_routes.dart';
 
 
@@ -44,7 +42,7 @@ import '../../../feactures/user/data/models/models_user.dart';
 import '../../../feactures/user/domain/entities/user.dart';
 
 import '../../../feactures/user/presentation/modules/controllers.dart';
-import '../../combo_unidades_policiales/dynamic_combo_controller.dart';
+
 import '../../core/siipne_elecciones_config.dart';
 import '../../data/providers/remote/apis/api_constantes.dart';
 import '../../data/repository/data_repositories.dart';
@@ -81,4 +79,4 @@ part 'personal/report/report_person_controller.dart';
 part 'novedades/add/add_novedades_controller.dart';
 part 'novedades/report/report_novedades_controller.dart';
 
-
+part 'combo_unidades_policiales/dynamic_combo_controller.dart';

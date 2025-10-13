@@ -28,7 +28,7 @@ import 'package:get/get.dart';
 
 
 import '../../../feactures/gps/presentation/widgets/my_ubicacion_widget.dart';
-import '../../combo_unidades_policiales/dynamic_combo_widget.dart';
+
 import '../../core/values/siipne_colors.dart';
 import '../../core/values/siipne_images.dart';
 import '../../core/values/siipne_strings.dart';
@@ -59,3 +59,4 @@ part 'personal/report/report_person_page.dart';
 
 part 'novedades/add/add_novedades_page.dart';
 part 'novedades/report/report_novedades_page.dart';
+part 'combo_unidades_policiales/dynamic_combo_widget.dart';
