@@ -38,7 +38,7 @@ import '../../../feactures/gps/presentation/location/location_bloc.dart';
 import '../../../feactures/save_file/data/models/file_model.dart';
 import '../../../feactures/save_file/domain/request/file_request.dart';
 import '../../../feactures/save_file/domain/use_cases/save_file_img_use_case.dart';
-import '../../../feactures/user/data/models/models_user.dart';
+
 import '../../../feactures/user/domain/entities/user.dart';
 
 import '../../../feactures/user/presentation/modules/controllers.dart';
@@ -57,10 +57,7 @@ import '../../../app/core/utils/utilidadesUtil.dart';
 import '../../presentation/routes/elecciones_routes.dart';
 
 
-
-
 part '../gps/my_gps_controller.dart';
-
 part 'menu/menu_app_controller.dart';
 part 'select_proceso_operativo/select_proceso_operativo_controller.dart';
 part 'tipos_servicios_ejes/tipos_servicios_ejes_controller.dart';

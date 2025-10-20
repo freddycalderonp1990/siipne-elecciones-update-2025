@@ -18,7 +18,6 @@ class AppColors{
   static const Color colorBotones = AppColors.colorAzul;
 
   static const Color colorFondo = colorAzul;
-
   static const Color colorIcons = colorAzul;
 
 
