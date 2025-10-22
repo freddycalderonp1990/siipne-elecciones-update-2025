@@ -87,7 +87,7 @@ class _WorkAreaLoginPageWidgetState extends State<WorkAreaLoginPageWidget> {
           getTitle(),
           SizedBox(height: responsive.altoP(4),),
           widget.imgPerfil != null
-              ? imgPerfilRedonda(
+              ? ImgPerfilRedonda(
             size: 28,
             img: widget.imgPerfil,
           )

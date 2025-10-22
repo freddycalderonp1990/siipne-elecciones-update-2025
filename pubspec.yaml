@@ -57,7 +57,7 @@ dependencies:
   #END Utilidades - device_info_app.dart
 
 
-  flutter_dotenv: ^5.2.1 #leer .env
+  flutter_dotenv: ^6.0.0 #leer .env
   image_picker: ^1.1.2 #Obtener img de la camara o galeria
   flutter_pdfview: ^1.3.4 #Visaulizar PDF
   dropdown_search: ^6.0.2 #Combo con busqueda
@@ -75,7 +75,7 @@ dependencies:
   equatable: ^2.0.7
   #permission_handler: ^12.0.0 # Solicita Permisos del dispositivo al usuario (Ubicacion,Galeria.....) - lo trae desde el paquete de mi upp
   geolocator: ^14.0.0 #ubicacion Gps, del dispositivo
-  flutter_map: ^7.0.2 #0.9.0 #mapas openstreetmap (TRAE latlong)
+  flutter_map: ^8.2.2 #0.9.0 #mapas openstreetmap (TRAE latlong)
   # END LIBREARIAS GPS
 
 
@@ -86,7 +86,7 @@ dependencies:
   # END QR
 
 
-  syncfusion_flutter_gauges: ^28.2.5 #Diseño de clave digital
+  syncfusion_flutter_gauges: ^31.2.3 #Diseño de clave digital
 
 
   api_provider:
@@ -106,8 +106,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.13.1
-  mocktail: ^0.3.0
+  flutter_launcher_icons: ^0.14.4
+  mocktail: ^1.0.4
 
 # flutter pub run flutter_launcher_icons:main
 

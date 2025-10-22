@@ -33,6 +33,12 @@ class MenuAppCensoPage extends GetView<MenuAppCensoController> {
               children: <Widget>[
                 SizedBox(height: responsive.altoP(2)),
                 _getMenu(responsive),
+                SizedBox(height: responsive.altoP(4)),
+                BtnIconWidget(
+                  icon: Icons.exit_to_app,
+                  titulo: "SALIR",
+                  onPressed: () => controller.cerrarSession(),
+                )
               ],
             ),
           ),

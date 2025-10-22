@@ -3,7 +3,6 @@ part of  'custom_app_widgets.dart';
 class BtnIconWidget extends StatelessWidget {
   final String? titulo;
 
-
   final VoidCallback? onPressed;
 
   final Color colorTxt;
@@ -38,6 +37,7 @@ class BtnIconWidget extends StatelessWidget {
             icon,
             color: colorIcon,
           );
+
 
 Widget iconButton=Container(
   decoration: BoxDecoration(

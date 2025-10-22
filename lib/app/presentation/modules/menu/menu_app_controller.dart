@@ -14,6 +14,9 @@ class MenuAppController extends GetxController {
 
 
   Rx<DataMenu> dataMenuApp = DataMenu.empty().obs;
+  RxBool showMenuCenso = false.obs;
+  RxBool showMenuElecciones = false.obs;
+
 
   RxBool peticionServerState = false.obs;
   @override
@@ -47,6 +50,19 @@ class MenuAppController extends GetxController {
     await ExceptionDialogos.manejarErroresShowDialogo(
           () async {
             dataMenuApp.value = await getMenuAppUseCase();
+
+
+            if(dataMenuApp.value.siipneElecciones){
+              showMenuElecciones.value=true;
+              showMenuCenso.value=false;
+              verificarNovedadesUdgaPolicialRegistradas();
+            }
+            else  {
+              showMenuElecciones.value=false;
+              showMenuCenso.value=true;
+              Get.offAllNamed(AppCensoRoutes.MENU_APP);
+
+            }
       },
     );
     peticionServerState(false);

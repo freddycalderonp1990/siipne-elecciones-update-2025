@@ -122,8 +122,11 @@ class MenuRecElecJefePage extends GetView<MenuRecElecJefeController> {
                     title: title,
                     descripcion: msj,
                     btnOkOnPress: () {
-
                       DialogosAwesome.getDesingChangePass(
+                        idDgoCreaOpReci:
+                            controller
+                                .recintosElectoralesAbiertos
+                                .idDgoCreaOpReci,
                         onPressed: () {
                           Get.back();
                           controller.eliminarCodigoRecinto();
@@ -131,8 +134,6 @@ class MenuRecElecJefePage extends GetView<MenuRecElecJefeController> {
                         formKey: controller.formKeyPass,
                         controllerPass: controller.controllerPass,
                         title: title,
-                        descripcion:
-                            "Para eliminar el código ${controller.recintosElectoralesAbiertos.idDgoCreaOpReci}, ingrese su clave de seguridad",
                       );
                     },
                   );
@@ -176,14 +177,16 @@ class MenuRecElecJefePage extends GetView<MenuRecElecJefeController> {
 
   _dialogoFinalizarRecinto({required String nameRecinto}) {
     String title = "FINALIZAR RECINTO";
+
     DialogosAwesome.getWarningSiNo(
       title: title,
       descripcion:
           "¿Está seguro/a que desea finalizar el Recinto?"
           "\nNOMBRE:${nameRecinto}",
       btnOkOnPress: () {
-
         DialogosAwesome.getDesingChangePass(
+          idDgoCreaOpReci:
+              controller.recintosElectoralesAbiertos.idDgoCreaOpReci,
           onPressed: () {
             Get.back();
             controller.finalizarRecinto();

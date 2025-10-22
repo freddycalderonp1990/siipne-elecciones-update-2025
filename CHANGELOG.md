@@ -102,8 +102,86 @@
 
   }),
 
-## [2.0.0] – Elecciones 2025 – Consulta Popular Vuelta (init-13-octubre-2025)
 
-### 🎨 Modificacion de Sql para saber si las novedades tienen registrado hijos
+## [2.0.0] – ELECCIONES 2025 - CONSULTA (inicio del desarrollo 13-octubre-2025)
 
+## REUINONES
 - 
+- LUNES 20 DE OCTUBRE DEL 2025 - SUBCOMANDO  PRESENTAR AVANCES DEL CATALOGO DE DELITOS SE AGREGA EL CATALGO DE FLAGRANCIA
+- VUERNES 24 DE OCTUBRE DEL 2025 - PRESNTAR AVANCES 
+
+
+### CAMBIOS
+## ARCHIVOS
+`siipne/appmovil/siipneMovil/recintoElectoral/data/dataDgoNovedadesEje.php`
+## CARPETAS
+appmovil/apis/v1/menuApps/
+
+
+**Archivo:** `siipne/appmovil/siipneMovil/recintoElectoral/data/dataDgoNovedadesEje.php`  
+**Fecha:** 21/10/2025  
+**Autor:** Freddy Calderón
+
+---
+
+## 🔧 Modificaciones Realizadas
+
+### 1. Función: `getNovedadesPadresSegunNovedadPadre`
+- Se modificó el SQL para que los resultados se presenten **ordenados numéricamente** según la numeración inicial del campo `descripcion` (por ejemplo, del 1 al N).
+- Se agregó la siguiente cláusula para garantizar un orden correcto por número y no alfabéticamente:
+  ```sql
+  ORDER BY CAST(SUBSTRING_INDEX(nov.descripcion, '.', 1) AS UNSIGNED)
+  ```
+- Se mantuvieron las condiciones de **`delLog`** e **`idGenEstado`** para asegurar coherencia con las demás funciones del módulo.
+
+---
+
+### 2. Función: `getNovedadesPadresSegunIdEje`
+- Se incorporó la condición **`idGenEstado`** en el filtro principal del SQL, asegurando que solo se obtengan registros activos.
+- Se añadió una subconsulta para determinar si cada novedad tiene **hijos registrados**, utilizando la siguiente estructura:
+  ```sql
+  CASE 
+      WHEN (
+          SELECT COUNT(*) 
+          FROM dgoNovedadesElect h
+          WHERE h.dgo_idDgoNovedadesElect = nov.idDgoNovedadesElect
+            AND h.delLog = 'N'
+      ) > 0 THEN 'SI'
+      ELSE 'NO'
+  END AS tieneHijos
+  ```
+
+---
+
+### 3. Mejoras Generales
+- Se optimizó la legibilidad del código SQL mediante una mejor organización y estandarización de alias de tablas.
+- Se garantizó la coherencia en las validaciones de **estado (`idGenEstado`)** y **borrado lógico (`delLog`)** en ambas funciones.
+- Se mejoró la trazabilidad de los datos, asegurando que solo se muestren registros válidos y correctamente ordenados.
+
+---
+
+**🟢 Resultado esperado:**  
+Los listados de novedades se presentan **ordenados del 1 al N**, mostrando correctamente si poseen registros hijos, y filtrando únicamente aquellos con estado activo.
+
+
+
+**API:** `apis/v1/menuApps/read.php`  
+**Fecha:** 22/10/2025  
+**Autor:** Freddy Calderón
+
+---
+
+
+### 🚀 Nueva Implementación: API `menuApps/read.php`
+- Se implementa la API **`appmovil/apis/v1/menuApps/read.php`**, la cual permite **consultar si existen procesos activos de elecciones o censos**.
+- En caso de existir un **proceso de elecciones activo**, el sistema **redirecciona automáticamente** al menú correspondiente de elecciones.
+- Si **no existe un proceso de elecciones activo**, se muestra el **menú del censo policial** y el sistema **redirecciona automáticamente al módulo del censo policial**.
+
+---
+
+**🟢 Resultado esperado:**  
+El sistema detecta dinámicamente el proceso activo y redirige al menú adecuado, garantizando una navegación automática, contextual y eficiente para el usuario.
+
+
+
+

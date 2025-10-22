@@ -66,7 +66,7 @@ class InicioRapidoPage extends GetView<InicioRapidoController> {
   Widget wgOtroUsuario() {
     Widget wg = BtnMenuWidget(
       img: AppImages.icon_clave,
-      title: "¿NO ERES TÚ?",
+      title: "Ingresa con Usuario y Clave",
       horizontal: false,
       onTap: () => controller.ingresoConOtroUsuario(),
       colorFondo: AppColors.colorAzul,

@@ -18,6 +18,9 @@ class ReportPersonController extends GetxController {
 
   RxBool peticionServerState = false.obs;
 
+  GlobalKey<FormState> formKeyPass = GlobalKey<FormState>();
+  var controllerPass = new TextEditingController();
+
   @override
   void onInit() async {
     user = loginController.user.value;

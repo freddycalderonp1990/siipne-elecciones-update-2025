@@ -34,6 +34,7 @@ class ObservacionModel {
     this.idDgoNovedadesElectPadre,
     this.descNovedadesElect,
     this.descNovedadesElectPadre,
+    this.observacion
   });
 
   int? idDgoNovedadesElect;
@@ -59,6 +60,7 @@ class ObservacionModel {
   String? direccion;
   String? unidad;
   String? numerico;
+  String? observacion;
 
   factory ObservacionModel.fromJson(Map<String, dynamic> json) => ObservacionModel(
     idDgoNovedadesElect: ParseModel.parseToInt(json["idDgoNovedadesElect"]),
@@ -83,6 +85,7 @@ class ObservacionModel {
     idDgoNovedadesElectPadre: ParseModel.parseToInt(json["idDgoNovedadesElectPadre"]),
     descNovedadesElect: ParseModel.parseToString(json["descNovedadesElect"]),
     descNovedadesElectPadre: ParseModel.parseToString(json["descNovedadesElectPadre"]),
+    observacion: ParseModel.parseToString(json["observacion"]),
   );
 
   Map<String, dynamic> toJson() => {
@@ -109,6 +112,7 @@ class ObservacionModel {
     "idDgoNovedadesElectPadre": idDgoNovedadesElectPadre,
     "descNovedadesElect": descNovedadesElect,
     "descNovedadesElectPadre": descNovedadesElectPadre,
+    "observacion": observacion,
   }..removeWhere((key, value) => value == null);
 
   String getJsonString() {
@@ -140,6 +144,7 @@ class ObservacionModel {
     String? direccion,
     String? unidad,
     String? numerico,
+    String? observacion,
   }) {
     return ObservacionModel(
       idDgoNovedadesElect: idDgoNovedadesElect ?? this.idDgoNovedadesElect,
@@ -165,6 +170,7 @@ class ObservacionModel {
       direccion: direccion ?? this.direccion,
       unidad: unidad ?? this.unidad,
       numerico: numerico ?? this.numerico,
+      observacion:  observacion ?? this.observacion,
     );
   }
 }

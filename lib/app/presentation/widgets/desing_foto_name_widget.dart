@@ -27,7 +27,7 @@ class _DesingFotoNameWidgetState extends State<DesingFotoNameWidget> {
     return Column(
       children: [
         SizedBox(height: responsive.altoP(1)),
-        imgPerfilRedonda(size: 27, img:!showDatos?"": widget.img),
+        ImgPerfilRedonda(size: 27, img:!showDatos?"": widget.img),
 
         BtnIconWidget(
           colorBtn: Colors.transparent,

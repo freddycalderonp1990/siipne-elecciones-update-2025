@@ -52,7 +52,7 @@ class MenuAppPage extends GetView<MenuAppController> {
       children: [
         Obx(
           () =>
-              controller.dataMenuApp.value.siipneElecciones
+              controller.showMenuElecciones.value
                   ? BtnMenuWidget(
                     horizontal: true,
                     img: SiipneEleccionesImages.ic_elecciones,
@@ -68,7 +68,7 @@ class MenuAppPage extends GetView<MenuAppController> {
         SizedBox(height: responsive.altoP(2)),
         Obx(
           () =>
-              controller.dataMenuApp.value.siipneCenso
+              controller.showMenuCenso.value
                   ? BtnMenuWidget(
                     horizontal: true,
                     img: AppCensoImages.ic_censo,

@@ -56,6 +56,14 @@ class Validate {
     return null;
   }
 
+  static String? validateMotivo(String? value) {
+    if (value != null && value.length < 3) {
+      return "Ingrese el Motivo";
+    }
+
+    return null;
+  }
+
   static String? validateCantidad(String? value) {
     if (value != null && value.length == 0 ||
         value != null && int.parse(value) == 0) {

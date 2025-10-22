@@ -14,6 +14,7 @@ class AddNovedadesRequest {
   final int idDgoReciElect;
   final String imagen;
   final String ip;
+  final int idDgoCreaOpReci;
 
   AddNovedadesRequest({
     required this.idDgoNovedadesElect,
@@ -29,6 +30,7 @@ class AddNovedadesRequest {
     required this.idDgoReciElect,
     this.imagen = "No Imagen",
     required this.ip,
+    required this.idDgoCreaOpReci
   });
 
 
@@ -48,6 +50,7 @@ class AddNovedadesRequest {
       "idDgoReciElect": idDgoReciElect,
       "imagen": imagen,
       "ip": ip,
+      "idDgoCreaOpReci": idDgoCreaOpReci,
     };
   }
 }

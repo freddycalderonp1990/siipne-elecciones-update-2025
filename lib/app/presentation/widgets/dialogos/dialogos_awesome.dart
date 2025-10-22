@@ -279,15 +279,18 @@ class DialogosAwesome {
    required TextEditingController controllerPass,
    VoidCallback? onPressed,
    String title = 'INFO',
-   required String descripcion,
+
+   required int idDgoCreaOpReci,
+
+    String? descripcion,
  }) {
    late AwesomeDialog dialog;
    final responsive = ResponsiveUtil();
    final sizeTxt = responsive.diagonalP(AppConfig.tamTextoTitulo);
 
-
-
-
+   if(descripcion==null) {
+     descripcion = "Para abandonar el código ${idDgoCreaOpReci}, ingrese su clave de seguridad";
+   }
 
    dialog = AwesomeDialog(
      dismissOnTouchOutside: false,
@@ -364,7 +367,12 @@ class DialogosAwesome {
                  }
                  // Si el formulario es válido, ejecutar la acción
                  Get.back();
-                 onPressed?.call();
+
+
+                 DialogosAwesome.getWarningSiNo(
+                     descripcion: "¿Esta seguro de continuar y abandonar el código ${idDgoCreaOpReci}?",btnOkOnPress: (){
+                   onPressed?.call();
+                 });
 
 
 

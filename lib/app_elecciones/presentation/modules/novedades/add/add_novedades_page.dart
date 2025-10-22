@@ -7,7 +7,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
       mostrarBtnAtras: true,
-      title: "REGISTRAR NOVEDADES2",
+      title: "REGISTRAR NOVEDADES",
       showGps: true,
       contenido: getContenido(),
       peticionServer: controller.peticionServerState,
@@ -35,20 +35,11 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
           getCombos(),
           SizedBox(height: responsive.altoP(0.4)),
           Obx(
-                () => FutureBuilder<Widget>(
-              future: wgCajasTexto(controller.selectTipoNovedad.value.descripcion),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return
+            () =>   wgCajasTexto(
+                controller.selectTipoNovedad.value.descripcion,
+              ),
 
-                    CargandoWidget(mostrar: true,color: Colors.transparent); // Mientras carga
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}'); // En caso de error
-                } else {
-                  return snapshot.data ?? Container(); // Devuelve el widget construido
-                }
-              },
-            ),
+
           ),
           Obx(
             () => wgCajasTextoNovedades(
@@ -82,8 +73,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
               controller
                   .mGaleryCameraModel
                   .value = await PhotoHelper.getDesingPictureGaleryOrCamera(
-
-                initPeticion: (value){
+                initPeticion: (value) {
                   controller.peticionServerState(value);
                 },
                 titleImg:
@@ -118,8 +108,6 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
 
     Widget wg = wgSolicitarFoto;
 
-
-
     return ContenedorDesingWidget(margin: EdgeInsets.only(top: 10), child: wg);
   }
 
@@ -140,25 +128,27 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
   Widget getComboTipoNovedad() {
     return ContenedorDesingWidget(
       paddin: EdgeInsets.all(5),
-      child: Obx(()=>ComboBusqueda(
-        selectValue: controller.selectTipoNovedad.value,
-        showClearButton: false,
-        datos: controller.listTipoNovedades,
-        displayField:
-            (item) => item.descripcion, // Aquí decides mostrar "nombres"
-        searchHint: "Tipo Novedad",
-        complete: (value) {
-          controller.selectTipoNovedad.value = NovedadesElectorale.empty();
-          controller.selectNovedad.value = NovedadesElectorale.empty();
-          controller.selectDelito.value = NovedadesElectorale.empty();
-          if (value != null) {
-            controller.selectTipoNovedad.value = value;
-            controller.getNovedadesHijas(value.idDgoNovedadesElect);
-            return;
-          }
-        },
-        textSeleccioneUndato: "Seleccione un Tipo de Novedad",
-      )),
+      child: Obx(
+        () => ComboBusqueda(
+          selectValue: controller.selectTipoNovedad.value,
+          showClearButton: false,
+          datos: controller.listTipoNovedades,
+          displayField:
+              (item) => item.descripcion, // Aquí decides mostrar "nombres"
+          searchHint: "Tipo Novedad",
+          complete: (value) {
+            controller.selectTipoNovedad.value = NovedadesElectorale.empty();
+            controller.selectNovedad.value = NovedadesElectorale.empty();
+            controller.selectDelito.value = NovedadesElectorale.empty();
+            if (value != null) {
+              controller.selectTipoNovedad.value = value;
+              controller.getNovedadesHijas(value.idDgoNovedadesElect);
+              return;
+            }
+          },
+          textSeleccioneUndato: "Seleccione un Tipo de Novedad",
+        ),
+      ),
     );
   }
 
@@ -176,7 +166,10 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
                   displayField:
                       (item) =>
                           item.descripcion, // Aquí decides mostrar "nombres"
-                  searchHint: "Novedad",
+                  searchHint: controller.selectTipoNovedad.value.descripcion.isNotEmpty
+                      ? controller.selectTipoNovedad.value.descripcion[0].toUpperCase() +
+                      controller.selectTipoNovedad.value.descripcion.substring(1).toLowerCase()
+                      : '',
                   complete: (value) {
                     controller.selectNovedad.value =
                         NovedadesElectorale.empty();
@@ -186,17 +179,11 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
                     if (value != null) {
                       controller.selectNovedad.value = value;
 
-
-
                       if (value.tieneHijos) {
-
                         controller.getNovedadesDelito(
                           value.idDgoNovedadesElect,
                         );
-                      }
-
-
-                      else if (controller
+                      } else if (controller
                               .selectNovedad
                               .value
                               .idDgoNovedadesElect >
@@ -216,7 +203,8 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
   Widget getComboDelito() {
     return Obx(
       () =>
-          controller.selectNovedad.value.idDgoNovedadesElect > 0 && controller.selectNovedad.value.tieneHijos
+          controller.selectNovedad.value.idDgoNovedadesElect > 0 &&
+                  controller.selectNovedad.value.tieneHijos
               ? ContenedorDesingWidget(
                 paddin: EdgeInsets.all(5),
                 child: ComboBusqueda(
@@ -226,7 +214,10 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
                   displayField:
                       (item) =>
                           item.descripcion, // Aquí decides mostrar "nombres"
-                  searchHint:  controller.selectNovedad.value.descripcion,
+                  searchHint: controller.selectNovedad.value.descripcion.isNotEmpty
+                      ? controller.selectNovedad.value.descripcion[0].toUpperCase() +
+                      controller.selectNovedad.value.descripcion.substring(1).toLowerCase()
+                      : '',
                   complete: (value) {
                     controller.selectDelito.value = NovedadesElectorale.empty();
                     controller.mostrarBtnGuardar(false);
@@ -246,7 +237,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
     );
   }
 
-  Future<Widget> wgCajasTexto(String novedadesPadres) async  {
+  Widget wgCajasTexto(String novedadesPadres)  {
     Widget wg = Container();
     final responsive = ResponsiveUtil();
 
@@ -254,8 +245,11 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
 
     controller.registrarDatosPersona = false;
 
-    switch (novedadesPadres.trim().toUpperCase()) {
+
+
+    switch ((novedadesPadres ?? '').trim().toUpperCase()) {
       case "NOVEDADES":
+        controller.registrarDatosPersona = false;
         break;
 
       case "DELITOS":
@@ -300,9 +294,6 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
         wg = Container();
     }
 
-
-
-
     if (wg is Container) {
       return wg;
     } else {
@@ -328,7 +319,9 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
 
       case 18:
         //2. RECINTOS ELECTORALES NO INSTALADOS
-        wg = Container();
+        controller.validarForm = true;
+        wg = wgTxtObservacion(responsive: responsive);
+
         break;
 
       case 19:
@@ -634,10 +627,12 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
         wg = Container();
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      print("mostrar fotooooo ${mostrarFoto}");
-      controller.mostrarFoto.value = mostrarFoto;
-    });
+    if (controller.mostrarFoto.value != mostrarFoto) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        controller.mostrarFoto.value = mostrarFoto;
+      });
+    }
+
 
     print("asigno registrarDatosPersona ${controller.registrarDatosPersona}");
     print("wgCajasTextoNovedades validarForm ${controller.validarForm}");
@@ -715,7 +710,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
   Widget getBtnGuardar() {
     return Obx(
       () =>
-          controller.mostrarBtnGuardar.value
+          controller.mostrarBtnGuardar.value && controller.selectTipoNovedad.value.idDgoNovedadesElect > 0
               ? BtnIconWidget(
                 icon: Icons.save,
                 titulo: "GUARDAR",
@@ -728,7 +723,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
 
                   DialogosAwesome.getWarningSiNo(
                     title: '¿Desea continuar con el registro?',
-                    descripcion: 'Registro de Novedad:\n\n${descripcion}',
+                    descripcion: 'Registro de Novedad:\n\n• ${descripcion.capitalizeFirst}',
 
                     btnOkOnPress: () {
                       controller.eventoRegistrarNovedadesElectorales();
@@ -785,23 +780,13 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
               ),
             ),
           ),
-          Column(
-            children: <Widget>[
-              Card(
-                color: Colors.white54,
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: controller.controllerObs,
-                    maxLength: 100,
-                    maxLines: 4, //or null
-                    decoration: InputDecoration.collapsed(
-                      hintText: "Ingrese la Observación",
-                    ),
-                  ),
-                ),
-              ),
-            ],
+
+          const SizedBox(height: 10),
+          MyTextAreaWidget(
+            hintText: "Ingrese la Observación",
+            maxLength: 100,
+            controller: controller.controllerObservacion,
+            onChanged: (texto) {},
           ),
         ],
       ),
@@ -964,7 +949,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             ),
             label: "Motivo",
             fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateNumCitacion,
+            validar: Validate.validateMotivo,
           ),
         ],
       ),

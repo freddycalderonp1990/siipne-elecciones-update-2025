@@ -185,7 +185,7 @@ class _WorkAreaPageLoginWidgetState extends State<WorkAreaPageLoginWidget> {
 
     return widget.imgPerfil == null
         ? Container()
-        : imgPerfilRedonda(
+        : ImgPerfilRedonda(
             size: responsive.diagonalP(AppConfig.tamIcons),
             img: widget.imgPerfil,
           );

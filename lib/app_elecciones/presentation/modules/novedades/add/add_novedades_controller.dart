@@ -46,7 +46,7 @@ class AddNovedadesController extends GetxController {
   var controllerTelefono = new TextEditingController();
   var controllerNumBoleta = new TextEditingController();
   var controllerNumCitacion = new TextEditingController();
-  var controllerObs = new TextEditingController();
+  var controllerObservacion = new TextEditingController();
 
   var controllerOrganizacion = new TextEditingController();
   var controllerDirigente = new TextEditingController();
@@ -110,6 +110,62 @@ class AddNovedadesController extends GetxController {
 
   @override
   void onClose() {
+
+      // 🧹 Liberar todos los TextEditingController
+      controllerCedula.dispose();
+      controllerTelefono.dispose();
+      controllerNumBoleta.dispose();
+      controllerNumCitacion.dispose();
+      controllerObservacion.dispose();
+
+      controllerOrganizacion.dispose();
+      controllerDirigente.dispose();
+      controllerCantidad.dispose();
+
+      controllerNombre.dispose();
+      controllerCargo.dispose();
+      controllerGrado.dispose();
+      controllerMedioComunicacion.dispose();
+
+      controllerFuncion.dispose();
+      controllerDescripcion.dispose();
+      controllerInstalacion.dispose();
+      controllerDireccion.dispose();
+      controllerUnidad.dispose();
+
+      controllerMotivo.dispose();
+      controllerNumericoPersonal.dispose();
+      controllerNumerico.dispose();
+
+      // 🔄 Reset de observables
+      mGaleryCameraModel.value = null;
+      peticionServerState.value = false;
+      mostrarBtnGuardar.value = false;
+      mostrarFoto.value = false;
+      showVerNovedades.value = true;
+
+      // 🧽 Limpieza de datos temporales
+      datosPerson.value = DatosPer.empty();
+      selectTipoNovedad.value = NovedadesElectorale.empty();
+      selectNovedad.value = NovedadesElectorale.empty();
+      selectDelito.value = NovedadesElectorale.empty();
+
+      // 🧭 Limpieza de listas observables
+      listTipoNovedades.clear();
+      listNovedades.clear();
+      listDelito.clear();
+
+      // 🔐 Restablecer banderas de control
+      validarForm = false;
+      registrarDatosPersona = true;
+
+      // 🕓 Limpieza de selectores de hora y minuto
+      selectHora = null;
+      selectMinuto = null;
+
+      // ⚙️ Limpieza de estados auxiliares
+      cargaInicial.value = false;
+
     super.onClose();
   }
 
@@ -300,7 +356,6 @@ class AddNovedadesController extends GetxController {
         );
       }
     });
-    peticionServerState(false);
 
 
     return dataFile;
@@ -309,8 +364,9 @@ class AddNovedadesController extends GetxController {
   eventoRegistrarNovedadesElectorales() async {
     bool isValid = true;
 
-    if (validarForm) {
-      isValid = formKey.currentState!.validate();
+
+    if (validarForm && (formKey.currentState?.validate() ?? false)) {
+      isValid = true;
     }
 
     if (!isValid && validarForm == true) {
@@ -329,6 +385,7 @@ class AddNovedadesController extends GetxController {
         return;
       }
 
+      controllerCedula.text=datosPerson.value.documento;
       nombreDetenido = datosPerson.value.apenom;
       idGenPersonaD = datosPerson.value.idGenPersona;
     }
@@ -399,6 +456,7 @@ class AddNovedadesController extends GetxController {
       String ip = await DeviceInfoApp.getIp;
 
       AddNovedadesRequest request = AddNovedadesRequest(
+        idDgoCreaOpReci:recintosElectoralesAbiertos.idDgoCreaOpReci,
         idDgoPerAsigOpe: idDgoPerAsigOpe,
         usuario: usuario,
         idDgoNovedadesElect: idDgoNovedadesElect,
@@ -429,6 +487,16 @@ class AddNovedadesController extends GetxController {
         },
       );
     } else if (resultInsert == ApiConstantes.varExiste) {
+      if(idDgoNovedadesElect==17 || idDgoNovedadesElect==18){
+        DialogosAwesome.getWarning(
+          descripcion:
+          "Ya existe la novedad ${selectNovedad.value.descripcion} registrada ".toUpperCase(),
+
+        );
+
+        return;
+      }
+
       DialogosAwesome.getWarning(
         descripcion:
             "Ya existe una novedad registrada con este documento ${controllerCedula.text}",
@@ -455,7 +523,7 @@ class AddNovedadesController extends GetxController {
     controllerTelefono.clear();
     controllerNumBoleta.clear();
     controllerNumCitacion.clear();
-    controllerObs.clear();
+    controllerObservacion.clear();
 
     controllerOrganizacion.clear();
     controllerDirigente.clear();
@@ -498,6 +566,8 @@ class AddNovedadesController extends GetxController {
       case 17:
         break;
       case 18:
+        observacionModel = getJsonSaveObservacion(observacionModel);
+
         break;
       case 19:
 
@@ -524,30 +594,18 @@ class AddNovedadesController extends GetxController {
       case 22:
         //6. PRESENCIA DE MANIFESTANTES / CONCENTRACIONES / MARCHAS
 
-        observacionModel = observacionModel.copyWith(
-          organizacion: controllerOrganizacion.text,
-          dirigente: controllerDirigente.text,
-          cantidad: controllerCantidad.text,
-        );
+        observacionModel = fillOrganizacionFields(observacionModel);
         break;
       case 23:
         //7. QUEMA DE URNAS / PAPELETAS
 
-        observacionModel = observacionModel.copyWith(
-          organizacion: controllerOrganizacion.text,
-          dirigente: controllerDirigente.text,
-          cantidad: controllerCantidad.text,
-        );
+        observacionModel = fillOrganizacionFields(observacionModel);
 
         break;
       case 28:
         //8. TOMA DE RECINTOS / DELEGACIONES / BODEGAS / INSTALACIONES DEL CNE
 
-        observacionModel = observacionModel.copyWith(
-          organizacion: controllerOrganizacion.text,
-          dirigente: controllerDirigente.text,
-          cantidad: controllerCantidad.text,
-        );
+        observacionModel = fillOrganizacionFields(observacionModel);
 
         break;
       case 29:
@@ -740,6 +798,14 @@ class AddNovedadesController extends GetxController {
     return observacionModel;
   }
 
+  ObservacionModel fillOrganizacionFields(ObservacionModel model) {
+    return model.copyWith(
+      organizacion: controllerOrganizacion.text,
+      dirigente: controllerDirigente.text,
+      cantidad: controllerCantidad.text,
+    );
+  }
+
   String getObservacion() {
     if (selectTipoNovedad.value.idDgoNovedadesElect > 0) {
       String novedadesPadres = selectTipoNovedad.value.descripcion;
@@ -786,19 +852,29 @@ class AddNovedadesController extends GetxController {
           break;
 
         case "VOTO EN CASA":
-          observacionModel = observacionModel.copyWith(
-            numCitacion: controllerObs.text,
-          );
+
+          observacionModel = getJsonSaveObservacion(observacionModel);
           break;
 
         case "NOV PPL":
-          observacionModel = observacionModel.copyWith(
-            numCitacion: controllerObs.text,
-          );
+          observacionModel = getJsonSaveObservacion(observacionModel);
           break;
       }
       return observacionModelToJson2(observacionModel);
     }
     return "null";
   }
+
+
+
+
+  getJsonSaveObservacion(ObservacionModel observacionModel){
+    return  observacionModel.copyWith(
+      observacion: controllerObservacion.text,
+    );
+
+  }
+
+
+
 }

@@ -27,6 +27,7 @@ class AnexarsePage extends GetView<AnexarseController> {
           SizedBox(height: 10),
           wgConsultarRecinto(),
           SizedBox(height: 10),
+
           wgDatosRecinto(),
         ],
       ),
@@ -42,45 +43,49 @@ class AnexarsePage extends GetView<AnexarseController> {
           () =>
               controller.datosEncargado.value.idDgoReciElect > 0
                   ? ContenedorDesingWidget(
-                    child: ExpansionTile(
-                      collapsedIconColor: AppColors.colorAzul,
-                      iconColor: AppColors.colorAzul,
-                      initiallyExpanded: true,
-                      title: Text(
-                        'DATOS DEL OPERATIVO',
-                        style: TextStyle(
-                          color: AppColors.colorAzul,
-                          fontSize: responsive.diagonalP(AppConfig.tamTexto),
-                        ),
-                      ),
-                      children: [
-                        Container(
-                          margin: EdgeInsets.all(10),
-                          child: Column(
-                            children: [
-                              SizedBox(height: responsive.altoP(1)),
-                              TituloDetalleTextWidget(
-                                title: "Instalación",
-                                detalle:
-                                    controller
-                                        .datosEncargado
-                                        .value
-                                        .nomRecintoElec,
-                              ),
-                              TituloDetalleTextWidget(
-                                title: "Encargado",
-                                detalle:
-                                    controller.datosEncargado.value.encargado,
-                              ),
-                            ],
+                    child: Theme(
+                      data: Theme.of(Get.context!).copyWith(dividerColor: Colors.transparent),
+                      child: ExpansionTile(
+                        collapsedIconColor: AppColors.colorAzul,
+                        iconColor: AppColors.colorAzul,
+                        initiallyExpanded: true,
+                        tilePadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                        childrenPadding: const EdgeInsets.only(bottom: 10),
+                        title: Text(
+                          'DATOS DEL OPERATIVO',
+                          style: TextStyle(
+                            color: AppColors.colorAzul,
+                            fontSize: responsive.diagonalP(AppConfig.tamTexto),
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.5,
                           ),
                         ),
-                      ],
-                    ),
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedBox(height: responsive.altoP(1)),
+                                TituloDetalleTextWidget(
+                                  title: "Instalación",
+                                  detalle: controller.datosEncargado.value.nomRecintoElec,
+                                ),
+                                TituloDetalleTextWidget(
+                                  title: "Encargado",
+                                  detalle: controller.datosEncargado.value.encargado,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
+                ,
                   )
                   : Container(),
         ),
-
+        SizedBox(height: 10),
 
                    getComboInstalacionesUnidadesPoliciales(),
 
@@ -117,7 +122,7 @@ class AnexarsePage extends GetView<AnexarseController> {
                     controller: controller.controllerCodigoRecinto,
                     icono: Icon(
                       Icons.assignment_sharp,
-                      color: SiipneColors.colorIcons,
+                      color: AppColors.colorIcons,
                       size: responsive.diagonalP(AppConfig.tamIcons),
                     ),
                     label: SiipneStrings.codigo,

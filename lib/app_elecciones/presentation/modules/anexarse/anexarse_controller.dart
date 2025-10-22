@@ -141,9 +141,11 @@ class AnexarseController extends GetxController {
       ResgistroPersEnRecElectoral result = await _personaApiImpl
           .asignarPersonalEnRecintoElectoral(request: request);
 
+
+
       if (result.idDgoPerAsigOpe == 0) {
         DialogosAwesome.getWarning(
-          descripcion: "No se pudo completar el registro",
+          descripcion: "No se pudo completar el registro. Debe estar dentro de la zona permitida.",
         );
         return;
       }

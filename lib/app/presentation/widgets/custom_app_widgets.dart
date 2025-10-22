@@ -68,5 +68,6 @@ part 'dialogos/dialogos_awesome.dart';
 
 part 'btn_icon_widget.dart';
 part 'desing_foto_name_widget.dart';
+part 'my_text_area_widget.dart';
 
 

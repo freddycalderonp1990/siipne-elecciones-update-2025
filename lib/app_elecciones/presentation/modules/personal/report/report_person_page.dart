@@ -86,10 +86,35 @@ class ReportPersonPage extends GetView<ReportPersonController> {
               PersonalRecintoElectoral data = listPersonal[i];
               return DisingPersonal(
                 onTap: () {
-                  DialogosAwesome.getWarningSiNo(descripcion: "¿Está seguro/a que desea inactivar a \n"
-                      "${data.personal} del operarivo?",
-                      btnOkOnPress: (){
-                        controller.removePersonalOperativo(data);
+
+
+
+
+
+                  DialogosAwesome.getWarningSiNo(
+
+                      descripcion:
+                      "¿Está  seguro/a que desea eliminar a ${data.personal} del operarivo.?\n\n"
+                          "Si elimina, no será considerado para el justificativo ante el CNE."
+                          "\nDeberá anexarse a un nuevo código y no abandonar, ya que esta acción es automática al finalizar el proceso electoral"
+                          "\n\n¿ESTÁ SEGURO/A?",
+
+                      btnOkOnPress: () {
+
+                        DialogosAwesome.getDesingChangePass(
+                          idDgoCreaOpReci: controller.recintosElectoralesAbiertos.idDgoCreaOpReci,
+                            onPressed: (){
+
+
+                              controller.removePersonalOperativo(data);
+
+                            },
+                            formKey: controller.formKeyPass,
+                            controllerPass:controller. controllerPass,
+                            title: "ABANDONAR CÓDIGO",
+                                     );
+
+
                       });
 
                 },
