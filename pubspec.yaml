@@ -1,7 +1,11 @@
 name: siipnemovil2
 description: "A new Flutter project."
-# The following line prevents the package from being accidentally published to
-# pub.dev using `flutter pub publish`. This is preferred for private packages.
+# Actualizacion 31 octubre del 2025
+# Flutter 3.35.5 • channel stable • https://github.com/flutter/flutter.git
+#Framework • revision ac4e799d23 (5 weeks ago) • 2025-09-26 12:05:09 -0700
+#Engine • hash 0274ead41f6265309f36e9d74bc8c559becd5345 (revision d3d45dcf25) (1
+#months ago) • 2025-09-26 16:45:18.000Z
+#Tools • Dart 3.9.2 • DevTools 2.48.0
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
@@ -9,17 +13,17 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # followed by an optional build number separated by a +.
 # Both the version and the builder number may be overridden in flutter
 # build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as veflutterflutter build apk --releasersionCode.
+# In Android, build-name is used as versionName while build-number used as versionCode.
 # Read more about Android versioning at https://developer.android.com/studio/publish/versioning
 # In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
 # In Windows, build-name is used as the major, minor, and patch parts
 # of the product and file versions while build-number is used as the build suffix.
-version: 2.1.0+42
+version: 2.2.0+43
 
 environment:
-  sdk: ^3.7.2
+  sdk: ^3.9.2
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -36,7 +40,6 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
-
   # Para actualizar los paquetes solo con ir al repositorio de mi upc ejemplo: https://github.com/freddycalderonp1990/app_mi_upc.git
   # ya que se esta usando la funcionalidad de mi upc automaticamente se descrag¿n de hay los paquetes
 

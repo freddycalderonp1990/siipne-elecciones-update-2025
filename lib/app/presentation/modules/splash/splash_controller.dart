@@ -31,7 +31,7 @@ class SplashController extends GetxController {
       bool isAndroid = GetPlatform.isAndroid;
       int versionCodeApp = int.parse(await DeviceInfoApp.getVersionCode);
       VerificarUpdateRequest request = VerificarUpdateRequest(
-        versionCodeApp: 1,
+        versionCodeApp: versionCodeApp,
         isAndroid: isAndroid,
         nemonico: nemonico,
       );

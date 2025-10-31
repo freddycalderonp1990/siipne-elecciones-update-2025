@@ -184,7 +184,8 @@ El sistema detecta dinámicamente el proceso activo y redirige al menú adecuado
 
 
 ### Canbios de consulta de procesos activos
-- sew cambio /Volumes/siipne/appmovil/siipneMovil/recintoElectoral/controller/controllerDgoProcElec.php
+- se cambio 
+- /Volumes/siipne/appmovil/siipneMovil/recintoElectoral/controller/controllerDgoProcElec.php
 - /Volumes/siipne/appmovil/siipneMovil/recintoElectoral/data/dataDgoCreaOpReci.php
 -         $fecha = myFecha::getSoloFecha();
 
