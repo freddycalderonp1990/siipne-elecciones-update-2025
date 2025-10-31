@@ -149,6 +149,7 @@ class CrearCodigoUnidadPoliController extends GetxController {
   }
 
   msjCrearCodigo({required VoidCallback onPressed}) {
+    print("siiii");
     bool isValid = formKey.currentState!.validate();
 
     if (!isValid) return;
@@ -160,7 +161,7 @@ class CrearCodigoUnidadPoliController extends GetxController {
         "\n\n Utilice la aplicación con responsabilidad, ya que toda actividad sera registrada y auditada."
         "\n\n¿Desea Continuar?";
 
-    DialogosAwesome.getWarningSiNo(
+    DialogosAwesome.getWarningSiNoContador(
       title: "¿Usted va a generar el código para la ${unidad}?",
       btnOkOnPress: onPressed,
       descripcion: msj,

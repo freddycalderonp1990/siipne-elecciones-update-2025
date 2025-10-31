@@ -266,7 +266,7 @@ class CensistaPage extends GetView<CensistaController> {
                 icon: Icons.save,
                 titulo: "GUARDAR",
                 onPressed: () {
-                  DialogosAwesome.getWarningSiNo(
+                  DialogosAwesome.getWarningSiNoContador(
                     title: "¿Está seguro que desea finalizar el proceso de censo?",
                     descripcion:
                         "Al confirmar, se guardará la foto registrada y el censo quedará concluido.",

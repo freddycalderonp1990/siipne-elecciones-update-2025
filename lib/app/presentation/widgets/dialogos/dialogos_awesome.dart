@@ -149,7 +149,161 @@ class DialogosAwesome {
  }
 
 
- static getWarningSiNo(
+  static getWarningSiNoContador({
+    String title = 'ADVERTENCIA',
+    required String descripcion,
+    Function()? btnOkOnPress,
+    Function()? btnCancelOnPress,
+  }) {
+    return showDialog(
+      context: Get.context!,
+      barrierDismissible: false,
+      builder: (context) {
+        int segundos = 5;
+        bool botonesHabilitados = false;
+        Timer? timer;
+
+        return StatefulBuilder(
+          builder: (context, setState) {
+            // Inicia el temporizador solo una vez
+            timer ??= Timer.periodic(const Duration(seconds: 1), (t) {
+              if (segundos > 1) {
+                setState(() => segundos--);
+              } else {
+                setState(() {
+                  botonesHabilitados = true;
+                  segundos = 0;
+                });
+                t.cancel();
+              }
+            });
+
+            return Dialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18),
+              ),
+              backgroundColor: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // 🔹 Encabezado
+                    Column(
+                      children: [
+                        Container(
+                          width: 80,
+                          height: 80,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(color: Colors.red, width: 3),
+                          ),
+                          child: Center(
+                            child: Image.asset(
+                              AppImages.escudopolicia,
+                              width: 60, // Ajusta el tamaño para que no se recorte
+                              height: 60,
+                              fit: BoxFit.contain, // Mantiene proporciones
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          title,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.red.shade700,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+
+                    // 🔹 Descripción
+                    Text(
+                      descripcion,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 15,
+                        color: Colors.black87,
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // 🔹 Contador
+                    if (!botonesHabilitados)
+                      Column(
+                        children: [
+                          Text(
+                            "Espere $segundos segundos...",
+                            style: const TextStyle(
+                              color: AppColors.colorAzul,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          const CircularProgressIndicator(color: AppColors.colorAzul,),
+                        ],
+                      ),
+
+                    if (botonesHabilitados)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          // Botón Sí
+                          ElevatedButton.icon(
+                            icon: const Icon(Icons.check_circle_outline),
+                            label: const Text("Sí"),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.colorBotones,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            onPressed: btnOkOnPress==null ?
+                                    () {
+                                  Navigator.of(context).pop(true);
+                                }:(){
+                              Navigator.of(context).pop(true);
+                              btnOkOnPress();
+                            },
+                          ),
+
+                          // Botón No
+                          ElevatedButton.icon(
+                            icon: const Icon(Icons.cancel_outlined),
+                            label: const Text("No"),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red.shade400,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                            ),
+                            onPressed: btnCancelOnPress ??
+                                    () {
+                                  Navigator.of(context).pop(false);
+                                },
+                          ),
+                        ],
+                      ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+
+  static getWarningSiNo(
      {String title = 'ADVERTENCIA',
        required String descripcion,
        Function()? btnOkOnPress,Function()? btnCancelOnPress}) {
@@ -369,8 +523,8 @@ class DialogosAwesome {
                  Get.back();
 
 
-                 DialogosAwesome.getWarningSiNo(
-                     descripcion: "¿Esta seguro de continuar y abandonar el código ${idDgoCreaOpReci}?",btnOkOnPress: (){
+                 DialogosAwesome.getWarningSiNoContador(
+                     descripcion: "¿Esta seguro de continuar?",btnOkOnPress: (){
                    onPressed?.call();
                  });
 

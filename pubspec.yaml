@@ -90,17 +90,11 @@ dependencies:
 
 
   api_provider:
-    git:
-      url: https://github.com/freddycalderonp1990/paquete_api_provider.git
-      ref: v1.0.3 # Usa el tag o branch deseado
-
-
+    path: /Users/policianacional/AndroidStudioProjects/paquete_api_provider
 
 
   app_mi_upc:
-    git:
-      url: https://github.com/freddycalderonp1990/app_mi_upc.git
-      ref: v3.0.0 # Usa el tag o branch deseado
+    path: /Users/policianacional/AndroidStudioProjects/app_mi_upc
 
 
 dev_dependencies:

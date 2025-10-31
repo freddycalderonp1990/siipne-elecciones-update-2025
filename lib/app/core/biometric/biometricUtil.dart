@@ -80,16 +80,15 @@ class BiometricUtil {
 
         const androidString = const AndroidAuthMessages(
             cancelButton: "Cancelar",
-            goToSettingsButton: "Ajustes",
+
             signInTitle: "Acceso con Huella",
-            biometricHint: "Pon tu dedo en el sensor para acceder.",
-            biometricNotRecognized: "Huella no Reconocida",
-            biometricSuccess: "Huella Reconocida",
+            signInHint: "Pon tu dedo en el sensor para acceder.",
+
             /*biometricRequiredTitle:'biometricRequiredTitle',
               deviceCredentialsRequiredTitle:'deviceCredentialsRequiredTitle',
               deviceCredentialsSetupDescription:'deviceCredentialsSetupDescription',*/
 
-            goToSettingsDescription: "Configure su Huella");
+            );
 /*
         const iosStrings = const IOSAuthMessages(
             cancelButton: 'Cancelar',
@@ -111,9 +110,7 @@ class BiometricUtil {
 
           ] ,
           localizedReason: "Autentiquese para acceder",
-          options: const AuthenticationOptions(
-            stickyAuth: true,
-          ),
+
         );
       }
 

@@ -43,7 +43,6 @@ import '../../../feactures/user/presentation/routes/user_routes.dart';
 import '../../core/app_config.dart';
 
 import '../../core/exceptions/exception_dialogos.dart';
-import '../../core/utils/device_info.dart';
 import '../../core/utils/device_info_app.dart';
 
 
@@ -52,7 +51,6 @@ import '../../core/values/mensajes_string.dart';
 
 import '../../domain/enums/enums.dart';
 import '../routes/app_routes.dart';
-
 
 
 

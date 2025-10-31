@@ -35,7 +35,7 @@ class InicioRapidoPage extends GetView<InicioRapidoController> {
 
           SizedBox(height: responsive.altoP(2)),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: responsive.anchoP(10)),
+            padding: EdgeInsets.symmetric(horizontal: responsive.anchoP(15)),
 
             child: Column(
               children: [
@@ -53,7 +53,7 @@ class InicioRapidoPage extends GetView<InicioRapidoController> {
   Widget wgHuella() {
     Widget wg = BtnMenuWidget(
       img: AppImages.icon_huella,
-      title: "HUELLA",
+      title: "Huella/Face ID",
       horizontal: false,
       onTap: () => controller.loginConBiometrico(),
       colorFondo: AppColors.colorAzul,

@@ -47,8 +47,7 @@ class DeviceInfoApp {
       if(GetPlatform.isAndroid){
         AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
 
-
-        return androidInfo.serialNumber;
+        return androidInfo.id;
 
       }
 
@@ -81,8 +80,6 @@ class DeviceInfoApp {
 
       if(GetPlatform.isAndroid){
         AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-
-        androidInfo.serialNumber;
         return androidInfo.model;
 
       }

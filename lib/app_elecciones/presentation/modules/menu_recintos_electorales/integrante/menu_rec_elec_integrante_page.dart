@@ -83,7 +83,7 @@ class MenuRecElecIntegrantePage
                     String title =
                         "ABANDONAR CÓDIGO ${controller.recintosElectoralesAbiertos.idDgoCreaOpReci}";
 
-                    DialogosAwesome.getWarningSiNo(
+                    DialogosAwesome.getWarningSiNoContador(
                         title: title,
                         descripcion:
                             "¿Está  seguro/a que desea abandonar el Operativo.?\n\n"

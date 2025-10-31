@@ -67,6 +67,26 @@ class CrearCodigoRecintosController extends GetxController {
     });
   }
 
+
+  msjCrearCodigo({required VoidCallback onPressed}) {
+    print("siiii");
+    bool isValid = formKey.currentState!.validate();
+
+    if (!isValid) return;
+    String unidad = selectRecintosElectoral.value.nomRecintoElecOnly;
+
+    String msj =
+        "Asegúrese de estar de servicio en el Recinto ${unidad} y de ser la persona encargada o la persona designada como jefe/a."
+        "\n\n Utilice la aplicación con responsabilidad, ya que toda actividad sera registrada y auditada."
+        "\n\n¿Desea Continuar?";
+
+    DialogosAwesome.getWarningSiNoContador(
+      title: "¿Usted va a generar el código para la ${unidad}?".toUpperCase(),
+      btnOkOnPress: onPressed,
+      descripcion: msj,
+    );
+  }
+
   // 🔹 Crear código
   Future<void> crearCodigo() async {
     if (!formKey.currentState!.validate()) return;

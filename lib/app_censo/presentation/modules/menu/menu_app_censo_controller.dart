@@ -72,7 +72,7 @@ class MenuAppCensoController extends GetxController {
   }
 
   cerrarSession() {
-    Get.back();
+    Get.toNamed(AppRoutes.SPLASH_APP);
   }
 
   Future<void> getDatosProcesoByCensado() async {

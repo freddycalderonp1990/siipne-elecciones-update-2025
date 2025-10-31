@@ -29,7 +29,7 @@ class SplashController extends GetxController {
     try {
       String nemonico = dotenv.env['NEMONICO_APP_SIIPNE_ELECCIONES'] ?? '';
       bool isAndroid = GetPlatform.isAndroid;
-      int versionCodeApp = int.parse(await DeviceInfo.getVersionCode);
+      int versionCodeApp = int.parse(await DeviceInfoApp.getVersionCode);
       VerificarUpdateRequest request = VerificarUpdateRequest(
         versionCodeApp: 1,
         isAndroid: isAndroid,

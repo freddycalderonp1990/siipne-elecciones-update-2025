@@ -243,10 +243,15 @@ class CrearCodigoUnidadPoliPage
             ? BtnIconWidget(
                 icon: Icons.open_in_browser_outlined,
                 titulo: "CREAR CÓDIGO",
-                onPressed: () => controller.msjCrearCodigo(onPressed: () {
+                onPressed: () {
+
+
+                  controller.msjCrearCodigo(onPressed: () {
 
                   controller.crearCodigo();
-                }),
+                })
+
+                  ;},
               )
             : Container()
         );

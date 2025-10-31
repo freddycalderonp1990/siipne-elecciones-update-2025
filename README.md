@@ -10,6 +10,28 @@ Engine • revision 18b71d647a
 Tools • Dart 3.7.2 • DevTools 2.42.3
 
 
+##apuntar al git
+-antes 31 de octubre del 2025
+api_provider:
+git:
+url: https://github.com/freddycalderonp1990/paquete_api_provider.git
+ref: v1.0.3
+
+app_mi_upc:
+git:
+url: https://github.com/freddycalderonp1990/app_mi_upc.git
+ref: v3.0.0 # Usa el tag o branch deseado
+
+##apuntar al local
+
+api_provider:
+path: /Users/policianacional/AndroidStudioProjects/paquete_api_provider
+
+app_mi_upc:
+path: /Users/policianacional/AndroidStudioProjects/app_mi_upc
+
+
+
 # Proyecto Flutter
 
 Bienvenido a este proyecto Flutter. Consulta el [Changelog](CHANGELOG.md) para ver los cambios recientes.

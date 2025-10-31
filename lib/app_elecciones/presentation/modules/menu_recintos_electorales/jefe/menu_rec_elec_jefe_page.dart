@@ -118,7 +118,7 @@ class MenuRecElecJefePage extends GetView<MenuRecElecJefeController> {
                   String title =
                       "ELIMINAR CÓDIGO ${controller.recintosElectoralesAbiertos.idDgoCreaOpReci}";
 
-                  DialogosAwesome.getWarningSiNo(
+                  DialogosAwesome.getWarningSiNoContador(
                     title: title,
                     descripcion: msj,
                     btnOkOnPress: () {
@@ -178,7 +178,7 @@ class MenuRecElecJefePage extends GetView<MenuRecElecJefeController> {
   _dialogoFinalizarRecinto({required String nameRecinto}) {
     String title = "FINALIZAR RECINTO";
 
-    DialogosAwesome.getWarningSiNo(
+    DialogosAwesome.getWarningSiNoContador(
       title: title,
       descripcion:
           "¿Está seguro/a que desea finalizar el Recinto?"

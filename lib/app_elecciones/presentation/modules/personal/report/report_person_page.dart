@@ -91,7 +91,7 @@ class ReportPersonPage extends GetView<ReportPersonController> {
 
 
 
-                  DialogosAwesome.getWarningSiNo(
+                  DialogosAwesome.getWarningSiNoContador(
 
                       descripcion:
                       "¿Está  seguro/a que desea eliminar a ${data.personal} del operarivo.?\n\n"
