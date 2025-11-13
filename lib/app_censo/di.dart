@@ -47,6 +47,7 @@ class DependencyInjectionCenso extends Bindings{
 
 
     Get.put(TotpCensoController());
+    Get.put(TotpCensoController());
   }
 
   @override

@@ -5,6 +5,8 @@ class MenuAppCensoController extends GetxController {
   final FetchActiveProcessesByCensusPersonUseCase
   getDatosProcesosActivosByCensado = Get.find();
 
+  final DateTimeController clockController = Get.find();
+
   RxList<DataProceso> dataProcesos = <DataProceso>[].obs;
 
   GetMesasByIdusuarioUseCase getMesasByIdusuarioUseCase = Get.find();
@@ -35,8 +37,9 @@ class MenuAppCensoController extends GetxController {
   }
 
   @override
-  void onReady() {
+  void onReady() async {
     // TODO: Donde la vista ya se presento
+    await clockController.getTimeServer();
     super.onReady();
   }
 

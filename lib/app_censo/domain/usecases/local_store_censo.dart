@@ -15,23 +15,8 @@ class LocalStoreCensoUseCase {
   }
 
 
-  Future<void> setFechaServer(String value) async {
-    return repository.setFechaServer(value);
-  }
-
-  Future<String> getFechaServer() async {
-    return repository.getFechaServer();
-  }
 
 
-  Future<String> getFechaCellPauseCenso() async {
-    return repository.getFechaCellPauseCenso();
-  }
-
-
-  Future<void> setFechaCellPauseCenso(String value) async {
-    return repository.setFechaCellPauseCenso(value);
-  }
 
 
   Future<String> getCodeUnicoCenso(String userName) async {

@@ -5,10 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart' as myGeolocator;
+import 'package:siipnemovil2/feactures/clock_server/domain/use_cases/local_store_clock_server.dart';
 import '../../../../app/core/app_config.dart';
 
 import '../../../../app/presentation/widgets/custom_app_widgets.dart';
 import '../../../../app_siipne_key/data/models/user_error_model.dart';
+import '../../../../feactures/clock_server/date_time_controller.dart';
 import '../../../../feactures/gps/presentation/location/location_bloc.dart';
 import '../../../../feactures/my_qr/core/exceptions/qr_exception.dart';
 import '../../../../feactures/my_qr/core/utils/my_qr.dart';
@@ -23,6 +25,11 @@ import '../censo_policial/local_widgets/desing_clave_digital_censo.dart';
 class TotpCensoController extends GetxController {
   final LocalStoreCensoUseCase _localStoreImpl =
       Get.find<LocalStoreCensoUseCase>();
+
+  final LocalStoreClockServerUseCase _localStoreClockServerUseCase =
+  Get.find<LocalStoreClockServerUseCase>();
+
+
 
   final loginController = Get.find<LoginController>();
 
@@ -71,7 +78,7 @@ class TotpCensoController extends GetxController {
 
   getCodeValidateTimeServer(pass) async {
     //Obtener la hora del server guardada
-    String _fechaServer = await _localStoreImpl.getFechaServer();
+    String _fechaServer = await _localStoreClockServerUseCase.getFechaServer();
     bool tenemosFechaServer = false;
     if (_fechaServer.length > 2) {
       tenemosFechaServer = true;
@@ -105,7 +112,7 @@ class TotpCensoController extends GetxController {
 
     DateTime fechaServer = DateTime.parse(_fechaServer);
 
-    String _fechaCellPause = await _localStoreImpl.getFechaCellPauseCenso();
+    String _fechaCellPause = await _localStoreClockServerUseCase.getFechaCellPause();
     DateTime fechaCellPause = DateTime.parse(_fechaCellPause);
 
     // Calcula la diferencia entre las dos fechas
@@ -114,8 +121,8 @@ class TotpCensoController extends GetxController {
     // Suma la diferencia a la otra fecha
     DateTime nuevaFecha = fechaServer.add(diferencia);
 
-    await _localStoreImpl.setFechaCellPauseCenso(now.toString());
-    await _localStoreImpl.setFechaServer(nuevaFecha.toString());
+    await _localStoreClockServerUseCase.setFechaCellPause(now.toString());
+    await _localStoreClockServerUseCase.setFechaServer(nuevaFecha.toString());
 
     return nuevaFecha;
   }
