@@ -40,6 +40,8 @@
 	<string>La aplicación necesita acceder a tu ubicación, para mostrar los operativos e instalaciones cercanos según la posición donde se encuentre.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>La aplicación necesita acceder a la galería, para poder seleccionar una foto cuando se registre una novedad.</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+    <false/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>
