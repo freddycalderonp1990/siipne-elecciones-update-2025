@@ -27,7 +27,7 @@ class CensistaController extends GetxController {
 
   RxBool showBtnValidarFoto = false.obs;
 
-  bool isCensoTodos = false;
+  DataMesaResponse dataMesaResponse=DataMesaResponse.empty();
 
   @override
   void onInit() async {
@@ -53,10 +53,11 @@ class CensistaController extends GetxController {
     // Recibe los argumentos
     final arguments = Get.arguments as Map<String, dynamic>?;
 
-    // Verifica que los argumentos no sean nulos y que contengan la clave 'data'
-    if (arguments != null && arguments.containsKey('isCensoTodos')) {
+
+    if (arguments != null && arguments.containsKey('DataMesaResponse')) {
       try {
-        isCensoTodos = arguments['isCensoTodos'] as bool;
+        dataMesaResponse = arguments['DataMesaResponse'] as DataMesaResponse;
+
       } catch (e) {
         // DialogosAwesome.getError(descripcion: "1 No existe datos valido para la mesa ");
       }
@@ -91,7 +92,7 @@ class CensistaController extends GetxController {
         GetDatosPersonaCensoRequest request = GetDatosPersonaCensoRequest(
           idDgpPerCenso: idDgpPerCenso,
           idGenUsuarioCensista: user.idGenUsuario,
-          isCensoTodos: isCensoTodos,
+          isCensoTodos: dataMesaResponse.isCensoTodos,
         );
         dataPerCensoList.value = await getDatosPersonaCenso(request: request);
         dataPerCenso.value = dataPerCensoList[0];

@@ -122,6 +122,7 @@ class MenuAppCensoPage extends GetView<MenuAppCensoController> {
 
           SizedBox(height: 8),
 
+
           controller.showBtnQuieroSerCensado.value
               ? BtnMenuWidget(
                 horizontal: true,

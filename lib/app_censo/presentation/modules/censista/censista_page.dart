@@ -22,6 +22,14 @@ class CensistaPage extends GetView<CensistaController> {
                 : "Censista",
         contenido: Column(
           children: [
+
+            Obx(()=>controller.showBtnValidarFoto.value?Container():  DesingFotoNameWidget(
+              img: controller.user.foto,
+              sexo: controller.user.sexo,
+              nombres: controller.user.nombres,
+            ),),
+
+
             Expanded(child: getContenido()),
 
             // 👇 Este Obx detecta cuando ya se cargó la imagen y hace scroll
@@ -335,7 +343,7 @@ class CensistaPage extends GetView<CensistaController> {
                 child: Column(
                   children: [
                     TextSombrasWidget(
-                      title: "FOTO DEL SIIPNE",
+                      title: "FOTO CREDENCIAL",
                       size: responsive.diagonalP(
                         AppConfig.tamTextoTitulo + 0.5,
                       ),

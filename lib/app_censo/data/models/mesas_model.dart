@@ -41,6 +41,8 @@ class DataMesaResponse {
     required this.mesas,
   });
 
+  factory DataMesaResponse.empty()=>DataMesaResponse(isCensita: false, isCensoTodos: false, mesas: []);
+
   factory DataMesaResponse.fromJson(Map<String, dynamic> json) => DataMesaResponse(
     isCensita: json["isCensita"],
     isCensoTodos: json["isCensoTodos"],

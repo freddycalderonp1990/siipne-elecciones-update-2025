@@ -25,7 +25,7 @@ class MenuAppCensoController extends GetxController {
   RxBool isCensista = false.obs;
 
   bool isCensoTodos=false;
-
+  DataMesaResponse dataMesaResponse=DataMesaResponse.empty();
   @override
   void onInit() async {
     user = loginController.user.value;
@@ -58,7 +58,7 @@ class MenuAppCensoController extends GetxController {
         GetMesasByIdusuarioRequest request = GetMesasByIdusuarioRequest(
           idGenUsuario: user.idGenUsuario,
         );
-        DataMesaResponse dataMesaResponse= await getMesasByIdusuarioUseCase(
+         dataMesaResponse= await getMesasByIdusuarioUseCase(
           request: request,
         );
 
@@ -142,12 +142,12 @@ class MenuAppCensoController extends GetxController {
       }
     }
     if(mesasvalidadas){
-      Get.toNamed(AppCensoRoutes.CENSISTA,arguments:{"isCensoTodos": isCensoTodos}  );
+      Get.toNamed(AppCensoRoutes.CENSISTA,arguments:{"isCensoTodos": isCensoTodos,"DataMesaResponse": dataMesaResponse}  );
     }
     return mesasvalidadas;
   }
 
   goToPageIniciarCenso() {
-    Get.toNamed(AppCensoRoutes.CENSO_POLICIAL );
+    Get.toNamed(AppCensoRoutes.CENSO_POLICIAL  );
   }
 }
