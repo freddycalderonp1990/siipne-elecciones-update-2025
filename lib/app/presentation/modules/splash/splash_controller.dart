@@ -100,6 +100,7 @@ class SplashController extends GetxController {
   }
 
   verificarPlataformaIos() {
+   // AppConfig.plataformIsIos = true;
     if (UtilidadesUtil.plataformaIsIos) {
       AppConfig.plataformIsIos = true;
     }

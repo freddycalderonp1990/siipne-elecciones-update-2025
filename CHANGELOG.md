@@ -1,5 +1,9 @@
 # 📌 Changelog
 
+## [2.0.0] – CENSO POLICIAL 2026 (13-abril-2025)
+
+
+
 ## [2.0.0] – Elecciones 2025 – Segunda Vuelta (13-abril-2025)
 
 ### 🔒 Bloqueo de Acceso - implementado

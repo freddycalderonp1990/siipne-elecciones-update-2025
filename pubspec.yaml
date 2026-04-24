@@ -61,8 +61,8 @@ dependencies:
 
 
   flutter_dotenv: ^6.0.0 #leer .env
-  image_picker: ^1.1.2 #Obtener img de la camara o galeria
-  flutter_pdfview: ^1.3.4 #Visaulizar PDF
+  image_picker: ^1.2.1 #Obtener img de la camara o galeria
+  flutter_pdfview: ^1.4.4 #Visaulizar PDF
   dropdown_search: ^6.0.2 #Combo con busqueda
   #url_launcher: ^6.3.1 # Abrir Urls - lo trae desde el paquete de mi upp
   #share_plus: ^10.1.1 # Compartir archivos - lo trae desde el paquete de mi upp
@@ -73,32 +73,40 @@ dependencies:
 
 
   # LIBREARIAS GPS
-  flutter_bloc: ^9.0.0 #Mapas
-  bloc: ^9.0.0
-  equatable: ^2.0.7
+  flutter_bloc: ^9.1.1 #Mapas
+  bloc: ^9.2.0
+  equatable: ^2.0.8
   #permission_handler: ^12.0.0 # Solicita Permisos del dispositivo al usuario (Ubicacion,Galeria.....) - lo trae desde el paquete de mi upp
-  geolocator: ^14.0.0 #ubicacion Gps, del dispositivo
+  geolocator: ^14.0.2 #ubicacion Gps, del dispositivo
   flutter_map: ^8.2.2 #0.9.0 #mapas openstreetmap (TRAE latlong)
   # END LIBREARIAS GPS
 
 
   # NECESARIOS QR
-  qr_code_scanner_plus: ^2.0.10+1 #Qr Scan reemplaza a qr_code_scanner: ^1.0.1
-  zxing2: ^0.2.3 #Leer data de qr desde Galeria
+  qr_code_scanner_plus: ^2.1.1 #Qr Scan reemplaza a qr_code_scanner: ^1.0.1
+  zxing2: ^0.2.4 #Leer data de qr desde Galeria
   qr_flutter: ^4.1.0 #Generar Qr
   # END QR
 
 
-  syncfusion_flutter_gauges: ^31.2.3 #Diseño de clave digital
+  syncfusion_flutter_gauges: ^32.2.8 #Diseño de clave digital
 
+
+  #api_provider:
+   # path: /Users/policianacional/AndroidStudioProjects/paquete_api_provider
 
   api_provider:
-    path: /Users/policianacional/AndroidStudioProjects/paquete_api_provider
+    git:
+      url: https://github.com/freddycalderonp1990/paquete_api_provider.git
+      ref: 1.0.4
 
 
+  #app_mi_upc:
+   # path: /Users/policianacional/AndroidStudioProjects/app_mi_upc
   app_mi_upc:
-    path: /Users/policianacional/AndroidStudioProjects/app_mi_upc
-
+    git:
+      url: https://github.com/freddycalderonp1990/app_mi_upc.git
+      ref: 3.0.1
 
 dev_dependencies:
   flutter_test:
