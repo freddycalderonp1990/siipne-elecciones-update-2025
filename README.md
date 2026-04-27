@@ -1,3 +1,19 @@
+# Pasos Notificaciones push 
+link: https://firebase.google.com/docs/flutter/setup?utm_source=chatgpt.com&hl=es-419&platform=ios
+
+1. para salir del login
+
+firebase logout
+
+2. iniciar login
+firebase login
+
+3. flutterfire configure
+4. flutter pub add firebase_core
+5. flutterfire configure
+6. 
+
+
 # siipnemovil2
 
 actualiza las librerias

@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:siipnemovil2/app/core/values/app_images.dart';
 
 import '../../../app/core/values/app_colors.dart';
@@ -9,6 +10,7 @@ import '../../../app/core/values/app_colors.dart';
 import '../../../app/presentation/widgets/custom_app_widgets.dart';
 import 'package:flutter/rendering.dart';
 
+import '../../../app/services/bloc/notifications_bloc.dart';
 import '../../../app_elecciones/presentation/modules/personal/report/local_widget/desing_personal.dart';
 
 import '../../../app_elecciones/presentation/routes/elecciones_routes.dart';

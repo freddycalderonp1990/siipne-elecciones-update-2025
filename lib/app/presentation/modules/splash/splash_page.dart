@@ -5,6 +5,9 @@ class SplashPage extends GetView<SplashController> {
 
   @override
   Widget build(BuildContext context) {
+
+
+
     final responsive = ResponsiveUtil();
     return GetBuilder<SplashController>(
       builder:

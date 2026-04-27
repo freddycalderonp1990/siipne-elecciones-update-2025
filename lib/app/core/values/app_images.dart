@@ -24,6 +24,8 @@ class AppImages{
   //-*********************** ICONOS *******************************
   static const iconNoImg = _rutaIcon + "icon_no_img.png";
   static const icon = _rutaIcon + "icon.png";
+
+  static const imgIconApp = _rutaIcon + "icon_app.jpeg";
   static const icon_usuario = _rutaIcon + "icon_usuario.png";
   static const icon_clave = _rutaIcon + "icon_clave.png";
   static const icon_huella= _rutaIcon + "icon_huella.png";

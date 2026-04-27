@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:siipnemovil2/app_censo/data/models/models_censo.dart';
 import 'package:siipnemovil2/app_censo/presentation/modules/bindings.dart';
@@ -13,6 +14,7 @@ import '../../../app/core/values/app_images.dart';
 import '../../../app/domain/enums/enums.dart';
 import '../../../app/presentation/widgets/custom_app_widgets.dart';
 import '../../../app/presentation/widgets/img_perfil_redonda.dart';
+import '../../../app/services/bloc/notifications_bloc.dart';
 import '../../../app_elecciones/core/values/siipne_images.dart';
 import '../../../app_elecciones/core/values/siipne_strings.dart';
 import '../../../app_elecciones/presentation/routes/elecciones_routes.dart';

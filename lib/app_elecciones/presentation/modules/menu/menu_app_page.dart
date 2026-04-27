@@ -5,6 +5,9 @@ class MenuAppEleccionesPage extends GetView<MenuAppEleccionesController> {
 
   @override
   Widget build(BuildContext context) {
+
+    context.read<NotificationsBloc>().requestPermission("app_elecciones");
+
     return WorkAreaPageWidget(
       mostrarBtnAtras: true,
       title: "MENÚ ELECCIONES",

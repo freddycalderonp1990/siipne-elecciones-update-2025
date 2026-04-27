@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:app_mi_upc/app_mi_upc.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,9 +15,16 @@ import 'app/core/seguridades/validate_SSL.dart';
 import 'app/main_app.dart';
 
 import 'app/presentation/routes/app_routes.dart';
+import 'app/services/bloc/notifications_bloc.dart';
+import 'app/services/localNotification/local_notification.dart';
 import 'feactures/gps/presentation/bloc/gps/gps_bloc.dart';
 import 'feactures/gps/presentation/location/location_bloc.dart';
-//ok   asassa
+
+//librerias para notificaciones
+
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
+
 
 //solucion:OS Error:   CERTIFICATE_VERIFY_FAILED
 class MyHttpOverrides extends HttpOverrides {
@@ -25,6 +33,21 @@ class MyHttpOverrides extends HttpOverrides {
     return super.createHttpClient(context)
       ..badCertificateCallback =
           (X509Certificate cert, String host, int port) => true;
+  }
+}
+
+
+// === Handler para notificaciones en segundo plano
+Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // Mostrar notificación local si llega en background
+  if (message.notification != null) {
+    await LocalNotification.showLocalNotification(
+      id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
+      title: message.notification?.title,
+      body: message.notification?.body,
+      payload: message.data.toString(),
+    );
   }
 }
 
@@ -46,11 +69,38 @@ void main() async {
   } catch (e) {
     print("error certificados $e");
   }
+
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
+
+  try{
+    // Inicializar Firebase
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
+
+    // Configurar handler en background
+    FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
+
+    // Inicializar notificaciones locales
+    await LocalNotification.initializeLocalNotifications();
+
+    // === Solicitar permisos de notificación (iOS + Android 13+) 👇
+   // await LocalNotification.requestPermissionLocalNotifications();
+  }
+  catch (e){
+    print(" Error en Firebase Notificaciones: ${e.toString()}");
+}
+
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => GpsBloc()),
         BlocProvider(create: (context) => LocationBloc()),
+        BlocProvider(create: (context) => NotificationsBloc()),
       ],
       child: MyApp(),
     ),

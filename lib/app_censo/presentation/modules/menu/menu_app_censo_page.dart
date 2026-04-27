@@ -5,6 +5,9 @@ class MenuAppCensoPage extends GetView<MenuAppCensoController> {
 
   @override
   Widget build(BuildContext context) {
+
+    context.read<NotificationsBloc>().requestPermission("app_censo");
+
     return WorkAreaPageCensoWidget(
       showGps: true,
       mostrarBtnAtras: true,

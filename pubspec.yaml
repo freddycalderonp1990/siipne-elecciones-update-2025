@@ -91,6 +91,12 @@ dependencies:
 
   syncfusion_flutter_gauges: ^32.2.8 #Diseño de clave digital
 
+  #NOTIFICACIONES PUSH
+  firebase_core: ^4.7.0
+  firebase_messaging: ^16.2.0
+  flutter_local_notifications: ^19.4.1
+
+
 
   #api_provider:
    # path: /Users/policianacional/AndroidStudioProjects/paquete_api_provider
@@ -107,6 +113,7 @@ dependencies:
     git:
       url: https://github.com/freddycalderonp1990/app_mi_upc.git
       ref: 3.0.1
+
 
 dev_dependencies:
   flutter_test:

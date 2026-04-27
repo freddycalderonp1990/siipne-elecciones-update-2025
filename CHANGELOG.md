@@ -1,8 +1,28 @@
 # 📌 Changelog
 
-## [2.0.0] – CENSO POLICIAL 2026 (13-abril-2025)
+## [2.2.2] – CENSO POLICIAL 2026 (Lunes 27 de Abril de 2026)
+- Implementacion de las notificaciones push 
+# WEB
+1. Se solicita la modificación de las aplicaciones existentes para la carga masiva de información correspondiente a Recintos, Mesas y Personas, 
+con la finalidad de que los usuarios de las Secciones de Talento Humano Desconcentradas a Nivel Nacional puedan realizar esta actividad dentro 
+del sistema SIIPNE3W respecto del personal que se encuentra en cada una de las unidades.
+2. Se solicita la creación de una aplicación de reportes que permita visualizar el resultado del Censo Policial en cada uno de los Recintos 
+y Mesas, considerando el ámbito de gestión correspondiente a cada uno de los usuarios de las Secciones de Talento Humano Desconcentradas a Nivel Nacional.
+3. Dentro del proceso del Censo Policial se deberá incorporar el procedimiento correspondiente que permita registrar información adicional de los servidores policiales censados,
+entre la cual se deberá considerar al menos los siguientes campos:
+        a) Teléfono
+        b) Correo electrónico
+        c) Familiares o dependientes
+        d) Autoidentificación
+4. Establecer un mecanismo formal, controlado y trazable dentro del SIIPNE para gestionar solicitudes excepcionales de cambio de mesa de servidores policiales, con la finalidad 
+de evitar afectaciones a la planificación original del proceso de Censo Policial.
+5. Desarrollar e incorporar dentro del sistema de Censo Policial una funcionalidad que permita al censador modificar su ubicación geográfica únicamente en casos excepcionales 
+debidamente justificados, para lo cual se deberá exigir el registro obligatorio de documentación de respaldo.
+6. Proceso para cambio de la ubicacion de una mesa.
+7. Implementar notificación para que se le notifique al usuario que ha sido sacado de un recinto.
 
-
+# Móvil
+1. Implementar notificación para que se le notifique al usuario que ha sido sacado de un recinto.
 
 ## [2.0.0] – Elecciones 2025 – Segunda Vuelta (13-abril-2025)
 

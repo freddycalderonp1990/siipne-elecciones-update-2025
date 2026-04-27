@@ -6,6 +6,7 @@ import 'dart:io';
 import 'package:app_mi_upc/app_mi_upc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_pdfview/flutter_pdfview.dart';
 
 
@@ -26,6 +27,7 @@ import '../../core/utils/utilidadesUtil.dart';
 import '../../core/values/app_colors.dart';
 
 import '../../domain/enums/enums.dart';
+import '../../services/bloc/notifications_bloc.dart';
 import '../widgets/custom_app_widgets.dart';
 import '../widgets/img_perfil_redonda.dart';
 import 'controllers.dart';
