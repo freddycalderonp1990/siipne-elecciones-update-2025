@@ -51,6 +51,20 @@ class TiposServiciosEjesPage extends GetView<TiposServiciosEjesController> {
   }
 
   _getMenu(ResponsiveUtil responsive) {
+
+
+    Widget btnValidarRecinto =Container();
+    if(controller.selectProcesoOperativoController.selectProcesosOperativo.value.validarRecinto){
+       btnValidarRecinto = BtnMenuWidget(
+        horizontal: true,
+        colorFondo: Colors.white,
+        img: SiipneEleccionesImages.icon_abrir_rec_elec,
+        title: SiipneStrings.VALIDAR_RECINTO,
+        onTap: () => Get.toNamed(EleccionesRoutes.VALIDAR_RECINTO),
+      );
+    }
+
+
     double separacionBtnMenu = 1.5;
     Widget wg= Obx(() => Row(
           children: [
@@ -85,11 +99,10 @@ class TiposServiciosEjesPage extends GetView<TiposServiciosEjesController> {
         ));
 
 
-    return Obx(() => Column(
+    Widget btns= Obx(() => Column(
       children: [
 
         wg,
-
 
         controller.tipoEjesActivos.value.tipoEjeOtros
             ? BtnMenuWidget(
@@ -103,5 +116,17 @@ class TiposServiciosEjesPage extends GetView<TiposServiciosEjesController> {
         ),
       ],
     ));
+
+    return Column(
+      children: [
+        btns,
+        btnValidarRecinto
+      ],
+    );
   }
+
+
+
+
+
 }

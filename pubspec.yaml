@@ -78,7 +78,7 @@ dependencies:
   equatable: ^2.0.8
   #permission_handler: ^12.0.0 # Solicita Permisos del dispositivo al usuario (Ubicacion,Galeria.....) - lo trae desde el paquete de mi upp
   geolocator: ^14.0.2 #ubicacion Gps, del dispositivo
-  flutter_map: ^8.2.2 #0.9.0 #mapas openstreetmap (TRAE latlong)
+  flutter_map: ^8.3.0 #0.9.0 #mapas openstreetmap (TRAE latlong)
   # END LIBREARIAS GPS
 
 

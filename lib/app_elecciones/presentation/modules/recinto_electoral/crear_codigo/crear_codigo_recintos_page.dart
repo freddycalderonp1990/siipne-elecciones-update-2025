@@ -46,8 +46,10 @@ class CrearCodigoRecintosPage extends GetView<CrearCodigoRecintosController> {
       () => ComboBusqueda(
         selectValue: controller.selectRecintosElectoral.value,
         showClearButton: false,
+        icon: Icons.home_work_rounded,
+
         datos: controller.listRecintosElectorales.value,
-        displayField: (item) => item.nomRecintoElec,
+        displayField: (item) =>item.validado?  item.nomRecintoElec+ " (VALIDADO)":item.nomRecintoElec,
         searchHint: "Recinto Electoral",
         textSeleccioneUndato: "Seleccione un Recinto",
         complete: (value) {

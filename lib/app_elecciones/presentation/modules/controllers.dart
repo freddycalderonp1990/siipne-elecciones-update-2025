@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:get/get_rx/get_rx.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/state_manager.dart';
@@ -77,3 +78,5 @@ part 'novedades/add/add_novedades_controller.dart';
 part 'novedades/report/report_novedades_controller.dart';
 
 part 'combo_unidades_policiales/dynamic_combo_controller.dart';
+
+part 'validate_recinto/validate_recinto_controller.dart';

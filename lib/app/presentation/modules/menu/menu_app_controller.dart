@@ -63,6 +63,10 @@ class MenuAppController extends GetxController {
               Get.offAllNamed(AppCensoRoutes.MENU_APP);
 
             }
+
+            //cambiar borara estas lineas
+            showMenuElecciones.value=true;
+            showMenuCenso.value=true;
       },
     );
     peticionServerState(false);

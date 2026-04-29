@@ -29,6 +29,8 @@ class EleccionesRoutes{
 
   static const CONFIG_APP="/${name}config_app";
 
+  static const VALIDAR_RECINTO="/${name}validar_recinto";
+
 
 
 

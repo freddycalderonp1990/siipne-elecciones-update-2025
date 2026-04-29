@@ -36,6 +36,11 @@ class AppConfig {
 
   static const int intentosFallidosLogin=3;
 
+  static String userAgentPackageNameAndroid=
+  "ecuador.policianacional.dntic.siipnemovil2";
+  static String userAgentPackageNameIos=
+      "ecuador.policianacional.dntic.siipnemovil";
+
 
 
   static  String linkAppAndroid =dotenv.env['LINK_APP_SIIPNE_ELECCIONES_ANDROID'] ??

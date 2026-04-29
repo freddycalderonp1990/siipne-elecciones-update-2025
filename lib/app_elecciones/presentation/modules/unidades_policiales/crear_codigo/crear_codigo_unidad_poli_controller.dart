@@ -129,7 +129,7 @@ class CrearCodigoUnidadPoliController extends GetxController {
                 .selectProcesosOperativo
                 .value
                 .idDgoProcElec,
-        idDgoTipoEje: idDgoTipoEje,
+        idDgoTipoEje: idDgoTipoEje, onlyValidados: false,//en false para mostrar todos asi no esten validados
       );
 
       listRecintosElectorales.value = await _eleccionesRecintosApiImpl

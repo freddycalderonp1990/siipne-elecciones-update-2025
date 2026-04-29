@@ -35,6 +35,8 @@ class MenuAppEleccionesPage extends GetView<MenuAppEleccionesController> {
               children: <Widget>[
                 SizedBox(height: responsive.altoP(2)),
                 _getMenu(responsive),
+
+
                 SizedBox(height: responsive.altoP(4)),
                 BtnIconWidget(
                   icon: Icons.exit_to_app,
@@ -52,9 +54,9 @@ class MenuAppEleccionesPage extends GetView<MenuAppEleccionesController> {
   }
 
   _getMenu(ResponsiveUtil responsive) {
-    double separacionBtnMenu = 1.5;
 
-    return Row(
+
+    Widget btn1= Row(
       children: [
         Flexible(
           child: BtnMenuWidget(
@@ -77,5 +79,9 @@ class MenuAppEleccionesPage extends GetView<MenuAppEleccionesController> {
         ),
       ],
     );
+
+
+
+    return btn1;
   }
 }

@@ -38,6 +38,7 @@ class SiipneStrings{
 
   static const CREARCODIGO = "CREAR CÓDIGO";
   static const ANEXARSE = "ANEXARSE";
+  static const VALIDAR_RECINTO = "VALIDAR RECINTO";
 
   //CabeceraWidget Dialogos
   static const INFORMACION = "INFORMACIÓN";

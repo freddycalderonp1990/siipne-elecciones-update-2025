@@ -25,6 +25,21 @@ debidamente justificados, para lo cual se deberá exigir el registro obligatorio
 1. Implementar notificación para que se le notifique al usuario que ha sido sacado de un recinto.
 
 ## [2.0.0] – Elecciones 2025 – Segunda Vuelta (13-abril-2025)
+1. Se deberá implementar la validación de la ubicación de los recintos electorales con la validación de las coordenadas registradas por el dispositivo móvil del usuario al momento de encontrarse en el recinto electoral.
+  - se agrega en la tabla dgoComisios el campo estadoRegistro ENUM('REGISTRADO', 'VALIDADO')
+  - 
+# Modificar
+appmovil/siipneMovil/recintoElectoral/data/dataDgoProcElec.php
+appmovil/siipneMovil/recintoElectoral/data/dataDgoReciElect.php
+- refactorizacion de sentcias sql
+- 
+
+appmovil/siipneMovil/recintoElectoral/controller/controllerDgoReciElect.php
+- se agrega el parametro onlyValidados
+
+
+ENUM('REGISTRADO', 'VALIDADO')
+
 
 ### 🔒 Bloqueo de Acceso - implementado
 - Implementación del bloqueo de acceso para anexarse o crear código.

@@ -5,39 +5,44 @@ import 'package:flutter_map/flutter_map.dart';
 
 import 'package:latlong2/latlong.dart';
 import 'package:get/get.dart';
-import 'package:siipnemovil2/app/core/app_config.dart';
 import 'package:siipnemovil2/app/core/utils/utilidadesUtil.dart';
 
 import '../../../../../../app/core/utils/responsiveUtil.dart';
 import '../../../../../../app/core/values/app_colors.dart';
 import '../../../../../../app/presentation/widgets/custom_app_widgets.dart';
-import '../../../../../../feactures/mapas/openstreetmap.dart';
+import '../../../../../feactures/mapas/openstreetmap.dart';
+import '../../../../../feactures/mapas/widgets/custom_btn_map.dart';
+import '../../../../../feactures/mapas/widgets/custom_marker.dart';
+import '../../../../data/models/models.dart';
 
-class DesingMapa extends StatefulWidget {
+class DesingMapaRecinto extends StatefulWidget {
   final LatLng ubicacion;
   final MapController mapController;
   final ValueChanged<LatLng> tapComplete;
   final VoidCallback? onPressedSave;
 
+  final List<RecintosElectoral> listRecintosElectorales;
+
   final GestureTapCallback ontapMyUbicacion;
   final bool cargando;
 
-  const DesingMapa({
+  const DesingMapaRecinto({
     super.key,
     required this.ubicacion,
 
     required this.mapController,
     required this.tapComplete,
     required this.ontapMyUbicacion,
+    required this.listRecintosElectorales,
      this.onPressedSave,
     this.cargando = false,
   });
 
   @override
-  State<DesingMapa> createState() => _DesingMapaState();
+  State<DesingMapaRecinto> createState() => _DesingMapaRecintoState();
 }
 
-class _DesingMapaState extends State<DesingMapa> {
+class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
   final _mapKey = GlobalKey(); // 👈 clave para el FlutterMap
   @override
   Widget build(BuildContext context) {
@@ -66,7 +71,7 @@ class _DesingMapaState extends State<DesingMapa> {
               maxZoom: 25.0,
               initialZoom: 18,
             ),
-            children: [Openstreetmap.getMapa(), getMarker()],
+            children: [Openstreetmap.getMapa(), getMarker(), getMarkerRecinto()],
           ),
 
           getBtnAtras(),
@@ -81,6 +86,8 @@ class _DesingMapaState extends State<DesingMapa> {
 
 
 
+
+
   MarkerLayer getMarker() {
     return MarkerLayer(
       markers: [
@@ -89,58 +96,38 @@ class _DesingMapaState extends State<DesingMapa> {
           width: 90,
           rotate: true,
           point: widget.ubicacion,
-          child: getBtnCustomIcon(
+          child: CustomMarker(
+            colorIcon: Colors.red,
             icon: Icons.person_pin_circle_rounded,
-            ontap: () {},
+            onTap: () {}, zoom:widget. mapController.camera.zoom,
           ),
         ),
       ],
     );
   }
 
-  getMarker2() {
-    return MarkerLayer(
-      markers: [
-        Marker(
-          height: 90,
-          width: 90,
-          rotate: true,
-          point: widget.ubicacion,
-          child: getBtnCustomIcon(
-            icon: Icons.person_pin_circle_rounded,
-            ontap: () {},
-          ),
+
+  MarkerLayer getMarkerRecinto() {
+    List<Marker> markers = widget.listRecintosElectorales.map((recinto) {
+      return Marker(
+        width: 70,
+        height: 70,
+        point: LatLng(recinto.latitud, recinto.longitud),
+        child: CustomMarker(
+          zoom:widget. mapController.camera.zoom, // 👈 aquí está la clave
+label: recinto.nomRecintoElecOnly,
+          colorIcon: recinto.validado?Colors.green:Colors.white,
+          icon: Icons.home_work,
+          onTap: () {
+            print("Recinto: ${recinto.nomRecintoElec}");
+          },
         ),
-      ],
-    );
+      );
+    }).toList();
+
+    return MarkerLayer(markers: markers);
   }
 
-  Widget getBotonera2() {
-    final responsive = ResponsiveUtil();
-    return Positioned(
-      bottom: responsive.altoP(1),
-      right: 0,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-            getBtnMyUbicacion(),
-            SizedBox(height: responsive.altoP(2)),
-            getBtnZoom(),
-
-          ],),
-          getTextLatLongitud(),
-          btnGuardar(),
-
-          SizedBox(height: responsive.altoP(2)),
-
-
-        ],
-      ),
-    );
-  }
 
 
   Widget getBotonera() {
@@ -196,9 +183,9 @@ class _DesingMapaState extends State<DesingMapa> {
       children: <Widget>[
         Padding(
           padding: EdgeInsets.only(left: padding, top: padding, right: padding),
-          child: getBtnCustomIcon(
+          child: CustomBtnMap(
             icon: Icons.zoom_in,
-            ontap: () {
+            onTap: () {
               final zoomActual = widget.mapController.camera.zoom;
               widget.mapController.move(
                 widget.mapController.camera.center,
@@ -209,9 +196,9 @@ class _DesingMapaState extends State<DesingMapa> {
         ),
         Padding(
           padding: EdgeInsets.all(padding),
-          child: getBtnCustomIcon(
+          child: CustomBtnMap(
             icon: Icons.zoom_out,
-            ontap: () {
+            onTap: () {
               final zoomActual = widget.mapController.camera.zoom;
               widget.mapController.move(
                 widget.mapController.camera.center,
@@ -228,9 +215,9 @@ class _DesingMapaState extends State<DesingMapa> {
 
   Widget getBtnMyUbicacion() {
     final responsive = ResponsiveUtil();
-    return getBtnCustomIcon(
+    return CustomBtnMap(
       icon: Icons.my_location,
-      ontap: widget.ontapMyUbicacion,
+      onTap: widget.ontapMyUbicacion,
     );
   }
 
@@ -239,9 +226,10 @@ class _DesingMapaState extends State<DesingMapa> {
     return Positioned(
       top: responsive.altoP(5),
       left: 0,
-      child: getBtnCustomIcon(
+      child: CustomBtnMap(
         icon: Icons.arrow_back,
-        ontap: () {
+
+        onTap: () {
           Get.back();
         },
       ),
@@ -261,39 +249,5 @@ class _DesingMapaState extends State<DesingMapa> {
     );
   }
 
-  Widget getBtnCustomIcon({
-    GestureTapCallback? ontap,
-    double size = 45,
-    Color colorIcon = Colors.white,
-    required IconData icon,
-  }) {
-    return CupertinoButton(
-      borderRadius: BorderRadius.circular(20),
-      padding: EdgeInsets.all(1),
-      onPressed: ontap,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Container(
-          height: size,
-          width: size,
-          decoration: BoxDecoration(
-            border: Border.all(color: AppColors.colorBotones, width: 0.5),
-            color: Colors.white10,
-            borderRadius: BorderRadius.circular(50),
-          ),
-          child: Container(
-            child:
-                size > 38
-                    ? Icon(icon, color: colorIcon, size: size - 20)
-                    : Container(),
-            margin: EdgeInsets.all(2),
-            decoration: BoxDecoration(
-              color: AppColors.colorBotones,
-              borderRadius: BorderRadius.circular(50),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+
 }

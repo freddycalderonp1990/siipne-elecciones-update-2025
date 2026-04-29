@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:siipnemovil2/app/core/values/app_images.dart';
 
 import '../../../app/core/values/app_colors.dart';
@@ -24,6 +25,7 @@ import '../../../app/core/utils/photo_helper.dart';
 import '../../../app/presentation/widgets/img_perfil_redonda.dart';
 import '../../../app_elecciones//presentation/widgets/customWidgets.dart';
 
+import 'package:latlong2/latlong.dart';
 
 
 import 'package:get/get.dart';
@@ -31,6 +33,7 @@ import 'package:get/get.dart';
 
 import '../../../feactures/gps/presentation/widgets/my_ubicacion_widget.dart';
 
+import '../../../feactures/mapas/widgets/custom_marker.dart';
 import '../../core/values/siipne_colors.dart';
 import '../../core/values/siipne_images.dart';
 import '../../core/values/siipne_strings.dart';
@@ -42,6 +45,7 @@ import 'controllers.dart';
 import '../../../app/core/utils/responsiveUtil.dart';
 import 'novedades/add/validate.dart';
 import 'novedades/report/local_widget/desing_novedades.dart';
+import 'validate_recinto/local_widget/desing_mapa.dart';
 
 
 part 'menu/menu_app_page.dart';
@@ -62,3 +66,5 @@ part 'personal/report/report_person_page.dart';
 part 'novedades/add/add_novedades_page.dart';
 part 'novedades/report/report_novedades_page.dart';
 part 'combo_unidades_policiales/dynamic_combo_widget.dart';
+
+part 'validate_recinto/validate_recinto_page.dart';

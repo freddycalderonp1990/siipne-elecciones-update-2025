@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'controllers.dart';
 
 
-
 part 'menu/menu_app_binding.dart';
 part 'select_proceso_operativo/select_proceso_operativo_binding.dart';
 part 'tipos_servicios_ejes/tipos_servicios_ejes_binding.dart';
@@ -22,5 +21,7 @@ part 'personal/report/report_person_binding.dart';
 part 'novedades/add/add_novedades_binding.dart';
 part 'novedades/report/report_novedades_binding.dart';
 
+
+part 'validate_recinto/validate_recinto_binding.dart';
 
 

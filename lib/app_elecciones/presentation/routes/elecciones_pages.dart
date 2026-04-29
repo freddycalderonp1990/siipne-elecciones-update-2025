@@ -57,5 +57,10 @@ class EleccionesPages {
         name: EleccionesRoutes.REPORT_NOVEDADES,
         page: () => ReportNovedadesPage(),
         binding: ReportNovedadesBinding()),
+
+    AppPages.getPageConfig(
+        name: EleccionesRoutes.VALIDAR_RECINTO,
+        page: () => ValidateRecintoPage(),
+        binding: ValidateRecintoBinding()),
   ];
 }

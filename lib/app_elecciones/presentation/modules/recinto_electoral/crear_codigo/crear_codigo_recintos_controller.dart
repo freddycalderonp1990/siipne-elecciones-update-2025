@@ -56,6 +56,7 @@ class CrearCodigoRecintosController extends GetxController {
       LatLng pos = await locationBloc.getCurrentPosition();
 
       RecintoCercanosRequest req = RecintoCercanosRequest(
+        onlyValidados: selectProcesoOperativoController.selectProcesosOperativo.value.mostrarValidado,
         latitud: pos.latitude,
         longitud: pos.longitude,
         idDgoProcElec:
