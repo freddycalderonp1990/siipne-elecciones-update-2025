@@ -8,18 +8,9 @@ class ValidateRecintoPage extends GetView<ValidateRecintoController> {
     return Obx(
       () => DesingMapaRecinto(
 
+    listRecintosElectorales: controller.listRecintosElectorales,
         onPressedSave: () {
-          String msj =
-              "¿Está seguro/a de registrar estas coordenadas?"
-              "\n\nVerifique que se encuentre exactamente en el lugar del recinto electoral, ya que estas coordenadas serán utilizadas para las registro de las elecciones."
-              "\nEn caso de presentar inconvenientes, comuníquese con el administrador.";
-          DialogosAwesome.getWarningSiNo(
-            title: "Guardar",
-            descripcion: msj,
-            btnOkOnPress: () {
-              controller.updateMesaCoordinates();
-            },
-          );
+          controller.updateMesaCoordinates();
         },
         ubicacion: controller.ubicacion.value,
         mapController: controller.mapController,
@@ -31,7 +22,7 @@ class ValidateRecintoPage extends GetView<ValidateRecintoController> {
           await controller.getUbicacionActual();
         },
 
-        cargando: controller.peticionServerState.value, listRecintosElectorales: controller.listRecintosElectorales,
+        cargando: controller.peticionServerState.value,
       ),
     );
   }

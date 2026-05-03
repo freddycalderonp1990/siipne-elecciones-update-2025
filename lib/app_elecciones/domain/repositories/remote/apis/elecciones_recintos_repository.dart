@@ -33,7 +33,9 @@ abstract class EleccionesRecintosRepository {
 
 
 
-
+  Future<bool> validarRecinto({
+    required ValidarRecintoRequest request,
+  });
 
 
 }

@@ -70,6 +70,8 @@ class ValidateRecintoController extends GetxController {
 
     mapController.move(ubicacion.value, 18);
     peticionServerState(false);
+
+    await getRecintosElectorales();
   }
 
 

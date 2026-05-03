@@ -41,6 +41,11 @@ appmovil/siipneMovil/recintoElectoral/controller/controllerDgoReciElect.php
 ENUM('REGISTRADO', 'VALIDADO')
 
 
+/Volumes/siipne/appmovil/siipneMovil/recintoElectoral/data/dataDgoComisios.php
+/Volumes/siipne/appmovil/siipneElecciones/app_elecciones/clases/constante.php
+/Volumes/siipne/appmovil/siipneElecciones/app_elecciones/controller/controllerRecinto.php
+- para modificar la vaklidacion de recintos
+
 ### 🔒 Bloqueo de Acceso - implementado
 - Implementación del bloqueo de acceso para anexarse o crear código.
 - En la tabla `dgoPerAsigOpe`, se considera el campo `situacion` con los siguientes valores:

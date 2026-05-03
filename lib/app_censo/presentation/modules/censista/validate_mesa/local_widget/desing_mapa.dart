@@ -66,7 +66,7 @@ class _DesingMapaState extends State<DesingMapa> {
               maxZoom: 25.0,
               initialZoom: 18,
             ),
-            children: [Openstreetmap.getMapa(), getMarker()],
+            children: [Openstreetmap.getMapa()],
           ),
 
           getBtnAtras(),

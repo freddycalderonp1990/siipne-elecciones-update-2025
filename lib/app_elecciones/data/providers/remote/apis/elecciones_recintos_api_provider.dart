@@ -220,4 +220,10 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
       return DatosRecintoElectoralClass.empty();
     });
   }
+
+  @override
+  Future<bool> validarRecinto({required ValidarRecintoRequest request}) async {
+    // TODO: implement validarRecinto
+    throw UnimplementedError();
+  }
 }
