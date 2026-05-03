@@ -36,6 +36,8 @@ class RecintosElectoralsModel {
 
 class RecintosElectoral {
   RecintosElectoral({
+    this.idDgoComisios=0,
+    this.apenomValida="",
     this.nomRecintoElecOnly='',
 
 
@@ -59,6 +61,7 @@ class RecintosElectoral {
 
 
   int idDgoReciElect;
+  int idDgoComisios;
 
 
   String codRecintoElec;
@@ -73,6 +76,8 @@ class RecintosElectoral {
   String distance;
   bool validado;
 
+  String apenomValida;
+
   factory RecintosElectoral.fromJson(Map<String, dynamic> json) {
     String nomRecinto =
         json["nomRecintoElec"] == null ? null : json["nomRecintoElec"];
@@ -83,6 +88,8 @@ class RecintosElectoral {
     nomRecinto = nomRecinto + dist;
 
     return RecintosElectoral(
+      idDgoComisios: ParseModel.parseToInt(json["idDgoComisios"]),
+      apenomValida: ParseModel.parseToString(json["apenomValida"]),
 
       idDgoReciElect: ParseModel.parseToInt(json["idDgoReciElect"]),
 

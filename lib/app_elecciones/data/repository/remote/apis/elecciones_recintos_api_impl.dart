@@ -6,25 +6,30 @@ class EleccionesRecintosApiImpl extends EleccionesRecintosRepository {
   EleccionesRecintosApiImpl(this._EleccionesRecintosApiProviderImpl);
 
   @override
-  Future<RecintosElectoralesAbiertos> verificarperAsignadoRecElectoral(
-      {required int idGenPersona}) async {
-    return await _EleccionesRecintosApiProviderImpl
-        .verificarperAsignadoRecElectoral(idGenPersona: idGenPersona);
+  Future<RecintosElectoralesAbiertos> verificarperAsignadoRecElectoral({
+    required int idGenPersona,
+  }) async {
+    return await _EleccionesRecintosApiProviderImpl.verificarperAsignadoRecElectoral(
+      idGenPersona: idGenPersona,
+    );
   }
 
   @override
   Future<List<RecintosElectoral>> getRecintosElectoralesCercanos({
     required RecintoCercanosRequest request,
   }) async {
-    return await _EleccionesRecintosApiProviderImpl
-        .getRecintosElectoralesCercanos(request: request);
+    return await _EleccionesRecintosApiProviderImpl.getRecintosElectoralesCercanos(
+      request: request,
+    );
   }
 
   @override
-  Future<AbrirRecintoElectoral> crearCodigo(
-      {required CreateCodeRecintoRequest request}) async {
+  Future<AbrirRecintoElectoral> crearCodigo({
+    required CreateCodeRecintoRequest request,
+  }) async {
     return await _EleccionesRecintosApiProviderImpl.crearCodigo(
-        request: request);
+      request: request,
+    );
   }
 
   @override
@@ -32,29 +37,42 @@ class EleccionesRecintosApiImpl extends EleccionesRecintosRepository {
     required AbandonarRecintoRequest request,
   }) async {
     return await _EleccionesRecintosApiProviderImpl.abandonarRecintoElectoral(
-        request: request);
+      request: request,
+    );
   }
 
   @override
-  Future<String> eliminarRecintoElectoralAbierto(
-      {required EliminarRecintoRequest request}) async {
-    return await _EleccionesRecintosApiProviderImpl
-        .eliminarRecintoElectoralAbierto(request: request);
+  Future<String> eliminarRecintoElectoralAbierto({
+    required EliminarRecintoRequest request,
+  }) async {
+    return await _EleccionesRecintosApiProviderImpl.eliminarRecintoElectoralAbierto(
+      request: request,
+    );
   }
 
   @override
-  Future<datosFinalizarProceso> finalizarRecintoElectoral(
-      {required FinalizarRecintoRequest request}) async {
+  Future<datosFinalizarProceso> finalizarRecintoElectoral({
+    required FinalizarRecintoRequest request,
+  }) async {
     return await _EleccionesRecintosApiProviderImpl.finalizarRecintoElectoral(
-        request: request);
+      request: request,
+    );
   }
 
   @override
   Future<DatosRecintoElectoralClass>
-      consultarDatosEncargadoRecintoPoridCreaRecinto(
-          {required int idDgoCreaOpReci}) async {
-    return await _EleccionesRecintosApiProviderImpl
-        .consultarDatosEncargadoRecintoPoridCreaRecinto(
-            idDgoCreaOpReci: idDgoCreaOpReci);
+  consultarDatosEncargadoRecintoPoridCreaRecinto({
+    required int idDgoCreaOpReci,
+  }) async {
+    return await _EleccionesRecintosApiProviderImpl.consultarDatosEncargadoRecintoPoridCreaRecinto(
+      idDgoCreaOpReci: idDgoCreaOpReci,
+    );
+  }
+
+  @override
+  Future<bool> validarRecinto({required ValidarRecintoRequest request}) async {
+    return await _EleccionesRecintosApiProviderImpl.validarRecinto(
+      request: request,
+    );
   }
 }

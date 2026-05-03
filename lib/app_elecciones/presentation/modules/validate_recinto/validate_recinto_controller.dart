@@ -40,29 +40,7 @@ class ValidateRecintoController extends GetxController {
     super.onClose();
   }
 
- /* getDataToPage() async {
-    // Recibe los argumentos
-    final arguments = Get.arguments as Map<String, dynamic>?;
 
-    // Verifica que los argumentos no sean nulos y que contengan la clave 'data'
-    if (arguments != null &&
-        arguments.containsKey('mesa')) {
-      try {
-        dataMesa = arguments['mesa']
-        as DataMesa;
-      } catch (e) {
-        DialogosAwesome.getError(descripcion: "1 No existe datos valido para la mesa ");
-      }
-    } else {
-      DialogosAwesome.getError(descripcion: "No existe datos valido para la mesa ",btnOkOnPress: (){
-
-        Future.delayed(Duration.zero, () {
-          Navigator.pop(Get.context!);
-        });
-      });
-    }
-  }
-*/
   getUbicacionActual() async{
     peticionServerState(true);
     final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
@@ -96,22 +74,23 @@ class ValidateRecintoController extends GetxController {
     peticionServerState(false);
   }
 
-  Future<void> updateMesaCoordinates() async {
+  Future<void> updateRecintoCoordinates() async {
 
-   /* peticionServerState(true);
+   peticionServerState(true);
 
     await ExceptionDialogos.manejarErroresShowDialogo(() async {
       String ip = await DeviceInfoApp.getIp;
 
 
-      UpdateCoordenadasMesaRequest request = UpdateCoordenadasMesaRequest(
+      ValidarRecintoRequest request = ValidarRecintoRequest(
         usuario: user.idGenUsuario,
-        latitud: ubicacion.value.latitude,
-        longitud: ubicacion.value.longitude,
-        ip: ip, idDgpMesa: dataMesa.idDgpMesa,
+        latitudValidacion: ubicacion.value.latitude,
+        longitudValidacion: ubicacion.value.longitude,
+        ip: ip, idDgoComisios: selectRecintosElectoral.value.idDgoComisios
+        
       );
 
-      bool result = await updateMesaCoordinatesUseCase(request: request);
+      bool result = await _eleccionesRecintosApiImpl.validarRecinto(request: request);
       if (!result) {
         DialogosAwesome.getWarning(
           descripcion: "No se pudo completar el registro",
@@ -127,7 +106,7 @@ class ValidateRecintoController extends GetxController {
       );
     });
 
-    peticionServerState(false);*/
+    peticionServerState(false);
   }
 
 

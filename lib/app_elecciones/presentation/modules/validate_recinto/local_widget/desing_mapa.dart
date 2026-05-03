@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_marker_popup/extension_api.dart';
+import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
 
 import 'package:latlong2/latlong.dart';
 import 'package:get/get.dart';
@@ -20,6 +22,7 @@ class DesingMapaRecinto extends StatefulWidget {
   final MapController mapController;
   final ValueChanged<LatLng> tapComplete;
   final VoidCallback? onPressedSave;
+  final ValueChanged<RecintosElectoral>? onRecintoSeleccionado;
 
   final List<RecintosElectoral> listRecintosElectorales;
 
@@ -35,7 +38,7 @@ class DesingMapaRecinto extends StatefulWidget {
     required this.ontapMyUbicacion,
     this.onPressedSave,
     this.cargando = false,
-    required this.listRecintosElectorales,
+    required this.listRecintosElectorales, this.onRecintoSeleccionado,
   });
 
   @override
@@ -49,9 +52,10 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
   final ScrollController _listController = ScrollController();
   ScrollController? _internalScrollController;
 
+  final PopupController _popupController = PopupController();
 
   final DraggableScrollableController _sheetController =
-  DraggableScrollableController();
+      DraggableScrollableController();
 
   final iconRecinto = Icons.location_city;
   @override
@@ -81,7 +85,7 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
               maxZoom: 25.0,
               initialZoom: 18,
             ),
-            children: [Openstreetmap.getMapa(), getMarkes()],
+            children: [Openstreetmap.getMapa(), ...getMarkes()],
           ),
 
           getReciontoDraggableScrollableSheet(),
@@ -95,9 +99,7 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
   }
 
   Widget getReciontoDraggableScrollableSheet() {
-
-
-    double minChildSize=0.25;
+    double minChildSize = 0.25;
     return
     // BOTTOM SHEET DESLIZABLE
     DraggableScrollableSheet(
@@ -106,8 +108,9 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
       minChildSize: minChildSize,
       maxChildSize: 0.50,
       builder: (context, scrollController) {
-
-        List<RecintosElectoral> listaOrdenada = List.from(widget.listRecintosElectorales);
+        List<RecintosElectoral> listaOrdenada = List.from(
+          widget.listRecintosElectorales,
+        );
 
         if (selectedIndex != null) {
           final seleccionado = listaOrdenada.removeAt(selectedIndex!);
@@ -132,114 +135,155 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
                 ),
               ),
 
+              Expanded(
+                child: Builder(
+                  builder: (context) {
+                    List<RecintosElectoral> listaOrdenada = List.from(
+                      widget.listRecintosElectorales,
+                    );
 
-            Expanded(
-              child: Builder(
-                builder: (context) {
-                  List<RecintosElectoral> listaOrdenada =
-                  List.from(widget.listRecintosElectorales);
-
-                  if (selectedIndex != null &&
-                      selectedIndex! < listaOrdenada.length) {
-                    final seleccionado = listaOrdenada.removeAt(selectedIndex!);
-                    listaOrdenada.insert(0, seleccionado);
-                  }
-
-                  _internalScrollController = scrollController; // 👈 GUARDAS EL REAL
-
-
-
-                  return ListView.builder(
-                    controller: scrollController, // 👈 IMPORTANTE (NO cambiar)
-                    itemCount: listaOrdenada.length,
-                    itemBuilder: (context, index) {
-                      RecintosElectoral recinto = listaOrdenada[index];
-
-                      bool esSeleccionado =
-                      (selectedIndex != null && index == 0);
-
-                      return Container(
-                        margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: esSeleccionado
-                              ? AppColors.colorAzul
-                              : Colors.transparent,
-                          borderRadius: BorderRadius.circular(10),
-                          border: Border.all(
-                            color: esSeleccionado
-                                ? Colors.black
-                                : Colors.grey.shade300,
-                            width: esSeleccionado ? 1.5 : 0.5,
-                          ),
-                        ),
-                        child: ListTile(
-                          leading: Icon(
-                            esSeleccionado
-                                ? Icons.check_circle
-                                : Icons.location_city,
-                            color: esSeleccionado
-                                ? Colors.white
-                                : AppColors.colorAzul,
-                          ),
-                          title: Text(
-                            recinto.nomRecintoElecOnly,
-                            style: TextStyle(
-                              color: esSeleccionado
-                                  ? Colors.white
-                                  : Colors.black,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                          subtitle: Text(
-                            "Distancia: ${recinto.distance}m",
-                            style: TextStyle(
-                              color: esSeleccionado
-                                  ? Colors.white70
-                                  : Colors.black54,
-                            ),
-                          ),
-                          onTap: () {
-                            final originalIndex =
-                            widget.listRecintosElectorales.indexOf(recinto);
-
-                            final point = LatLng(
-                              recinto.latitud,
-                              recinto.longitud,
-                            );
-
-                            setState(() {
-                              selectedIndex = originalIndex;
-                              recintoSeleccionado = recinto;
-                            });
-
-                            ajustarMapaParaVerAmbos(point);
-
-                            // 🔥 SCROLL AL INICIO (CORRECTO)
-                            Future.delayed(Duration(milliseconds: 100), () {
-                              if (_internalScrollController != null &&
-                                  _internalScrollController!.hasClients) {
-                                _internalScrollController!.animateTo(
-                                  0,
-                                  duration: Duration(milliseconds: 300),
-                                  curve: Curves.easeInOut,
-                                );
-                              }
-                            });
-
-                            // 🔥 MINIMIZAR SHEET
-                            _sheetController.animateTo(
-                              minChildSize,
-                              duration: Duration(milliseconds: 300),
-                              curve: Curves.easeInOut,
-                            );
-                          },
-                        ),
+                    if (selectedIndex != null &&
+                        selectedIndex! < listaOrdenada.length) {
+                      final seleccionado = listaOrdenada.removeAt(
+                        selectedIndex!,
                       );
-                    },
-                  );
-                },
+                      listaOrdenada.insert(0, seleccionado);
+                    }
+
+                    _internalScrollController =
+                        scrollController; // 👈 GUARDAS EL REAL
+
+                    return ListView.builder(
+                      controller:
+                          scrollController, // 👈 IMPORTANTE (NO cambiar)
+                      itemCount: listaOrdenada.length,
+                      itemBuilder: (context, index) {
+                        RecintosElectoral recinto = listaOrdenada[index];
+
+                        bool esSeleccionado =
+                            (selectedIndex != null && index == 0);
+                        bool esValidado = recinto.validado;
+
+                        Color? fondo;
+
+                        if (esSeleccionado) {
+                          fondo = AppColors.colorAzul; // 🔵 seleccionado manda
+                        } else if (esValidado) {
+                          fondo = Colors.green; // 🟢 validado
+                        } else {
+                          fondo = Colors.transparent;
+                        };
+
+                        return Container(
+                          margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: fondo,
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: esSeleccionado
+                                  ? Colors.black
+                                  : esValidado
+                                  ? Colors.green.shade700
+                                  : Colors.grey.shade300,
+                              width: esSeleccionado ? 1.5 : 0.5,
+                            ),
+                          ),
+                          child: ListTile(
+                            trailing: esValidado
+                                ? Container(
+                              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Text(
+                                "VALIDADO",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            )
+                                : null,
+                            leading: Icon(
+                              esSeleccionado
+                                  ? Icons.check_circle
+                                  : esValidado
+                                  ? Icons.verified
+                                  : Icons.location_city,
+                              color: (esSeleccionado || esValidado)
+                                  ? Colors.white
+                                  : AppColors.colorAzul,
+                            ),
+
+                            title: Text(
+                              recinto.nomRecintoElecOnly,
+                              style: TextStyle(
+                                color: (esSeleccionado || esValidado)
+                                    ? Colors.white
+                                    : Colors.black,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+
+                            subtitle: Text(
+                              esValidado?"Valida: ${recinto.apenomValida}."
+                                  "\nDistancia: ${recinto.distance}m":  "Distancia: ${recinto.distance}m",
+                              style: TextStyle(
+                                color: (esSeleccionado || esValidado)
+                                    ? Colors.white70
+                                    : Colors.black54,
+                              ),
+                            ),
+
+                            onTap: () {
+                              final originalIndex =
+                              widget.listRecintosElectorales.indexOf(recinto);
+
+                              final point = LatLng(
+                                recinto.latitud,
+                                recinto.longitud,
+                              );
+
+                              setState(() {
+                                selectedIndex = originalIndex;
+                                recintoSeleccionado = recinto;
+                              });
+
+                              ajustarMapaParaVerAmbos(point);
+
+                              Future.delayed(Duration(milliseconds: 100), () {
+                                if (_internalScrollController != null &&
+                                    _internalScrollController!.hasClients) {
+                                  _internalScrollController!.animateTo(
+                                    0,
+                                    duration: Duration(milliseconds: 300),
+                                    curve: Curves.easeInOut,
+                                  );
+                                }
+                              });
+
+                              _sheetController.animateTo(
+                                minChildSize,
+                                duration: Duration(milliseconds: 300),
+                                curve: Curves.easeInOut,
+                              );
+
+
+                              // 🔥 DEVOLVER EL RECINTO
+                              if (widget.onRecintoSeleccionado != null) {
+                                widget.onRecintoSeleccionado!(recinto);
+                              }
+
+                            },
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
               ),
-            ),
 
               // 🔥 BOTÓN FIJO ABAJO
               Padding(
@@ -251,22 +295,34 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
                     child: BtnIconWidget(
                       icon: Icons.save,
                       titulo: "GUARDAR",
-                      onPressed: (){
-
+                      onPressed: () {
                         String msj =
-                            "¿Está seguro/a de registrar la ubicacion actual para el recinto ${recintoSeleccionado!.nomRecintoElecOnly}?"
-                            "\n\nVerifique que se encuentre exactamente en el lugar del recinto electoral, ya que estas coordenadas serán utilizadas para las registro de las elecciones."
-                            "\nEn caso de presentar inconvenientes, comuníquese con el administrador.";
-                        DialogosAwesome.getWarningSiNo(
-                          title: "Guardar Recinto Electoral \n ${recintoSeleccionado!.nomRecintoElecOnly}",
+
+                            "Asegúrese de encontrarse exactamente en el lugar del recinto electoral."
+                            "\n\nEste registro será utilizado en el proceso electoral y queda auditado, siendo usted responsable de la información ingresada."
+                            "\nUn registro incorrecto podría generar inconvenientes el día de las elecciones."
+                            "\n\n¿Está seguro/a de registrar la ubicación actual?";
+
+                        if (recintoSeleccionado!.validado) {
+                          msj =
+                          "El recinto ya fue validado por ${recintoSeleccionado!.apenomValida}."
+
+                              "\n\nAsegúrese de encontrarse en el lugar correcto."
+                              "\nEste cambio quedará auditado y será su responsabilidad."
+                              "\nUna validación incorrecta podría generar inconvenientes el día de las elecciones."
+                              "\n\n¿Desea reemplazar la ubicación actual y validarlo nuevamente?"
+                          ;
+                        }
+
+
+                        DialogosAwesome.getWarningSiNoContador(
+
+                          title:
+                              "Guardar Recinto Electoral \n ${recintoSeleccionado!.nomRecintoElecOnly}",
                           descripcion: msj,
-                          btnOkOnPress:           widget.onPressedSave,
+                          btnOkOnPress: widget.onPressedSave,
                         );
-                      }
-
-
-
-
+                      },
                     ),
                   ),
                 ),
@@ -292,36 +348,94 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
     );
   }
 
-  MarkerLayer getMarkes() {
-    List<Marker> markers = [];
+  List<Widget> getMarkes() {
+    List<Marker> markersRecinto = [];
 
-    // 📍 Usuario
-    markers.add(
-      Marker(
-        height: 90,
-        width: 90,
-        point: widget.ubicacion,
-        child: Icon(Icons.location_on, color: Colors.red, size: 40),
-      ),
-    );
-
-    // 📍 Recinto seleccionado
+    // 📍 Recinto seleccionado (CON popup)
     if (recintoSeleccionado != null) {
-      final point = LatLng(
-        recintoSeleccionado!.latitud,
-        recintoSeleccionado!.longitud,
-      );
-      markers.add(
-        Marker(
-          height: 90,
-          width: 90,
-          point: point,
-          child: getBtnCustomIcon(icon: iconRecinto, ontap: () {}),
+      final recinto = recintoSeleccionado!;
+      final point = LatLng(recinto.latitud, recinto.longitud);
+
+      late Marker marker;
+
+      marker = Marker(
+        key: ValueKey(recinto),
+        point: point,
+        width: 80,
+        height: 80,
+        child: GestureDetector(
+          onTap: () {
+
+            _popupController.showPopupsOnlyFor([marker]); // 👈 SOLO UNO ACTIVO
+          },
+          child: getBtnCustomIcon(icon: iconRecinto),
         ),
       );
+
+      markersRecinto.add(marker);
     }
 
-    return MarkerLayer(markers: markers);
+    return [
+
+      // 🔴 1. TU UBICACIÓN (SIEMPRE VISIBLE, SIN POPUP)
+      MarkerLayer(
+        markers: [
+          Marker(
+            point: widget.ubicacion,
+            width: 80,
+            height: 80,
+            child: Icon(
+              Icons.person_pin_circle,
+              color: Colors.red,
+              size: 45,
+            ),
+          ),
+        ],
+      ),
+
+      // 🟢 2. RECINTO (CON POPUP)
+      PopupMarkerLayer(
+        options: PopupMarkerLayerOptions(
+          popupController: _popupController,
+          markers: markersRecinto,
+
+          popupDisplayOptions: PopupDisplayOptions(
+            builder: (context, marker) {
+              final recinto =
+              (marker.key as ValueKey).value as RecintosElectoral;
+
+              return Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        recinto.nomRecintoElecOnly,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(height: 5),
+                      Text("Distancia: ${recinto.distance} m"),
+                      if (recinto.validado)
+                        Text(
+                          "VALIDADO",
+                          style: TextStyle(
+                            color: Colors.green,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ),
+    ];
   }
 
   MarkerLayer getMarkerRecinto(LatLng point) {
@@ -355,8 +469,6 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
             ],
           ),
         ),
-
-
       ],
     );
   }

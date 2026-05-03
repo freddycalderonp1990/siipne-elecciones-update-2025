@@ -3,7 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 class Openstreetmap {
   static TileLayer getMapa() {
     return new TileLayer(
-      urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+      urlTemplate:       "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",//'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
       userAgentPackageName: "ecuador.policianacional.dntic.siipnemovil2",
       additionalOptions: {
         'User-Agent':

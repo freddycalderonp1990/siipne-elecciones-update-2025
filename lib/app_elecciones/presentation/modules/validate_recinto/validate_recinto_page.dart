@@ -10,7 +10,7 @@ class ValidateRecintoPage extends GetView<ValidateRecintoController> {
 
     listRecintosElectorales: controller.listRecintosElectorales,
         onPressedSave: () {
-          controller.updateMesaCoordinates();
+          controller.updateRecintoCoordinates();
         },
         ubicacion: controller.ubicacion.value,
         mapController: controller.mapController,
@@ -20,6 +20,15 @@ class ValidateRecintoPage extends GetView<ValidateRecintoController> {
         },
         ontapMyUbicacion: () async {
           await controller.getUbicacionActual();
+        },
+
+        onRecintoSeleccionado: (recinto) {
+          print("Seleccionado: ${recinto.nomRecintoElecOnly}");
+
+            controller.selectRecintosElectoral.value = recinto;
+
+
+
         },
 
         cargando: controller.peticionServerState.value,

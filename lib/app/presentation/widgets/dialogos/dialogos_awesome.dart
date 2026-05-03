@@ -522,13 +522,10 @@ class DialogosAwesome {
                  // Si el formulario es válido, ejecutar la acción
                  Get.back();
 
-
                  DialogosAwesome.getWarningSiNoContador(
                      descripcion: "¿Esta seguro de continuar?",btnOkOnPress: (){
                    onPressed?.call();
                  });
-
-
 
                }
              },
