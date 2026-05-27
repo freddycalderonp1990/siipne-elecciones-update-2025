@@ -14,6 +14,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:get/get.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
+import 'package:siipnemovil2/app/presentation/widgets/texto_color_parser.dart';
 
 
 

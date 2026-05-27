@@ -222,13 +222,18 @@ class DialogosAwesome {
                     const SizedBox(height: 10),
 
                     // 🔹 Descripción
-                    Text(
+                 /*   Text(
                       descripcion,
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontSize: 15,
                         color: Colors.black87,
                       ),
+                    ),*/
+
+
+                    TextoColorParser.textoConColores(
+                      descripcion,
                     ),
 
                     const SizedBox(height: 20),

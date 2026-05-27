@@ -24,9 +24,10 @@ debidamente justificados, para lo cual se deberá exigir el registro obligatorio
 # Móvil
 1. Implementar notificación para que se le notifique al usuario que ha sido sacado de un recinto.
 
-## [2.0.0] – Elecciones 2025 – Segunda Vuelta (13-abril-2025)
+## [2.2.2] – Elecciones 2026 
 1. Se deberá implementar la validación de la ubicación de los recintos electorales con la validación de las coordenadas registradas por el dispositivo móvil del usuario al momento de encontrarse en el recinto electoral.
-  - se agrega en la tabla dgoComisios el campo estadoRegistro ENUM('REGISTRADO', 'VALIDADO')
+  - se agrega en la tabla dgoComisios el campo estadoRegistro ENUM('REGISTRADO', 'VALIDADO') 
+  - se agrega en la tabla dgoComisios el campo telefono (27-05-2026)
   - 
 # Modificar
 appmovil/siipneMovil/recintoElectoral/data/dataDgoProcElec.php
@@ -44,7 +45,14 @@ ENUM('REGISTRADO', 'VALIDADO')
 /Volumes/siipne/appmovil/siipneMovil/recintoElectoral/data/dataDgoComisios.php
 /Volumes/siipne/appmovil/siipneElecciones/app_elecciones/clases/constante.php
 /Volumes/siipne/appmovil/siipneElecciones/app_elecciones/controller/controllerRecinto.php
-- para modificar la vaklidacion de recintos
+- para modificar la validacion de recintos
+
+# 27 de mayo de 2026
+- Se implementa el registro del teléfono de la persona que realiza la validación de recintos electorales.
+- Se mejora getWarningSiNoContador permitiendo aplicar colores personalizados al texto enviado en la descripción.
+
+
+## [2.0.0] - Elecciones 2025 - Segunda Vuelta - 13-abrir-2025
 
 ### 🔒 Bloqueo de Acceso - implementado
 - Implementación del bloqueo de acceso para anexarse o crear código.

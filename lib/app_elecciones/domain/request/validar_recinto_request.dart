@@ -4,6 +4,7 @@ class ValidarRecintoRequest {
   final int idDgoComisios;
   final double latitudValidacion;
   final double longitudValidacion;
+  final String telefono;
 
   final int usuario;
   final String ip;
@@ -15,7 +16,11 @@ ValidarRecintoRequest(
     {
       required this.latitudValidacion,
       required this.longitudValidacion,
-      required this.idDgoComisios,required this.usuario,required this.ip,
+      required this.idDgoComisios,
+      required this.telefono,
+
+      required this.usuario,
+      required this.ip,
 
   });
 
@@ -25,6 +30,7 @@ ValidarRecintoRequest(
       "idDgoComisios": idDgoComisios,
       "latitudValidacion": latitudValidacion,
       "longitudValidacion": longitudValidacion,
+      "telefono": telefono,
       "usuario": usuario,
       "ip": ip
 

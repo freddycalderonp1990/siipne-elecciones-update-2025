@@ -10,7 +10,36 @@ class ValidateRecintoPage extends GetView<ValidateRecintoController> {
 
     listRecintosElectorales: controller.listRecintosElectorales,
         onPressedSave: () {
-          controller.updateRecintoCoordinates();
+
+          DialogosDesingWidget.getDialogoX(
+              contenido:
+
+                  Column(children: [
+
+
+                    WgTxtTelefono(
+                      controllerTelefono: controller.controllerTelefono,
+                      formKey: controller.formKey,
+                    ),
+
+                    BtnIconWidget(
+                      icon: Icons.save,
+                      titulo: "GUARDAR",
+                      onPressed: () {
+                        Get.back();
+                        controller.updateRecintoCoordinates();
+
+                      },
+                    )
+                  ],)
+
+
+
+          );
+
+
+
+
         },
         ubicacion: controller.ubicacion.value,
         mapController: controller.mapController,

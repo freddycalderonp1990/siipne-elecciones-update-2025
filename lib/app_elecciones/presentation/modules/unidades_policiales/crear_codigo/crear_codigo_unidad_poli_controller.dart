@@ -158,8 +158,9 @@ class CrearCodigoUnidadPoliController extends GetxController {
     String msj =
 
         "Asegúrese de estar de servicio en la Unidad y de ser la persona encargada o la persona designada como jefe/a."
-        "\n\n Utilice la aplicación con responsabilidad, ya que toda actividad sera registrada y auditada."
+        "\n\n Utilice la aplicación con responsabilidad, ya que [rojo]toda actividad sera registrada y auditada.[/rojo]"
         "\n\n¿Desea Continuar?";
+
 
     DialogosAwesome.getWarningSiNoContador(
       title: "¿Usted va a generar el código para la ${unidad}?",

@@ -16,6 +16,9 @@ class ValidateRecintoController extends GetxController {
   Rx<LatLng> ubicacion = new LatLng(-0.2143, -78.50179).obs;
   MapController mapController = new MapController();
 
+  var controllerTelefono = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
  // late DataMesa dataMesa;
 
   @override
@@ -76,6 +79,10 @@ class ValidateRecintoController extends GetxController {
 
   Future<void> updateRecintoCoordinates() async {
 
+    bool isValid = formKey.currentState!.validate();
+
+    if (!isValid) return;
+
    peticionServerState(true);
 
     await ExceptionDialogos.manejarErroresShowDialogo(() async {
@@ -86,6 +93,7 @@ class ValidateRecintoController extends GetxController {
         usuario: user.idGenUsuario,
         latitudValidacion: ubicacion.value.latitude,
         longitudValidacion: ubicacion.value.longitude,
+        telefono: controllerTelefono.text,
         ip: ip, idDgoComisios: selectRecintosElectoral.value.idDgoComisios
         
       );
@@ -101,6 +109,7 @@ class ValidateRecintoController extends GetxController {
       DialogosAwesome.getInformation(
         descripcion: "Las coordenadas fueron registradas con éxito.",
         btnOkOnPress: () {
+          controllerTelefono.clear();
           Get.back();
         },
       );

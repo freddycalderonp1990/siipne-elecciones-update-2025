@@ -16,6 +16,7 @@ import '../../../../../feactures/mapas/openstreetmap.dart';
 import '../../../../../feactures/mapas/widgets/custom_btn_map.dart';
 import '../../../../../feactures/mapas/widgets/custom_marker.dart';
 import '../../../../data/models/models.dart';
+import '../../../widgets/customWidgets.dart';
 
 class DesingMapaRecinto extends StatefulWidget {
   final LatLng ubicacion;
@@ -299,28 +300,32 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
                         String msj =
 
                             "Asegúrese de encontrarse exactamente en el lugar del recinto electoral."
-                            "\n\nEste registro será utilizado en el proceso electoral y queda auditado, siendo usted responsable de la información ingresada."
-                            "\nUn registro incorrecto podría generar inconvenientes el día de las elecciones."
+                            "\n\n[azul]Este registro será utilizado en el proceso electoral y será[/azul] [rojo]AUDITADO[/rojo][azul], siendo usted responsable de la información ingresada.[/azul]"
+                            "\n\nUn registro incorrecto podría generar inconvenientes el día de las elecciones."
                             "\n\n¿Está seguro/a de registrar la ubicación actual?";
 
                         if (recintoSeleccionado!.validado) {
                           msj =
                           "El recinto ya fue validado por ${recintoSeleccionado!.apenomValida}."
-
                               "\n\nAsegúrese de encontrarse en el lugar correcto."
-                              "\nEste cambio quedará auditado y será su responsabilidad."
+                              "\nEste cambio quedará AUDITADO y será su responsabilidad."
                               "\nUna validación incorrecta podría generar inconvenientes el día de las elecciones."
                               "\n\n¿Desea reemplazar la ubicación actual y validarlo nuevamente?"
                           ;
                         }
-
 
                         DialogosAwesome.getWarningSiNoContador(
 
                           title:
                               "Guardar Recinto Electoral \n ${recintoSeleccionado!.nomRecintoElecOnly}",
                           descripcion: msj,
-                          btnOkOnPress: widget.onPressedSave,
+                          btnOkOnPress:
+
+
+
+
+                            widget.onPressedSave
+
                         );
                       },
                     ),

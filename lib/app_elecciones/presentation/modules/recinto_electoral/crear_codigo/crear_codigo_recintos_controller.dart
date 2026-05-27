@@ -77,8 +77,8 @@ class CrearCodigoRecintosController extends GetxController {
     String unidad = selectRecintosElectoral.value.nomRecintoElecOnly;
 
     String msj =
-        "Asegúrese de estar de servicio en el Recinto ${unidad} y de ser la persona encargada o la persona designada como jefe/a."
-        "\n\n Utilice la aplicación con responsabilidad, ya que toda actividad sera registrada y auditada."
+        "Asegúrese de estar de servicio en el Recinto [azul]${unidad}[/azul] y de ser la persona encargada o la persona designada como jefe/a."
+        "\n\n Utilice la aplicación con responsabilidad, ya que [rojo]toda actividad sera registrada y auditada.[/rojo]"
         "\n\n¿Desea Continuar?";
 
     DialogosAwesome.getWarningSiNoContador(
