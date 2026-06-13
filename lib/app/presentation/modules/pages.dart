@@ -27,7 +27,7 @@ import '../../core/utils/utilidadesUtil.dart';
 import '../../core/values/app_colors.dart';
 
 import '../../domain/enums/enums.dart';
-import '../../services/bloc/notifications_bloc.dart';
+
 import '../widgets/custom_app_widgets.dart';
 import '../widgets/img_perfil_redonda.dart';
 import 'controllers.dart';

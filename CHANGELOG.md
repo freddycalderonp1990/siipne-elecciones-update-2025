@@ -51,6 +51,22 @@ ENUM('REGISTRADO', 'VALIDADO')
 - Se implementa el registro del teléfono de la persona que realiza la validación de recintos electorales.
 - Se mejora getWarningSiNoContador permitiendo aplicar colores personalizados al texto enviado en la descripción.
 
+# 01-06-2026 
+# WEB
+- Aqui se remplaza con la funcion que usa el movil xq mostraba que el usuario estaba asignado a una mesa
+- /Volumes/siipne/personal/modulos/verificaPersonalElecciones/paso2/graba.php
+- /Volumes/siipne/personal/modulos/verificaPersonalElecciones/paso1/graba.php
+
+
+# Movil 
+- Se agrea la nueva condicion ‘RN’=Registro no autorizado y 'NL'=No Labora, que esta en la tabla DgoPerAsigOpe
+- Archivo: /Volumes/siipne/appmovil/siipneMovil/recintoElectoral/data/dataDgoPerAsigOpe.php
+- Tabla: dgoPerAsigOpe (Agregar el enum ‘RN’=Registro no autorizado)
+- Servicio para verificar si el usaurio tiene una novedad registrada por el P1 (‘RN’=Registro no autorizado , 'NL'=No Labora, OR'=Pertenece a Otro Recinto)
+
+
+# Modificar en pruebas y luego en produccion 
+/Volumes/siipne/appmovil/dinased/desaparecidos/controller/controllerDesaparecidos.php
 
 ## [2.0.0] - Elecciones 2025 - Segunda Vuelta - 13-abrir-2025
 

@@ -26,6 +26,7 @@ import 'package:path_provider/path_provider.dart';
 
 
 import '../../../app_censo/presentation/routes/app_censo_routes.dart';
+import '../../../app_elecciones/core/values/siipne_images.dart';
 import '../../../app_elecciones/data/models/models.dart';
 import '../../../app_elecciones/data/repository/data_repositories.dart';
 import '../../../app_elecciones/presentation/routes/elecciones_routes.dart';

@@ -15,14 +15,15 @@ import 'app/core/seguridades/validate_SSL.dart';
 import 'app/main_app.dart';
 
 import 'app/presentation/routes/app_routes.dart';
-import 'app/services/bloc/notifications_bloc.dart';
-import 'app/services/localNotification/local_notification.dart';
+
 import 'feactures/gps/presentation/bloc/gps/gps_bloc.dart';
 import 'feactures/gps/presentation/location/location_bloc.dart';
 
 //librerias para notificaciones
 
 import 'package:firebase_core/firebase_core.dart';
+import 'feactures/pushNotification/services/bloc/notifications_bloc.dart';
+import 'feactures/pushNotification/services/localNotification/local_notification.dart';
 import 'firebase_options.dart';
 
 

@@ -25,6 +25,12 @@ abstract class EleccionesNovedadesRepository {
 
   Future<DataNovedadesUdga> verificarNovedadesUdgaPolicialRegistradas({
     required int idGenPersona,
+
+  });
+
+  Future<DataNovedadesUdga> verificarNovedadesRegistradasByProcElect({
+    required int idGenPersona,
+    required int idDgoProcElec
   });
 
 }

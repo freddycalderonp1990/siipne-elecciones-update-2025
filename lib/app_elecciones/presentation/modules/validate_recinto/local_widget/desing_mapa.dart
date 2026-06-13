@@ -15,6 +15,7 @@ import '../../../../../../app/presentation/widgets/custom_app_widgets.dart';
 import '../../../../../feactures/mapas/openstreetmap.dart';
 import '../../../../../feactures/mapas/widgets/custom_btn_map.dart';
 import '../../../../../feactures/mapas/widgets/custom_marker.dart';
+import '../../../../../feactures/user/presentation/modules/controllers.dart';
 import '../../../../data/models/models.dart';
 import '../../../widgets/customWidgets.dart';
 
@@ -39,7 +40,8 @@ class DesingMapaRecinto extends StatefulWidget {
     required this.ontapMyUbicacion,
     this.onPressedSave,
     this.cargando = false,
-    required this.listRecintosElectorales, this.onRecintoSeleccionado,
+    required this.listRecintosElectorales,
+    this.onRecintoSeleccionado,
   });
 
   @override
@@ -59,6 +61,9 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
       DraggableScrollableController();
 
   final iconRecinto = Icons.location_city;
+
+  bool tieneRecintoValidado = false;
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
@@ -165,18 +170,41 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
                             (selectedIndex != null && index == 0);
                         bool esValidado = recinto.validado;
 
+                        //verificamos si este usaurio ya valido un recinto
+
+                        if (esValidado) {
+                          final loginController = Get.find<LoginController>();
+
+                          String nameUser = loginController.user.value.nombres
+                              .replaceAll(RegExp(r'\s+'), '')
+                              .toUpperCase();
+                          String nameValida = recinto.apenomValida
+                              .replaceAll(RegExp(r'\s+'), '')
+                              .toUpperCase();
+
+                          if (nameUser == nameValida) {
+                            tieneRecintoValidado = true;
+                          }
+                        }
+
                         Color? fondo;
 
                         if (esSeleccionado) {
                           fondo = AppColors.colorAzul; // 🔵 seleccionado manda
+
+
                         } else if (esValidado) {
                           fondo = Colors.green; // 🟢 validado
                         } else {
                           fondo = Colors.transparent;
-                        };
+                        }
+                        ;
 
                         return Container(
-                          margin: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
                           decoration: BoxDecoration(
                             color: fondo,
                             borderRadius: BorderRadius.circular(10),
@@ -192,20 +220,23 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
                           child: ListTile(
                             trailing: esValidado
                                 ? Container(
-                              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.2),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Text(
-                                "VALIDADO",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            )
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 4,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white.withOpacity(0.2),
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: Text(
+                                      "VALIDADO",
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  )
                                 : null,
                             leading: Icon(
                               esSeleccionado
@@ -229,8 +260,10 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
                             ),
 
                             subtitle: Text(
-                              esValidado?"Valida: ${recinto.apenomValida}."
-                                  "\nDistancia: ${recinto.distance}m":  "Distancia: ${recinto.distance}m",
+                              esValidado
+                                  ? "Valida: ${recinto.apenomValida}."
+                                        "\nDistancia: ${recinto.distance}m"
+                                  : "Distancia: ${recinto.distance}m",
                               style: TextStyle(
                                 color: (esSeleccionado || esValidado)
                                     ? Colors.white70
@@ -239,8 +272,9 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
                             ),
 
                             onTap: () {
-                              final originalIndex =
-                              widget.listRecintosElectorales.indexOf(recinto);
+                              final originalIndex = widget
+                                  .listRecintosElectorales
+                                  .indexOf(recinto);
 
                               final point = LatLng(
                                 recinto.latitud,
@@ -271,12 +305,10 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
                                 curve: Curves.easeInOut,
                               );
 
-
                               // 🔥 DEVOLVER EL RECINTO
                               if (widget.onRecintoSeleccionado != null) {
                                 widget.onRecintoSeleccionado!(recinto);
                               }
-
                             },
                           ),
                         );
@@ -297,8 +329,16 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
                       icon: Icons.save,
                       titulo: "GUARDAR",
                       onPressed: () {
-                        String msj =
 
+                        if (tieneRecintoValidado) {
+                          DialogosAwesome.getWarning(
+                            descripcion:
+                                "Usted ya ha validado un recinto. Si desea realizar el proceso nuevamente, por favor comuníquese con Talento Humano para habilitar su validación.",
+                          );
+                          return;
+                        }
+
+                        String msj =
                             "Asegúrese de encontrarse exactamente en el lugar del recinto electoral."
                             "\n\n[azul]Este registro será utilizado en el proceso electoral y será[/azul] [rojo]AUDITADO[/rojo][azul], siendo usted responsable de la información ingresada.[/azul]"
                             "\n\nUn registro incorrecto podría generar inconvenientes el día de las elecciones."
@@ -306,27 +346,20 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
 
                         if (recintoSeleccionado!.validado) {
                           msj =
-                          "El recinto ya fue validado por ${recintoSeleccionado!.apenomValida}."
+                              "El recinto ya fue validado por ${recintoSeleccionado!.apenomValida}."
                               "\n\nAsegúrese de encontrarse en el lugar correcto."
                               "\nEste cambio quedará AUDITADO y será su responsabilidad."
                               "\nUna validación incorrecta podría generar inconvenientes el día de las elecciones."
-                              "\n\n¿Desea reemplazar la ubicación actual y validarlo nuevamente?"
-                          ;
+                              "\n\n¿Desea reemplazar la ubicación actual y validarlo nuevamente?";
                         }
 
                         DialogosAwesome.getWarningSiNoContador(
-
                           title:
-                              "Guardar Recinto Electoral \n ${recintoSeleccionado!.nomRecintoElecOnly}",
+                              "Validar Recinto Electoral \n ${recintoSeleccionado!.nomRecintoElecOnly}",
                           descripcion: msj,
-                          btnOkOnPress:
-
-
-
-
-                            widget.onPressedSave
-
+                          btnOkOnPress: widget.onPressedSave,
                         );
+
                       },
                     ),
                   ),
@@ -370,7 +403,6 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
         height: 80,
         child: GestureDetector(
           onTap: () {
-
             _popupController.showPopupsOnlyFor([marker]); // 👈 SOLO UNO ACTIVO
           },
           child: getBtnCustomIcon(icon: iconRecinto),
@@ -381,7 +413,6 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
     }
 
     return [
-
       // 🔴 1. TU UBICACIÓN (SIEMPRE VISIBLE, SIN POPUP)
       MarkerLayer(
         markers: [
@@ -389,11 +420,7 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
             point: widget.ubicacion,
             width: 80,
             height: 80,
-            child: Icon(
-              Icons.person_pin_circle,
-              color: Colors.red,
-              size: 45,
-            ),
+            child: Icon(Icons.person_pin_circle, color: Colors.red, size: 45),
           ),
         ],
       ),
@@ -407,7 +434,7 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
           popupDisplayOptions: PopupDisplayOptions(
             builder: (context, marker) {
               final recinto =
-              (marker.key as ValueKey).value as RecintosElectoral;
+                  (marker.key as ValueKey).value as RecintosElectoral;
 
               return Card(
                 shape: RoundedRectangleBorder(

@@ -49,5 +49,8 @@ class ApiConstantes {
   //************************** CONSULTAR PARA SABER SI EL USUARIO SE ENCUENTRA ASIGNADO A UN RECINTO ELECTORAL ********************************************************
   //verificar segun el idpersona para saber si se encuentra asignado a un recinto electoral  es para saber si es personal designado o es jefe
 
-  static const ELECCIONES_VERIFICA_PER_NOV_REGISTRADAS = "v1-verifica-per-nov-registradas";
+  static const ELECCIONES_VERIFICA_PER_NOV_UDGA_REGISTRADAS = "v1-verifica-per-nov-udga-registradas";
+  //trae tando las novedades Udga y las registradas por el talento humano
+  // en caso de que lo inactive por No Labora, Pertenece a otro recinto,
+  static const ELECCIONES_VERIFICA_PER_NOV_REGISTRADAS_BY_PROCESO_ELECTORAL = "v1-verifica-per-nov-registradas-by-proc-elect";
 }

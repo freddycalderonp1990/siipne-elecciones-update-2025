@@ -43,6 +43,19 @@ class EleccionesNovedadesApiImpl extends EleccionesNovedadesRepository {
   Future<DataNovedadesUdga> verificarNovedadesUdgaPolicialRegistradas({
     required int idGenPersona,
   }) async {
- return await _eleccionesNovedadesApiProviderImpl.verificarNovedadesUdgaPolicialRegistradas(idGenPersona: idGenPersona);
+    return await _eleccionesNovedadesApiProviderImpl
+        .verificarNovedadesUdgaPolicialRegistradas(idGenPersona: idGenPersona);
+  }
+
+  @override
+  Future<DataNovedadesUdga> verificarNovedadesRegistradasByProcElect({
+    required int idGenPersona,
+    required int idDgoProcElec,
+  }) async {
+    return await _eleccionesNovedadesApiProviderImpl
+        .verificarNovedadesRegistradasByProcElect(
+          idGenPersona: idGenPersona,
+          idDgoProcElec: idDgoProcElec,
+        );
   }
 }

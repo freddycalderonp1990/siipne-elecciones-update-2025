@@ -11,7 +11,7 @@ import '../../../app/core/values/app_colors.dart';
 import '../../../app/presentation/widgets/custom_app_widgets.dart';
 import 'package:flutter/rendering.dart';
 
-import '../../../app/services/bloc/notifications_bloc.dart';
+
 import '../../../app_elecciones/presentation/modules/personal/report/local_widget/desing_personal.dart';
 
 import '../../../app_elecciones/presentation/routes/elecciones_routes.dart';
@@ -34,6 +34,7 @@ import 'package:get/get.dart';
 import '../../../feactures/gps/presentation/widgets/my_ubicacion_widget.dart';
 
 import '../../../feactures/mapas/widgets/custom_marker.dart';
+import '../../../feactures/pushNotification/services/bloc/notifications_bloc.dart';
 import '../../core/values/siipne_colors.dart';
 import '../../core/values/siipne_images.dart';
 import '../../core/values/siipne_strings.dart';

@@ -58,9 +58,11 @@ class MenuAppPage extends GetView<MenuAppController> {
                     img: SiipneEleccionesImages.ic_elecciones,
                     title: "ELECCIONES",
                     onTap:
-                        () =>
-                            controller
-                                .verificarNovedadesUdgaPolicialRegistradas(),
+                        () {
+                          Get.toNamed(EleccionesRoutes.MENU_APP);
+                        }
+
+
                   )
                   : const SizedBox.shrink(),
         ),
@@ -73,9 +75,11 @@ class MenuAppPage extends GetView<MenuAppController> {
                     horizontal: true,
                     img: AppCensoImages.ic_censo,
                     title: "CENSO POLICIAL",
-                    onTap: () {
-                      Get.toNamed(AppCensoRoutes.MENU_APP);
-                    },
+
+                onTap:
+                    () =>
+                    controller
+                        .verificarNovedadesUdgaPolicialRegistradas(),
                   )
                   : const SizedBox.shrink(),
         ),

@@ -6,6 +6,7 @@ class MenuAppCensoPage extends GetView<MenuAppCensoController> {
   @override
   Widget build(BuildContext context) {
 
+    //aqui obtenemos el token
     context.read<NotificationsBloc>().requestPermission("app_censo");
 
     return WorkAreaPageCensoWidget(

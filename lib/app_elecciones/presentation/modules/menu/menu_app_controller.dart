@@ -2,11 +2,15 @@ part of '../controllers.dart';
 
 class MenuAppEleccionesController extends GetxController {
   final loginController = Get.find<LoginController>();
+
   final EleccionesProcesosApiImpl _eleccionesProcesosApiImpl =
-      Get.find<EleccionesProcesosApiImpl>();
+  Get.find<EleccionesProcesosApiImpl>();
 
   final EleccionesRecintosApiImpl _eleccionesRecintosApiImpl =
       Get.find<EleccionesRecintosApiImpl>();
+
+  final EleccionesNovedadesApiImpl _eleccionesNovedadesApiImpl =
+  Get.find<EleccionesNovedadesApiImpl>();
 
 
  RecintosElectoralesAbiertos recintosElectoralesAbiertos =
@@ -16,11 +20,15 @@ class MenuAppEleccionesController extends GetxController {
 
   late UserEntities  user;
 
+  int idDgoProcElec=0;
+
   RxBool peticionServerState = false.obs;
   @override
   void onInit() async {
     user=loginController.user.value;
-   await getImgProceso();
+
+    await verificarNovedadesRegistradasProcElect();
+
     verificarperAsignadoRecElectoral();
 
     super.onInit();
@@ -68,21 +76,7 @@ class MenuAppEleccionesController extends GetxController {
 
   }
 
-  Future<void> getImgProceso() async {
-    peticionServerState(true);
 
-    List<DatosProcesoImg> listDatosProcesoImg = <DatosProcesoImg>[];
-    await ExceptionDialogos.manejarErroresShowDialogo(() async {
-      listDatosProcesoImg =
-          await _eleccionesProcesosApiImpl.getProcesoActivoImgs();
-    });
-
-    if (listDatosProcesoImg.length > 0) {
-      SiipneEleccionesImages.imgCabeceraProceso.value = listDatosProcesoImg[0].imgBase64;
-    }
-
-    peticionServerState(false);
-  }
 
 
   goToPage(String name){
@@ -95,4 +89,53 @@ class MenuAppEleccionesController extends GetxController {
   cerrarSession() {
     Get.toNamed(AppRoutes.SPLASH_APP);
   }
+
+
+  Future<void> getImgProceso() async {
+    //peticionServerState(true);
+
+    List<DatosProcesoImg> listDatosProcesoImg = <DatosProcesoImg>[];
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
+      listDatosProcesoImg =
+      await _eleccionesProcesosApiImpl.getProcesoActivoImgs();
+    });
+
+    if (listDatosProcesoImg.length > 0) {
+      SiipneEleccionesImages.imgCabeceraProceso.value = listDatosProcesoImg[0].imgBase64;
+      idDgoProcElec=listDatosProcesoImg[0].idDgoProcElec;
+    }
+
+    //peticionServerState(false);
+  }
+
+  Future<void> verificarNovedadesRegistradasProcElect() async {
+    peticionServerState(true);
+    await getImgProceso();
+
+
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
+
+      DataNovedadesUdga data =
+      await _eleccionesNovedadesApiImpl.verificarNovedadesRegistradasByProcElect(idGenPersona: user.idGenPersona,idDgoProcElec: idDgoProcElec);
+
+      if (data.session == false) {
+        String msj=data.motivo.replaceAll("No Puede iniciar Session", "");
+        // msj="No puede continuar, ya que tiene registrado lo siguiente:\n${msj}";
+        msj="Usted se encuentra inactivo para este proceso. Por favor, coordine con Talento Humano.";
+        DialogosAwesome.getError(
+          title: "Acción no permitida",
+            descripcion: msj,btnOkOnPress: (){
+              Get.back();
+              Get.back();
+        });
+        return;
+      }
+
+
+
+
+    });
+    peticionServerState(false);
+  }
+
 }

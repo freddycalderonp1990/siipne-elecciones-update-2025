@@ -1,6 +1,6 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-import '../../presentation/widgets/notificaciones/snackbarService.dart';
+
 
 class LocalNotification {
   static final FlutterLocalNotificationsPlugin _notificationsPlugin =

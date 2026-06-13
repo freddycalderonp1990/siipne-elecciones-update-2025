@@ -55,7 +55,7 @@ class MenuAppController extends GetxController {
             if(dataMenuApp.value.siipneElecciones){
               showMenuElecciones.value=true;
               showMenuCenso.value=false;
-              verificarNovedadesUdgaPolicialRegistradas();
+
             }
             else  {
               showMenuElecciones.value=false;
@@ -73,6 +73,7 @@ class MenuAppController extends GetxController {
   }
 
 
+
   Future<void> verificarNovedadesUdgaPolicialRegistradas() async {
     peticionServerState(true);
 
@@ -80,23 +81,27 @@ class MenuAppController extends GetxController {
     await ExceptionDialogos.manejarErroresShowDialogo(() async {
 
       DataNovedadesUdga data =
-      await _eleccionesNovedadesApiImpl.verificarNovedadesUdgaPolicialRegistradas(idGenPersona: user.idGenPersona);
+      await _eleccionesNovedadesApiImpl.verificarNovedadesUdgaPolicialRegistradas(idGenPersona: user.idGenPersona,);
 
       if (data.session == false) {
         String msj=data.motivo.replaceAll("No Puede iniciar Session", "");
         msj="No puede continuar, ya que tiene registrado lo siguiente:\n${msj}";
         DialogosAwesome.getError(
+         title: "Acción no permitida",
             descripcion: msj);
         return;
       }
 
-      Get.toNamed(EleccionesRoutes.MENU_APP);
+
+      Get.toNamed(AppCensoRoutes.MENU_APP);
 
 
 
     });
     peticionServerState(false);
   }
+
+
 
 
 

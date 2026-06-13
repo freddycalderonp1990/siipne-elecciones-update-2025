@@ -5,10 +5,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:siipnemovil2/app/presentation/widgets/custom_app_widgets.dart';
 
-import '../../core/app_config.dart';
-
-import '../../core/utils/my_date.dart';
-import '../../core/utils/utilidadesUtil.dart';
 
 
 import '../../presentation/modules/controllers.dart';

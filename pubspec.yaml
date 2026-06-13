@@ -99,13 +99,13 @@ dependencies:
 
 
 
-  #api_provider:
-   # path: /Users/policianacional/AndroidStudioProjects/paquete_api_provider
-
   api_provider:
-    git:
-      url: https://github.com/freddycalderonp1990/paquete_api_provider.git
-      ref: 1.0.4
+    path: /Users/policianacional/AndroidStudioProjects/paquete_api_provider
+
+ # api_provider:
+  #  git:
+   #   url: https://github.com/freddycalderonp1990/paquete_api_provider.git
+    #  ref: 1.0.4
 
 
   #app_mi_upc:
