@@ -12,6 +12,7 @@ import '../../../app/core/utils/responsiveUtil.dart';
 import '../../../app/core/values/app_colors.dart';
 import '../../../app/core/values/app_images.dart';
 
+import '../../../app/domain/enums/enums.dart';
 import '../../../app/presentation/widgets/custom_app_widgets.dart';
 
 import '../../../app_elecciones/core/values/siipne_strings.dart';

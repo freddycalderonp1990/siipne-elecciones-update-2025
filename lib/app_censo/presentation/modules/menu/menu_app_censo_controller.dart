@@ -39,7 +39,17 @@ class MenuAppCensoController extends GetxController {
   @override
   void onReady() async {
     // TODO: Donde la vista ya se presento
+
+    /*
+     Get.find<NotificationsBloc>().requestPermission(
+      appName: NamApps.Censo,
+      idGenUsuario: user.idGenUsuario,
+    );*/
+
+
+
     await clockController.getTimeServer();
+
     super.onReady();
   }
 

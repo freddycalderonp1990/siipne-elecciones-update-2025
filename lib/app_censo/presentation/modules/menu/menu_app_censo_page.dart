@@ -7,8 +7,14 @@ class MenuAppCensoPage extends GetView<MenuAppCensoController> {
   Widget build(BuildContext context) {
 
     //aqui obtenemos el token
-    context.read<NotificationsBloc>().requestPermission("app_censo");
+   // context.read<NotificationsBloc>().requestPermission(appName: NamApps.Censo, idGenUsuario: controller.user.idGenUsuario);
 
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<NotificationsBloc>().requestPermission(
+        appName: NamApps.Censo,
+        idGenUsuario: controller.user.idGenUsuario,
+      );
+    });
     return WorkAreaPageCensoWidget(
       showGps: true,
       mostrarBtnAtras: true,

@@ -8,6 +8,7 @@ import 'package:siipnemovil2/app/core/values/app_images.dart';
 
 import '../../../app/core/values/app_colors.dart';
 
+import '../../../app/domain/enums/enums.dart';
 import '../../../app/presentation/widgets/custom_app_widgets.dart';
 import 'package:flutter/rendering.dart';
 

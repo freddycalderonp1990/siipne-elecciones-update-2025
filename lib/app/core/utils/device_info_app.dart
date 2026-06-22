@@ -281,6 +281,25 @@ class DeviceInfoApp {
     }
   }
 
+  static String get getOnlyPlataforma {
+    try {
+      bool isAndroid = Platform.isAndroid;
+      bool isOs = Platform.isIOS;
+      String result = Platform.operatingSystem;
+      if (isAndroid) {
+        result = "ANDROID";
+      } else if (isOs) {
+        result = "IOS";
+      } else {
+        result = Platform.operatingSystem.toUpperCase();
+      }
+      return result;
+
+    } catch (e) {
+      return "NO CODE";
+    }
+  }
+
 
   static Future<String> get getVersionName async {
     PackageInfo packageInfo = await PackageInfo.fromPlatform();

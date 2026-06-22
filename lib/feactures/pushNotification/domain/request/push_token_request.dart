@@ -5,7 +5,7 @@ class PushTokenRequest {
   final String appName;
   final String plataforma;
   final String tokenFcm;
-  final String usuario;
+  final int usuario;
   final String ip;
 
   PushTokenRequest({

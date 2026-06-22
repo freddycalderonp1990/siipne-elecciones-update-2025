@@ -16,7 +16,6 @@ class ValidateRecintoPage extends GetView<ValidateRecintoController> {
 
                   Column(children: [
 
-
                     WgTxtTelefono(
                       controllerTelefono: controller.controllerTelefono,
                       formKey: controller.formKey,

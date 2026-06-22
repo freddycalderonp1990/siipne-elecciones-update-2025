@@ -37,6 +37,11 @@ class MenuAppEleccionesController extends GetxController {
   @override
   void onReady() {
     // TODO: Donde la vista ya se presento
+    //no xq usa blocprovider
+    /*Get.find<NotificationsBloc>().requestPermission(
+      appName: NamApps.Elecciones,
+      idGenUsuario: user.idGenUsuario,
+    );*/
     super.onReady();
   }
 

@@ -12,6 +12,8 @@ import 'package:siipnemovil2/app/core/utils/utilidadesUtil.dart';
 import '../../../../../../app/core/utils/responsiveUtil.dart';
 import '../../../../../../app/core/values/app_colors.dart';
 import '../../../../../../app/presentation/widgets/custom_app_widgets.dart';
+import '../../../../../app/core/utils/photo_helper.dart';
+import '../../../../../app/core/values/app_images.dart';
 import '../../../../../feactures/mapas/openstreetmap.dart';
 import '../../../../../feactures/mapas/widgets/custom_btn_map.dart';
 import '../../../../../feactures/mapas/widgets/custom_marker.dart';
@@ -63,6 +65,8 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
   final iconRecinto = Icons.location_city;
 
   bool tieneRecintoValidado = false;
+
+  Rx<GaleryCameraModel?> mGaleryCameraModel = Rx<GaleryCameraModel?>(null);
 
   @override
   Widget build(BuildContext context) {
@@ -141,6 +145,8 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
                 ),
               ),
 
+
+
               Expanded(
                 child: Builder(
                   builder: (context) {
@@ -162,8 +168,54 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
                     return ListView.builder(
                       controller:
                           scrollController, // 👈 IMPORTANTE (NO cambiar)
-                      itemCount: listaOrdenada.length,
+                      itemCount: listaOrdenada.length+1,
                       itemBuilder: (context, index) {
+
+
+                        // Último item: No encuentro mi recinto
+                        if (index == listaOrdenada.length) {
+                          return Container(
+                            margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                            child: OutlinedButton.icon(
+                              icon: Icon(
+                                Icons.add_location_alt,
+                                color: AppColors.colorAzul,
+                              ),
+                              label: Text(
+                                "No encuentro mi recinto",
+                                style: TextStyle(
+                                  color: AppColors.colorAzul,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              style: OutlinedButton.styleFrom(
+                                padding: EdgeInsets.symmetric(vertical: 15),
+                                side: BorderSide(color: AppColors.colorAzul),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  selectedIndex = null;
+                                  recintoSeleccionado = null;
+                                });
+
+                                
+                                DialogosDesingWidget.getDialogoX(
+                                  contenido: Column(children: [
+                                    wgFoto(),
+                                  ],)
+                                );
+
+                              },
+                            ),
+                          );
+                        }
+
+
+
+
                         RecintosElectoral recinto = listaOrdenada[index];
 
                         bool esSeleccionado =
@@ -370,6 +422,61 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
         );
       },
     );
+  }
+
+  Widget wgFoto() {
+    final responsive = ResponsiveUtil();
+
+    return Obx(() {
+      return Column(
+        children: [
+          mGaleryCameraModel.value == null
+              ? TituloTextWidget(title: "Registrar una Imagen")
+              : TituloTextWidget(title: "Cambiar la Imagen"),
+
+          SizedBox(height: responsive.altoP(1)),
+
+          InkWell(
+            onTap: () async {
+              final ahora = DateTime.now();
+
+              String dosDigitos(int n) =>
+                  n.toString().padLeft(2, '0');
+
+              String nameRecintoImg =
+                  "ImgRecinto_${ahora.year}"
+                  "${dosDigitos(ahora.month)}"
+                  "${dosDigitos(ahora.day)}_"
+                  "${dosDigitos(ahora.hour)}"
+                  "${dosDigitos(ahora.minute)}"
+                  "${dosDigitos(ahora.second)}.jpg";
+
+              mGaleryCameraModel.value =
+              await PhotoHelper.getDesingPictureGaleryOrCamera(
+                titleImg: nameRecintoImg,
+                initPeticion: (value) {},
+              );
+            },
+
+            child: Image.asset(
+              AppImages.icon_camara,
+              width: responsive.altoP(6),
+            ),
+          ),
+
+          if (mGaleryCameraModel.value != null)
+            ClipRRect(
+              borderRadius: BorderRadius.circular(25),
+              child: Image.file(
+                mGaleryCameraModel.value!.imageFile,
+                fit: BoxFit.fill,
+                height: responsive.altoP(30),
+                width: responsive.altoP(34),
+              ),
+            ),
+        ],
+      );
+    });
   }
 
   void ajustarMapaParaVerAmbos(LatLng destino) {

@@ -5,13 +5,17 @@ class MenuAppEleccionesPage extends GetView<MenuAppEleccionesController> {
 
   @override
   Widget build(BuildContext context) {
-
-    context.read<NotificationsBloc>().requestPermission("app_elecciones");
-
+    //aqui obtenemos el token
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<NotificationsBloc>().requestPermission(
+        appName: NamApps.Elecciones,
+        idGenUsuario: controller.user.idGenUsuario,
+      );
+    });
     return WorkAreaPageWidget(
       mostrarBtnAtras: true,
       title: "MENÚ ELECCIONES",
-      contenido:  getContenido(),
+      contenido: getContenido(),
       peticionServer: controller.peticionServerState,
     );
   }
@@ -36,27 +40,22 @@ class MenuAppEleccionesPage extends GetView<MenuAppEleccionesController> {
                 SizedBox(height: responsive.altoP(2)),
                 _getMenu(responsive),
 
-
                 SizedBox(height: responsive.altoP(4)),
                 BtnIconWidget(
                   icon: Icons.exit_to_app,
                   titulo: "SALIR",
                   onPressed: () => controller.cerrarSession(),
-                )
+                ),
               ],
             ),
           ),
-
-
         ],
       ),
     );
   }
 
   _getMenu(ResponsiveUtil responsive) {
-
-
-    Widget btn1= Row(
+    Widget btn1 = Row(
       children: [
         Flexible(
           child: BtnMenuWidget(
@@ -64,7 +63,8 @@ class MenuAppEleccionesPage extends GetView<MenuAppEleccionesController> {
             colorFondo: Colors.white,
             img: SiipneEleccionesImages.icon_abrir_rec_elec,
             title: SiipneStrings.CREARCODIGO,
-            onTap: () => Get.toNamed(EleccionesRoutes.SELECT_PROCESO_OPERATIVOS),
+            onTap: () =>
+                Get.toNamed(EleccionesRoutes.SELECT_PROCESO_OPERATIVOS),
           ),
         ),
         SizedBox(width: responsive.anchoP(2)),
@@ -79,8 +79,6 @@ class MenuAppEleccionesPage extends GetView<MenuAppEleccionesController> {
         ),
       ],
     );
-
-
 
     return btn1;
   }

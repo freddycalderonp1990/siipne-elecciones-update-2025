@@ -8,7 +8,7 @@ import '../../domain/mappers/mappers.dart';
 
 import '../../domain/repository/push_notification_repository.dart';
 import '../data_sources/push_notification_remote_data_source.dart';
-import '../models/models_user.dart';
+import '../models/models_push_notification.dart';
 
 class PushNotificationRepositoryImpl implements PushNotificationRepository {
   final PushNotificationRemoteDataSource pushNotificationRemoteDataSource;

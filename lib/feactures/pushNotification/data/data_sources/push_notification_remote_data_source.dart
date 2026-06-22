@@ -9,7 +9,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 
 import '../../domain/request/request_push_notification.dart';
-import '../models/models_user.dart';
+import '../models/models_push_notification.dart';
 
 
 

@@ -22,6 +22,7 @@ import 'feactures/gps/presentation/location/location_bloc.dart';
 //librerias para notificaciones
 
 import 'package:firebase_core/firebase_core.dart';
+import 'feactures/pushNotification/data/models/models_push_notification.dart';
 import 'feactures/pushNotification/services/bloc/notifications_bloc.dart';
 import 'feactures/pushNotification/services/localNotification/local_notification.dart';
 import 'firebase_options.dart';
@@ -43,11 +44,21 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // Mostrar notificación local si llega en background
   if (message.notification != null) {
+
+    NotificationModel notification =
+    NotificationModel.fromJson(
+      message.data,
+    );
+
+  notification=  notification.copyWith(
+      title:
+      '${message.notification?.title ?? ''} ${notification.appName ?? ''}',
+    body: message.notification?.body) ;
+
+
+
     await LocalNotification.showLocalNotification(
-      id: DateTime.now().millisecondsSinceEpoch ~/ 1000,
-      title: message.notification?.title,
-      body: message.notification?.body,
-      payload: message.data.toString(),
+    notification: notification
     );
   }
 }

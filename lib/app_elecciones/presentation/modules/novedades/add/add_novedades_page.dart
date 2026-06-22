@@ -23,23 +23,18 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Obx(
-            () =>
-                controller.showVerNovedades.value
-                    ? BtnIconWidget(
-                      icon: Icons.assignment_sharp,
-                      titulo: "VER NOVEDADES",
-                      onPressed: () => controller.goToPageReporteNovedades(),
-                    )
-                    : Container(),
+            () => controller.showVerNovedades.value
+                ? BtnIconWidget(
+                    icon: Icons.assignment_sharp,
+                    titulo: "VER NOVEDADES",
+                    onPressed: () => controller.goToPageReporteNovedades(),
+                  )
+                : Container(),
           ),
           getCombos(),
           SizedBox(height: responsive.altoP(0.4)),
           Obx(
-            () =>   wgCajasTexto(
-                controller.selectTipoNovedad.value.descripcion,
-              ),
-
-
+            () => wgCajasTexto(controller.selectTipoNovedad.value.descripcion),
           ),
           Obx(
             () => wgCajasTextoNovedades(
@@ -94,14 +89,14 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
         controller.mGaleryCameraModel.value == null
             ? Container()
             : ClipRRect(
-              borderRadius: BorderRadius.circular(25.0),
-              child: Image.file(
-                controller.mGaleryCameraModel.value!.imageFile,
-                fit: BoxFit.fill,
-                height: responsive.altoP(30.0),
-                width: responsive.altoP(34.0),
+                borderRadius: BorderRadius.circular(25.0),
+                child: Image.file(
+                  controller.mGaleryCameraModel.value!.imageFile,
+                  fit: BoxFit.fill,
+                  height: responsive.altoP(30.0),
+                  width: responsive.altoP(34.0),
+                ),
               ),
-            ),
         SizedBox(height: responsive.altoP(1)),
       ],
     );
@@ -133,8 +128,8 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
           selectValue: controller.selectTipoNovedad.value,
           showClearButton: false,
           datos: controller.listTipoNovedades,
-          displayField:
-              (item) => item.descripcion, // Aquí decides mostrar "nombres"
+          displayField: (item) =>
+              item.descripcion, // Aquí decides mostrar "nombres"
           searchHint: "Tipo Novedad",
           complete: (value) {
             controller.selectTipoNovedad.value = NovedadesElectorale.empty();
@@ -154,49 +149,48 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
 
   Widget getComboNovedades() {
     return Obx(
-      () =>
-          controller.selectTipoNovedad.value.idDgoNovedadesElect > 0
-              ? ContenedorDesingWidget(
-                paddin: EdgeInsets.all(5),
-                child: ComboBusqueda(
-                  selectValue: controller.selectNovedad.value,
+      () => controller.selectTipoNovedad.value.idDgoNovedadesElect > 0
+          ? ContenedorDesingWidget(
+              paddin: EdgeInsets.all(5),
+              child: ComboBusqueda(
+                selectValue: controller.selectNovedad.value,
 
-                  showClearButton: false,
-                  datos: controller.listNovedades,
-                  displayField:
-                      (item) =>
-                          item.descripcion, // Aquí decides mostrar "nombres"
-                  searchHint: controller.selectTipoNovedad.value.descripcion.isNotEmpty
-                      ? controller.selectTipoNovedad.value.descripcion[0].toUpperCase() +
-                      controller.selectTipoNovedad.value.descripcion.substring(1).toLowerCase()
-                      : '',
-                  complete: (value) {
-                    controller.selectNovedad.value =
-                        NovedadesElectorale.empty();
-                    controller.selectDelito.value = NovedadesElectorale.empty();
+                showClearButton: false,
+                datos: controller.listNovedades,
+                displayField: (item) =>
+                    item.descripcion, // Aquí decides mostrar "nombres"
+                searchHint:
+                    controller.selectTipoNovedad.value.descripcion.isNotEmpty
+                    ? controller.selectTipoNovedad.value.descripcion[0]
+                              .toUpperCase() +
+                          controller.selectTipoNovedad.value.descripcion
+                              .substring(1)
+                              .toLowerCase()
+                    : '',
+                complete: (value) {
+                  controller.selectNovedad.value = NovedadesElectorale.empty();
+                  controller.selectDelito.value = NovedadesElectorale.empty();
 
-                    controller.mostrarBtnGuardar(false);
-                    if (value != null) {
-                      controller.selectNovedad.value = value;
+                  controller.mostrarBtnGuardar(false);
+                  if (value != null) {
+                    controller.selectNovedad.value = value;
 
-                      if (value.tieneHijos) {
-                        controller.getNovedadesDelito(
-                          value.idDgoNovedadesElect,
-                        );
-                      } else if (controller
-                              .selectNovedad
-                              .value
-                              .idDgoNovedadesElect >
-                          0) {
-                        controller.mostrarBtnGuardar(true);
-                      }
-                      return;
+                    if (value.tieneHijos) {
+                      controller.getNovedadesDelito(value.idDgoNovedadesElect);
+                    } else if (controller
+                            .selectNovedad
+                            .value
+                            .idDgoNovedadesElect >
+                        0) {
+                      controller.mostrarBtnGuardar(true);
                     }
-                  },
-                  textSeleccioneUndato: "Seleccione una Novedad",
-                ),
-              )
-              : Container(),
+                    return;
+                  }
+                },
+                textSeleccioneUndato: "Seleccione una Novedad",
+              ),
+            )
+          : Container(),
     );
   }
 
@@ -204,48 +198,48 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
     return Obx(
       () =>
           controller.selectNovedad.value.idDgoNovedadesElect > 0 &&
-                  controller.selectNovedad.value.tieneHijos
-              ? ContenedorDesingWidget(
-                paddin: EdgeInsets.all(5),
-                child: ComboBusqueda(
-                  selectValue: controller.selectDelito.value,
-                  showClearButton: false,
-                  datos: controller.listDelito,
-                  displayField:
-                      (item) =>
-                          item.descripcion, // Aquí decides mostrar "nombres"
-                  searchHint: controller.selectNovedad.value.descripcion.isNotEmpty
-                      ? controller.selectNovedad.value.descripcion[0].toUpperCase() +
-                      controller.selectNovedad.value.descripcion.substring(1).toLowerCase()
-                      : '',
-                  complete: (value) {
-                    controller.selectDelito.value = NovedadesElectorale.empty();
-                    controller.mostrarBtnGuardar(false);
-                    if (value != null) {
-                      controller.selectDelito.value = value;
-                      if (controller.selectDelito.value.idDgoNovedadesElect >
-                          0) {
-                        controller.mostrarBtnGuardar(true);
-                      }
-                      return;
+              controller.selectNovedad.value.tieneHijos
+          ? ContenedorDesingWidget(
+              paddin: EdgeInsets.all(5),
+              child: ComboBusqueda(
+                selectValue: controller.selectDelito.value,
+                showClearButton: false,
+                datos: controller.listDelito,
+                displayField: (item) =>
+                    item.descripcion, // Aquí decides mostrar "nombres"
+                searchHint:
+                    controller.selectNovedad.value.descripcion.isNotEmpty
+                    ? controller.selectNovedad.value.descripcion[0]
+                              .toUpperCase() +
+                          controller.selectNovedad.value.descripcion
+                              .substring(1)
+                              .toLowerCase()
+                    : '',
+                complete: (value) {
+                  controller.selectDelito.value = NovedadesElectorale.empty();
+                  controller.mostrarBtnGuardar(false);
+                  if (value != null) {
+                    controller.selectDelito.value = value;
+                    if (controller.selectDelito.value.idDgoNovedadesElect > 0) {
+                      controller.mostrarBtnGuardar(true);
                     }
-                  },
-                  textSeleccioneUndato: "Seleccione el Delito",
-                ),
-              )
-              : Container(),
+                    return;
+                  }
+                },
+                textSeleccioneUndato: "Seleccione el Delito",
+              ),
+            )
+          : Container(),
     );
   }
 
-  Widget wgCajasTexto(String novedadesPadres)  {
+  Widget wgCajasTexto(String novedadesPadres) {
     Widget wg = Container();
     final responsive = ResponsiveUtil();
 
     controller.validarForm = false;
 
     controller.registrarDatosPersona = false;
-
-
 
     switch ((novedadesPadres ?? '').trim().toUpperCase()) {
       case "NOVEDADES":
@@ -633,7 +627,6 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
       });
     }
 
-
     print("asigno registrarDatosPersona ${controller.registrarDatosPersona}");
     print("wgCajasTextoNovedades validarForm ${controller.validarForm}");
 
@@ -710,28 +703,29 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
   Widget getBtnGuardar() {
     return Obx(
       () =>
-          controller.mostrarBtnGuardar.value && controller.selectTipoNovedad.value.idDgoNovedadesElect > 0
-              ? BtnIconWidget(
-                icon: Icons.save,
-                titulo: "GUARDAR",
-                onPressed: () {
-                  String descripcion =
-                      controller.selectNovedad.value.descripcion;
-                  if (controller.selectDelito.value.idDgoNovedadesElect > 0) {
-                    descripcion = controller.selectDelito.value.descripcion;
-                  }
+          controller.mostrarBtnGuardar.value &&
+              controller.selectTipoNovedad.value.idDgoNovedadesElect > 0
+          ? BtnIconWidget(
+              icon: Icons.save,
+              titulo: "GUARDAR",
+              onPressed: () {
+                String descripcion = controller.selectNovedad.value.descripcion;
+                if (controller.selectDelito.value.idDgoNovedadesElect > 0) {
+                  descripcion = controller.selectDelito.value.descripcion;
+                }
 
-                  DialogosAwesome.getWarningSiNo(
-                    title: '¿Desea continuar con el registro?',
-                    descripcion: 'Registro de Novedad:\n\n• ${descripcion.capitalizeFirst}',
+                DialogosAwesome.getWarningSiNo(
+                  title: '¿Desea continuar con el registro?',
+                  descripcion:
+                      'Registro de Novedad:\n\n• ${descripcion.capitalizeFirst}',
 
-                    btnOkOnPress: () {
-                      controller.eventoRegistrarNovedadesElectorales();
-                    },
-                  );
-                },
-              )
-              : Container(),
+                  btnOkOnPress: () {
+                    controller.eventoRegistrarNovedadesElectorales();
+                  },
+                );
+              },
+            )
+          : Container(),
     );
   }
 
@@ -797,37 +791,29 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
 
   Widget getSelectNacionalExtranjero() {
     return Obx(
-      () => Row(
-        children: [
-          Flexible(
-            child: ListTile(
-              title: TituloTextWidget(title: "Nacional"),
-              leading: Radio<String>(
-                value: 'Nacional',
-                groupValue: controller.selectedOptionNAcionalExtranjero.value,
-                onChanged: (String? value) {
-                  if (value != null) {
-                    controller.selectedOptionNAcionalExtranjero.value = value;
-                  }
-                },
+      () => RadioGroup<String>(
+        groupValue: controller.selectedOptionNAcionalExtranjero.value,
+        onChanged: (String? value) {
+          if (value != null) {
+            controller.selectedOptionNAcionalExtranjero.value = value;
+          }
+        },
+        child: Row(
+          children: [
+            Flexible(
+              child: ListTile(
+                title: TituloTextWidget(title: "Nacional"),
+                leading: Radio<String>(value: 'Nacional'),
               ),
             ),
-          ),
-          Flexible(
-            child: ListTile(
-              title: TituloTextWidget(title: "Extranjero"),
-              leading: Radio<String>(
-                value: 'Extranjero',
-                groupValue: controller.selectedOptionNAcionalExtranjero.value,
-                onChanged: (String? value) {
-                  if (value != null) {
-                    controller.selectedOptionNAcionalExtranjero.value = value;
-                  }
-                },
+            Flexible(
+              child: ListTile(
+                title: TituloTextWidget(title: "Extranjero"),
+                leading: Radio<String>(value: 'Extranjero'),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -874,8 +860,8 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
                 fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
                 validar:
                     controller.selectedOptionNAcionalExtranjero == "Nacional"
-                        ? Validate.validateCedula
-                        : null,
+                    ? Validate.validateCedula
+                    : null,
               ),
             ),
             Expanded(
@@ -886,9 +872,9 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
                   onPressed: () {
                     bool validar =
                         controller.selectedOptionNAcionalExtranjero ==
-                                "Nacional"
-                            ? true
-                            : false;
+                            "Nacional"
+                        ? true
+                        : false;
 
                     if (controller.selectTipoNovedad.value.descripcion !=
                         "DETENIDOS") {
@@ -1395,23 +1381,21 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
 
   Widget wgDatosPersona() {
     return Obx(
-      () =>
-          controller.datosPerson.value.idGenPersona > 0
-              ? Container(
-                padding: EdgeInsets.all(5),
-                child: TituloDetalleTextWidget(
-                  margin: EdgeInsets.all(0),
-                  padding: EdgeInsets.all(8),
-                  title: "Nombres",
-                  detalle:
-                      controller.datosPerson.value.siglas.length > 0
-                          ? controller.datosPerson.value.siglas +
-                              "." +
-                              controller.datosPerson.value.apenom
-                          : controller.datosPerson.value.apenom,
-                ),
-              )
-              : Container(),
+      () => controller.datosPerson.value.idGenPersona > 0
+          ? Container(
+              padding: EdgeInsets.all(5),
+              child: TituloDetalleTextWidget(
+                margin: EdgeInsets.all(0),
+                padding: EdgeInsets.all(8),
+                title: "Nombres",
+                detalle: controller.datosPerson.value.siglas.length > 0
+                    ? controller.datosPerson.value.siglas +
+                          "." +
+                          controller.datosPerson.value.apenom
+                    : controller.datosPerson.value.apenom,
+              ),
+            )
+          : Container(),
     );
   }
 }

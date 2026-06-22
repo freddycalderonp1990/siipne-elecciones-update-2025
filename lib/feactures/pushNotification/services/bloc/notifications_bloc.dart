@@ -5,9 +5,12 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:get/get.dart';
 import 'package:siipnemovil2/app/presentation/widgets/custom_app_widgets.dart';
 
-
-
-import '../../presentation/modules/controllers.dart';
+import '../../../../app/core/utils/device_info_app.dart';
+import '../../../../app/core/utils/utilidadesUtil.dart';
+import '../../../../app/domain/enums/enums.dart';
+import '../../data/models/models_push_notification.dart';
+import '../../domain/request/request_push_notification.dart';
+import '../../domain/use_cases/insert_token_fcm.dart';
 import '../localNotification/local_notification.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -24,8 +27,18 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   var title = mensaje['title'];
 
   print("firebaseMessagingBackgroundHandler : $mensaje");
+  final notification =
+  NotificationModel.fromJson(message.data);
 
-  LocalNotification.showLocalNotification(id: id, title: title, body: body);
+  print('accion: ${notification.accion}');
+  print('appName: ${notification.appName}');
+  print('idAccion: ${notification.idAccion}');
+  print('body: ${notification.body}');
+  print('title: ${notification.title}');
+  print('clickAction: ${notification.clickAction}');
+
+
+  LocalNotification.showLocalNotification(notification: notification);
 }
 
 class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
@@ -33,10 +46,15 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
 
   NotificationsBloc() : super(NotificationsInitial()) {
     print("NotificationsBloc inicializado...");
+
     _onForegroundMessage();
+
+    FirebaseMessaging.onMessageOpenedApp.listen(
+      _onMessageOpenedApp,
+    );
+
     _listenTokenRefresh();
   }
-
 
   void _listenTokenRefresh() {
     FirebaseMessaging.instance.onTokenRefresh.listen((newToken) {
@@ -49,10 +67,11 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
 
   /// Solicitar permisos para notificaciones
 
-
-
-
-  void requestPermission(String nameTopic) async {
+  Future<void> requestPermission({
+    List<String>? topics,
+    required NamApps appName,
+    required int idGenUsuario,
+  }) async {
     NotificationSettings settings = await messaging.requestPermission(
       alert: true,
       badge: true,
@@ -65,24 +84,25 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       // ✅ OK
-      _getFCMtoken(nameTopic);
-
+      await  _getFCMtoken(
+        topics: topics,
+        appName: appName,
+        idGenUsuario: idGenUsuario,
+      );
     } else if (settings.authorizationStatus == AuthorizationStatus.denied) {
-
       print("Usuario rechazó");
       _mostrarMensajePermisoDenegado();
-
-    } else if (settings.authorizationStatus == AuthorizationStatus.notDetermined) {
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.notDetermined) {
       // ⚠️ Aún no decide (raro después de pedir)
       print("Usuario aún no decide");
     }
   }
 
-
   void _mostrarMensajePermisoDenegado() {
-
     DialogosAwesome.getInformationSiNo(
-      descripcion: "Activa las notificaciones para recibir alertas y novedades importantes.\n\n"
+      descripcion:
+      "Activa las notificaciones para recibir alertas y novedades importantes.\n\n"
           "Sin este permiso, no podremos enviarte mensajes.\n\n"
           "¿Deseas activarlas?",
       title: "Queremos mantenerte informado",
@@ -91,89 +111,130 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
         _abrirConfiguracion();
       },
     );
-
   }
 
   void _abrirConfiguracion() async {
     await openAppSettings();
   }
 
-
-
-
-
   /// Obtener el token de FCM y suscribirse a topics
-  void _getFCMtoken(String nameTopic) async {
+  Future<void>  _getFCMtoken({
+    List<String>? topics,
+    required NamApps appName,
+    required int idGenUsuario,
+  }) async {
     final settings = await messaging.getNotificationSettings();
     if (settings.authorizationStatus != AuthorizationStatus.authorized) return;
 
-
-
     final token = await messaging.getToken();
-    String topicName = nameTopic;
 
-    print("Topic actual: $topicName");
+    print("Topic actual: $appName");
     print("NOTIFICACIONES-> El TOKEN es: $token");
 
     // Desuscribirse para evitar duplicados
-    await FirebaseMessaging.instance.unsubscribeFromTopic(topicName);
-
+    await FirebaseMessaging.instance.unsubscribeFromTopic(appName.nameString);
 
     // Suscripción al topic correspondiente
-    await FirebaseMessaging.instance.subscribeToTopic(topicName);
+    await FirebaseMessaging.instance.subscribeToTopic(appName.nameString);
+
+   // await updateTopics(topics);
 
     if (token != null) {
-      //insertToken(token);
+      insertToken(
+        tokenFcm: token,
+        appName: appName.nameString,
+        idGenUsuario: idGenUsuario,
+      );
     }
   }
 
-  /*
-  /// Enviar token al backend
-  void insertToken(String token) async {
-    final AuthApiImpl _apiUserRepository = Get.find<AuthApiImpl>();
+  Future<void> updateTopics(List<String>? topics) async {
+    if (topics == null || topics.isEmpty) {
+      return;
+    }
+    for (final topicName in topics) {
+      // Desuscribirse para evitar duplicados
+      await FirebaseMessaging.instance.unsubscribeFromTopic(topicName);
 
-    String versionApp = await UtilidadesUtil.getVersionCodeNameApp();
-    String ip = await DeviceInfo.getIp;
-    String versionSOCell = await DeviceInfo.getVersionSO;
-    String modeloCell = await DeviceInfo.getNameDevice;
-
-    final LoginController loginController = Get.find<LoginController>();
-
-    TokenInsertRequest tokenInsertRequest = TokenInsertRequest(
-      publicidad: loginController.user.value.publicidad,
-      idUsuario: loginController.user.value.idUser,
-      token: token,
-      idTopicFcm: loginController.user.value.idTopicFcm,
-      fecha: MyDate.getFechaHoraActual,
-      modCelular: modeloCell,
-      versionSOCell: versionSOCell,
-      ip: ip,
-    );
-
-    _apiUserRepository.inserTokenFCM(tokenInsertRequest);
+      // Suscripción al topic correspondiente
+      await FirebaseMessaging.instance.subscribeToTopic(topicName);
+    }
   }
-*/
+
+  /// Enviar token al backend
+  void insertToken({
+    required String tokenFcm,
+    required String appName,
+    required int idGenUsuario,
+  }) async {
+    final InsertTokenFcmUseCase _insertTokenFcmUseCase =
+    Get.find<InsertTokenFcmUseCase>();
+
+    try {
+      String ip = await DeviceInfoApp.getIp;
+      String plataforma = await DeviceInfoApp.getOnlyPlataforma;
+
+      PushTokenRequest request = PushTokenRequest(
+        idGenUsuario: idGenUsuario,
+        appName: appName,
+        plataforma: plataforma,
+        tokenFcm: tokenFcm,
+        usuario: idGenUsuario,
+        ip: ip,
+      );
+
+      final result = await _insertTokenFcmUseCase.call(request: request);
+    } catch (ex) {
+      print("Print error al insertar token en el server ${ex.toString()}");
+    }
+  }
+
   /// Mensajes recibidos en primer plano
   void _onForegroundMessage() {
     print("Escuchando mensajes en primer plano...");
     FirebaseMessaging.onMessage.listen(handleRemoteMessage);
   }
 
+// Mensajes recibidos en minimizado
+  void _onMessageOpenedApp(RemoteMessage message) {
+
+    print("========= onMessageOpenedApp =========");
+
+    print(message.data);
+
+    final notification =
+    NotificationModel.fromJson(
+      message.data,
+    );
+
+    print('accion: ${notification.accion}');
+    print('appName: ${notification.appName}');
+    print('idAccion: ${notification.idAccion}');
+    print('body: ${notification.body}');
+    print('title: ${notification.title}');
+  }
   /// Manejo de mensajes en cualquier estado
   void handleRemoteMessage(RemoteMessage message) {
-    Random random = Random();
-    var id = random.nextInt(1000000);
+
 
     print("MENSAJE RECIBIDO: ${message.data}");
     print("messageId: ${message.messageId}");
     print("collapseKey: ${message.collapseKey}");
     print("contentAvailable: ${message.contentAvailable}");
 
-    var mensaje = message.data;
-    var body = mensaje['body'];
-    var title = mensaje['title'];
 
 
-    LocalNotification.showLocalNotification(id: id, title: title, body: body);
+    final notification =
+    NotificationModel.fromJson(message.data);
+
+    print('accion: ${notification.accion}');
+    print('appName: ${notification.appName}');
+    print('idAccion: ${notification.idAccion}');
+    print('body: ${notification.body}');
+    print('title: ${notification.title}');
+    print('clickAction: ${notification.clickAction}');
+
+
+    LocalNotification.showLocalNotification(notification: notification);
   }
 }

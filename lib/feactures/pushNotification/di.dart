@@ -6,16 +6,15 @@ import 'data/data_sources/push_notification_remote_data_source.dart';
 import 'data/repository/push_notification_repository_impl.dart';
 import 'domain/repository/push_notification_repository.dart';
 import 'domain/use_cases/insert_token_fcm.dart';
-import 'presentation/modules/controllers.dart';
 
 
-class DependencyInjectionUser  {
+class DependencyInjectionPushNotification  {
 
   static init() async {
     // Use cases
 
 
-    Get.lazyPut<InsertTopkenFcmUseCase>(() => InsertTopkenFcmUseCase(repository: Get.find()),
+    Get.lazyPut<InsertTokenFcmUseCase>(() => InsertTokenFcmUseCase(repository: Get.find()),
         fenix: true);
 
 
@@ -29,8 +28,6 @@ class DependencyInjectionUser  {
         fenix: true);
 
 
-
-    Get.put(LoginController());
   }
 }
 

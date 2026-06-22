@@ -6,3 +6,8 @@ enum ShowTutorial { Login, ClaveDigital, Finish }
 enum ActionTutorial { onSkip, onClickOverlay, onClickTargetWithTapPosition , onClickTarget,onFinish}
 
 enum NamApps { Elecciones, Censo }
+
+
+extension NamAppsExtension on NamApps {
+  String get nameString => "app_${name.toLowerCase()}";
+}
