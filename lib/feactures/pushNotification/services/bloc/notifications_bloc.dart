@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -117,35 +118,138 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
     await openAppSettings();
   }
 
-  /// Obtener el token de FCM y suscribirse a topics
-  Future<void>  _getFCMtoken({
+// Obtener el token de FCM y suscribirse a topics
+  Future<void> _getFCMtoken({
     List<String>? topics,
     required NamApps appName,
     required int idGenUsuario,
   }) async {
+
+    const String TAG = "[FCM]";
+
     final settings = await messaging.getNotificationSettings();
-    if (settings.authorizationStatus != AuthorizationStatus.authorized) return;
 
-    final token = await messaging.getToken();
+    print("$TAG ======================================");
+    print("$TAG INICIO PROCESO NOTIFICACIONES");
+    print("$TAG TOPIC: ${appName.nameString}");
+    print("$TAG AuthorizationStatus: ${settings.authorizationStatus}");
+    print("$TAG ======================================");
 
-    print("Topic actual: $appName");
-    print("NOTIFICACIONES-> El TOKEN es: $token");
+    if (settings.authorizationStatus !=
+        AuthorizationStatus.authorized) {
 
-    // Desuscribirse para evitar duplicados
-    await FirebaseMessaging.instance.unsubscribeFromTopic(appName.nameString);
+      print("$TAG ❌ Usuario no autorizó notificaciones");
 
-    // Suscripción al topic correspondiente
-    await FirebaseMessaging.instance.subscribeToTopic(appName.nameString);
+      return;
+    }
 
-   // await updateTopics(topics);
+    String? token;
 
-    if (token != null) {
-      insertToken(
-        tokenFcm: token,
-        appName: appName.nameString,
-        idGenUsuario: idGenUsuario,
+    try {
+
+      // Solo para diagnóstico en iOS
+      if (Platform.isIOS) {
+
+        try {
+
+          final apnsToken =
+          await FirebaseMessaging.instance.getAPNSToken();
+
+          print("$TAG 🍎 APNS TOKEN: $apnsToken");
+
+          if (apnsToken == null) {
+
+            print(
+              "$TAG ⚠️ APNS TOKEN es NULL. "
+                  "Posiblemente estás en simulador "
+                  "o APNs no está configurado.",
+            );
+          }
+
+        } catch (e) {
+
+          print(
+            "$TAG ❌ Error obteniendo APNS TOKEN: $e",
+          );
+        }
+      }
+
+      token = await FirebaseMessaging.instance.getToken();
+
+      print("$TAG 🔥 FCM TOKEN: $token");
+
+    } catch (e, stackTrace) {
+
+      print("$TAG ❌ Error obteniendo FCM TOKEN");
+      print("$TAG ERROR: $e");
+      print("$TAG STACKTRACE: $stackTrace");
+
+      return;
+    }
+
+    try {
+
+      await FirebaseMessaging.instance.subscribeToTopic(
+        appName.nameString,
+      );
+
+      print(
+        "$TAG ✅ Suscrito al topic: ${appName.nameString}",
+      );
+
+    } catch (e) {
+
+      print(
+        "$TAG ❌ Error suscribiendo al topic: $e",
       );
     }
+
+    if (topics != null && topics.isNotEmpty) {
+
+      for (final topic in topics) {
+
+        try {
+
+          await FirebaseMessaging.instance.subscribeToTopic(
+            topic,
+          );
+
+          print(
+            "$TAG ✅ Suscrito al topic adicional: $topic",
+          );
+
+        } catch (e) {
+
+          print(
+            "$TAG ❌ Error suscribiendo al topic $topic: $e",
+          );
+        }
+      }
+    }
+
+    if (token != null && token.isNotEmpty) {
+
+      try {
+
+        insertToken(
+          tokenFcm: token,
+          appName: appName.nameString,
+          idGenUsuario: idGenUsuario,
+        );
+
+        print("$TAG ✅ Token enviado al backend");
+
+      } catch (e) {
+
+        print(
+          "$TAG ❌ Error guardando token en backend: $e",
+        );
+      }
+    }
+
+    print("$TAG ======================================");
+    print("$TAG FIN PROCESO NOTIFICACIONES");
+    print("$TAG ======================================");
   }
 
   Future<void> updateTopics(List<String>? topics) async {

@@ -24,6 +24,8 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
@@ -40,10 +42,12 @@
 	<string>La aplicación necesita acceder a tu ubicación, para mostrar los operativos e instalaciones cercanos según la posición donde se encuentre.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>La aplicación necesita acceder a la galería, para poder seleccionar una foto cuando se registre una novedad.</string>
-	<key>ITSAppUsesNonExemptEncryption</key>
-    <false/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
