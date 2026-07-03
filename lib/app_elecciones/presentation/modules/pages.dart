@@ -32,6 +32,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:get/get.dart';
 
 
+import '../../../feactures/gps/presentation/widgets/gps_access_screen.dart';
 import '../../../feactures/gps/presentation/widgets/my_ubicacion_widget.dart';
 
 import '../../../feactures/mapas/widgets/custom_marker.dart';

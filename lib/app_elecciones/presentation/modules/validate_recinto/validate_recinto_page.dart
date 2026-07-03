@@ -5,12 +5,11 @@ class ValidateRecintoPage extends GetView<ValidateRecintoController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
+    Widget wg= Obx(
       () => DesingMapaRecinto(
 
     listRecintosElectorales: controller.listRecintosElectorales,
         onPressedSave: () {
-
           DialogosDesingWidget.getDialogoX(
               contenido:
 
@@ -61,6 +60,12 @@ class ValidateRecintoPage extends GetView<ValidateRecintoController> {
 
         cargando: controller.peticionServerState.value,
       ),
+    );
+
+    return      GpsAccessScreen(
+      useSafeArea: true,
+      contenido: wg,
+      namApps: NamApps.Elecciones,
     );
   }
 

@@ -7,6 +7,7 @@ class CrearCodigoRecintosPage extends GetView<CrearCodigoRecintosController> {
   Widget build(BuildContext context) {
     final responsive = ResponsiveUtil();
     return WorkAreaPageWidget(
+      showGps: true,
       title: "ABRIR RECINTO ELECTORAL",
       mostrarBtnAtras: true,
       peticionServer: controller.peticionServerState,
