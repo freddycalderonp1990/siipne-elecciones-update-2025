@@ -53,16 +53,21 @@ class TiposServiciosEjesPage extends GetView<TiposServiciosEjesController> {
   _getMenu(ResponsiveUtil responsive) {
 
 
+
     Widget btnValidarRecinto =Container();
+    print("validando recintos");
     if(controller.selectProcesoOperativoController.selectProcesosOperativo.value.validarRecinto){
+      print("si mostrar validar solo recintos");
        btnValidarRecinto = BtnMenuWidget(
         horizontal: true,
         colorFondo: Colors.white,
-        img: SiipneEleccionesImages.icon_abrir_rec_elec,
+        img: SiipneEleccionesImages.ic_validar_recinto,
         title: SiipneStrings.VALIDAR_RECINTO,
-        onTap: () => Get.toNamed(EleccionesRoutes.VALIDAR_RECINTO),
+         onTap: () => Get.toNamed(EleccionesRoutes.VALIDAR_RECINTO,arguments: {"selectProcesosOperativo": controller.selectProcesoOperativoController.selectProcesosOperativo.value}),
       );
+       //return btnValidarRecinto;
     }
+
 
 
     double separacionBtnMenu = 1.5;

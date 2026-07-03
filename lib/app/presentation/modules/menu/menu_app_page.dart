@@ -8,7 +8,6 @@ class MenuAppPage extends GetView<MenuAppController> {
     return WorkAreaPageWidget(
       title: "MENÚ PRINCIPAL ",
       contenido: _getContenidoConRefresh(),
-
       peticionServer: controller.peticionServerState,
     );
   }

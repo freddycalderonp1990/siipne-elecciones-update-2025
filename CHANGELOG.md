@@ -61,7 +61,7 @@ ENUM('REGISTRADO', 'VALIDADO')
 # Movil 
 - Se agrea la nueva condicion ‘RN’=Registro no autorizado y 'NL'=No Labora, que esta en la tabla DgoPerAsigOpe
 - Archivo: /Volumes/siipne/appmovil/siipneMovil/recintoElectoral/data/dataDgoPerAsigOpe.php
-- Tabla: dgoPerAsigOpe (Agregar el enum ‘RN’=Registro no autorizado)
+- Tabla: dgoPerAsigOpe (Agregar el enum ‘RN’=Registro no autorizado -en el camppo situacion)
 - Servicio para verificar si el usaurio tiene una novedad registrada por el P1 (‘RN’=Registro no autorizado , 'NL'=No Labora, OR'=Pertenece a Otro Recinto)
 
 

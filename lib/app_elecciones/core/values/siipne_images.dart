@@ -23,8 +23,11 @@ class SiipneEleccionesImages {
       rutaIcon + "icon_finalizar_rec_elec.png";
   static const icon_registrar_novedades_rec_elec =
       rutaIcon + "icon_registrar_novedades_rec_elec.png";
-  static const icon_registrarse_rec_elect =
-      rutaIcon + "icon_registrarse_rec_elect.png";
+
+
+  static const icon_anexarse_rec_elec =
+      rutaIcon + "icon_anexarse_rec_elec.png";
+
   static const icon_abandonar_rec_elec =
       rutaIcon + "icon_abandonar_rec_elec.png";
   static const icon_agregar_personal =
@@ -36,6 +39,7 @@ class SiipneEleccionesImages {
   static const icon_huella = rutaIcon + "icon_huella.png";
 
   static const ic_elecciones = rutaIcon + "ic_elecciones.png";
+  static const ic_validar_recinto= rutaIcon + "ic_validar_recinto.png";
 
   //Imagen en base64
   static const imgNoImagen =

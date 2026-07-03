@@ -21,8 +21,14 @@ class GpsAccessScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+
+
     return BlocBuilder<GpsBloc, GpsState>(
       builder: (context, state) {
+
+
+
         if (state.isGpsEnabled && state.isGpsPermissionGranted) {
           final locationBloc = BlocProvider.of<LocationBloc>(context);
           locationBloc.getCurrentPosition();
@@ -94,6 +100,110 @@ class MensajePermisoGps extends StatelessWidget {
   Widget build(BuildContext context) {
     final responsive = ResponsiveUtil();
 
+      return Container(
+        margin: const EdgeInsets.only(top: 40),
+        width: responsive.ancho,
+        child: ContenedorDesingWidget(
+          margin: const EdgeInsets.all(8),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 18,
+              vertical: 20,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+
+                /// Icono superior
+                CircleAvatar(
+                  radius: 28,
+                  backgroundColor: Colors.blue.shade50,
+                  child: const Icon(
+                    Icons.location_on,
+                    color: Color(0xff0F4C81),
+                    size: 34,
+                  ),
+                ),
+
+                const SizedBox(height: 15),
+
+                /// Título
+                TituloTextWidget(
+                  textAlign: TextAlign.center,
+                  title: title,
+                ),
+
+                const SizedBox(height: 10),
+
+                Text(
+                  "Necesitamos acceder a tu ubicación para utilizar todas las funciones de la aplicación.",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: responsive.diagonalP(1.6),
+                    color: Colors.black54,
+                    height: 1.4,
+                  ),
+                ),
+
+                const SizedBox(height: 25),
+
+                /// Imagen
+                Image.asset(
+                  AppImages.imgLocationAccess,
+                  height: responsive.diagonalP(5),
+                ),
+
+                const SizedBox(height: 10),
+
+                getMensajeGps(namApps),
+
+                const SizedBox(height: 20),
+
+                if (onPressed != null)
+                  SizedBox(
+                    width: responsive.anchoP(72) ,
+                    child: BtnIconWidget(
+                      icon: Icons.navigate_next,
+                      titulo: "Continuar",
+                      onPressed: onPressed,
+                    ),
+                  ),
+
+                const SizedBox(height: 18),
+
+                Divider(),
+
+                const SizedBox(height: 12),
+
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+
+                    Icon(
+                      Icons.shield_outlined,
+                      color: Colors.blue.shade700,
+                    ),
+
+                    const SizedBox(width: 10),
+
+                    Expanded(
+                      child: Text(
+                        "Tu ubicación está protegida.\nSolo será utilizada durante el proceso y no se compartirá con terceros.",
+                        style: TextStyle(
+                          fontSize: responsive.diagonalP(1.4),
+                          color: Colors.black54,
+                        ),
+                      ),
+                    ),
+
+                  ],
+                ),
+
+              ],
+            ),
+          ),
+        ),
+      );
 
 
     return Container(

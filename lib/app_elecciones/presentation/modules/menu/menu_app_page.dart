@@ -13,6 +13,7 @@ class MenuAppEleccionesPage extends GetView<MenuAppEleccionesController> {
       );
     });
     return WorkAreaPageWidget(
+      showGps: true,
       mostrarBtnAtras: true,
       title: "MENÚ ELECCIONES",
       contenido: getContenido(),
@@ -72,7 +73,7 @@ class MenuAppEleccionesPage extends GetView<MenuAppEleccionesController> {
           child: BtnMenuWidget(
             horizontal: true,
             colorFondo: Colors.white,
-            img: SiipneEleccionesImages.icon_registrarse_rec_elect,
+            img: SiipneEleccionesImages.icon_anexarse_rec_elec,
             title: SiipneStrings.ANEXARSE,
             onTap: () => Get.toNamed(EleccionesRoutes.ANEXARSE),
           ),
@@ -80,6 +81,25 @@ class MenuAppEleccionesPage extends GetView<MenuAppEleccionesController> {
       ],
     );
 
-    return btn1;
+
+
+
+    return Column(children: [
+      btn1,
+      Obx(()=>controller.showValidarRecinto.value?Column(children: [
+
+        SizedBox(height: 10,),
+        BtnMenuWidget(
+          horizontal: true,
+          colorFondo: Colors.white,
+          img: SiipneEleccionesImages.ic_validar_recinto,
+          title: SiipneStrings.VALIDAR_RECINTO,
+          onTap: () => Get.toNamed(EleccionesRoutes.VALIDAR_RECINTO,arguments: {"selectProcesosOperativo": controller.selectProcesosOperativo}),
+        )
+      ],):Container())
+
+    ],);
+
+
   }
 }

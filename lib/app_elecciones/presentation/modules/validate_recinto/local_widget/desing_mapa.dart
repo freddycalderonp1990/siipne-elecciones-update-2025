@@ -12,6 +12,7 @@ import 'package:siipnemovil2/app/core/utils/utilidadesUtil.dart';
 import '../../../../../../app/core/utils/responsiveUtil.dart';
 import '../../../../../../app/core/values/app_colors.dart';
 import '../../../../../../app/presentation/widgets/custom_app_widgets.dart';
+import '../../../../../app/core/app_config.dart';
 import '../../../../../app/core/utils/photo_helper.dart';
 import '../../../../../app/core/values/app_images.dart';
 import '../../../../../feactures/mapas/openstreetmap.dart';
@@ -67,6 +68,9 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
   bool tieneRecintoValidado = false;
 
   Rx<GaleryCameraModel?> mGaleryCameraModel = Rx<GaleryCameraModel?>(null);
+
+  var controllerNombreRecinto = TextEditingController();
+  final formKeyRegRecinto = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -145,8 +149,6 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
                 ),
               ),
 
-
-
               Expanded(
                 child: Builder(
                   builder: (context) {
@@ -168,14 +170,18 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
                     return ListView.builder(
                       controller:
                           scrollController, // 👈 IMPORTANTE (NO cambiar)
-                      itemCount: listaOrdenada.length+1,
+                      itemCount: listaOrdenada.length + 1,
                       itemBuilder: (context, index) {
-
-
                         // Último item: No encuentro mi recinto
                         if (index == listaOrdenada.length) {
+                          if (tieneRecintoValidado) {
+                            return Container();
+                          }
                           return Container(
-                            margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                            margin: EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 8,
+                            ),
                             child: OutlinedButton.icon(
                               icon: Icon(
                                 Icons.add_location_alt,
@@ -201,20 +207,11 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
                                   recintoSeleccionado = null;
                                 });
 
-                                
-                                DialogosDesingWidget.getDialogoX(
-                                  contenido: Column(children: [
-                                    wgFoto(),
-                                  ],)
-                                );
-
+                                desingRegistrarrecinto();
                               },
                             ),
                           );
                         }
-
-
-
 
                         RecintosElectoral recinto = listaOrdenada[index];
 
@@ -243,8 +240,6 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
 
                         if (esSeleccionado) {
                           fondo = AppColors.colorAzul; // 🔵 seleccionado manda
-
-
                         } else if (esValidado) {
                           fondo = Colors.green; // 🟢 validado
                         } else {
@@ -381,7 +376,6 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
                       icon: Icons.save,
                       titulo: "GUARDAR",
                       onPressed: () {
-
                         if (tieneRecintoValidado) {
                           DialogosAwesome.getWarning(
                             descripcion:
@@ -411,7 +405,6 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
                           descripcion: msj,
                           btnOkOnPress: widget.onPressedSave,
                         );
-
                       },
                     ),
                   ),
@@ -440,8 +433,7 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
             onTap: () async {
               final ahora = DateTime.now();
 
-              String dosDigitos(int n) =>
-                  n.toString().padLeft(2, '0');
+              String dosDigitos(int n) => n.toString().padLeft(2, '0');
 
               String nameRecintoImg =
                   "ImgRecinto_${ahora.year}"
@@ -452,10 +444,10 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
                   "${dosDigitos(ahora.second)}.jpg";
 
               mGaleryCameraModel.value =
-              await PhotoHelper.getDesingPictureGaleryOrCamera(
-                titleImg: nameRecintoImg,
-                initPeticion: (value) {},
-              );
+                  await PhotoHelper.getDesingPictureGaleryOrCamera(
+                    titleImg: nameRecintoImg,
+                    initPeticion: (value) {},
+                  );
             },
 
             child: Image.asset(
@@ -723,6 +715,104 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  void desingRegistrarrecinto() {
+    final responsive = ResponsiveUtil();
+    DialogosDesingWidget.getDialogoX(
+      title: "Nuevo Recinto",
+      contenido: Form(
+        key: formKeyRegRecinto,
+
+        child: Column(
+          children: [
+            getMsjInformacion(),
+            wgFoto(),
+
+ Obx(()=>           mGaleryCameraModel.value != null? Column(children: [
+
+
+   ImputTextWidget(
+     maxLength: 200,
+     keyboardType: TextInputType.multiline,
+     controller: controllerNombreRecinto,
+     icono: Icon(Icons.edit, color: AppColors.colorIcons),
+     label: "Nombre Recinto",
+     fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
+     validar: (String? value) {
+       if (value != null && value.length < 5) {
+         return "Ingrese el nombre del Recinto";
+       }
+       return null;
+     },
+   ),
+   BtnIconWidget(
+     icon: Icons.save,
+     titulo: "GUARDAR",
+     onPressed: () {
+       bool isValid = formKeyRegRecinto.currentState!.validate();
+
+       if (!isValid) return;
+     },
+   ),
+
+ ],):Container())
+
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget getMsjInformacion() {
+    return Container(
+      padding: const EdgeInsets.all(5),
+      decoration: BoxDecoration(
+        color: const Color(0xFFF3F8FF),
+        borderRadius: BorderRadius.circular(15),
+        border: Border(left: BorderSide(color: AppColors.colorAzul, width: 5)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CircleAvatar(
+            radius: 18,
+            backgroundColor: AppColors.colorAzul,
+            child: const Icon(
+              Icons.info_outline,
+              color: Colors.white,
+              size: 20,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: RichText(
+              text: TextSpan(
+                style: const TextStyle(
+                  color: Colors.black87,
+                  fontSize: 14,
+                  height: 1.45,
+                ),
+                children: [
+                  TextSpan(
+                    text: "Importante\n",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.colorAzul,
+                      fontSize: 15,
+                    ),
+                  ),
+                  const TextSpan(
+                    text:
+                        "Tome una fotografía del afiche oficial del recinto electoral donde se visualice claramente el nombre del recinto.",
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

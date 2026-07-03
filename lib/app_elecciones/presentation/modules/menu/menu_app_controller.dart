@@ -12,6 +12,10 @@ class MenuAppEleccionesController extends GetxController {
   final EleccionesNovedadesApiImpl _eleccionesNovedadesApiImpl =
   Get.find<EleccionesNovedadesApiImpl>();
 
+  ProcesosOperativo selectProcesosOperativo=ProcesosOperativo.empty();
+
+  RxBool showValidarRecinto = false.obs;
+
 
  RecintosElectoralesAbiertos recintosElectoralesAbiertos =
       RecintosElectoralesAbiertos.empty();
@@ -20,7 +24,7 @@ class MenuAppEleccionesController extends GetxController {
 
   late UserEntities  user;
 
-  int idDgoProcElec=0;
+
 
   RxBool peticionServerState = false.obs;
   @override
@@ -96,18 +100,39 @@ class MenuAppEleccionesController extends GetxController {
   }
 
 
-  Future<void> getImgProceso() async {
+
+
+
+  Future<void> getProcesos() async {
     //peticionServerState(true);
 
-    List<DatosProcesoImg> listDatosProcesoImg = <DatosProcesoImg>[];
+    List<ProcesosOperativo> listProcesos = <ProcesosOperativo>[];
+
+
     await ExceptionDialogos.manejarErroresShowDialogo(() async {
-      listDatosProcesoImg =
-      await _eleccionesProcesosApiImpl.getProcesoActivoImgs();
+      final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
+      LatLng position = await locationBloc.getCurrentPosition();
+
+      listProcesos =
+      await _eleccionesProcesosApiImpl.getProcesosOperativos(
+          latitud: position.latitude, longitud: position.longitude);
     });
 
-    if (listDatosProcesoImg.length > 0) {
-      SiipneEleccionesImages.imgCabeceraProceso.value = listDatosProcesoImg[0].imgBase64;
-      idDgoProcElec=listDatosProcesoImg[0].idDgoProcElec;
+
+
+
+    if (listProcesos.length > 0) {
+      if(listProcesos.length==1){
+        print("valida recinto ${listProcesos[0].validarRecinto}");
+
+       selectProcesosOperativo =listProcesos[0];
+
+        showValidarRecinto.value=selectProcesosOperativo.validarRecinto;
+
+
+
+      }
+
     }
 
     //peticionServerState(false);
@@ -115,13 +140,13 @@ class MenuAppEleccionesController extends GetxController {
 
   Future<void> verificarNovedadesRegistradasProcElect() async {
     peticionServerState(true);
-    await getImgProceso();
+    await getProcesos();
 
 
     await ExceptionDialogos.manejarErroresShowDialogo(() async {
 
       DataNovedadesUdga data =
-      await _eleccionesNovedadesApiImpl.verificarNovedadesRegistradasByProcElect(idGenPersona: user.idGenPersona,idDgoProcElec: idDgoProcElec);
+      await _eleccionesNovedadesApiImpl.verificarNovedadesRegistradasByProcElect(idGenPersona: user.idGenPersona,idDgoProcElec: selectProcesosOperativo.idDgoProcElec);
 
       if (data.session == false) {
         String msj=data.motivo.replaceAll("No Puede iniciar Session", "");
