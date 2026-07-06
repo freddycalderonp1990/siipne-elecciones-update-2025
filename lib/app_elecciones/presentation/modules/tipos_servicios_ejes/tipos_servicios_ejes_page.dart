@@ -78,7 +78,7 @@ class TiposServiciosEjesPage extends GetView<TiposServiciosEjesController> {
                 horizontal: true,
                 colorFondo: Colors.white,
                 img: SiipneEleccionesImages.icon_abrir_rec_elec,
-                title: 'SERVICIO EN RECINTOS',
+                title: 'RECINTOS',
                 onTap: () {
                   Get.toNamed(EleccionesRoutes.CREAR_CODIGO_RECINTOS);
                 }))
@@ -89,7 +89,7 @@ class TiposServiciosEjesPage extends GetView<TiposServiciosEjesController> {
             controller.tipoEjesActivos.value.tipoEjeUnidadesPoliciales
                 ? Flexible(child: BtnMenuWidget(
               horizontal: true,
-              img: SiipneEleccionesImages.icon_agregar_personal,
+              img: SiipneEleccionesImages.icon_unidades_policiales,
               title: SiipneStrings.UNIDADESPOLICIALES,
               onTap: () {
 

@@ -39,7 +39,7 @@ class _BtnMenuWidgetState extends State<BtnMenuWidget>
       wg: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _buildIcon(responsive.anchoP(13), widget.colorCirculoIcon),
+          _buildIcon(responsive.anchoP(14), widget.colorCirculoIcon),
           SizedBox(width: responsive.altoP(1)),
           Expanded(
             child: Text(
@@ -61,7 +61,7 @@ class _BtnMenuWidgetState extends State<BtnMenuWidget>
       wg: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _buildIcon(responsive.anchoP(12),widget.colorCirculoIcon),
+          _buildIcon(responsive.anchoP(14),widget.colorCirculoIcon),
           SizedBox(height: responsive.altoP(1)),
           Text(
             widget.title.toUpperCase(),
@@ -130,6 +130,7 @@ class _BtnMenuWidgetState extends State<BtnMenuWidget>
     if(color==null){
       color=[const Color(0xFF0A3D7E) ,const Color(0xFF0A3D7E)];
     }
+    //color=[Colors.transparent,Colors.transparent];
     return Container(
       width: size,
       height: size,
@@ -140,15 +141,9 @@ class _BtnMenuWidgetState extends State<BtnMenuWidget>
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.red.withOpacity(0.15),
-            blurRadius: 5,
-            offset: const Offset(0, 3),
-          ),
-        ],
+
       ),
-      padding: const EdgeInsets.all(6),
+      padding: const EdgeInsets.all(3),
       child: ClipOval(
         child: widget.img != null
             ? Image.asset(widget.img!, fit: BoxFit.contain)

@@ -128,10 +128,11 @@ class MensajePermisoGps extends StatelessWidget {
                 backgroundColor: Colors.blue.shade50,
                 child: const Icon(
                   Icons.location_on,
-                  color: Color(0xff0F4C81),
+                  color: Color(0xffff0000),
                   size: 34,
                 ),
               ),
+
 
               const SizedBox(height: 15),
 
@@ -151,14 +152,14 @@ class MensajePermisoGps extends StatelessWidget {
               ),
 
               const SizedBox(height: 25),
-
+/*
               /// Imagen
               Image.asset(
                 AppImages.imgLocationAccess,
                 height: responsive.diagonalP(5),
               ),
 
-              const SizedBox(height: 10),
+              const SizedBox(height: 10),*/
 
               getMensajeGps(namApps),
 

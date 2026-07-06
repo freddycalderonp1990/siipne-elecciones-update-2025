@@ -56,7 +56,8 @@ class InicioRapidoPage extends GetView<InicioRapidoController> {
       title: "Huella/Face ID",
       horizontal: false,
       onTap: () => controller.loginConBiometrico(),
-      colorFondo: AppColors.colorAzul,
+      colorFondo: AppColors.colorIcons,
+
       colorTexto: Colors.white,
     );
 
@@ -69,7 +70,7 @@ class InicioRapidoPage extends GetView<InicioRapidoController> {
       title: "Ingresa con Usuario y Clave",
       horizontal: false,
       onTap: () => controller.ingresoConOtroUsuario(),
-      colorFondo: AppColors.colorAzul,
+      colorFondo: AppColors.colorIcons,
       colorTexto: Colors.white,
     );
 

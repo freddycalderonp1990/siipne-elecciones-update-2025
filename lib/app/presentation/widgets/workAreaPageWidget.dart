@@ -170,6 +170,8 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
                     ],
                   ),
                 ),
+                // FIX: Evita que el contenido quede oculto por la barra de navegación del sistema.
+                // Ajuste del espacio inferior para la barra de navegación (System Navigation Bar).
                 SizedBox(height: MediaQuery.of(context).padding.bottom),
               ],
             ),

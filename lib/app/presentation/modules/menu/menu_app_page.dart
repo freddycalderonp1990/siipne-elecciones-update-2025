@@ -69,6 +69,7 @@ class MenuAppPage extends GetView<MenuAppController> {
         SizedBox(height: responsive.altoP(2)),
         Obx(
           () =>
+
               controller.showMenuCenso.value
                   ? BtnMenuWidget(
                     horizontal: true,

@@ -66,11 +66,12 @@ class _DesingMapaState extends State<DesingMapa> {
               maxZoom: 25.0,
               initialZoom: 18,
             ),
-            children: [Openstreetmap.getMapa()],
+            children: [Openstreetmap.getMapa(),    getMarker2(), ],
           ),
 
           getBtnAtras(),
           getBotonera(),
+
 
 
           CargandoWidget(mostrar: widget.cargando),
@@ -182,12 +183,15 @@ class _DesingMapaState extends State<DesingMapa> {
 
   Widget btnGuardar(){
     return
-      BtnIconWidget(
-        icon: Icons.save,
-        titulo: "GUARDAR",
-        onPressed: widget.onPressedSave,
+      Column(children: [
+        BtnIconWidget(
+          icon: Icons.save,
+          titulo: "GUARDAR",
+          onPressed: widget.onPressedSave,
 
-      );
+        ),
+        SizedBox(height: MediaQuery.of(context).padding.bottom),
+      ],);
   }
   Widget getBtnZoom() {
     double padding = 2.0;
@@ -220,6 +224,8 @@ class _DesingMapaState extends State<DesingMapa> {
             },
           ),
         ),
+
+        SizedBox(height: MediaQuery.of(context).padding.bottom),
       ],
     );
 

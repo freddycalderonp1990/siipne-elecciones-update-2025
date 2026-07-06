@@ -24,6 +24,9 @@ class SiipneEleccionesImages {
   static const icon_registrar_novedades_rec_elec =
       rutaIcon + "icon_registrar_novedades_rec_elec.png";
 
+  static const icon_unidades_policiales =
+      rutaIcon + "icon_unidades_policiales.png";
+
 
   static const icon_anexarse_rec_elec =
       rutaIcon + "icon_anexarse_rec_elec.png";

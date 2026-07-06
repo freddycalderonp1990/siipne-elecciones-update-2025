@@ -82,7 +82,7 @@ class _BtnMenuWidgetState extends State<BtnMenuWidget>
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildImage(responsive.anchoP(13)),
+        _buildImage(responsive.anchoP(15)),
         SizedBox(width: responsive.altoP(1)),
         Expanded(
           child: Text(
@@ -110,7 +110,7 @@ class _BtnMenuWidgetState extends State<BtnMenuWidget>
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildImage(responsive.anchoP(12)),
+        _buildImage(responsive.anchoP(14)),
         SizedBox(height: responsive.altoP(1)),
         Text(
           widget.title.toUpperCase(),
@@ -151,7 +151,7 @@ class _BtnMenuWidgetState extends State<BtnMenuWidget>
           ),
         ],
       ),
-      padding: const EdgeInsets.all(6),
+      padding: const EdgeInsets.all(3),
       child: ClipOval(
         child: widget.img != null
             ? Image.asset(widget.img!, fit: BoxFit.contain)
