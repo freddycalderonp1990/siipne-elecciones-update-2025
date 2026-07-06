@@ -31,21 +31,20 @@ class MenuAppEleccionesController extends GetxController {
   void onInit() async {
     user=loginController.user.value;
 
-    await verificarNovedadesRegistradasProcElect();
-
-    verificarperAsignadoRecElectoral();
 
     super.onInit();
   }
 
   @override
-  void onReady() {
+  void onReady() async {
     // TODO: Donde la vista ya se presento
-    //no xq usa blocprovider
-    /*Get.find<NotificationsBloc>().requestPermission(
-      appName: NamApps.Elecciones,
-      idGenUsuario: user.idGenUsuario,
-    );*/
+
+    final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
+    LatLng position = await locationBloc.getCurrentPosition();
+
+    await verificarNovedadesRegistradasProcElect( position);
+
+    verificarperAsignadoRecElectoral();
     super.onReady();
   }
 
@@ -103,15 +102,12 @@ class MenuAppEleccionesController extends GetxController {
 
 
 
-  Future<void> getProcesos() async {
+  Future<void> getProcesos( LatLng position) async {
     //peticionServerState(true);
 
     List<ProcesosOperativo> listProcesos = <ProcesosOperativo>[];
 
-
     await ExceptionDialogos.manejarErroresShowDialogo(() async {
-      final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
-      LatLng position = await locationBloc.getCurrentPosition();
 
       listProcesos =
       await _eleccionesProcesosApiImpl.getProcesosOperativos(
@@ -138,9 +134,9 @@ class MenuAppEleccionesController extends GetxController {
     //peticionServerState(false);
   }
 
-  Future<void> verificarNovedadesRegistradasProcElect() async {
+  Future<void> verificarNovedadesRegistradasProcElect( LatLng position) async {
     peticionServerState(true);
-    await getProcesos();
+    await getProcesos(position);
 
 
     await ExceptionDialogos.manejarErroresShowDialogo(() async {

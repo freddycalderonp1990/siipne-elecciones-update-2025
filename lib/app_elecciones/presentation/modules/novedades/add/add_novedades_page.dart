@@ -257,6 +257,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
         break;
 
       case "DETENIDOS":
+
         controller.validarForm = true;
         if (controller.selectNovedad.value.idDgoNovedadesElect > 0) {
           wg = wgTxtCedulaBoleta(responsive);
@@ -622,6 +623,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
     }
 
     if (controller.mostrarFoto.value != mostrarFoto) {
+
       WidgetsBinding.instance.addPostFrameCallback((_) {
         controller.mostrarFoto.value = mostrarFoto;
       });
@@ -822,6 +824,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
     return getForm(
       child: Column(
         children: [
+          wgFoto(responsive),
           getSelectNacionalExtranjero(),
           ImputTextWidget(
             keyboardType: TextInputType.text,
@@ -1049,6 +1052,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
               color: AppColors.colorIcons,
               size: controller.sizeIcons,
             ),
+
             label: "Cantidad",
             fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
             validar: Validate.validateCantidad,

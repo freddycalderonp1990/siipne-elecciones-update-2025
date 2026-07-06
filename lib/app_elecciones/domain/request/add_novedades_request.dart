@@ -9,6 +9,7 @@ class AddNovedadesRequest {
   final double longitud;
   final String? nombreDetenido;
   final int? idGenPersonaD;
+
   final String cedula;
   final int idDgoProcElec;
   final int idDgoReciElect;
@@ -16,7 +17,7 @@ class AddNovedadesRequest {
   final String ip;
   final int idDgoCreaOpReci;
 
-  AddNovedadesRequest({
+  AddNovedadesRequest( {
     required this.idDgoNovedadesElect,
     required this.idDgoPerAsigOpe,
     required this.observacion,
@@ -24,6 +25,7 @@ class AddNovedadesRequest {
     required this.latitud,
     required this.longitud,
     this.nombreDetenido,
+
     this.idGenPersonaD,
     this.cedula = 'null',
     required this.idDgoProcElec,
@@ -44,6 +46,7 @@ class AddNovedadesRequest {
       "latitud": latitud,
       "longitud": longitud,
       "nombreDetenido": nombreDetenido,
+
       "idGenPersonaD": idGenPersonaD,
       "cedula": cedula,
       "idDgoProcElec": idDgoProcElec,

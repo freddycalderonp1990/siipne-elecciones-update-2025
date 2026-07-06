@@ -55,6 +55,8 @@ class MenuRecElecJefePage extends GetView<MenuRecElecJefeController> {
           children: [
             Flexible(
               child: BtnMenuWidget(
+                colorCirculoIcon: [Colors.green,Colors.green],
+
                 horizontal: true,
                 img: SiipneEleccionesImages.icon_agregar_personal,
                 title: SiipneStrings.recElecAgregarpersonal,
@@ -93,6 +95,7 @@ class MenuRecElecJefePage extends GetView<MenuRecElecJefeController> {
           children: [
             Flexible(
               child: BtnMenuWidget(
+                colorCirculoIcon: [Colors.deepOrangeAccent,Colors.deepOrangeAccent],
                 horizontal: true,
                 img: SiipneEleccionesImages.icon_finalizar_rec_elec,
                 title: "FINALIZAR RECINTO",
@@ -107,6 +110,7 @@ class MenuRecElecJefePage extends GetView<MenuRecElecJefeController> {
             SizedBox(width: responsive.anchoP(2)),
             Flexible(
               child: BtnMenuWidget(
+                colorCirculoIcon: [Colors.red,Colors.red],
                 horizontal: true,
                 img: SiipneEleccionesImages.icon_eliminar_rec_elec,
                 title: "ELIMINAR CÓDIGO",

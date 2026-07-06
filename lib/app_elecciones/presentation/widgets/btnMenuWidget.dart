@@ -8,6 +8,7 @@ class BtnMenuWidget extends StatefulWidget {
   final bool horizontal;
   final Color colorTexto;
   final Color colorFondo;
+  final List<Color>? colorCirculoIcon;
 
   const BtnMenuWidget({
     this.img,
@@ -17,6 +18,7 @@ class BtnMenuWidget extends StatefulWidget {
     this.horizontal = false,
     this.colorTexto = Colors.black,
     this.colorFondo = Colors.white,
+    this.colorCirculoIcon,
     Key? key,
   }) : super(key: key);
 
@@ -37,7 +39,7 @@ class _BtnMenuWidgetState extends State<BtnMenuWidget>
       wg: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _buildIcon(responsive.anchoP(13)),
+          _buildIcon(responsive.anchoP(13), widget.colorCirculoIcon),
           SizedBox(width: responsive.altoP(1)),
           Expanded(
             child: Text(
@@ -59,7 +61,7 @@ class _BtnMenuWidgetState extends State<BtnMenuWidget>
       wg: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _buildIcon(responsive.anchoP(12)),
+          _buildIcon(responsive.anchoP(12),widget.colorCirculoIcon),
           SizedBox(height: responsive.altoP(1)),
           Text(
             widget.title.toUpperCase(),
@@ -124,20 +126,23 @@ class _BtnMenuWidgetState extends State<BtnMenuWidget>
   }
 
   // --- ÍCONO REDONDEADO CON EFECTO ---
-  Widget _buildIcon(double size) {
+  Widget _buildIcon(double size, List< Color>? color) {
+    if(color==null){
+      color=[const Color(0xFF0A3D7E) ,const Color(0xFF0A3D7E)];
+    }
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        gradient: const LinearGradient(
-          colors: [Color(0xFF195BA6), Color(0xFF0A3D7E)],
+        gradient: LinearGradient(
+          colors: color,
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.15),
+            color: Colors.red.withOpacity(0.15),
             blurRadius: 5,
             offset: const Offset(0, 3),
           ),

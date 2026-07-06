@@ -413,6 +413,7 @@ class AddNovedadesController extends GetxController {
             await _RegistrarNovedades(
               idGenPersonaD: idGenPersonaD,
               nombreDetenido: nombreDetenido,
+              nacionalidad: selectedOptionNAcionalExtranjero.value,
               usuario: user.idGenUsuario,
               observacion: getObservacion(),
               idDgoPerAsigOpe: recintosElectoralesAbiertos.idDgoPerAsigOpe,
@@ -422,15 +423,25 @@ class AddNovedadesController extends GetxController {
           }
         }
       } else {
-        print('no foto');
 
+        String imagen = "No Imagen";
+        if (nombreDetenido != null) {
+          DataFile dataFile = await guardarImagen();
+
+          if (dataFile.result) {
+            imagen = dataFile.nameFile;
+          }
+        }
+        print('no foto');
         await _RegistrarNovedades(
           idGenPersonaD: idGenPersonaD,
           nombreDetenido: nombreDetenido,
+          nacionalidad: selectedOptionNAcionalExtranjero.value,
           usuario: user.idGenUsuario,
           observacion: getObservacion(),
           idDgoPerAsigOpe: recintosElectoralesAbiertos.idDgoPerAsigOpe,
           idDgoNovedadesElect: idDgoNovedadesElect,
+          imagen: imagen
         );
       }
     }
@@ -441,6 +452,7 @@ class AddNovedadesController extends GetxController {
     required int idDgoPerAsigOpe,
     required String observacion,
     required int usuario,
+    String? nacionalidad,
     String? nombreDetenido,
     int? idGenPersonaD,
     String imagen = "No Imagen",
@@ -456,6 +468,8 @@ class AddNovedadesController extends GetxController {
       String ip = await DeviceInfoApp.getIp;
 
       AddNovedadesRequest request = AddNovedadesRequest(
+
+
         idDgoCreaOpReci:recintosElectoralesAbiertos.idDgoCreaOpReci,
         idDgoPerAsigOpe: idDgoPerAsigOpe,
         usuario: usuario,
@@ -830,9 +844,12 @@ class AddNovedadesController extends GetxController {
           break;
 
         case "DETENIDOS":
+
+
           observacionModel = observacionModel.copyWith(
             cedula: cedula,
             numBoleta: controllerNumBoleta.text,
+            nacionalidadDetenido: selectedOptionNAcionalExtranjero.value
           );
 
           if (selectDelito.value.idDgoNovedadesElect > 0) {
