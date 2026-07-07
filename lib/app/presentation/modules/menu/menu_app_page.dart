@@ -5,6 +5,14 @@ class MenuAppPage extends GetView<MenuAppController> {
 
   @override
   Widget build(BuildContext context) {
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<NotificationsBloc>().requestPermission(
+        appName: NamApps.todas,
+        idGenUsuario: controller.user.idGenUsuario,
+      );
+    });
+
     return WorkAreaPageWidget(
       title: "MENÚ PRINCIPAL ",
       contenido: _getContenidoConRefresh(),

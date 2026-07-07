@@ -3,6 +3,13 @@ part of '../../pages.dart';
 class InicioRapidoPage extends GetView<InicioRapidoController> {
   @override
   Widget build(BuildContext context) {
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<NotificationsBloc>().requestPermission(
+        appName: NamApps.todas,
+        idGenUsuario: controller.user.value.idGenUsuario,
+      );
+    });
     final responsive = ResponsiveUtil();
     // TODO: verifique
 

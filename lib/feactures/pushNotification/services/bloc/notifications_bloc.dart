@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:api_provider/core/api_config.dart';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -287,7 +288,13 @@ class NotificationsBloc extends Bloc<NotificationsEvent, NotificationsState> {
         ip: ip,
       );
 
-      final result = await _insertTokenFcmUseCase.call(request: request);
+      if(ApiConfig.token.length>10) {
+        print("tengo autorizacion para insertar token");
+        final result = await _insertTokenFcmUseCase.call(request: request);
+      }
+      else{
+        print("Nooo tengo autorizacion para insertar token");
+      }
     } catch (ex) {
       print("Print error al insertar token en el server ${ex.toString()}");
     }

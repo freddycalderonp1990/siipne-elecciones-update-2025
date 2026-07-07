@@ -1,8 +1,15 @@
 import 'dart:math';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
+
+import 'package:get/get.dart';
+import 'package:siipnemovil2/app/presentation/widgets/custom_app_widgets.dart';
+
 import '../../data/models/models_push_notification.dart';
+import '../../presentation/widgets/my_dialogo_notificacion.dart';
+
 
 class LocalNotification {
   static final FlutterLocalNotificationsPlugin _notificationsPlugin =
@@ -26,7 +33,7 @@ class LocalNotification {
   /// Inicializar notificaciones
   static Future<void> initializeLocalNotifications() async {
     const androidInit = AndroidInitializationSettings(
-      '@drawable/ic_notificacion',
+      '@drawable/ic_app',
     );
 
     const iosInit = DarwinInitializationSettings();
@@ -114,7 +121,7 @@ class LocalNotification {
 
     );*/
 
-    const androidDetails = AndroidNotificationDetails(
+  /*  const androidDetails = AndroidNotificationDetails(
       'default_channel_id', // 👈 obligatorio en Android 8+
       'General Notifications', // 👈 nombre visible del canal
       channelDescription: 'Canal de notificaciones por defecto',
@@ -122,6 +129,27 @@ class LocalNotification {
       priority: Priority.high,
       playSound: true,
       icon: '@mipmap/launcher_icon', // ✅ funciona seguro
+    );*/
+
+
+    // fix
+
+    final androidDetails = AndroidNotificationDetails(
+      'default_channel_id',
+      'General Notifications',
+      channelDescription: 'Canal de notificaciones por defecto',
+      importance: Importance.max,
+      priority: Priority.high,
+      playSound: true,
+      icon: '@drawable/ic_app',
+
+      styleInformation: BigTextStyleInformation(
+        notification.body ?? '',
+        contentTitle: notification.title,
+        summaryText: '',
+        htmlFormatBigText: true,
+        htmlFormatContentTitle: true,
+      ),
     );
 
     const iosDetails = DarwinNotificationDetails(
@@ -129,10 +157,16 @@ class LocalNotification {
       presentSound: true,
     );
 
-    const notificationDetails = NotificationDetails(
+    final notificationDetails = NotificationDetails(
       android: androidDetails,
       iOS: iosDetails,
     );
+
+    DialogosAwesome.getInformation(
+      title: notification.title,
+        descripcion: notification.body);
+
+    
 
     await _notificationsPlugin.show(
       id,

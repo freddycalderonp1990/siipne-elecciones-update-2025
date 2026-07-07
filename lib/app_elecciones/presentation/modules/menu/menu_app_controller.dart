@@ -147,7 +147,7 @@ class MenuAppEleccionesController extends GetxController {
       if (data.session == false) {
         String msj=data.motivo.replaceAll("No Puede iniciar Session", "");
         // msj="No puede continuar, ya que tiene registrado lo siguiente:\n${msj}";
-        msj="Usted se encuentra inactivo para este proceso. Por favor, coordine con Talento Humano.";
+       // msj="Usted se encuentra inactivo para este proceso. Por favor, coordine con Talento Humano.";
         DialogosAwesome.getError(
           title: "Acción no permitida",
             descripcion: msj,btnOkOnPress: (){

@@ -40,11 +40,7 @@ class MenuAppCensoController extends GetxController {
   void onReady() async {
     // TODO: Donde la vista ya se presento
 
-    /*
-     Get.find<NotificationsBloc>().requestPermission(
-      appName: NamApps.Censo,
-      idGenUsuario: user.idGenUsuario,
-    );*/
+
 
 
 
