@@ -24,6 +24,7 @@ class WorkAreaPageCensoWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
+      showBtnNotificacione: true,
       namApps: NamApps.Censo,//se estable el name para que el mensaje del Gps cambie con base a la app
       peticionServer: peticionServer,
       contenido: contenido,

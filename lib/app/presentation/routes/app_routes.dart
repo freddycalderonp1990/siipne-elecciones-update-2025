@@ -7,6 +7,7 @@ class AppRoutes{
   static const BIENVENIDO="/bienvenido";
 
   static const MENU_APP="/menu_app";
+  static const SHOW_NOTIFICATION="/show_notification";
 
 
 

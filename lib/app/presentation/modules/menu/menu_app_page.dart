@@ -14,11 +14,16 @@ class MenuAppPage extends GetView<MenuAppController> {
     });
 
     return WorkAreaPageWidget(
+
+      showBtnNotificacione: true,
+
       title: "MENÚ PRINCIPAL ",
       contenido: _getContenidoConRefresh(),
       peticionServer: controller.peticionServerState,
     );
   }
+
+
 
   Widget _getContenidoConRefresh() {
     final responsive = ResponsiveUtil();
@@ -41,6 +46,7 @@ class MenuAppPage extends GetView<MenuAppController> {
             ),
 
             _getMenu(responsive),
+
             SizedBox(height: responsive.altoP(3)),
             BtnIconWidget(
               icon: Icons.exit_to_app,

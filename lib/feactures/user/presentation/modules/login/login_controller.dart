@@ -106,6 +106,8 @@ class LoginController extends GetxController {
     if (userResponse.idGenUsuario > 0) {
       await localStoreImpl.setUser(user);
       await localStoreImpl.setPass(pass);
+      await localStoreImpl.setLastIdGenUsuario(userResponse.idGenUsuario);
+
 
       await localStoreImpl.setUserModel(userResponse);
 

@@ -13,6 +13,7 @@ class MenuAppEleccionesPage extends GetView<MenuAppEleccionesController> {
       );
     });
     return WorkAreaPageWidget(
+      showBtnNotificacione: true,
       showGps: true,
       mostrarBtnAtras: true,
       title: "MENÚ ELECCIONES",

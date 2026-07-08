@@ -22,6 +22,11 @@ class WorkAreaPageWidget extends StatefulWidget {
 
   final VoidCallback? onPressedBtnHome;
 
+
+
+  final bool showBtnNotificacione;
+
+
   const WorkAreaPageWidget({
     required this.peticionServer,
     required this.contenido,
@@ -36,6 +41,9 @@ class WorkAreaPageWidget extends StatefulWidget {
     this.onPressBtnAtras,
     this.showGps = false,
     this.namApps = NamApps.Elecciones,
+
+    this.showBtnNotificacione=false
+
   });
 
   @override
@@ -47,6 +55,8 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
 
   String version = '';
   String namePhone = '';
+
+  final NotificationService notificationService = Get.find();
 
   @override
   void initState() {
@@ -183,6 +193,8 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
             getBtnBuscar(),
             widget.mostrarBtnHome ? getBtnHome() : Container(),
 
+          getBtnNotificaciones(),
+
             Obx(() => CargandoWidget(mostrar: widget.peticionServer.value)),
             // Condicional de Anuncio
           ],
@@ -215,6 +227,74 @@ class _WorkAreaPageWidgetState extends State<WorkAreaPageWidget> {
         onPressed: widget.onPressedBtnHome,
         icon: Icons.menu,
         titulo: "Home",
+      ),
+    );
+  }
+
+
+  Widget getBtnNotificaciones() {
+    if (!widget.showBtnNotificacione) {
+      return Container();
+    }
+
+    return Positioned(
+      top: 0,
+      right: 10,
+      child: SafeArea(
+        child: GestureDetector(
+          onTap: () {
+            Get.toNamed(AppRoutes.SHOW_NOTIFICATION);
+          },
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Container(
+                padding: const EdgeInsets.all(10),
+                decoration: const BoxDecoration(
+                  color: AppColors.colorIcons,
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.notifications_rounded,
+                  color: Colors.white,
+                  size: 30,
+                ),
+              ),
+
+              /// Badge reactivo
+              Obx(() {
+                if (notificationService.cantidadNoLeidas.value <= 0) {
+                  return const SizedBox();
+                }
+
+                return Positioned(
+                  right: -2,
+                  top: -2,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 6,
+                      vertical: 2,
+                    ),
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text(
+                      notificationService.cantidadNoLeidas.value > 99
+                          ? "99+"
+                          : notificationService.cantidadNoLeidas.value.toString(),
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                );
+              }),
+            ],
+          ),
+        ),
       ),
     );
   }

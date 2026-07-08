@@ -7,8 +7,12 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:siipnemovil2/app/presentation/widgets/custom_app_widgets.dart';
 
+import '../../../user/domain/entities/user.dart';
+import '../../../user/domain/use_cases/local_store.dart';
 import '../../data/models/models_push_notification.dart';
+import '../../domain/use_cases/notification_local_usecases.dart';
 import '../../presentation/widgets/my_dialogo_notificacion.dart';
+import '../notification_service.dart';
 
 
 class LocalNotification {
@@ -162,6 +166,26 @@ class LocalNotification {
       iOS: iosDetails,
     );
 
+    try {
+      final GuardarNotificacionRemotaUseCase guardarNotificacionRemotaUseCase =
+      Get.find<GuardarNotificacionRemotaUseCase>();
+
+
+      final LocalStoreUseCase _localStoreUseCase = Get.find<LocalStoreUseCase>();
+
+      final UserEntities user = await _localStoreUseCase.getUserModel();
+
+      await guardarNotificacionRemotaUseCase(
+        notification: notification,
+        idGenUsuario: user.idGenUsuario
+      );
+    } catch (e) {
+      debugPrint("Error guardando notificación: $e");
+    }
+
+    await Get.find<NotificationService>()
+        .cargar();
+
     DialogosAwesome.getInformation(
       title: notification.title,
         descripcion: notification.body);
@@ -175,5 +199,9 @@ class LocalNotification {
       notificationDetails,
       payload: notificationModelToJson(notification),
     );
-  }
+
+
+
+
+ }
 }

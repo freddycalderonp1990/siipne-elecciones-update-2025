@@ -98,6 +98,8 @@ class InicioRapidoController extends GetxController {
     String user = await _localStoreUseCase.getUser();
     String pass = await _localStoreUseCase.getPass();
 
+
+
     mostrarAccesoHuella.value = false;
 
     if (user.length > 0 && pass.length > 0) {

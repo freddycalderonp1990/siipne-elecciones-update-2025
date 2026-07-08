@@ -16,6 +16,7 @@ class MenuAppCensoPage extends GetView<MenuAppCensoController> {
       );
     });
     return WorkAreaPageCensoWidget(
+
       showGps: true,
       mostrarBtnAtras: true,
       title: "MENÚ CENSO",

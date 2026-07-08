@@ -62,6 +62,11 @@ class AppPages {
           page: () => PdfViewPage(),
           binding: PdfViewBinding()),
 
+      getPageConfig(
+          name: AppRoutes.SHOW_NOTIFICATION,
+          page: () => ShowNotificationPage(),
+          binding: ShowNotificationBinding()),
+
     ];
 
     //agregamos las paguinas de cada app

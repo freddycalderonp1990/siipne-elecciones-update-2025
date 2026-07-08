@@ -1,11 +1,8 @@
 import 'dart:typed_data';
 
-
-
 import '../../../domain/entities/user.dart';
 import '../../../domain/repository/local/local_storage_repository.dart';
 import '../../data_sources/local_storage_data_source.dart';
-
 
 class LocalStorageRepositoryImpl implements LocalStorageRepository {
   final LocalStorageDataSource localStorageDataSource;
@@ -62,7 +59,6 @@ class LocalStorageRepositoryImpl implements LocalStorageRepository {
     return localStorageDataSource.getShowDataUser();
   }
 
-
   @override
   Future<String> getUser() async {
     return localStorageDataSource.getUser();
@@ -118,7 +114,6 @@ class LocalStorageRepositoryImpl implements LocalStorageRepository {
     return localStorageDataSource.setShowDataUser(value);
   }
 
-
   @override
   Future<void> setUser(String user) async {
     return localStorageDataSource.setUser(user);
@@ -129,5 +124,13 @@ class LocalStorageRepositoryImpl implements LocalStorageRepository {
     return localStorageDataSource.setUserModel(user);
   }
 
+  @override
+  Future<int> getLastIdGenUsuario() async {
+    return localStorageDataSource.getLastIdGenUsuario();
+  }
 
+  @override
+  Future<void> setLastIdGenUsuario(int value) async {
+    return localStorageDataSource.setLastIdGenUsuario(value);
+  }
 }

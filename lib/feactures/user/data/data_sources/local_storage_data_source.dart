@@ -16,6 +16,9 @@ abstract class LocalStorageDataSource {
   Future<int> getContadorFallido();
   Future<void> setContadorFallido(int value);
 
+  Future<int> getLastIdGenUsuario();
+  Future<void> setLastIdGenUsuario(int value);
+
   Future<bool> getLoginInit();
   Future<void> setLoginInit(bool value);
 
@@ -62,10 +65,10 @@ abstract class LocalStorageDataSource {
 
 }
 
-const _PREF_TOKEN = 'TOKEN';
+
 const _PREF_USER = 'USER';
 const _PREF_PASS = 'PASS';
-const _PREF_FOTO = 'FOTO';
+
 const _PREF_APP_INICIAL =
     'APP_INICIAL'; // sirve para controlar si el usuario recien instalo la aplicacion y mostrarle directamente el login
 const _PREF_TIENE_HUELLA = 'TIENE_HUELLA';
@@ -80,16 +83,17 @@ const _PREF_USER_JSON = 'USER_JSON';
 const _PREF_CODE_PIN = 'CODE_PIN';
 
 const _PREF_APP_PAGE_SELECT = 'APP_PAGE_SELECT';
-const _PREF_APP_SAVE_QR = 'APP_SAVE_QR';
+
 const _PREF_ACEPTACIONUSER_CODE_TOTP = 'ACEPTACIONUSER_CODE_TOTP';
 
-const _PREF_SHOW_TUTORIAL = 'SHOW_TUTORIAL';
+
 
 const _PREF_SHOW_DATA_USER = 'SHOW_DATA_USUARIO';
 const _PREF_FECHA_SERVER = 'PREF_FECHA_SERVER';
-const _PREF_FECHA_CELL_PAUSE = 'PREF_FECHA_CELL_PAUSE';
 
-const _PREF_FECHA_SOLICITAR_ACCESO = 'PREF_FECHA_SOLICITAR_ACCESO';
+const _PREF_LAST_ID_GENUSUARIO = '_PREF_LAST_ID_GENUSUARIO';
+
+
 
 class LocalStorageDataSourceImpl implements LocalStorageDataSource {
   @override
@@ -276,6 +280,19 @@ class LocalStorageDataSourceImpl implements LocalStorageDataSource {
   Future<void> setFechaServer(String value) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString(_PREF_FECHA_SERVER, value);
+  }
+
+  @override
+  Future<int> getLastIdGenUsuario() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getInt(_PREF_LAST_ID_GENUSUARIO) ?? 0;
+  }
+
+
+  @override
+  Future<void> setLastIdGenUsuario(int value)  async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt(_PREF_LAST_ID_GENUSUARIO, value);
   }
 
 

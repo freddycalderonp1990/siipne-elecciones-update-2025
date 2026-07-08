@@ -35,6 +35,8 @@ import '../../../feactures/app_moviles/domain/request/verificar_update_request.d
 import '../../../feactures/app_moviles/domain/use_cases/verificar_update_app.dart';
 import '../../../feactures/menu_app/data/models/menu_app_model.dart';
 import '../../../feactures/menu_app/domain/use_cases/get_menu_app_use_case.dart';
+import '../../../feactures/pushNotification/data/models/models_push_notification.dart';
+import '../../../feactures/pushNotification/services/notification_service.dart';
 import '../../../feactures/user/domain/entities/user.dart';
 import '../../../feactures/user/domain/use_cases/local_store.dart';
 import '../../../feactures/user/presentation/modules/controllers.dart';
@@ -60,5 +62,5 @@ part 'bienvenido/bienvenido_controller.dart';
 part 'home/home_controller.dart';
 part 'pdf/pdf_view_controller.dart';
 part 'menu/menu_app_controller.dart';
-
+part 'showNotification/show_notification_controller.dart';
 
