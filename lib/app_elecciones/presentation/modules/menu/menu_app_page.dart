@@ -57,7 +57,7 @@ class MenuAppEleccionesPage extends GetView<MenuAppEleccionesController> {
   }
 
   _getMenu(ResponsiveUtil responsive) {
-    Widget btn1 = Row(
+    Widget btnCrearAndAnexarse = Row(
       children: [
         Flexible(
           child: BtnMenuWidget(
@@ -82,25 +82,37 @@ class MenuAppEleccionesPage extends GetView<MenuAppEleccionesController> {
       ],
     );
 
+    return Column(
+      children: [
+        Obx(
+          () => controller.selectProcesosOperativo.value.permitirCrearCodigos
+              ? btnCrearAndAnexarse
+              : Container(),
+        ),
 
-
-
-    return Column(children: [
-      btn1,
-      Obx(()=>controller.showValidarRecinto.value?Column(children: [
-
-        SizedBox(height: 10,),
-        BtnMenuWidget(
-          horizontal: true,
-          colorFondo: Colors.white,
-          img: SiipneEleccionesImages.ic_validar_recinto,
-          title: SiipneStrings.VALIDAR_RECINTO,
-          onTap: () => Get.toNamed(EleccionesRoutes.VALIDAR_RECINTO,arguments: {"selectProcesosOperativo": controller.selectProcesosOperativo}),
-        )
-      ],):Container())
-
-    ],);
-
-
+        Obx(
+          () => controller.selectProcesosOperativo.value.validarRecinto
+              ? Column(
+                  children: [
+                    SizedBox(height: 10),
+                    BtnMenuWidget(
+                      horizontal: true,
+                      colorFondo: Colors.white,
+                      img: SiipneEleccionesImages.ic_validar_recinto,
+                      title: SiipneStrings.VALIDAR_RECINTO,
+                      onTap: () => Get.toNamed(
+                        EleccionesRoutes.VALIDAR_RECINTO,
+                        arguments: {
+                          "selectProcesosOperativo":
+                              controller.selectProcesosOperativo.value,
+                        },
+                      ),
+                    ),
+                  ],
+                )
+              : Container(),
+        ),
+      ],
+    );
   }
 }

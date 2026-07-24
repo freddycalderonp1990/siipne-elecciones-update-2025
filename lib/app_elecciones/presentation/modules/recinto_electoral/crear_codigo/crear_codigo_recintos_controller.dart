@@ -19,8 +19,9 @@ class CrearCodigoRecintosController extends GetxController {
   RxList<RecintosElectoral> listRecintosElectorales = <RecintosElectoral>[].obs;
   Rx<RecintosElectoral> selectRecintosElectoral = RecintosElectoral().obs;
 
-
-
+  final formKeyRegRecinto = GlobalKey<FormState>();
+  var controllerNombreRecinto = TextEditingController();
+  Rx<GaleryCameraModel?> mGaleryCameraModel = Rx<GaleryCameraModel?>(null);
 
 
 
@@ -56,7 +57,7 @@ class CrearCodigoRecintosController extends GetxController {
       LatLng pos = await locationBloc.getCurrentPosition();
 
       RecintoCercanosRequest req = RecintoCercanosRequest(
-        onlyValidados: selectProcesoOperativoController.selectProcesosOperativo.value.mostrarValidado,
+        onlyValidados: false,
         latitud: pos.latitude,
         longitud: pos.longitude,
         idDgoProcElec:

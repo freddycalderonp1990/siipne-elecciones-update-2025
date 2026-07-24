@@ -12,9 +12,9 @@ class MenuAppEleccionesController extends GetxController {
   final EleccionesNovedadesApiImpl _eleccionesNovedadesApiImpl =
   Get.find<EleccionesNovedadesApiImpl>();
 
-  ProcesosOperativo selectProcesosOperativo=ProcesosOperativo.empty();
+  Rx<ProcesosOperativo> selectProcesosOperativo=ProcesosOperativo.empty().obs;
 
-  RxBool showValidarRecinto = false.obs;
+  RxBool showValidarRecinto1 = false.obs;
 
 
  RecintosElectoralesAbiertos recintosElectoralesAbiertos =
@@ -121,10 +121,9 @@ class MenuAppEleccionesController extends GetxController {
       if(listProcesos.length==1){
         print("valida recinto ${listProcesos[0].validarRecinto}");
 
-       selectProcesosOperativo =listProcesos[0];
+       selectProcesosOperativo.value =listProcesos[0];
 
-        showValidarRecinto.value=selectProcesosOperativo.validarRecinto;
-
+      //  showValidarRecinto.value=selectProcesosOperativo.validarRecinto;
 
 
       }
@@ -142,7 +141,7 @@ class MenuAppEleccionesController extends GetxController {
     await ExceptionDialogos.manejarErroresShowDialogo(() async {
 
       DataNovedadesUdga data =
-      await _eleccionesNovedadesApiImpl.verificarNovedadesRegistradasByProcElect(idGenPersona: user.idGenPersona,idDgoProcElec: selectProcesosOperativo.idDgoProcElec);
+      await _eleccionesNovedadesApiImpl.verificarNovedadesRegistradasByProcElect(idGenPersona: user.idGenPersona,idDgoProcElec: selectProcesosOperativo.value.idDgoProcElec);
 
       if (data.session == false) {
         String msj=data.motivo.replaceAll("No Puede iniciar Session", "");

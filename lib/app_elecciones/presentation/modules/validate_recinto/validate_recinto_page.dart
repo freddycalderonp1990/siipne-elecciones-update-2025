@@ -7,6 +7,7 @@ class ValidateRecintoPage extends GetView<ValidateRecintoController> {
   Widget build(BuildContext context) {
     Widget wg= Obx(
       () => DesingMapaRecinto(
+        showNoEncuentyroMiRecinto: controller.selectProcesosOperativo.permitirAgregarRecintos,
 
     listRecintosElectorales: controller.listRecintosElectorales,
         onPressedSave: () {

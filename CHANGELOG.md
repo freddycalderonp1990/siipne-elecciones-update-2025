@@ -1,5 +1,18 @@
 # 📌 Changelog
 
+## SIIPNE ELECCIONES [Observaciones de la reunion con la DNATH ] - 09-07-2026
+
+### 🔒 Mejoras - 14-07-2026
+- Se ocultó la opción **"Abandonar Recinto"**.
+- Solo el **Jefe del recinto** puede excluir participantes.
+
+### ✨ Nuevas funcionalidades
+- Se agregó la funcionalidad para crear un nuevo recinto.
+- La captura del afiche ahora se realiza únicamente desde la cámara del dispositivo.
+- El registro de recintos está habilitado únicamente el día de las elecciones.
+
+
+
 ## [2.2.2] – CENSO POLICIAL 2026 (Lunes 27 de Abril de 2026)
 - Implementacion de las notificaciones push 
 # WEB

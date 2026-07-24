@@ -85,7 +85,7 @@ class ValidateRecintoController extends GetxController {
       LatLng pos = await locationBloc.getCurrentPosition();
 
       RecintoCercanosRequest req = RecintoCercanosRequest(
-        onlyValidados: selectProcesosOperativo.mostrarValidado,
+        onlyValidados: false,
         latitud: pos.latitude,
         longitud: pos.longitude,
         idDgoProcElec: selectProcesosOperativo.idDgoProcElec,

@@ -2,6 +2,7 @@
 # This is a generated file; do not edit or check into version control.
 export "FLUTTER_ROOT=/Users/policianacional/flutter"
 export "FLUTTER_APPLICATION_PATH=/Users/policianacional/AndroidStudioProjects/siipne-elecciones-update-2025"
+export "FLUTTER_FRAMEWORK_SWIFT_PACKAGE_PATH=/Users/policianacional/AndroidStudioProjects/siipne-elecciones-update-2025/macos/Flutter/ephemeral/Packages/.packages/FlutterFramework"
 export "COCOAPODS_PARALLEL_CODE_SIGN=true"
 export "FLUTTER_BUILD_DIR=build"
 export "FLUTTER_BUILD_NAME=2.2.1"

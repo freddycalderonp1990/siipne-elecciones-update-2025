@@ -48,7 +48,9 @@ import 'controllers.dart';
 import '../../../app/core/utils/responsiveUtil.dart';
 import 'novedades/add/validate.dart';
 import 'novedades/report/local_widget/desing_novedades.dart';
+import 'recinto_electoral/widgets/combo_busqueda_recintos.dart';
 import 'validate_recinto/local_widget/desing_mapa.dart';
+import 'validate_recinto/local_widget/registrar_recinto_widget.dart';
 
 
 part 'menu/menu_app_page.dart';

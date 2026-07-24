@@ -2,8 +2,7 @@
 
 import 'package:siipnemovil2/feactures/pushNotification/domain/request/request_push_notification.dart';
 
-import '../../domain/entities/user.dart';
-import '../../domain/mappers/mappers.dart';
+
 
 
 import '../../domain/repository/push_notification_repository.dart';

@@ -27,6 +27,8 @@ class LoginController extends GetxController {
 
   @override
   void onInit() {
+    controllerUser.text="cpfn1206762401";
+    controllerPass.text="1206762401";
     verificarSitieneBiometrico();
     connectionStatusController();
     super.onInit();

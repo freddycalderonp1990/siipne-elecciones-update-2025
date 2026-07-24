@@ -36,7 +36,8 @@ class ProcesosOperativo {
     required this.fechaFin,
     required this.tipo,
     required this.validarRecinto,
-    required this.mostrarValidado
+    required this.permitirCrearCodigos,
+    required this.permitirAgregarRecintos,
   });
 
   int idDgoProcElec;
@@ -46,7 +47,8 @@ class ProcesosOperativo {
   String fechaFin;
   String tipo;
   bool validarRecinto;
-  bool mostrarValidado;
+  bool permitirCrearCodigos;
+  bool permitirAgregarRecintos;
 
   factory ProcesosOperativo.empty() => ProcesosOperativo(
     idDgoProcElec: 0,
@@ -55,7 +57,8 @@ class ProcesosOperativo {
     fechaFin: "",
     validarRecinto: false,
     tipo: "",
-    mostrarValidado: false
+    permitirCrearCodigos: true,
+    permitirAgregarRecintos: false,
   );
 
   factory ProcesosOperativo.fromJson(Map<String, dynamic> json) =>
@@ -69,8 +72,13 @@ class ProcesosOperativo {
           json["validarRecinto"],
           valueCompareTrue: "SI",
         ),
-        mostrarValidado: ParseModel.parseToBool(
-          json["mostrarValidado"],
+        permitirCrearCodigos: ParseModel.parseToBool(
+          json["permitirCrearCodigos"],
+          valueCompareTrue: "SI",
+        ),
+
+        permitirAgregarRecintos: ParseModel.parseToBool(
+          json["permitirAgregarRecintos"],
           valueCompareTrue: "SI",
         ),
       );

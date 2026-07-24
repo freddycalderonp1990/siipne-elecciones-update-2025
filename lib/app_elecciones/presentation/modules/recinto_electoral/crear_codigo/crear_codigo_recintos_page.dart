@@ -15,6 +15,7 @@ class CrearCodigoRecintosPage extends GetView<CrearCodigoRecintosController> {
         child: Column(
           children: [
             SizedBox(height: 10),
+
             TextSombrasWidget(
               colorTexto: Colors.white,
               colorSombra: Colors.black,
@@ -42,9 +43,31 @@ class CrearCodigoRecintosPage extends GetView<CrearCodigoRecintosController> {
     );
   }
 
+  void desingRegistrarRecinto() {
+    DialogosDesingWidget.getDialogoX(
+      title: "Nuevo Recinto",
+      contenido: RegistrarRecintoWidget(
+        formKey:  controller. formKeyRegRecinto,
+        controllerNombreRecinto:controller. controllerNombreRecinto,
+        foto: controller.mGaleryCameraModel,
+
+
+        onGuardar: () {
+
+          ///Guardar recinto
+
+        },
+      ),
+    );
+  }
+
   Widget getComboRecintosElectorales() {
     return Obx(
-      () => ComboBusqueda(
+      () => ComboBusquedaRecintos(
+        onNoEncuentroRecinto: (){
+          desingRegistrarRecinto();
+        },
+        showNoEncuentroRecinto:controller. selectProcesoOperativoController.selectProcesosOperativo.value.permitirAgregarRecintos,
         selectValue: controller.selectRecintosElectoral.value,
         showClearButton: false,
         icon: Icons.home_work_rounded,

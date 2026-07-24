@@ -50,10 +50,31 @@ class MenuRecElecIntegrantePage
   }
 
   _getMenu(ResponsiveUtil responsive) {
+
+
+
     double separacionBtnMenu = 1.5;
     return Column(
       children: [
         _wgCodigoRecinto(responsive),
+
+
+
+
+        BtnMenuWidget(
+            horizontal: true,
+
+            img: SiipneEleccionesImages.icon_registrar_novedades_rec_elec,
+            title: SiipneStrings.recElecRegistrarNovedades,
+            onTap: () {
+              Get.toNamed(EleccionesRoutes.ADD_NOVEDADES, arguments: {
+                "recintosElectoralesAbiertos":
+                controller.recintosElectoralesAbiertos,
+                "shorReporte": false
+              });
+            }),
+        /* FUNCIONAlidad oculta por requrimiento de la DNATH
+            ocultdo el 14-06-2026
         Row(
           children: [
             Flexible(
@@ -70,6 +91,8 @@ class MenuRecElecIntegrantePage
                     });
                   }),
             ),
+
+
             SizedBox(
               width: responsive.anchoP(2),
             ),
@@ -113,7 +136,7 @@ class MenuRecElecIntegrantePage
                   }),
             ),
           ],
-        ),
+        ),*/
         SizedBox(
           height: responsive.altoP(separacionBtnMenu),
         ),
