@@ -16,6 +16,7 @@ import 'app/main_app.dart';
 
 import 'app/presentation/routes/app_routes.dart';
 
+import 'desing_app_root.dart';
 import 'feactures/gps/presentation/bloc/gps/gps_bloc.dart';
 import 'feactures/gps/presentation/location/location_bloc.dart';
 
@@ -85,6 +86,7 @@ void main() async {
 
 
 
+
   try{
     // Inicializar Firebase
     await Firebase.initializeApp(
@@ -103,16 +105,28 @@ void main() async {
     print(" Error en Firebase Notificaciones: ${e.toString()}");
 }
 
-  runApp(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => GpsBloc()),
-        BlocProvider(create: (context) => LocationBloc()),
-        BlocProvider(create: (context) => NotificationsBloc()),
-      ],
-      child: MyApp(),
-    ),
-  );
+
+
+
+
+  //VERIFICA SI LA APP TIENE ROOT
+  bool isJailBroken = true;
+  if(isJailBroken){
+    runApp(DesingAppRoot());
+  }
+  else{
+    runApp(
+      MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => GpsBloc()),
+          BlocProvider(create: (context) => LocationBloc()),
+          BlocProvider(create: (context) => NotificationsBloc()),
+        ],
+        child: MyApp(),
+      ),
+    );
+  }
+
 }
 
 class MyApp extends StatelessWidget {
