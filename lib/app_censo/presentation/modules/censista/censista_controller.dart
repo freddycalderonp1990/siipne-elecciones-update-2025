@@ -5,7 +5,7 @@ class CensistaController extends GetxController {
   final SaveFileImgUseCase _saveFileImgUseCase = Get.find();
   final GetFotoDgpByDocumentoUseCase _getFotoDgpByDocumentoUseCase = Get.find();
   final SaveCensusPersonPhotoUseCase _SaveCensusPersonPhotoUseCase = Get.find();
-
+  final RxBool validacionFacialCompleta=false.obs;
   final FetchCensusPersonDataUseCase getDatosPersonaCenso = Get.find();
 
   RxList<DataPerCenso> dataPerCensoList = <DataPerCenso>[].obs;

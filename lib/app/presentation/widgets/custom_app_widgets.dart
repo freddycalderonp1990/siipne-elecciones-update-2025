@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:math';
+import 'dart:ui';
 
 
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -73,4 +75,5 @@ part 'btn_icon_widget.dart';
 part 'desing_foto_name_widget.dart';
 part 'my_text_area_widget.dart';
 
+part 'loadingWidget.dart';
 

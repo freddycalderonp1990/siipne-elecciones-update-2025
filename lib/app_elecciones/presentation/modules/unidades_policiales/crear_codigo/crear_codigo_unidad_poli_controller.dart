@@ -124,12 +124,13 @@ class CrearCodigoUnidadPoliController extends GetxController {
       RecintoCercanosRequest request = RecintoCercanosRequest(
         latitud: position.latitude,
         longitud: position.longitude,
-        idDgoProcElec:
-            selectProcesoOperativoController
-                .selectProcesosOperativo
-                .value
-                .idDgoProcElec,
-        idDgoTipoEje: idDgoTipoEje, onlyValidados: false,//en false para mostrar todos asi no esten validados
+        idDgoProcElec: selectProcesoOperativoController
+            .selectProcesosOperativo
+            .value
+            .idDgoProcElec,
+        idDgoTipoEje: idDgoTipoEje,
+        onlyValidados:
+            false, //en false para mostrar todos asi no esten validados
       );
 
       listRecintosElectorales.value = await _eleccionesRecintosApiImpl
@@ -149,18 +150,13 @@ class CrearCodigoUnidadPoliController extends GetxController {
   }
 
   msjCrearCodigo({required VoidCallback onPressed}) {
-    print("siiii");
     bool isValid = formKey.currentState!.validate();
-
     if (!isValid) return;
     String unidad = selectRecintosElectoral.value.nomRecintoElecOnly;
-
     String msj =
-
         "Asegúrese de estar de servicio en la Unidad y de ser la persona encargada o la persona designada como jefe/a."
         "\n\n Utilice la aplicación con responsabilidad, ya que [rojo]toda actividad sera registrada y auditada.[/rojo]"
         "\n\n¿Desea Continuar?";
-
 
     DialogosAwesome.getWarningSiNoContador(
       title: "¿Usted va a generar el código para la ${unidad}?",
@@ -189,11 +185,10 @@ class CrearCodigoUnidadPoliController extends GetxController {
         idDgoReciElect: selectRecintosElectoral.value.idDgoReciElect,
         latitud: position.latitude,
         longitud: position.longitude,
-        idDgoProcElec:
-            selectProcesoOperativoController
-                .selectProcesosOperativo
-                .value
-                .idDgoProcElec,
+        idDgoProcElec: selectProcesoOperativoController
+            .selectProcesosOperativo
+            .value
+            .idDgoProcElec,
         idDgoReciUnidadPolicial: selectRecintosElectoral.value.idDgoReciElect,
         telefono: controllerTelefono.text,
         ip: ip,

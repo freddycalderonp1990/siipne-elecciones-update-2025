@@ -1,181 +1,383 @@
 part of '../../pages.dart';
 
-class MenuRecElecIntegrantePage
-    extends GetView<MenuRecElecIntegranteController> {
-  const MenuRecElecIntegrantePage({Key? key}) : super(key: key);
+class MenuRecElecIntegrantePage extends GetView<MenuRecElecIntegranteController> {
+  const MenuRecElecIntegrantePage({Key? key}) : super(key:key);
 
   @override
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
-      title: "${controller.recintosElectoralesAbiertos.nomRecintoElec}",
-      showGps: true,
-      contenido: getContenido(),
-      peticionServer: controller.peticionServerState,
+      title:"${controller.recintosElectoralesAbiertos.nomRecintoElec}",
+      tamanoTitulo:20,
+      mostrarBtnAtras:false,
+      showGps:true,
+      mostrarDatosServidor:true,
+      imgPerfil:controller.user.foto,
+      nombresServidor:controller.user.nombres?.toString(),
+      sexoServidor:controller.user.sexo?.toString(),
+      contenido:getContenido(),
+      peticionServer:controller.peticionServerState,
     );
   }
 
   Widget getContenido() {
-    final responsive = ResponsiveUtil();
-
-    print("foto ${controller.user.foto}");
+    final responsive=ResponsiveUtil();
 
     return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          DesingFotoNameWidget(
-            img: controller.user.foto,
-            sexo: controller.user.sexo,
-            nombres: controller.user.nombres,
-          ),
-          TextSombrasWidget(
-            colorSombra: Colors.black,
-            colorTexto: Colors.white,
-            title: "${controller.recintosElectoralesAbiertos.descProcElecc}",
-          ),
-
+      physics:const AlwaysScrollableScrollPhysics(),
+      padding:const EdgeInsets.fromLTRB(8,6,8,20),
+      child:Column(
+        crossAxisAlignment:CrossAxisAlignment.stretch,
+        children:[
+          _cabeceraProceso(),
+          SizedBox(height:responsive.altoP(1.2)),
+          _wgCodigoRecinto(responsive),
+          SizedBox(height:responsive.altoP(1.4)),
+          _tituloAcciones(),
+          SizedBox(height:responsive.altoP(1)),
           _getMenu(responsive),
-          SizedBox(
-            height: responsive.altoP(1),
-          ),
-          BtnIconWidget(
-            icon: Icons.exit_to_app,
-            titulo: "SALIR",
-            onPressed: () => controller.cerrarSession(),
-          )
+          SizedBox(height:responsive.altoP(2.2)),
+          _botonSalir(),
         ],
       ),
     );
   }
 
-  _getMenu(ResponsiveUtil responsive) {
-
-
-
-    double separacionBtnMenu = 1.5;
-    return Column(
-      children: [
-        _wgCodigoRecinto(responsive),
-
-
-
-
-        BtnMenuWidget(
-            horizontal: true,
-
-            img: SiipneEleccionesImages.icon_registrar_novedades_rec_elec,
-            title: SiipneStrings.recElecRegistrarNovedades,
-            onTap: () {
-              Get.toNamed(EleccionesRoutes.ADD_NOVEDADES, arguments: {
-                "recintosElectoralesAbiertos":
-                controller.recintosElectoralesAbiertos,
-                "shorReporte": false
-              });
-            }),
-        /* FUNCIONAlidad oculta por requrimiento de la DNATH
-            ocultdo el 14-06-2026
-        Row(
-          children: [
-            Flexible(
-              child: BtnMenuWidget(
-                  horizontal: true,
-
-                  img: SiipneEleccionesImages.icon_registrar_novedades_rec_elec,
-                  title: SiipneStrings.recElecRegistrarNovedades,
-                  onTap: () {
-                    Get.toNamed(EleccionesRoutes.ADD_NOVEDADES, arguments: {
-                      "recintosElectoralesAbiertos":
-                          controller.recintosElectoralesAbiertos,
-                      "shorReporte": false
-                    });
-                  }),
+  Widget _cabeceraProceso() {
+    return Container(
+      width:double.infinity,
+      padding:const EdgeInsets.fromLTRB(12,10,12,10),
+      decoration:BoxDecoration(
+        color:Colors.white.withOpacity(.96),
+        borderRadius:BorderRadius.circular(16),
+        border:Border.all(color:const Color(0xFF195496).withOpacity(.09)),
+        boxShadow:[BoxShadow(color:const Color(0xFF17365D).withOpacity(.06),blurRadius:13,offset:const Offset(0,4))],
+      ),
+      child:Row(
+        children:[
+          Container(
+            width:40,
+            height:40,
+            decoration:BoxDecoration(
+              gradient:const LinearGradient(begin:Alignment.topLeft,end:Alignment.bottomRight,colors:[Color(0xFF123F75),Color(0xFF2869AC)]),
+              borderRadius:BorderRadius.circular(12),
             ),
-
-
-            SizedBox(
-              width: responsive.anchoP(2),
+            child:const Icon(Icons.how_to_vote_outlined,color:Colors.white,size:20),
+          ),
+          const SizedBox(width:10),
+          Expanded(
+            child:Column(
+              crossAxisAlignment:CrossAxisAlignment.start,
+              children:[
+                const Text('PROCESO ELECTORAL',style:TextStyle(color:Color(0xFF195496),fontSize:7.5,fontWeight:FontWeight.w900,letterSpacing:.8)),
+                const SizedBox(height:4),
+                Text(
+                  "${controller.recintosElectoralesAbiertos.descProcElecc}",
+                  maxLines:2,
+                  overflow:TextOverflow.ellipsis,
+                  style:const TextStyle(color:Color(0xFF17365D),fontSize:12.5,fontWeight:FontWeight.w800,height:1.15),
+                ),
+              ],
             ),
-            Flexible(
-              child: BtnMenuWidget(
-                  horizontal: true,
-                  img: SiipneEleccionesImages.icon_abandonar_rec_elec,
-                  title: "ABANDONAR CÓDIGO",
-                  onTap: () {
-
-                    String title =
-                        "ABANDONAR CÓDIGO ${controller.recintosElectoralesAbiertos.idDgoCreaOpReci}";
-
-                    DialogosAwesome.getWarningSiNoContador(
-                        title: title,
-                        descripcion:
-                            "¿Está  seguro/a que desea abandonar el Operativo.?\n\n"
-                                "Si abandona, no será considerado para el justificativo ante el CNE."
-                                "\nDeberá anexarse a un nuevo código y no abandonar, ya que esta acción es automática al finalizar el proceso electoral"
-                                "\n\n¿ESTÁ SEGURO/A?",
-
-                        btnOkOnPress: () {
-
-                          Get.back();
-
-
-
-                          DialogosAwesome.getDesingChangePass(
-                            idDgoCreaOpReci: controller.recintosElectoralesAbiertos.idDgoCreaOpReci,
-                              onPressed: (){
-                                Get.back();
-                                controller.removePersonalOperativo();
-                              },
-                              formKey: controller.formKeyPass,
-                              controllerPass:controller. controllerPass,
-                              title: title,
-                          );
-
-
-                        });
-                  }),
+          ),
+          const SizedBox(width:8),
+          Container(
+            padding:const EdgeInsets.symmetric(horizontal:8,vertical:5),
+            decoration:BoxDecoration(color:const Color(0xFFEAF5EE),borderRadius:BorderRadius.circular(20)),
+            child:const Row(
+              mainAxisSize:MainAxisSize.min,
+              children:[
+                Icon(Icons.circle,color:Color(0xFF319461),size:6),
+                SizedBox(width:4),
+                Text('ACTIVO',style:TextStyle(color:Color(0xFF287850),fontSize:6.8,fontWeight:FontWeight.w900,letterSpacing:.4)),
+              ],
             ),
-          ],
-        ),*/
-        SizedBox(
-          height: responsive.altoP(separacionBtnMenu),
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 
-  _wgCodigoRecinto(ResponsiveUtil responsive) {
-    double separacionBtnMenu = 1.5;
-    return Column(
-      children: [
-        TextSombrasWidget(
-          colorSombra: Colors.black,
-          colorTexto: Colors.white,
-          title: "CÓDIGO:",
-          size: responsive.anchoP(4.5),
-        ),
-        BtnIconWidget(
-          sizeIcon: AppConfig.tamIcons + 1,
-          sizeTexto: AppConfig.tamTexto + 1,
-          icon: Icons.numbers,
-          titulo: "${controller.recintosElectoralesAbiertos.idDgoCreaOpReci}",
-          onPressed: () {},
-        ),
-        SizedBox(
-          height: responsive.altoP(0.5),
-        ),
-        TextSombrasWidget(
-          colorSombra: Colors.black,
-          colorTexto: Colors.white,
-          title: "${controller.recintosElectoralesAbiertos.descripcion}",
-          size: responsive.diagonalP(AppConfig.tamTextoTitulo),
-        ),
-        SizedBox(
-          height: responsive.altoP(separacionBtnMenu),
-        ),
-      ],
+  Widget _wgCodigoRecinto(ResponsiveUtil responsive) {
+    return Container(
+      width:double.infinity,
+      decoration:BoxDecoration(
+        color:Colors.white.withOpacity(.97),
+        borderRadius:BorderRadius.circular(18),
+        border:Border.all(color:const Color(0xFF195496).withOpacity(.10)),
+        boxShadow:[BoxShadow(color:const Color(0xFF17365D).withOpacity(.07),blurRadius:14,offset:const Offset(0,5))],
+      ),
+      child:Column(
+        children:[
+          Container(
+            height:4,
+            decoration:const BoxDecoration(
+              borderRadius:BorderRadius.only(topLeft:Radius.circular(18),topRight:Radius.circular(18)),
+              gradient:LinearGradient(colors:[Color(0xFF123F75),Color(0xFF195496),Color(0xFF2869AC)]),
+            ),
+          ),
+          Padding(
+            padding:const EdgeInsets.fromLTRB(12,10,12,10),
+            child:Row(
+              children:[
+                Container(
+                  width:56,
+                  height:56,
+                  decoration:BoxDecoration(
+                    color:const Color(0xFFEAF1F8),
+                    borderRadius:BorderRadius.circular(15),
+                    border:Border.all(color:const Color(0xFF195496).withOpacity(.10)),
+                  ),
+                  child:const Icon(Icons.numbers_rounded,color:Color(0xFF195496),size:27),
+                ),
+                const SizedBox(width:11),
+                Expanded(
+                  child:Column(
+                    crossAxisAlignment:CrossAxisAlignment.start,
+                    children:[
+                      const Text('CÓDIGO DEL RECINTO',style:TextStyle(color:Color(0xFF748596),fontSize:7.5,fontWeight:FontWeight.w800,letterSpacing:.8)),
+                      const SizedBox(height:3),
+                      Text(
+                        "${controller.recintosElectoralesAbiertos.idDgoCreaOpReci}",
+                        style:const TextStyle(color:Color(0xFF17365D),fontSize:21,fontWeight:FontWeight.w900,letterSpacing:1.5),
+                      ),
+                      const SizedBox(height:4),
+                      Text(
+                        "${controller.recintosElectoralesAbiertos.descripcion}",
+                        maxLines:2,
+                        overflow:TextOverflow.ellipsis,
+                        style:const TextStyle(color:Color(0xFF667789),fontSize:9.2,fontWeight:FontWeight.w500,height:1.15),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width:34,
+                  height:34,
+                  decoration:BoxDecoration(color:const Color(0xFFF2F6FA),borderRadius:BorderRadius.circular(10)),
+                  child:const Icon(Icons.verified_rounded,color:Color(0xFF195496),size:18),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 
+  Widget _tituloAcciones() {
+    return Padding(
+      padding:const EdgeInsets.symmetric(horizontal:2),
+      child:Row(
+        children:[
+          Container(width:3,height:27,decoration:BoxDecoration(color:const Color(0xFF195496),borderRadius:BorderRadius.circular(20))),
+          const SizedBox(width:8),
+          const Expanded(
+            child:Column(
+              crossAxisAlignment:CrossAxisAlignment.start,
+              children:[
+                Text('Gestión del recinto',style:TextStyle(color:Color(0xFF17365D),fontSize:14,fontWeight:FontWeight.w800)),
+                SizedBox(height:1),
+                Text('Seleccione la acción que desea realizar',style:TextStyle(color:Color(0xFF7A8998),fontSize:9)),
+              ],
+            ),
+          ),
+          Container(
+            width:30,
+            height:30,
+            decoration:const BoxDecoration(color:Color(0xFFEAF1F8),borderRadius:BorderRadius.all(Radius.circular(9))),
+            child:const Icon(Icons.dashboard_customize_outlined,color:Color(0xFF195496),size:16),
+          ),
+        ],
+      ),
+    );
+  }
 
+  Widget _getMenu(ResponsiveUtil responsive) {
+    final List<Widget> botones=[
+      _moduloAccion(
+        img:SiipneEleccionesImages.icon_registrar_novedades_rec_elec,
+        title:SiipneStrings.recElecRegistrarNovedades,
+        subtitle:'Registrar novedades',
+        icon:Icons.assignment_outlined,
+        color:const Color(0xFF195496),
+        colorSuave:const Color(0xFFEAF1F8),
+        onTap:(){
+          Get.toNamed(
+            EleccionesRoutes.ADD_NOVEDADES,
+            arguments:{
+              "recintosElectoralesAbiertos":controller.recintosElectoralesAbiertos,
+              "shorReporte":false,
+            },
+          );
+        },
+      ),
+    ];
+
+    return _gridBotones(botones);
+  }
+
+  Widget _gridBotones(List<Widget> botones) {
+    if(botones.isEmpty)return const SizedBox.shrink();
+
+    return LayoutBuilder(
+      builder:(context,constraints){
+        const double separacion=10;
+        final double anchoBoton=(constraints.maxWidth-separacion)/2;
+        final List<Widget> filas=[];
+
+        for(int i=0;i<botones.length;i+=2){
+          final bool tieneSegundo=i+1<botones.length;
+
+          if(tieneSegundo){
+            filas.add(
+              Row(
+                crossAxisAlignment:CrossAxisAlignment.start,
+                children:[
+                  SizedBox(width:anchoBoton,child:botones[i]),
+                  const SizedBox(width:separacion),
+                  SizedBox(width:anchoBoton,child:botones[i+1]),
+                ],
+              ),
+            );
+          }else{
+            filas.add(
+              Center(
+                child:SizedBox(
+                  width:anchoBoton,
+                  child:botones[i],
+                ),
+              ),
+            );
+          }
+
+          if(i+2<botones.length)filas.add(const SizedBox(height:10));
+        }
+
+        return Column(children:filas);
+      },
+    );
+  }
+
+  Widget _moduloAccion({required String img,required String title,required String subtitle,required IconData icon,required Color color,required Color colorSuave,required VoidCallback onTap}) {
+    return Container(
+      decoration:BoxDecoration(
+        borderRadius:BorderRadius.circular(17),
+        boxShadow:[BoxShadow(color:const Color(0xFF17365D).withOpacity(.07),blurRadius:13,offset:const Offset(0,5))],
+      ),
+      child:Material(
+        color:Colors.transparent,
+        borderRadius:BorderRadius.circular(17),
+        clipBehavior:Clip.antiAlias,
+        child:InkWell(
+          onTap:onTap,
+          splashColor:color.withOpacity(.08),
+          highlightColor:color.withOpacity(.03),
+          child:Ink(
+            height:145,
+            decoration:BoxDecoration(
+              color:Colors.white.withOpacity(.97),
+              borderRadius:BorderRadius.circular(17),
+              border:Border.all(color:color.withOpacity(.13)),
+            ),
+            child:Stack(
+              children:[
+                Positioned(
+                  right:-35,
+                  top:-35,
+                  child:Container(width:95,height:95,decoration:BoxDecoration(shape:BoxShape.circle,color:color.withOpacity(.045))),
+                ),
+                Padding(
+                  padding:const EdgeInsets.fromLTRB(10,10,10,10),
+                  child:Column(
+                    children:[
+                      Row(
+                        mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                        children:[
+                          Container(
+                            padding:const EdgeInsets.symmetric(horizontal:6,vertical:3),
+                            decoration:BoxDecoration(color:colorSuave,borderRadius:BorderRadius.circular(20)),
+                            child:Text('ACCIÓN',style:TextStyle(color:color,fontSize:6.3,fontWeight:FontWeight.w900,letterSpacing:.7)),
+                          ),
+                          Container(
+                            width:27,
+                            height:27,
+                            decoration:BoxDecoration(color:color,borderRadius:BorderRadius.circular(8)),
+                            child:const Icon(Icons.arrow_forward_rounded,color:Colors.white,size:14),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height:4),
+                      Expanded(
+                        child:Container(
+                          width:62,
+                          padding:const EdgeInsets.all(7),
+                          decoration:BoxDecoration(
+                            color:colorSuave,
+                            borderRadius:BorderRadius.circular(14),
+                            border:Border.all(color:color.withOpacity(.08)),
+                          ),
+                          child:Image.asset(
+                            img,
+                            fit:BoxFit.contain,
+                            errorBuilder:(context,error,stackTrace)=>Icon(icon,color:color,size:29),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height:6),
+                      Text(
+                        title,
+                        textAlign:TextAlign.center,
+                        maxLines:2,
+                        overflow:TextOverflow.ellipsis,
+                        style:const TextStyle(color:Color(0xFF17365D),fontSize:10.3,fontWeight:FontWeight.w900,height:1.05),
+                      ),
+                      const SizedBox(height:2),
+                      Text(
+                        subtitle,
+                        textAlign:TextAlign.center,
+                        maxLines:1,
+                        overflow:TextOverflow.ellipsis,
+                        style:const TextStyle(color:Color(0xFF758596),fontSize:7.5,fontWeight:FontWeight.w400),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _botonSalir() {
+    return Align(
+      alignment:Alignment.center,
+      child:Material(
+        color:Colors.transparent,
+        borderRadius:BorderRadius.circular(12),
+        clipBehavior:Clip.antiAlias,
+        child:InkWell(
+          onTap:()=>controller.cerrarSession(),
+          splashColor:const Color(0xFFC34A4A).withOpacity(.08),
+          child:Ink(
+            padding:const EdgeInsets.symmetric(horizontal:17,vertical:9),
+            decoration:BoxDecoration(
+              color:const Color(0xFFF9F4F4),
+              borderRadius:BorderRadius.circular(12),
+              border:Border.all(color:const Color(0xFFE8DADA)),
+            ),
+            child:const Row(
+              mainAxisSize:MainAxisSize.min,
+              children:[
+                Icon(Icons.logout_rounded,color:Color(0xFFA84A4A),size:16),
+                SizedBox(width:7),
+                Text('CERRAR SESIÓN',style:TextStyle(color:Color(0xFF9D4646),fontSize:9.5,fontWeight:FontWeight.w800,letterSpacing:.5)),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }

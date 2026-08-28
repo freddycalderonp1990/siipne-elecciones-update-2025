@@ -85,7 +85,7 @@ class SplashController extends GetxController {
   }
 
   _cargarPantallaLogin_InicioRapido() async {
-    await Future.delayed(const Duration(milliseconds: 100)).then((_) {});
+    await Future.delayed(const Duration(milliseconds: 50)).then((_) {});
 
     bool confHuella = await _localStoreImpl.getConfigHuella();
     String codePin = await _localStoreImpl.getPinCode();

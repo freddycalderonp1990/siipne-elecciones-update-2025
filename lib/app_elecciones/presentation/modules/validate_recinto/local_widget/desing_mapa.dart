@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_marker_popup/extension_api.dart';
 import 'package:flutter_map_marker_popup/flutter_map_marker_popup.dart';
-
 import 'package:latlong2/latlong.dart';
 import 'package:get/get.dart';
 import 'package:siipnemovil2/app/core/utils/utilidadesUtil.dart';
@@ -29,345 +28,327 @@ class DesingMapaRecinto extends StatefulWidget {
   final ValueChanged<LatLng> tapComplete;
   final VoidCallback? onPressedSave;
   final ValueChanged<RecintosElectoral>? onRecintoSeleccionado;
-
   final List<RecintosElectoral> listRecintosElectorales;
-
   final GestureTapCallback ontapMyUbicacion;
   final bool cargando;
-
   final bool showNoEncuentyroMiRecinto;
 
   const DesingMapaRecinto({
     super.key,
     required this.ubicacion,
-
     required this.mapController,
     required this.tapComplete,
     required this.ontapMyUbicacion,
     this.onPressedSave,
-    this.cargando = false,
+    this.cargando=false,
     required this.listRecintosElectorales,
     this.onRecintoSeleccionado,
-    this.showNoEncuentyroMiRecinto = false,
+    this.showNoEncuentyroMiRecinto=false,
   });
 
   @override
-  State<DesingMapaRecinto> createState() => _DesingMapaRecintoState();
+  State<DesingMapaRecinto> createState()=>_DesingMapaRecintoState();
 }
 
 class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
-  final _mapKey = GlobalKey(); // 👈 clave para el FlutterMap
+  final _mapKey=GlobalKey();
+
   int? selectedIndex;
   RecintosElectoral? recintoSeleccionado;
-  final ScrollController _listController = ScrollController();
+
   ScrollController? _internalScrollController;
 
-  final PopupController _popupController = PopupController();
+  final PopupController _popupController=PopupController();
+  final DraggableScrollableController _sheetController=DraggableScrollableController();
 
-  final DraggableScrollableController _sheetController =
-      DraggableScrollableController();
+  bool tieneRecintoValidado=false;
 
-  final iconRecinto = Icons.location_city;
+  TipoMapa tipoMapaSeleccionado=TipoMapa.voyager;
 
-  bool tieneRecintoValidado = false;
+  Rx<GaleryCameraModel?> mGaleryCameraModel=Rx<GaleryCameraModel?>(null);
 
-  Rx<GaleryCameraModel?> mGaleryCameraModel = Rx<GaleryCameraModel?>(null);
-
-
-  var controllerNombreRecinto = TextEditingController();
-  final formKeyRegRecinto = GlobalKey<FormState>();
+  final controllerNombreRecinto=TextEditingController();
+  final formKeyRegRecinto=GlobalKey<FormState>();
 
   @override
-  Widget build(BuildContext context) {
+  void initState(){
+    super.initState();
+    _verificarRecintoValidado();
+  }
+
+  @override
+  void didUpdateWidget(covariant DesingMapaRecinto oldWidget){
+    super.didUpdateWidget(oldWidget);
+
+    if(oldWidget.listRecintosElectorales!=widget.listRecintosElectorales){
+      _verificarRecintoValidado();
+
+      if(recintoSeleccionado!=null){
+        final int index=widget.listRecintosElectorales.indexWhere(
+              (item)=>item.idDgoReciElect==recintoSeleccionado!.idDgoReciElect,
+        );
+
+        if(index>=0){
+          selectedIndex=index;
+          recintoSeleccionado=widget.listRecintosElectorales[index];
+        }else{
+          selectedIndex=null;
+          recintoSeleccionado=null;
+          _popupController.hideAllPopups();
+        }
+      }
+    }
+  }
+
+  @override
+  void dispose(){
+    _popupController.dispose();
+    _sheetController.dispose();
+    controllerNombreRecinto.dispose();
+    super.dispose();
+  }
+
+  void _verificarRecintoValidado(){
+    try{
+      final loginController=Get.find<LoginController>();
+
+      final String nameUser=loginController.user.value.nombres
+          .replaceAll(RegExp(r'\s+'),'')
+          .toUpperCase();
+
+      tieneRecintoValidado=widget.listRecintosElectorales.any((recinto){
+        if(!recinto.validado)return false;
+
+        final String nameValida=recinto.apenomValida
+            .replaceAll(RegExp(r'\s+'),'')
+            .toUpperCase();
+
+        return nameUser==nameValida;
+      });
+    }catch(e){
+      tieneRecintoValidado=false;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context){
     SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(
-        statusBarColor: AppColors.colorPrimary, // color sólido
-        statusBarIconBrightness: Brightness.light, // íconos claros
+      const SystemUiOverlayStyle(
+        statusBarColor:Color(0xFF123F75),
+        statusBarIconBrightness:Brightness.light,
       ),
     );
-    return Scaffold(
-      backgroundColor: AppColors.colorPrimary,
-      body: Stack(
-        children: <Widget>[
-          FlutterMap(
-            key: _mapKey, // 👈 importante
-            mapController: widget.mapController,
-            options: MapOptions(
-              onTap: (tapPosition, point) {
-                print("Tap en mapa");
 
-                // widget.tapComplete(point);
-                //   widget.mapController.move(point, 18);
-              },
-              initialCenter: widget.ubicacion,
-              minZoom: 5.0,
-              maxZoom: 25.0,
-              initialZoom: 18,
+    return Scaffold(
+      backgroundColor:const Color(0xFFF3F6F9),
+      body:Stack(
+        children:[
+          Positioned.fill(
+            child:FlutterMap(
+              key:_mapKey,
+              mapController:widget.mapController,
+              options:MapOptions(
+                initialCenter:widget.ubicacion,
+                initialZoom:18,
+                minZoom:5,
+                maxZoom:25,
+
+                // IMPORTANTE:
+                // tocar el mapa YA NO cambia widget.ubicacion
+                onTap:(tapPosition,point){
+                  _popupController.hideAllPopups();
+                },
+              ),
+              children:[
+                Openstreetmap.getMapa(
+                  tipoMapa:tipoMapaSeleccionado,
+                ),
+                ...getMarkes(),
+              ],
             ),
-            children: [Openstreetmap.getMapa(), ...getMarkes()],
           ),
 
-          getReciontoDraggableScrollableSheet(),
+          _overlaySuperior(),
+
+          _tituloMapa(),
+
           getBtnAtras(),
+
           getBotonera(),
 
-          CargandoWidget(mostrar: widget.cargando),
+          getReciontoDraggableScrollableSheet(),
+
+          CargandoWidget(
+            mostrar:widget.cargando,
+          ),
         ],
       ),
     );
   }
 
-  Widget getReciontoDraggableScrollableSheet() {
-    double minChildSize = 0.25;
-    return
-    // BOTTOM SHEET DESLIZABLE
-    DraggableScrollableSheet(
-      controller: _sheetController,
-      initialChildSize: 0.50,
-      minChildSize: minChildSize,
-      maxChildSize: 0.50,
-      builder: (context, scrollController) {
-        List<RecintosElectoral> listaOrdenada = List.from(
-          widget.listRecintosElectorales,
-        );
+  Widget _overlaySuperior(){
+    return Positioned(
+      top:0,
+      left:0,
+      right:0,
+      height:110,
+      child:IgnorePointer(
+        child:Container(
+          decoration:BoxDecoration(
+            gradient:LinearGradient(
+              begin:Alignment.topCenter,
+              end:Alignment.bottomCenter,
+              colors:[
+                const Color(0xFF123F75).withOpacity(.84),
+                const Color(0xFF17365D).withOpacity(.30),
+                Colors.transparent,
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
-        if (selectedIndex != null) {
-          final seleccionado = listaOrdenada.removeAt(selectedIndex!);
-          listaOrdenada.insert(0, seleccionado);
-        }
+  Widget _tituloMapa(){
+    final responsive=ResponsiveUtil();
+
+    return Positioned(
+      top:responsive.altoP(5.1),
+      left:62,
+      right:62,
+      child:Column(
+        children:[
+          const Text(
+            'VALIDAR RECINTO',
+            textAlign:TextAlign.center,
+            style:TextStyle(
+              color:Colors.white,
+              fontSize:14,
+              fontWeight:FontWeight.w900,
+              letterSpacing:.5,
+              shadows:[
+                Shadow(
+                  color:Colors.black38,
+                  blurRadius:4,
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height:1),
+
+          Text(
+            '${widget.listRecintosElectorales.length} recintos disponibles',
+            textAlign:TextAlign.center,
+            style:TextStyle(
+              color:Colors.white.withOpacity(.90),
+              fontSize:8,
+              fontWeight:FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget getReciontoDraggableScrollableSheet(){
+    /*
+      Antes:
+        initial .43
+        min .23
+        max .66
+
+      Ahora damos mayor espacio a la lista.
+    */
+    const double minChildSize=.34;
+    const double initialChildSize=.56;
+    const double maxChildSize=.78;
+
+    /*
+      Al seleccionar un recinto NO bajamos a .34.
+      Lo dejamos en .44 para seguir viendo varios registros.
+    */
+    const double selectedChildSize=.44;
+
+    return DraggableScrollableSheet(
+      controller:_sheetController,
+      initialChildSize:initialChildSize,
+      minChildSize:minChildSize,
+      maxChildSize:maxChildSize,
+      snap:true,
+      snapSizes:const [
+        minChildSize,
+        initialChildSize,
+        maxChildSize,
+      ],
+      builder:(context,scrollController){
+        final List<RecintosElectoral> listaOrdenada=_getListaOrdenada();
+
+        _internalScrollController=scrollController;
 
         return Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          decoration:BoxDecoration(
+            color:const Color(0xFFF7F9FB),
+            borderRadius:const BorderRadius.vertical(
+              top:Radius.circular(23),
+            ),
+            boxShadow:[
+              BoxShadow(
+                color:const Color(0xFF17365D).withOpacity(.18),
+                blurRadius:18,
+                offset:const Offset(0,-4),
+              ),
+            ],
           ),
-          child: Column(
-            children: [
-              // 🔹 Indicador (opcional pero bonito)
-              SizedBox(height: 10),
+          child:Column(
+            children:[
+              const SizedBox(height:6),
+
               Container(
-                width: 40,
-                height: 5,
-                decoration: BoxDecoration(
-                  color: Colors.grey[400],
-                  borderRadius: BorderRadius.circular(10),
+                width:42,
+                height:4,
+                decoration:BoxDecoration(
+                  color:const Color(0xFFB7C1CB),
+                  borderRadius:BorderRadius.circular(20),
                 ),
               ),
 
+              const SizedBox(height:6),
+
+              _cabeceraPanel(),
+
+              const SizedBox(height:2),
+
               Expanded(
-                child: Builder(
-                  builder: (context) {
-                    List<RecintosElectoral> listaOrdenada = List.from(
-                      widget.listRecintosElectorales,
-                    );
+                child:listaOrdenada.isEmpty
+                    ?_sinRecintos()
+                    :ListView.builder(
+                  controller:scrollController,
+                  padding:const EdgeInsets.fromLTRB(
+                    10,
+                    2,
+                    10,
+                    5,
+                  ),
+                  itemCount:listaOrdenada.length,
+                  itemBuilder:(context,index){
+                    final RecintosElectoral recinto=
+                    listaOrdenada[index];
 
-                    if (selectedIndex != null &&
-                        selectedIndex! < listaOrdenada.length) {
-                      final seleccionado = listaOrdenada.removeAt(
-                        selectedIndex!,
-                      );
-                      listaOrdenada.insert(0, seleccionado);
-                    }
+                    final bool esSeleccionado=
+                        recintoSeleccionado!=null&&
+                            recinto.idDgoReciElect==
+                                recintoSeleccionado!.idDgoReciElect;
 
-                    _internalScrollController =
-                        scrollController; // 👈 GUARDAS EL REAL
-
-                    return ListView.builder(
-                      controller:
-                          scrollController, // 👈 IMPORTANTE (NO cambiar)
-                      itemCount: listaOrdenada.length,
-                      itemBuilder: (context, index) {
-                        // Último item: No encuentro mi recinto
-                        if (index == 0) {
-                          if (tieneRecintoValidado) {
-                            return Container();
-                          }
-                          if(widget.showNoEncuentyroMiRecinto==false){
-                            return Container();
-                          }
-
-
-                          return Container(
-                            margin: EdgeInsets.symmetric(
-                              horizontal: 8,
-                              vertical: 8,
-                            ),
-                            child: OutlinedButton.icon(
-                              icon: Icon(
-                                Icons.add_location_alt,
-                                color: AppColors.colorAzul,
-                              ),
-                              label: Text(
-                                "No encuentro mi recinto",
-                                style: TextStyle(
-                                  color: AppColors.colorAzul,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                              style: OutlinedButton.styleFrom(
-                                padding: EdgeInsets.symmetric(vertical: 15),
-                                side: BorderSide(color: AppColors.colorAzul),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  selectedIndex = null;
-                                  recintoSeleccionado = null;
-                                });
-
-                                desingRegistrarRecinto();
-                              },
-                            ),
-                          );
-                        }
-
-                        RecintosElectoral recinto = listaOrdenada[index];
-
-                        bool esSeleccionado =
-                            (selectedIndex != null && index == 0);
-                        bool esValidado = recinto.validado;
-
-                        //verificamos si este usaurio ya valido un recinto
-
-                        if (esValidado) {
-                          final loginController = Get.find<LoginController>();
-
-                          String nameUser = loginController.user.value.nombres
-                              .replaceAll(RegExp(r'\s+'), '')
-                              .toUpperCase();
-                          String nameValida = recinto.apenomValida
-                              .replaceAll(RegExp(r'\s+'), '')
-                              .toUpperCase();
-
-                          if (nameUser == nameValida) {
-                            tieneRecintoValidado = true;
-                          }
-                        }
-
-                        Color? fondo;
-
-                        if (esSeleccionado) {
-                          fondo = AppColors.colorAzul; // 🔵 seleccionado manda
-                        } else if (esValidado) {
-                          fondo = Colors.green; // 🟢 validado
-                        } else {
-                          fondo = Colors.transparent;
-                        }
-                        ;
-
-                        return Container(
-                          margin: EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: fondo,
-                            borderRadius: BorderRadius.circular(10),
-                            border: Border.all(
-                              color: esSeleccionado
-                                  ? Colors.black
-                                  : esValidado
-                                  ? Colors.green.shade700
-                                  : Colors.grey.shade300,
-                              width: esSeleccionado ? 1.5 : 0.5,
-                            ),
-                          ),
-                          child: ListTile(
-                            trailing: esValidado
-                                ? Container(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                      vertical: 4,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white.withOpacity(0.2),
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                    child: Text(
-                                      "VALIDADO",
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  )
-                                : null,
-                            leading: Icon(
-                              esSeleccionado
-                                  ? Icons.check_circle
-                                  : esValidado
-                                  ? Icons.verified
-                                  : Icons.location_city,
-                              color: (esSeleccionado || esValidado)
-                                  ? Colors.white
-                                  : AppColors.colorAzul,
-                            ),
-
-                            title: Text(
-                              recinto.nomRecintoElecOnly,
-                              style: TextStyle(
-                                color: (esSeleccionado || esValidado)
-                                    ? Colors.white
-                                    : Colors.black,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-
-                            subtitle: Text(
-                              esValidado
-                                  ? "Valida: ${recinto.apenomValida}."
-                                        "\nDistancia: ${recinto.distance}m"
-                                  : "Distancia: ${recinto.distance}m",
-                              style: TextStyle(
-                                color: (esSeleccionado || esValidado)
-                                    ? Colors.white70
-                                    : Colors.black54,
-                              ),
-                            ),
-
-                            onTap: () {
-                              final originalIndex = widget
-                                  .listRecintosElectorales
-                                  .indexOf(recinto);
-
-                              final point = LatLng(
-                                recinto.latitud,
-                                recinto.longitud,
-                              );
-
-                              setState(() {
-                                selectedIndex = originalIndex;
-                                recintoSeleccionado = recinto;
-                              });
-
-                              ajustarMapaParaVerAmbos(point);
-
-                              Future.delayed(Duration(milliseconds: 100), () {
-                                if (_internalScrollController != null &&
-                                    _internalScrollController!.hasClients) {
-                                  _internalScrollController!.animateTo(
-                                    0,
-                                    duration: Duration(milliseconds: 300),
-                                    curve: Curves.easeInOut,
-                                  );
-                                }
-                              });
-
-                              _sheetController.animateTo(
-                                minChildSize,
-                                duration: Duration(milliseconds: 300),
-                                curve: Curves.easeInOut,
-                              );
-
-                              // 🔥 DEVOLVER EL RECINTO
-                              if (widget.onRecintoSeleccionado != null) {
-                                widget.onRecintoSeleccionado!(recinto);
-                              }
-                            },
-                          ),
+                    return _itemRecinto(
+                      recinto:recinto,
+                      esSeleccionado:esSeleccionado,
+                      esValidado:recinto.validado,
+                      onTap:(){
+                        _seleccionarRecinto(
+                          recinto,
+                          selectedChildSize,
                         );
                       },
                     );
@@ -375,51 +356,7 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
                 ),
               ),
 
-              // 🔥 BOTÓN FIJO ABAJO
-              Padding(
-                padding: const EdgeInsets.all(10),
-                child: Opacity(
-                  opacity: selectedIndex != null ? 1 : 0.5,
-                  child: IgnorePointer(
-                    ignoring: selectedIndex == null,
-                    child: BtnIconWidget(
-                      icon: Icons.save,
-                      titulo: "GUARDAR",
-                      onPressed: () {
-                        if (tieneRecintoValidado) {
-                          DialogosAwesome.getWarning(
-                            descripcion:
-                                "Usted ya ha validado un recinto. Si desea realizar el proceso nuevamente, por favor comuníquese con Talento Humano para habilitar su validación.",
-                          );
-                          return;
-                        }
-
-                        String msj =
-                            "Asegúrese de encontrarse exactamente en el lugar del recinto electoral."
-                            "\n\n[azul]Este registro será utilizado en el proceso electoral y será[/azul] [rojo]AUDITADO[/rojo][azul], siendo usted responsable de la información ingresada.[/azul]"
-                            "\n\nUn registro incorrecto podría generar inconvenientes el día de las elecciones."
-                            "\n\n¿Está seguro/a de registrar la ubicación actual?";
-
-                        if (recintoSeleccionado!.validado) {
-                          msj =
-                              "El recinto ya fue validado por ${recintoSeleccionado!.apenomValida}."
-                              "\n\nAsegúrese de encontrarse en el lugar correcto."
-                              "\nEste cambio quedará AUDITADO y será su responsabilidad."
-                              "\nUna validación incorrecta podría generar inconvenientes el día de las elecciones."
-                              "\n\n¿Desea reemplazar la ubicación actual y validarlo nuevamente?";
-                        }
-
-                        DialogosAwesome.getWarningSiNoContador(
-                          title:
-                              "Validar Recinto Electoral \n ${recintoSeleccionado!.nomRecintoElecOnly}",
-                          descripcion: msj,
-                          btnOkOnPress: widget.onPressedSave,
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ),
+              _botonGuardarInferior(),
             ],
           ),
         );
@@ -427,151 +364,531 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
     );
   }
 
-  Widget wgFoto() {
-    final responsive = ResponsiveUtil();
+  List<RecintosElectoral> _getListaOrdenada(){
+    final List<RecintosElectoral> lista=
+    List<RecintosElectoral>.from(
+      widget.listRecintosElectorales,
+    );
 
-    return Obx(() {
-      return Column(
-        children: [
-          mGaleryCameraModel.value == null
-              ? TituloTextWidget(title: "Registrar una Imagen")
-              : TituloTextWidget(title: "Cambiar la Imagen"),
+    if(recintoSeleccionado==null)return lista;
 
-          SizedBox(height: responsive.altoP(1)),
+    final int index=lista.indexWhere(
+          (item)=>item.idDgoReciElect==
+          recintoSeleccionado!.idDgoReciElect,
+    );
 
-          InkWell(
-            onTap: () async {
-              final ahora = DateTime.now();
+    if(index>0){
+      final seleccionado=lista.removeAt(index);
+      lista.insert(0,seleccionado);
+    }
 
-              String dosDigitos(int n) => n.toString().padLeft(2, '0');
+    return lista;
+  }
 
-              String nameRecintoImg =
-                  "ImgRecinto_${ahora.year}"
-                  "${dosDigitos(ahora.month)}"
-                  "${dosDigitos(ahora.day)}_"
-                  "${dosDigitos(ahora.hour)}"
-                  "${dosDigitos(ahora.minute)}"
-                  "${dosDigitos(ahora.second)}.jpg";
+  Future<void> _seleccionarRecinto(
+      RecintosElectoral recinto,
+      double selectedChildSize,
+      ) async {
+    final int originalIndex=
+    widget.listRecintosElectorales.indexWhere(
+          (item)=>item.idDgoReciElect==
+          recinto.idDgoReciElect,
+    );
 
-              mGaleryCameraModel.value =
-                  await PhotoHelper.getDesingPictureGaleryOrCamera(
-                    titleImg: nameRecintoImg,
-                    initPeticion: (value) {},
-                  );
-            },
+    if(originalIndex<0)return;
 
-            child: Image.asset(
-              AppImages.icon_camara,
-              width: responsive.altoP(6),
+    _popupController.hideAllPopups();
+
+    setState((){
+      selectedIndex=originalIndex;
+      recintoSeleccionado=recinto;
+    });
+
+    final point=LatLng(
+      recinto.latitud,
+      recinto.longitud,
+    );
+
+    ajustarMapaParaVerAmbos(point);
+
+    await Future.delayed(
+      const Duration(milliseconds:80),
+    );
+
+    if(_internalScrollController!=null&&
+        _internalScrollController!.hasClients){
+      await _internalScrollController!.animateTo(
+        0,
+        duration:const Duration(milliseconds:220),
+        curve:Curves.easeOut,
+      );
+    }
+
+    /*
+      Ya NO colapsamos al minChildSize.
+      Se conserva suficiente altura para visualizar la lista.
+    */
+    if(_sheetController.isAttached){
+      await _sheetController.animateTo(
+        selectedChildSize,
+        duration:const Duration(milliseconds:280),
+        curve:Curves.easeInOut,
+      );
+    }
+
+    widget.onRecintoSeleccionado?.call(recinto);
+  }
+
+  Widget _cabeceraPanel(){
+    return Padding(
+      padding:const EdgeInsets.symmetric(
+        horizontal:11,
+      ),
+      child:Row(
+        children:[
+          Container(
+            width:34,
+            height:34,
+            decoration:BoxDecoration(
+              color:const Color(0xFFEAF1F8),
+              borderRadius:BorderRadius.circular(10),
+            ),
+            child:const Icon(
+              Icons.location_city_outlined,
+              color:Color(0xFF195496),
+              size:17,
             ),
           ),
 
-          if (mGaleryCameraModel.value != null)
-            ClipRRect(
-              borderRadius: BorderRadius.circular(25),
-              child: Image.file(
-                mGaleryCameraModel.value!.imageFile,
-                fit: BoxFit.fill,
-                height: responsive.altoP(30),
-                width: responsive.altoP(34),
+          const SizedBox(width:8),
+
+          Expanded(
+            child:Column(
+              crossAxisAlignment:CrossAxisAlignment.start,
+              children:[
+                const Text(
+                  'Seleccione un recinto',
+                  style:TextStyle(
+                    color:Color(0xFF17365D),
+                    fontSize:11,
+                    fontWeight:FontWeight.w900,
+                  ),
+                ),
+
+                const SizedBox(height:1),
+
+                Text(
+                  'Toque un recinto para visualizarlo en el mapa',
+                  style:TextStyle(
+                    color:const Color(0xFF7A8998),
+                    fontSize:7.5,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          Container(
+            padding:const EdgeInsets.symmetric(
+              horizontal:7,
+              vertical:4,
+            ),
+            decoration:BoxDecoration(
+              color:const Color(0xFFEAF1F8),
+              borderRadius:BorderRadius.circular(20),
+            ),
+            child:Text(
+              '${widget.listRecintosElectorales.length}',
+              style:const TextStyle(
+                color:Color(0xFF195496),
+                fontSize:8,
+                fontWeight:FontWeight.w900,
               ),
             ),
+          ),
         ],
-      );
-    });
-  }
-
-  void ajustarMapaParaVerAmbos(LatLng destino) {
-    final bounds = LatLngBounds.fromPoints([
-      widget.ubicacion, // 📍 usuario
-      destino, // 📍 recinto
-    ]);
-
-    widget.mapController.fitCamera(
-      CameraFit.bounds(
-        bounds: bounds,
-        padding: EdgeInsets.all(50), // espacio en bordes
       ),
     );
   }
 
-  List<Widget> getMarkes() {
-    List<Marker> markersRecinto = [];
+  Widget _sinRecintos(){
+    return const Center(
+      child:Column(
+        mainAxisSize:MainAxisSize.min,
+        children:[
+          Icon(
+            Icons.location_off_outlined,
+            color:Color(0xFF8997A5),
+            size:28,
+          ),
+          SizedBox(height:6),
+          Text(
+            'No existen recintos disponibles',
+            style:TextStyle(
+              color:Color(0xFF17365D),
+              fontSize:9.5,
+              fontWeight:FontWeight.w800,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 
-    // 📍 Recinto seleccionado (CON popup)
-    if (recintoSeleccionado != null) {
-      final recinto = recintoSeleccionado!;
-      final point = LatLng(recinto.latitud, recinto.longitud);
+  Widget _itemRecinto({
+    required RecintosElectoral recinto,
+    required bool esSeleccionado,
+    required bool esValidado,
+    required VoidCallback onTap,
+  }){
+    final Color colorEstado=
+    esSeleccionado
+        ?const Color(0xFF195496)
+        :esValidado
+        ?const Color(0xFF218A61)
+        :const Color(0xFF718294);
+
+    return Padding(
+      padding:const EdgeInsets.symmetric(
+        vertical:3,
+      ),
+      child:Material(
+        color:Colors.transparent,
+        borderRadius:BorderRadius.circular(13),
+        clipBehavior:Clip.antiAlias,
+        child:InkWell(
+          onTap:onTap,
+          splashColor:colorEstado.withOpacity(.08),
+          child:Ink(
+            padding:const EdgeInsets.symmetric(
+              horizontal:8,
+              vertical:7,
+            ),
+            decoration:BoxDecoration(
+              color:esSeleccionado
+                  ?const Color(0xFFF0F5FB)
+                  :Colors.white,
+              borderRadius:BorderRadius.circular(13),
+              border:Border.all(
+                color:esSeleccionado
+                    ?const Color(0xFF195496).withOpacity(.38)
+                    :esValidado
+                    ?const Color(0xFF218A61).withOpacity(.25)
+                    :const Color(0xFFE1E7ED),
+                width:esSeleccionado?1.3:1,
+              ),
+            ),
+            child:Row(
+              children:[
+                Container(
+                  width:36,
+                  height:36,
+                  alignment:Alignment.center,
+                  decoration:BoxDecoration(
+                    color:colorEstado.withOpacity(.10),
+                    borderRadius:BorderRadius.circular(10),
+                  ),
+                  child:Icon(
+                    esSeleccionado
+                        ?Icons.check_circle_rounded
+                        :esValidado
+                        ?Icons.verified_rounded
+                        :Icons.location_city_outlined,
+                    color:colorEstado,
+                    size:18,
+                  ),
+                ),
+
+                const SizedBox(width:8),
+
+                Expanded(
+                  child:Column(
+                    crossAxisAlignment:CrossAxisAlignment.start,
+                    children:[
+                      Text(
+                        recinto.nomRecintoElecOnly,
+                        maxLines:2,
+                        overflow:TextOverflow.ellipsis,
+                        style:const TextStyle(
+                          color:Color(0xFF17365D),
+                          fontSize:9.8,
+                          fontWeight:FontWeight.w800,
+                          height:1.08,
+                        ),
+                      ),
+
+                      const SizedBox(height:3),
+
+                      Row(
+                        children:[
+                          const Icon(
+                            Icons.near_me_outlined,
+                            color:Color(0xFF7A8998),
+                            size:10,
+                          ),
+
+                          const SizedBox(width:3),
+
+                          Text(
+                            '${recinto.distance} m',
+                            style:const TextStyle(
+                              color:Color(0xFF68798A),
+                              fontSize:7.2,
+                              fontWeight:FontWeight.w600,
+                            ),
+                          ),
+
+                          if(esValidado)...[
+                            const SizedBox(width:6),
+
+                            Container(
+                              padding:const EdgeInsets.symmetric(
+                                horizontal:5,
+                                vertical:2,
+                              ),
+                              decoration:BoxDecoration(
+                                color:const Color(0xFFE7F5EE),
+                                borderRadius:BorderRadius.circular(20),
+                              ),
+                              child:const Text(
+                                'VALIDADO',
+                                style:TextStyle(
+                                  color:Color(0xFF218A61),
+                                  fontSize:5.9,
+                                  fontWeight:FontWeight.w900,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+
+                      if(esValidado&&
+                          recinto.apenomValida.isNotEmpty)...[
+                        const SizedBox(height:2),
+
+                        Text(
+                          'Valida: ${recinto.apenomValida}',
+                          maxLines:1,
+                          overflow:TextOverflow.ellipsis,
+                          style:const TextStyle(
+                            color:Color(0xFF218A61),
+                            fontSize:6.8,
+                            fontWeight:FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                ),
+
+                const SizedBox(width:4),
+
+                Icon(
+                  esSeleccionado
+                      ?Icons.check_circle_rounded
+                      :Icons.chevron_right_rounded,
+                  color:esSeleccionado
+                      ?const Color(0xFF195496)
+                      :const Color(0xFF9AA7B4),
+                  size:18,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _botonGuardarInferior(){
+    final bool habilitado=
+        selectedIndex!=null&&
+            recintoSeleccionado!=null;
+
+    return Container(
+      width:double.infinity,
+      padding:const EdgeInsets.fromLTRB(
+        10,
+        6,
+        10,
+        9,
+      ),
+      decoration:const BoxDecoration(
+        color:Color(0xFFF7F9FB),
+        border:Border(
+          top:BorderSide(
+            color:Color(0xFFE1E7ED),
+          ),
+        ),
+      ),
+      child:Opacity(
+        opacity:habilitado?1:.38,
+        child:IgnorePointer(
+          ignoring:!habilitado,
+          child:Center(
+            child:SizedBox(
+              width:210,
+              child:_botonGuardar(),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _botonGuardar(){
+    return Material(
+      color:Colors.transparent,
+      borderRadius:BorderRadius.circular(13),
+      clipBehavior:Clip.antiAlias,
+      child:InkWell(
+        onTap:_validarAntesDeGuardar,
+        child:Ink(
+          height:45,
+          decoration:BoxDecoration(
+            gradient:const LinearGradient(
+              begin:Alignment.centerLeft,
+              end:Alignment.centerRight,
+              colors:[
+                Color(0xFF123F75),
+                Color(0xFF195496),
+                Color(0xFF2869AC),
+              ],
+            ),
+            borderRadius:BorderRadius.circular(13),
+            boxShadow:[
+              BoxShadow(
+                color:const Color(0xFF195496).withOpacity(.20),
+                blurRadius:8,
+                offset:const Offset(0,3),
+              ),
+            ],
+          ),
+          child:const Row(
+            mainAxisAlignment:MainAxisAlignment.center,
+            children:[
+              Icon(
+                Icons.verified_outlined,
+                color:Colors.white,
+                size:17,
+              ),
+              SizedBox(width:7),
+              Text(
+                'VALIDAR RECINTO',
+                style:TextStyle(
+                  color:Colors.white,
+                  fontSize:9.5,
+                  fontWeight:FontWeight.w900,
+                  letterSpacing:.5,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _validarAntesDeGuardar(){
+    if(recintoSeleccionado==null)return;
+
+    if(tieneRecintoValidado){
+      DialogosAwesome.getWarning(
+        descripcion:
+        "Usted ya ha validado un recinto. Si desea realizar el proceso nuevamente, por favor comuníquese con Talento Humano para habilitar su validación.",
+      );
+      return;
+    }
+
+    String msj=
+        "Asegúrese de encontrarse exactamente en el lugar del recinto electoral."
+        "\n\n[azul]Este registro será utilizado en el proceso electoral y será[/azul] [rojo]AUDITADO[/rojo][azul], siendo usted responsable de la información ingresada.[/azul]"
+        "\n\nUn registro incorrecto podría generar inconvenientes el día de las elecciones."
+        "\n\n¿Está seguro/a de registrar la ubicación actual?";
+
+    if(recintoSeleccionado!.validado){
+      msj=
+      "El recinto ya fue validado por ${recintoSeleccionado!.apenomValida}."
+          "\n\nAsegúrese de encontrarse en el lugar correcto."
+          "\nEste cambio quedará AUDITADO y será su responsabilidad."
+          "\nUna validación incorrecta podría generar inconvenientes el día de las elecciones."
+          "\n\n¿Desea reemplazar la ubicación actual y validarlo nuevamente?";
+    }
+
+    DialogosAwesome.getWarningSiNoContador(
+      title:
+      "Validar Recinto Electoral \n ${recintoSeleccionado!.nomRecintoElecOnly}",
+      descripcion:msj,
+      btnOkOnPress:widget.onPressedSave,
+    );
+  }
+
+  List<Widget> getMarkes(){
+    final List<Marker> markersRecinto=[];
+
+    if(recintoSeleccionado!=null){
+      final recinto=recintoSeleccionado!;
 
       late Marker marker;
 
-      marker = Marker(
-        key: ValueKey(recinto),
-        point: point,
-        width: 80,
-        height: 80,
-        child: GestureDetector(
-          onTap: () {
-            _popupController.showPopupsOnlyFor([marker]); // 👈 SOLO UNO ACTIVO
+      marker=Marker(
+        key:ValueKey(recinto),
+        point:LatLng(
+          recinto.latitud,
+          recinto.longitud,
+        ),
+        width:70,
+        height:70,
+        alignment:Alignment.bottomCenter,
+        child:GestureDetector(
+          behavior:HitTestBehavior.opaque,
+          onTap:(){
+            _popupController.showPopupsOnlyFor(
+              [marker],
+            );
           },
-          child: getBtnCustomIcon(icon: iconRecinto),
+          child:_markerRecinto(
+            validado:recinto.validado,
+          ),
         ),
       );
 
       markersRecinto.add(marker);
     }
 
-    return [
-      // 🔴 1. TU UBICACIÓN (SIEMPRE VISIBLE, SIN POPUP)
+    return[
       MarkerLayer(
-        markers: [
+        markers:[
           Marker(
-            point: widget.ubicacion,
-            width: 80,
-            height: 80,
-            child: Icon(Icons.person_pin_circle, color: Colors.red, size: 45),
+            key:const ValueKey('ubicacion_usuario'),
+            point:widget.ubicacion,
+            width:60,
+            height:60,
+            child:_markerUsuario(),
           ),
         ],
       ),
 
-      // 🟢 2. RECINTO (CON POPUP)
       PopupMarkerLayer(
-        options: PopupMarkerLayerOptions(
-          popupController: _popupController,
-          markers: markersRecinto,
+        options:PopupMarkerLayerOptions(
+          popupController:_popupController,
+          markers:markersRecinto,
+          popupDisplayOptions:PopupDisplayOptions(
+            builder:(context,marker){
+              final valueKey=marker.key;
 
-          popupDisplayOptions: PopupDisplayOptions(
-            builder: (context, marker) {
-              final recinto =
-                  (marker.key as ValueKey).value as RecintosElectoral;
+              if(valueKey is! ValueKey){
+                return const SizedBox.shrink();
+              }
 
-              return Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        recinto.nomRecintoElecOnly,
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(height: 5),
-                      Text("Distancia: ${recinto.distance} m"),
-                      if (recinto.validado)
-                        Text(
-                          "VALIDADO",
-                          style: TextStyle(
-                            color: Colors.green,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-              );
+              final value=valueKey.value;
+
+              if(value is! RecintosElectoral){
+                return const SizedBox.shrink();
+              }
+
+              return _popupRecinto(value);
             },
           ),
         ),
@@ -579,149 +896,588 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
     ];
   }
 
-  MarkerLayer getMarkerRecinto(LatLng point) {
-    return MarkerLayer(
-      markers: [
-        Marker(
-          height: 90,
-          width: 90,
-          rotate: true,
-          point: point,
-          child: getBtnCustomIcon(icon: Icons.location_city, ontap: () {}),
-        ),
-      ],
+  Widget _markerUsuario(){
+    return GestureDetector(
+      onTap:widget.ontapMyUbicacion,
+      child:Stack(
+        alignment:Alignment.center,
+        children:[
+          Container(
+            width:52,
+            height:52,
+            decoration:BoxDecoration(
+              color:const Color(0xFF195496).withOpacity(.12),
+              shape:BoxShape.circle,
+              border:Border.all(
+                color:const Color(0xFF195496).withOpacity(.18),
+              ),
+            ),
+          ),
+
+          Container(
+            width:31,
+            height:31,
+            decoration:BoxDecoration(
+              color:const Color(0xFF195496),
+              shape:BoxShape.circle,
+              border:Border.all(
+                color:Colors.white,
+                width:3,
+              ),
+              boxShadow:[
+                BoxShadow(
+                  color:Colors.black.withOpacity(.22),
+                  blurRadius:7,
+                  offset:const Offset(0,2),
+                ),
+              ],
+            ),
+            child:const Icon(
+              Icons.person_rounded,
+              color:Colors.white,
+              size:15,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
-  Widget getBotonera() {
-    final responsive = ResponsiveUtil();
-    return Stack(
-      children: [
-        /// Botones a la derecha (ubicación + zoom)
-        Positioned(
-          top: responsive.altoP(5),
-          right: 0,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              getBtnMyUbicacion(),
-              SizedBox(height: responsive.altoP(2)),
-              getBtnZoom(),
+  Widget _markerRecinto({
+    required bool validado,
+  }){
+    final Color color=
+    validado
+        ?const Color(0xFF218A61)
+        :const Color(0xFF17365D);
+
+    return Column(
+      mainAxisSize:MainAxisSize.min,
+      children:[
+        Container(
+          width:43,
+          height:43,
+          decoration:BoxDecoration(
+            color:color,
+            shape:BoxShape.circle,
+            border:Border.all(
+              color:Colors.white,
+              width:3,
+            ),
+            boxShadow:[
+              BoxShadow(
+                color:Colors.black.withOpacity(.25),
+                blurRadius:8,
+                offset:const Offset(0,3),
+              ),
             ],
           ),
-        ),
-      ],
-    );
-  }
-
-  Widget btnGuardar() {
-    return BtnIconWidget(
-      icon: Icons.save,
-      titulo: "GUARDAR",
-      onPressed: widget.onPressedSave,
-    );
-  }
-
-  Widget getBtnZoom() {
-    double padding = 2.0;
-    Widget wgZoom = Column(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Padding(
-          padding: EdgeInsets.only(left: padding, top: padding, right: padding),
-          child: getBtnCustomIcon(
-            icon: Icons.zoom_in,
-            ontap: () {
-              final zoomActual = widget.mapController.camera.zoom;
-              widget.mapController.move(
-                widget.mapController.camera.center,
-                zoomActual + 1, // zoom in
-              );
-            },
+          child:Icon(
+            validado
+                ?Icons.verified_rounded
+                :Icons.location_city_rounded,
+            color:Colors.white,
+            size:20,
           ),
         ),
-        Padding(
-          padding: EdgeInsets.all(padding),
-          child: getBtnCustomIcon(
-            icon: Icons.zoom_out,
-            ontap: () {
-              final zoomActual = widget.mapController.camera.zoom;
-              widget.mapController.move(
-                widget.mapController.camera.center,
-                zoomActual - 1, // zoom out
-              );
-            },
+
+        Container(
+          width:3,
+          height:9,
+          decoration:BoxDecoration(
+            color:color,
+            borderRadius:BorderRadius.circular(3),
           ),
         ),
       ],
     );
-
-    return wgZoom;
   }
 
-  Widget getBtnMyUbicacion() {
-    final responsive = ResponsiveUtil();
-    return getBtnCustomIcon(
-      icon: Icons.my_location,
-      ontap: widget.ontapMyUbicacion,
-    );
-  }
-
-  Widget getBtnAtras() {
-    final responsive = ResponsiveUtil();
-    return Positioned(
-      top: responsive.altoP(5),
-      left: 0,
-      child: getBtnCustomIcon(
-        icon: Icons.arrow_back,
-        ontap: () {
-          Get.back();
-        },
-      ),
-    );
-  }
-
-  Widget getTextLatLongitud() {
-    final responsive = ResponsiveUtil();
+  Widget _popupRecinto(
+      RecintosElectoral recinto,
+      ){
     return Container(
-      width: responsive.anchoP(100),
-      color: Colors.transparent,
-      child: TextSombrasWidget(
-        colorSombra: Colors.white,
-        title:
-            "Latitud: ${UtilidadesUtil.redondearDouble(widget.ubicacion.latitude, decimales: 6)} - Longitud: ${UtilidadesUtil.redondearDouble(widget.ubicacion.longitude, decimales: 6)}",
+      width:235,
+      padding:const EdgeInsets.all(11),
+      decoration:BoxDecoration(
+        color:Colors.white,
+        borderRadius:BorderRadius.circular(16),
+        border:Border.all(
+          color:const Color(0xFFDCE4EC),
+        ),
+        boxShadow:[
+          BoxShadow(
+            color:Colors.black.withOpacity(.18),
+            blurRadius:14,
+            offset:const Offset(0,5),
+          ),
+        ],
+      ),
+      child:Column(
+        mainAxisSize:MainAxisSize.min,
+        crossAxisAlignment:CrossAxisAlignment.start,
+        children:[
+          Row(
+            children:[
+              Container(
+                width:35,
+                height:35,
+                decoration:BoxDecoration(
+                  color:recinto.validado
+                      ?const Color(0xFFE7F5EE)
+                      :const Color(0xFFEAF1F8),
+                  borderRadius:BorderRadius.circular(10),
+                ),
+                child:Icon(
+                  recinto.validado
+                      ?Icons.verified_rounded
+                      :Icons.location_city_outlined,
+                  color:recinto.validado
+                      ?const Color(0xFF218A61)
+                      :const Color(0xFF195496),
+                  size:18,
+                ),
+              ),
+
+              const SizedBox(width:8),
+
+              Expanded(
+                child:Text(
+                  recinto.nomRecintoElecOnly,
+                  maxLines:3,
+                  overflow:TextOverflow.ellipsis,
+                  style:const TextStyle(
+                    color:Color(0xFF17365D),
+                    fontSize:10,
+                    fontWeight:FontWeight.w900,
+                    height:1.12,
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height:8),
+
+          Container(
+            height:1,
+            color:const Color(0xFFE5EAF0),
+          ),
+
+          const SizedBox(height:8),
+
+          Row(
+            children:[
+              const Icon(
+                Icons.near_me_outlined,
+                color:Color(0xFF7A8998),
+                size:13,
+              ),
+              const SizedBox(width:5),
+              Text(
+                'Distancia: ${recinto.distance} m',
+                style:const TextStyle(
+                  color:Color(0xFF68798A),
+                  fontSize:8.2,
+                  fontWeight:FontWeight.w600,
+                ),
+              ),
+            ],
+          ),
+
+          if(recinto.validado)...[
+            const SizedBox(height:7),
+
+            Container(
+              padding:const EdgeInsets.symmetric(
+                horizontal:7,
+                vertical:4,
+              ),
+              decoration:BoxDecoration(
+                color:const Color(0xFFE7F5EE),
+                borderRadius:BorderRadius.circular(20),
+              ),
+              child:const Row(
+                mainAxisSize:MainAxisSize.min,
+                children:[
+                  Icon(
+                    Icons.verified_rounded,
+                    color:Color(0xFF218A61),
+                    size:11,
+                  ),
+                  SizedBox(width:4),
+                  Text(
+                    'RECINTO VALIDADO',
+                    style:TextStyle(
+                      color:Color(0xFF218A61),
+                      fontSize:6.5,
+                      fontWeight:FontWeight.w900,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            if(recinto.apenomValida.isNotEmpty)...[
+              const SizedBox(height:5),
+
+              Text(
+                'Validado por: ${recinto.apenomValida}',
+                maxLines:2,
+                overflow:TextOverflow.ellipsis,
+                style:const TextStyle(
+                  color:Color(0xFF68798A),
+                  fontSize:7.5,
+                  fontWeight:FontWeight.w600,
+                ),
+              ),
+            ],
+          ],
+        ],
       ),
     );
   }
 
-  Widget getBtnCustomIcon({
-    GestureTapCallback? ontap,
-    double size = 45,
-    Color colorIcon = Colors.white,
+  Widget getBotonera(){
+    final responsive=ResponsiveUtil();
+
+    return Positioned(
+      top:responsive.altoP(13),
+      right:10,
+      child:Container(
+        decoration:BoxDecoration(
+          color:Colors.white.withOpacity(.96),
+          borderRadius:BorderRadius.circular(14),
+          boxShadow:[
+            BoxShadow(
+              color:Colors.black.withOpacity(.14),
+              blurRadius:10,
+              offset:const Offset(0,3),
+            ),
+          ],
+        ),
+        child:Column(
+          children:[
+            _mapBtn(
+              icon:Icons.my_location_rounded,
+              tooltip:'Mi ubicación',
+              onTap:widget.ontapMyUbicacion,
+            ),
+
+            _separadorMapa(),
+
+            _mapBtn(
+              icon:Icons.layers_outlined,
+              tooltip:'Cambiar mapa',
+              activo:true,
+              onTap:_mostrarSelectorMapa,
+            ),
+
+            _separadorMapa(),
+
+            _mapBtn(
+              icon:Icons.add_rounded,
+              tooltip:'Acercar',
+              onTap:(){
+                final zoomActual=
+                    widget.mapController.camera.zoom;
+
+                if(zoomActual<25){
+                  widget.mapController.move(
+                    widget.mapController.camera.center,
+                    zoomActual+1,
+                  );
+                }
+              },
+            ),
+
+            _separadorMapa(),
+
+            _mapBtn(
+              icon:Icons.remove_rounded,
+              tooltip:'Alejar',
+              onTap:(){
+                final zoomActual=
+                    widget.mapController.camera.zoom;
+
+                if(zoomActual>5){
+                  widget.mapController.move(
+                    widget.mapController.camera.center,
+                    zoomActual-1,
+                  );
+                }
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _mapBtn({
     required IconData icon,
-  }) {
-    return CupertinoButton(
-      borderRadius: BorderRadius.circular(20),
-      padding: EdgeInsets.all(1),
-      onPressed: ontap,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Container(
-          height: size,
-          width: size,
-          decoration: BoxDecoration(
-            border: Border.all(color: AppColors.colorBotones, width: 0.5),
-            color: Colors.white10,
-            borderRadius: BorderRadius.circular(50),
-          ),
-          child: Container(
-            child: size > 38
-                ? Icon(icon, color: colorIcon, size: size - 20)
-                : Container(),
-            margin: EdgeInsets.all(2),
-            decoration: BoxDecoration(
-              color: AppColors.colorBotones,
-              borderRadius: BorderRadius.circular(50),
+    required GestureTapCallback onTap,
+    String? tooltip,
+    bool activo=false,
+  }){
+    Widget boton=InkWell(
+      onTap:onTap,
+      child:SizedBox(
+        width:43,
+        height:43,
+        child:Icon(
+          icon,
+          color:activo
+              ?const Color(0xFF195496)
+              :const Color(0xFF52677B),
+          size:19,
+        ),
+      ),
+    );
+
+    if(tooltip!=null){
+      boton=Tooltip(
+        message:tooltip,
+        child:boton,
+      );
+    }
+
+    return boton;
+  }
+
+  Widget _separadorMapa(){
+    return Container(
+      width:27,
+      height:1,
+      color:const Color(0xFFE1E7ED),
+    );
+  }
+
+  void _mostrarSelectorMapa(){
+    _popupController.hideAllPopups();
+
+    showModalBottomSheet(
+      context:context,
+      backgroundColor:Colors.transparent,
+      isScrollControlled:false,
+      builder:(context){
+        return StatefulBuilder(
+          builder:(context,setModalState){
+            return Container(
+              padding:const EdgeInsets.fromLTRB(
+                14,
+                10,
+                14,
+                20,
+              ),
+              decoration:const BoxDecoration(
+                color:Color(0xFFF7F9FB),
+                borderRadius:BorderRadius.vertical(
+                  top:Radius.circular(26),
+                ),
+              ),
+              child:SafeArea(
+                top:false,
+                child:Column(
+                  mainAxisSize:MainAxisSize.min,
+                  children:[
+                    Container(
+                      width:42,
+                      height:4,
+                      decoration:BoxDecoration(
+                        color:const Color(0xFFB8C1CB),
+                        borderRadius:BorderRadius.circular(20),
+                      ),
+                    ),
+
+                    const SizedBox(height:13),
+
+                    const Row(
+                      children:[
+                        Icon(
+                          Icons.layers_outlined,
+                          color:Color(0xFF195496),
+                          size:22,
+                        ),
+                        SizedBox(width:8),
+                        Expanded(
+                          child:Column(
+                            crossAxisAlignment:CrossAxisAlignment.start,
+                            children:[
+                              Text(
+                                'TIPO DE MAPA',
+                                style:TextStyle(
+                                  color:Color(0xFF17365D),
+                                  fontSize:12.5,
+                                  fontWeight:FontWeight.w900,
+                                ),
+                              ),
+                              SizedBox(height:2),
+                              Text(
+                                'Seleccione la visualización que desea utilizar',
+                                style:TextStyle(
+                                  color:Color(0xFF7A8998),
+                                  fontSize:8.2,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height:13),
+
+                    _opcionTipoMapa(
+                      tipo:TipoMapa.voyager,
+                      titulo:'Voyager',
+                      descripcion:'Equilibrado y detallado',
+                      icon:Icons.public_rounded,
+                      setModalState:setModalState,
+                    ),
+
+                    _opcionTipoMapa(
+                      tipo:TipoMapa.claro,
+                      titulo:'Claro',
+                      descripcion:'Vista limpia y minimalista',
+                      icon:Icons.light_mode_outlined,
+                      setModalState:setModalState,
+                    ),
+
+                    _opcionTipoMapa(
+                      tipo:TipoMapa.openStreetMap,
+                      titulo:'OpenStreetMap',
+                      descripcion:'Vista tradicional con mayor detalle',
+                      icon:Icons.map_outlined,
+                      setModalState:setModalState,
+                    ),
+
+                    _opcionTipoMapa(
+                      tipo:TipoMapa.oscuro,
+                      titulo:'Oscuro',
+                      descripcion:'Mayor contraste para uso nocturno',
+                      icon:Icons.dark_mode_outlined,
+                      setModalState:setModalState,
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _opcionTipoMapa({
+    required TipoMapa tipo,
+    required String titulo,
+    required String descripcion,
+    required IconData icon,
+    required StateSetter setModalState,
+  }){
+    final bool seleccionado=
+        tipoMapaSeleccionado==tipo;
+
+    return Padding(
+      padding:const EdgeInsets.only(
+        bottom:8,
+      ),
+      child:Material(
+        color:Colors.transparent,
+        borderRadius:BorderRadius.circular(14),
+        clipBehavior:Clip.antiAlias,
+        child:InkWell(
+          onTap:(){
+            setState((){
+              tipoMapaSeleccionado=tipo;
+            });
+
+            setModalState((){});
+
+            Future.delayed(
+              const Duration(milliseconds:100),
+                  (){
+                if(mounted&&Navigator.of(context).canPop()){
+                  Navigator.of(context).pop();
+                }
+              },
+            );
+          },
+          child:Ink(
+            padding:const EdgeInsets.all(10),
+            decoration:BoxDecoration(
+              color:seleccionado
+                  ?const Color(0xFFEAF1F8)
+                  :Colors.white,
+              borderRadius:BorderRadius.circular(14),
+              border:Border.all(
+                color:seleccionado
+                    ?const Color(0xFF195496).withOpacity(.40)
+                    :const Color(0xFFE1E7ED),
+                width:seleccionado?1.3:1,
+              ),
+            ),
+            child:Row(
+              children:[
+                Container(
+                  width:39,
+                  height:39,
+                  decoration:BoxDecoration(
+                    color:seleccionado
+                        ?const Color(0xFF195496)
+                        :const Color(0xFFF0F3F6),
+                    borderRadius:BorderRadius.circular(11),
+                  ),
+                  child:Icon(
+                    icon,
+                    color:seleccionado
+                        ?Colors.white
+                        :const Color(0xFF667788),
+                    size:19,
+                  ),
+                ),
+
+                const SizedBox(width:9),
+
+                Expanded(
+                  child:Column(
+                    crossAxisAlignment:CrossAxisAlignment.start,
+                    children:[
+                      Text(
+                        titulo,
+                        style:TextStyle(
+                          color:const Color(0xFF17365D),
+                          fontSize:10.5,
+                          fontWeight:seleccionado
+                              ?FontWeight.w900
+                              :FontWeight.w700,
+                        ),
+                      ),
+
+                      const SizedBox(height:2),
+
+                      Text(
+                        descripcion,
+                        style:const TextStyle(
+                          color:Color(0xFF7A8998),
+                          fontSize:7.8,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                Icon(
+                  seleccionado
+                      ?Icons.radio_button_checked_rounded
+                      :Icons.radio_button_off_rounded,
+                  color:seleccionado
+                      ?const Color(0xFF195496)
+                      :const Color(0xFFB1BBC5),
+                  size:20,
+                ),
+              ],
             ),
           ),
         ),
@@ -729,21 +1485,157 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
     );
   }
 
-  void desingRegistrarRecinto() {
-    DialogosDesingWidget.getDialogoX(
-      title: "Nuevo Recinto",
-      contenido: RegistrarRecintoWidget(
-        formKey: formKeyRegRecinto,
-        controllerNombreRecinto: controllerNombreRecinto,
-        foto: mGaleryCameraModel,
-        onGuardar: () {
+  Widget getBtnAtras(){
+    final responsive=ResponsiveUtil();
 
-          ///Guardar recinto
-
-        },
+    return Positioned(
+      top:responsive.altoP(5),
+      left:10,
+      child:Material(
+        color:Colors.transparent,
+        borderRadius:BorderRadius.circular(13),
+        clipBehavior:Clip.antiAlias,
+        child:InkWell(
+          onTap:(){
+            Get.back();
+          },
+          child:Ink(
+            width:43,
+            height:43,
+            decoration:BoxDecoration(
+              color:Colors.white.withOpacity(.96),
+              borderRadius:BorderRadius.circular(13),
+              boxShadow:[
+                BoxShadow(
+                  color:Colors.black.withOpacity(.14),
+                  blurRadius:10,
+                  offset:const Offset(0,3),
+                ),
+              ],
+            ),
+            child:const Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color:Color(0xFF195496),
+              size:18,
+            ),
+          ),
+        ),
       ),
     );
   }
 
+  void ajustarMapaParaVerAmbos(
+      LatLng destino,
+      ){
+    final bounds=LatLngBounds.fromPoints([
+      widget.ubicacion,
+      destino,
+    ]);
 
+    widget.mapController.fitCamera(
+      CameraFit.bounds(
+        bounds:bounds,
+
+        /*
+          Menos padding inferior que antes porque
+          ahora el panel no se colapsa tanto.
+        */
+        padding:const EdgeInsets.fromLTRB(
+          45,
+          105,
+          45,
+          190,
+        ),
+      ),
+    );
+  }
+
+  Widget wgFoto(){
+    final responsive=ResponsiveUtil();
+
+    return Obx((){
+      return Column(
+        children:[
+          mGaleryCameraModel.value==null
+              ?TituloTextWidget(
+            title:"Registrar una Imagen",
+          )
+              :TituloTextWidget(
+            title:"Cambiar la Imagen",
+          ),
+
+          SizedBox(
+            height:responsive.altoP(1),
+          ),
+
+          InkWell(
+            onTap:() async {
+              final ahora=DateTime.now();
+
+              String dosDigitos(int n)=>
+                  n.toString().padLeft(2,'0');
+
+              String nameRecintoImg=
+                  "ImgRecinto_${ahora.year}"
+                  "${dosDigitos(ahora.month)}"
+                  "${dosDigitos(ahora.day)}_"
+                  "${dosDigitos(ahora.hour)}"
+                  "${dosDigitos(ahora.minute)}"
+                  "${dosDigitos(ahora.second)}.jpg";
+
+              mGaleryCameraModel.value=
+              await PhotoHelper
+                  .getDesingPictureGaleryOrCamera(
+                titleImg:nameRecintoImg,
+                initPeticion:(value){},
+              );
+            },
+            child:Image.asset(
+              AppImages.icon_camara,
+              width:responsive.altoP(6),
+            ),
+          ),
+
+          if(mGaleryCameraModel.value!=null)
+            ClipRRect(
+              borderRadius:BorderRadius.circular(25),
+              child:Image.file(
+                mGaleryCameraModel.value!.imageFile,
+                fit:BoxFit.fill,
+                height:responsive.altoP(30),
+                width:responsive.altoP(34),
+              ),
+            ),
+        ],
+      );
+    });
+  }
+
+  Widget getTextLatLongitud(){
+    final responsive=ResponsiveUtil();
+
+    return Container(
+      width:responsive.anchoP(100),
+      color:Colors.transparent,
+      child:TextSombrasWidget(
+        colorSombra:Colors.white,
+        title:
+        "Latitud: ${UtilidadesUtil.redondearDouble(widget.ubicacion.latitude,decimales:6)} - Longitud: ${UtilidadesUtil.redondearDouble(widget.ubicacion.longitude,decimales:6)}",
+      ),
+    );
+  }
+
+  void desingRegistrarRecinto(){
+    DialogosDesingWidget.getDialogoX(
+      title:"Nuevo Recinto",
+      contenido:RegistrarRecintoWidget(
+        formKey:formKeyRegRecinto,
+        controllerNombreRecinto:controllerNombreRecinto,
+        foto:mGaleryCameraModel,
+        onGuardar:(){
+          ///Guardar recinto
+        },
+      ),
+    );
+  }
 }
