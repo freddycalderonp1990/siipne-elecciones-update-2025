@@ -43,7 +43,6 @@ Widget wg=BlocBuilder<GpsBloc, GpsState>(
                     children: [
                       CargandoWidget(
                         mostrar: true,
-                        color: Colors.transparent,
                         titulo: "Obteniendo Coordenadas Espere",
                       ),
                     ],

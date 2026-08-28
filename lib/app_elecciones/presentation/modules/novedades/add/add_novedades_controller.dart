@@ -331,13 +331,10 @@ class AddNovedadesController extends GetxController {
   }
 
   Future<DataFile> guardarImagen() async {
-
     DataFile dataFile=DataFile.empty();
     await ExceptionDialogos.manejarErroresShowDialogo(() async {
       String path = dotenv.env['PATH_IMG_APP_ELECCIONES'] ?? '';
-
       String nameFile = recintosElectoralesAbiertos.descProcElecc;
-
       FileRequest request = FileRequest(
         file: mGaleryCameraModel.value!.imageFile,
         path: path,
@@ -363,8 +360,6 @@ class AddNovedadesController extends GetxController {
 
   eventoRegistrarNovedadesElectorales() async {
     bool isValid = true;
-
-
     if (validarForm && (formKey.currentState?.validate() ?? false)) {
       isValid = true;
     }
@@ -404,11 +399,9 @@ class AddNovedadesController extends GetxController {
           DialogosAwesome.getWarning(
             descripcion: "Selecione una Imagen",
             title: "Imagen",
-
           );
         } else {
           DataFile dataFile = await guardarImagen();
-
           if (dataFile.result) {
             await _RegistrarNovedades(
               idGenPersonaD: idGenPersonaD,
@@ -423,11 +416,9 @@ class AddNovedadesController extends GetxController {
           }
         }
       } else {
-
         String imagen = "No Imagen";
-        if (nombreDetenido != null) {
+        if (nombreDetenido != null && mostrarFoto.value==true) {
           DataFile dataFile = await guardarImagen();
-
           if (dataFile.result) {
             imagen = dataFile.nameFile;
           }

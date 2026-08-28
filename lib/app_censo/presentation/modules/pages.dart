@@ -24,6 +24,8 @@ import '../../core/values/app_censo_images.dart';
 import '../../domain/request/request_censo.dart';
 import '../routes/app_censo_routes.dart';
 import '../widgets/custom_app_censo_widgets.dart';
+import 'censista/local_widget/fotoConEscaneo.dart';
+import 'censista/local_widget/validacionFacialVisual.dart';
 import 'censista/validate_mesa/local_widget/desing_mapa.dart';
 import 'controllers.dart';
 import 'historial_censo/local_widgets/desing_history_censos.dart';

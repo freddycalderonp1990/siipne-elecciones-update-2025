@@ -5,10 +5,6 @@ class SplashPage extends GetView<SplashController> {
 
   @override
   Widget build(BuildContext context) {
-
-
-
-    final responsive = ResponsiveUtil();
     return GetBuilder<SplashController>(
       builder:
           (_) => Scaffold(
@@ -26,24 +22,11 @@ class SplashPage extends GetView<SplashController> {
                     width: double.infinity,
                     height: double.infinity,
                   ),
-                  Positioned(
-                    bottom: responsive.altoP(15),
-                    left: 0,
-                    right: 0,
-                    child: Column(
-                      children: [
-
-                        Obx(
-                          () => CargandoWidget(
-                            mostrar: controller.peticionServerState.value,
-                            color: Colors.transparent,
-                          ),
-                        ),
-                      ],
+                  Obx(
+                        () => CargandoWidget(
+                      mostrar: controller.peticionServerState.value,
                     ),
                   ),
-
-                  Center(child: Image.asset(AppImages.escudopolicia)),
                 ],
               ),
             ),

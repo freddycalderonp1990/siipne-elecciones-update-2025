@@ -1,29 +1,32 @@
 part of '../pages.dart';
 
 class CensoPolicialPage extends GetView<CensoPolicialController> {
-  const CensoPolicialPage({Key? key}) : super(key: key);
+  const CensoPolicialPage({Key? key}):super(key:key);
 
   @override
   Widget build(BuildContext context) {
     return WorkAreaPageCensoWidget(
-      mostrarBtnAtras: true,
-      showGps: true,//indica que la app va a utilkizar el gps
-      title: "CENSO POLICIAL",
-      contenido:  getContenido(),
-      peticionServer: controller.peticionServerState,
+      mostrarBtnAtras:true,
+      showGps:true,
+      title:"CENSO POLICIAL",
+      contenido:getContenido(),
+      peticionServer:controller.peticionServerState,
     );
   }
 
   Widget getContenido() {
-    final responsive = ResponsiveUtil();
+    return Padding(
+      padding:const EdgeInsets.fromLTRB(10,6,10,18),
+      child:QrViewWidget(
+        dataQrChange:(String dataQr) async {
+          String idGenPersonaUser=controller.loginController.user.value.idGenPersona.toString();
 
-    return QrViewWidget(dataQrChange: (String dataQr) async {
-      print("dataaaa");
-      String idGenPersonaUser=controller.loginController.user.value.idGenPersona.toString();
-      await controller.totpCensoController.verificarDataQr(dataQr, idGenPersonaUser: idGenPersonaUser);
-    },);
-
-
+          await controller.totpCensoController.verificarDataQr(
+            dataQr,
+            idGenPersonaUser:idGenPersonaUser,
+          );
+        },
+      ),
+    );
   }
-
 }

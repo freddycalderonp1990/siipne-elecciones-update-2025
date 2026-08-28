@@ -1,9 +1,6 @@
 part of '../controllers.dart';
 
 class LoginController extends GetxController {
-
-
-
   final LocalStoreUseCase _localStoreUseCase = Get.find<LocalStoreUseCase>();
   final AuthUseCase authUseCase = Get.find();
   final GetDataUserUseCase getDataUserUseCase = Get.find();
