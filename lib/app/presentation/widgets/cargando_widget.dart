@@ -152,7 +152,7 @@ class CargandoWidget extends StatelessWidget {
                         const SizedBox(height: 10),
 
                         Text(
-                          'SIIPNE Móvil 2',
+                          'SIIPNE-ELECCIONES',
                           style: TextStyle(
                             color: Colors.white.withOpacity(.38),
                             fontSize: 9,

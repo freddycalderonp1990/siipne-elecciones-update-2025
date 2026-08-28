@@ -1,4 +1,6 @@
-import 'package:sqflite/sqflite.dart';
+
+
+import 'package:sqflite_sqlcipher/sqflite.dart';
 
 import '../models/models_push_notification.dart';
 import 'NotificationDatabase.dart';

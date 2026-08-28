@@ -110,7 +110,7 @@ void main() async {
 
 
   //VERIFICA SI LA APP TIENE ROOT
-  bool isJailBroken = true;
+  bool isJailBroken = false;
   if(isJailBroken){
     runApp(DesingAppRoot());
   }

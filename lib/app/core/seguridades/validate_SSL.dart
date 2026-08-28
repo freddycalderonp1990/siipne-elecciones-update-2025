@@ -1,32 +1,29 @@
-
+import 'dart:io';
 import 'package:api_provider/api_provider.dart';
 import 'package:api_provider/data/data_source/remote/apis/host/host_app.dart';
 import 'package:crypto/crypto.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:io';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+class ValidateSSL {
+  static const FlutterSecureStorage _storage = FlutterSecureStorage();
+  static const String _publicKeyHashKey = 'publicKeyHash';
 
-
-
-class ValidateSSL{
   /// Realiza la conexión inicial al servidor y guarda el hash localmente
   Future<void> storePublicKeyHash(Uri url) async {
-
     final client = CustomHttpClient();
     try {
       final certificate = await client.getServerCertificate(url).timeout(
-         Duration(seconds: ApiConfig.secondsTimeout),
+        Duration(seconds: ApiConfig.secondsTimeout),
         onTimeout: () {
-          print("Tiempo de espera agotado al obtener el certificado.");
-          return null; // Retorna null en caso de timeout
+          print('Tiempo de espera agotado al obtener el certificado.');
+          return null;
         },
       );
 
       if (certificate != null) {
         final publicKeyHash = sha256.convert(certificate).toString();
-        final prefs = await SharedPreferences.getInstance();
-        await prefs.setString('publicKeyHash', publicKeyHash);
-        print('Hash del certificado guardado localmente: $publicKeyHash');
+        await _storage.write(key: _publicKeyHashKey, value: publicKeyHash);
+        print('Hash del certificado guardado localmente.');
       } else {
         print('No se pudo obtener el certificado del servidor.');
       }
@@ -35,60 +32,47 @@ class ValidateSSL{
     }
   }
 
-
   Future<bool> validatePublicKeyHash(Uri url) async {
     final client = CustomHttpClient();
-    // Obtén el certificado del servidor
-    final certificate = await client.getServerCertificate(url).timeout(
-      Duration(seconds: ApiConfig.secondsTimeout),
-      onTimeout: () {
-        print("Tiempo de espera agotado al obtener el certificado.");
-        return null; // Retorna null en caso de timeout
-      },
-    );
-    if (certificate != null) {
-      // Calcula el hash del certificado actual
-      final publicKeyHash = sha256.convert(certificate).toString();
-      // Recupera el hash guardado
-      final prefs = await SharedPreferences.getInstance();
-      final storedHash = prefs.getString('publicKeyHash');
-      // Compara los hashes
-      if (storedHash == publicKeyHash) {
-        print('Validación del certificado exitosa.');
-        return true;
-      } else {
-        print('El certificado no coincide con el hash guardado.');
+    try {
+      final certificate = await client.getServerCertificate(url).timeout(
+        Duration(seconds: ApiConfig.secondsTimeout),
+        onTimeout: () {
+          print('Tiempo de espera agotado al obtener el certificado.');
+          return null;
+        },
+      );
+
+      if (certificate == null) {
+        print('No se pudo obtener el certificado del servidor.');
         return false;
       }
-    } else {
-      print('No se pudo obtener el certificado del servidor.');
+
+      final publicKeyHash = sha256.convert(certificate).toString();
+      final storedHash = await _storage.read(key: _publicKeyHashKey);
+
+      if (storedHash != null && storedHash == publicKeyHash) {
+        print('Validación del certificado exitosa.');
+        return true;
+      }
+
+      print('El certificado no coincide con el hash guardado.');
+      return false;
+    } catch (e) {
+      print('Error en validatePublicKeyHash: $e');
       return false;
     }
   }
 
   Future<bool> validarSSl() async {
-    String url = HostApp.gethost(segmento: '');
+    final url = HostApp.gethost(segmento: '');
     final uri = Uri.parse(url);
-    ValidateSSL validateSSL=ValidateSSL();
-    // Guarda el hash en la primera conexión
-    await validateSSL.storePublicKeyHash(uri);
-    // En conexiones futuras, valida el hash
-    final isValid = await validateSSL.validatePublicKeyHash(uri);
-    if (isValid) {
-      return true;
-    } else {
-      return false;
-    }
+
+    await storePublicKeyHash(uri);
+    return await validatePublicKeyHash(uri);
   }
-
-
-
 }
 
-
-
-
-/// Cliente HTTPS personalizado para obtener certificados del servidor
 class CustomHttpClient {
   final HttpClient _httpClient;
 
@@ -104,16 +88,15 @@ class CustomHttpClient {
     try {
       final request = await _httpClient.getUrl(url);
       final response = await request.close();
-
-      // Obtiene los certificados del servidor
-      final X509Certificate? certificates = response.certificate;
-      if (certificates != null ) {
-        // Devuelve el certificado en formato DER
-        return certificates.der;
-      }
+      final X509Certificate? certificate = response.certificate;
+      if (certificate != null) return certificate.der;
     } catch (e) {
       print('Error al obtener el certificado: $e');
     }
     return null;
+  }
+
+  void close() {
+    _httpClient.close();
   }
 }

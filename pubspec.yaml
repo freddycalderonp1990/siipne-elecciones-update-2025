@@ -98,7 +98,12 @@ dependencies:
   flutter_local_notifications: ^19.4.1
 
 
-  sqflite: ^2.4.2
+
+  #QLCipher permite cifrar la base de datos SQLite, protegiendo la información almacenada mediante una clave
+  # de seguridad y evitando que pueda ser consultada directamente sin autorización.
+  sqflite_sqlcipher: ^3.4.1 # base de datos
+  flutter_secure_storage: ^11.0.0 #reemplaza SharedPreferences
+
   flutter_anti_tamper: ^0.0.3 #verificar root de app
 
 
@@ -113,11 +118,12 @@ dependencies:
 
 
   #app_mi_upc:
-   # path: /Users/policianacional/AndroidStudioProjects/app_mi_upc
+    #path: /Users/policianacional/AndroidStudioProjects/app_mi_upc
+
   app_mi_upc:
     git:
       url: https://github.com/freddycalderonp1990/app_mi_upc.git
-      ref: 3.0.1
+      ref: v4.0.1
 
 
 dev_dependencies:
