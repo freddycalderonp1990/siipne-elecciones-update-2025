@@ -26,7 +26,7 @@ plugins {
 
 android {
     namespace = "ecuador.policianacional.dntic.siipnemovil2"
-    compileSdk = 36
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

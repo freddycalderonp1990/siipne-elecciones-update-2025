@@ -203,7 +203,7 @@ class DialogosAwesome {
                     ),
                   ],
                 ),
-                child: Column(
+                child: SingleChildScrollView(child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
@@ -458,7 +458,7 @@ class DialogosAwesome {
                       ),
                     ),
                   ],
-                ),
+                ),),
               ),
             );
           },

@@ -263,7 +263,7 @@ class MenuRecElecJefePage extends GetView<MenuRecElecJefeController> {
                 color:const Color(0xFFB74949),
                 colorSuave:const Color(0xFFF9ECEC),
                 onTap:(){
-                  String msj="Si abrió por error el Operativo se recomienda eliminarlo.  \n\nRecuerde todo será registrado para verificar el correcto uso del aplicativo.\n\n¿Está seguro/a que desea eliminar el Operativo.?";
+                  String msj="Si abrió por error el Operativo se recomienda eliminarlo.  \n\nRecuerde [rojo]todo será registrado[/rojo] para verificar el correcto uso del aplicativo.\n\n¿Está seguro/a que desea eliminar el Operativo.?";
                   String title="ELIMINAR CÓDIGO ${controller.recintosElectoralesAbiertos.idDgoCreaOpReci}";
 
                   DialogosAwesome.getWarningSiNoContador(

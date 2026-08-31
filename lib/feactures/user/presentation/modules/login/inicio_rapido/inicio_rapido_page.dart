@@ -303,7 +303,14 @@ class _InicioRapidoFullScreenState extends State<_InicioRapidoFullScreen> {
                     shape: BoxShape.circle,
                     color: Colors.white,
                   ),
-                  child: ClipOval(child: _fotoUsuario(foto)),
+                  child:ClipOval(
+                    child: ImgPerfilRedonda(
+                      size: 74,
+                      img: foto,
+                      mostrarBorde: false,
+                      mostrarSombra: false,
+                    ),
+                  ),
                 ),
               ),
               Positioned(
@@ -393,78 +400,10 @@ class _InicioRapidoFullScreenState extends State<_InicioRapidoFullScreen> {
     });
   }
 
-  Widget _fotoUsuario(dynamic foto) {
-    final String valor = foto?.toString().trim() ?? '';
-    if (valor.isEmpty || valor.toLowerCase() == 'null')
-      return _fotoUsuarioDefault();
-    try {
-      if (valor.startsWith('http://') || valor.startsWith('https://')) {
-        return Image.network(
-          valor,
-          width: double.infinity,
-          height: double.infinity,
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) => _fotoUsuarioDefault(),
-        );
-      }
-      if (valor.startsWith('data:image')) {
-        final String base64Data = valor.split(',').last;
-        return Image.memory(
-          base64Decode(base64Data),
-          width: double.infinity,
-          height: double.infinity,
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) => _fotoUsuarioDefault(),
-        );
-      }
-      if (_esBase64(valor)) {
-        return Image.memory(
-          base64Decode(valor),
-          width: double.infinity,
-          height: double.infinity,
-          fit: BoxFit.cover,
-          errorBuilder: (context, error, stackTrace) => _fotoUsuarioDefault(),
-        );
-      }
-      return Image.asset(
-        valor,
-        width: double.infinity,
-        height: double.infinity,
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) => _fotoUsuarioDefault(),
-      );
-    } catch (e) {
-      return _fotoUsuarioDefault();
-    }
-  }
 
-  bool _esBase64(String valor) {
-    try {
-      if (valor.length < 100) return false;
-      final String limpio = valor.replaceAll(RegExp(r'\s+'), '');
-      base64Decode(limpio);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
 
-  Widget _fotoUsuarioDefault() {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFFEAF1F8), Color(0xFFD8E4F0)],
-        ),
-      ),
-      child: const Center(
-        child: Icon(Icons.person_rounded, color: Color(0xFF195496), size: 40),
-      ),
-    );
-  }
+
+
 
   String _saludoPorSexo(dynamic sexo) {
     final String valor = sexo?.toString().trim().toUpperCase() ?? '';

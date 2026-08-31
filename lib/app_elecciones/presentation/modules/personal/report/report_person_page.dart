@@ -531,7 +531,7 @@ class ReportPersonPage extends GetView<ReportPersonController> {
             DialogosAwesome.getWarningSiNoContador(
               descripcion:
               "¿Está  seguro/a que desea eliminar a ${data.personal} del operarivo.?\n\n"
-                  "Si elimina, no será considerado para el justificativo ante el CNE."
+                  "[rojo]Si elimina, no será considerado para el justificativo ante el CNE.[/rojo]"
                   "\nDeberá anexarse a un nuevo código y no abandonar, ya que esta acción es automática al finalizar el proceso electoral"
                   "\n\n¿ESTÁ SEGURO/A?",
               btnOkOnPress:(){

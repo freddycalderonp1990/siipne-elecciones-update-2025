@@ -104,8 +104,7 @@ dependencies:
   sqflite_sqlcipher: ^3.4.1 # base de datos
   flutter_secure_storage: ^11.0.0 #reemplaza SharedPreferences
 
-  flutter_anti_tamper: ^0.0.3 #verificar root de app
-
+  advanced_root_detection: ^0.0.5 #verificar root de app
 
 
   #api_provider:

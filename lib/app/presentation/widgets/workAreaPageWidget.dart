@@ -456,6 +456,8 @@
     }
 
     Widget _fotoServidor(){
+
+
       return Stack(
         clipBehavior:Clip.none,
         children:[

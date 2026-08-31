@@ -811,7 +811,7 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
       msj=
       "El recinto ya fue validado por ${recintoSeleccionado!.apenomValida}."
           "\n\nAsegúrese de encontrarse en el lugar correcto."
-          "\nEste cambio quedará AUDITADO y será su responsabilidad."
+          "\nEste cambio quedará [rojo]AUDITADO y será su responsabilidad.[/rojo]"
           "\nUna validación incorrecta podría generar inconvenientes el día de las elecciones."
           "\n\n¿Desea reemplazar la ubicación actual y validarlo nuevamente?";
     }

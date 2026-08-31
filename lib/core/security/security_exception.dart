@@ -1,11 +1,9 @@
 class SecurityException implements Exception {
-
   final String message;
+  final dynamic cause;
 
-  const SecurityException(this.message);
+  SecurityException(this.message, {this.cause});
 
   @override
-  String toString() {
-    return message;
-  }
+  String toString() => 'SecurityException: $message';
 }

@@ -2,6 +2,7 @@
 
 
 import 'dart:convert';
+import 'dart:typed_data';
 import 'dart:ui';
 
 import 'package:awesome_dialog/awesome_dialog.dart';
@@ -32,6 +33,7 @@ import '../../../../app/core/values/app_images.dart';
 
 import '../../../../app/domain/enums/enums.dart';
 import '../../../../app/presentation/widgets/custom_app_widgets.dart';
+import '../../../../app/presentation/widgets/img_perfil_redonda.dart';
 import '../../../pushNotification/services/bloc/notifications_bloc.dart';
 import '../widgets/user_custom_widgets.dart';
 

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:app_mi_upc/app_mi_upc.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,6 +17,7 @@ import 'app/main_app.dart';
 
 import 'app/presentation/routes/app_routes.dart';
 
+import 'core/security/security_guard.dart';
 import 'desing_app_root.dart';
 import 'feactures/gps/presentation/bloc/gps/gps_bloc.dart';
 import 'feactures/gps/presentation/location/location_bloc.dart';
@@ -66,6 +68,35 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+
+
+  final report = await SecurityGuard.validate();
+
+  print('===== SECURITY REPORT =====');
+  print('Root: ${report.isPrivilegedAccess}');
+  print('Hooking: ${report.isRuntimeManipulated}');
+  print('Debugger: ${report.isDebuggerAttached}');
+  print('Emulador: ${report.isAnalysisEnvironment}');
+  print('Integridad: ${report.isIntegrityViolated}');
+  print('Critical: ${report.hasCriticalThreat}');
+  print('Clean: ${report.isClean}');
+  print('Threats: ${report.detectedThreats}');
+  print('===========================');
+
+  if (kReleaseMode) {
+    //VERIFICA SI LA APP TIENE ROOT
+    final securityReport = await SecurityGuard.validate();
+    String message = await SecurityGuard.getSecurityMessage();
+    if (securityReport.isPrivilegedAccess ||
+        securityReport.isRuntimeManipulated) {
+      runApp(DesingAppRoot(mensaje: message,));
+      return;
+    }
+  }
+
+
+
   HttpOverrides.global = new MyHttpOverrides();
   DependencyInjectionApp();
 
@@ -109,12 +140,7 @@ void main() async {
 
 
 
-  //VERIFICA SI LA APP TIENE ROOT
-  bool isJailBroken = false;
-  if(isJailBroken){
-    runApp(DesingAppRoot());
-  }
-  else{
+
     runApp(
       MultiBlocProvider(
         providers: [
@@ -125,7 +151,7 @@ void main() async {
         child: MyApp(),
       ),
     );
-  }
+
 
 }
 

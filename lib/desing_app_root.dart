@@ -7,8 +7,9 @@ import 'feactures/pushNotification/di.dart';
 
 
 class DesingAppRoot extends StatefulWidget {
+  final String mensaje;
 
-  const DesingAppRoot({super.key});
+  const DesingAppRoot({super.key, required this.mensaje});
 
   @override
   State<DesingAppRoot> createState() => _DesingAppRootState();
@@ -30,10 +31,21 @@ class _DesingAppRootState extends State<DesingAppRoot> {
       fallbackLocale: Locale('es'),
       home: WorkAreaPageWidget(peticionServer: false.obs, contenido: 
       Center(child:
-          TextSombrasWidget(
-            size: 28,
-              title: "Por razones de seguridad, no podemos permitir el uso de esta aplicación en dispositivos rooteados. "
-              "\n\nPara continuar, por favor, restaura tu dispositivo a su estado original y desactiva el acceso root.")))
+      TextSombrasWidget(
+          size: 28,
+          title: widget.mensaje)
+
+
+          /*  TextSombrasWidget(
+                size: 28,
+                title: "Por razones de seguridad, no podemos permitir el uso de esta aplicación en dispositivos rooteados. "
+                    "\n\nPara continuar, por favor, restaura tu dispositivo a su estado original y desactiva el acceso root."),*/
+
+
+          ),
+
+
+      )
 
  );
   }

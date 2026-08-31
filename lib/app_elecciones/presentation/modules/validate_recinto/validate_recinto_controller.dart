@@ -134,7 +134,7 @@ class ValidateRecintoController extends GetxController {
       }
 
       DialogosAwesome.getInformation(
-        descripcion: "Las coordenadas fueron registradas con éxito.",
+        descripcion: "Validación completada con éxito.",
         btnOkOnPress: () {
           controllerTelefono.clear();
           Get.back();

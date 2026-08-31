@@ -1,12 +1,11 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'dart:typed_data';
 
+import 'package:flutter/material.dart';
 
 import '../../core/utils/photo_helper.dart';
 import '../../core/utils/responsiveUtil.dart';
 import '../../core/values/app_colors.dart';
 import '../../core/values/app_images.dart';
-
 
 class ImgPerfilRedonda extends StatefulWidget {
   final double size;
@@ -28,18 +27,48 @@ class ImgPerfilRedonda extends StatefulWidget {
   State<ImgPerfilRedonda> createState() => _ImgPerfilRedondaState();
 }
 
-class _ImgPerfilRedondaState extends State<ImgPerfilRedonda>
-    with SingleTickerProviderStateMixin {
+class _ImgPerfilRedondaState extends State<ImgPerfilRedonda> {
   double _scale = 1.0;
+
+  Uint8List? _imgBytes;
+  ImageProvider? _imageProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    _actualizarImagen();
+  }
+
+  @override
+  void didUpdateWidget(covariant ImgPerfilRedonda oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    // Solo procesa nuevamente si la imagen cambió
+    if (oldWidget.img != widget.img) {
+      _actualizarImagen();
+    }
+  }
+
+  void _actualizarImagen() {
+    if (widget.img != null && widget.img.toString().isNotEmpty) {
+      _imgBytes = PhotoHelper.convertStringToUint8List(widget.img);
+
+      if (_imgBytes != null) {
+        _imageProvider = MemoryImage(_imgBytes!);
+      } else {
+        _imageProvider = const AssetImage(AppImages.iconNoImg);
+      }
+    } else {
+      _imgBytes = null;
+      _imageProvider = const AssetImage(AppImages.iconNoImg);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final responsive = ResponsiveUtil();
-    final imgMemory = widget.img != null
-        ? PhotoHelper.convertStringToUint8List(widget.img)
-        : null;
 
-    final size = responsive.isVertical()
+    final double size = responsive.isVertical()
         ? responsive.anchoP(widget.size)
         : responsive.anchoP(widget.size - 6);
 
@@ -58,7 +87,10 @@ class _ImgPerfilRedondaState extends State<ImgPerfilRedonda>
           decoration: BoxDecoration(
             shape: BoxShape.circle,
             gradient: const LinearGradient(
-              colors: [AppColors.colorAzul_60, AppColors.colorAzul_10],
+              colors: [
+                AppColors.colorAzul_60,
+                AppColors.colorAzul_10,
+              ],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
@@ -83,9 +115,7 @@ class _ImgPerfilRedondaState extends State<ImgPerfilRedonda>
               )
                   : null,
               image: DecorationImage(
-                image: imgMemory != null
-                    ? Image.memory(imgMemory).image
-                    : AssetImage(AppImages.iconNoImg),
+                image: _imageProvider!,
                 fit: BoxFit.cover,
               ),
             ),

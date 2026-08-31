@@ -9,6 +9,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.69"
+  advanced_root_detection:
+    dependency: "direct main"
+    description:
+      name: advanced_root_detection
+      sha256: "145083c34ff67cf2dc1b696d1faef51794de7034e6f373cb8a859ba2aa9c5dfc"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.5"
   animated_stack_widget:
     dependency: transitive
     description:
@@ -352,14 +360,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_anti_tamper:
-    dependency: "direct main"
-    description:
-      name: flutter_anti_tamper
-      sha256: d0513559b84f940f8c2f3a21cde026b7d5347912a2502fbc3b5231d13f973c68
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.3"
   flutter_bloc:
     dependency: "direct main"
     description:
