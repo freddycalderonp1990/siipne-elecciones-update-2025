@@ -57,11 +57,7 @@ class _ComboBusquedaRecintosState<T> extends State<ComboBusquedaRecintos<T>> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    _userEditTextController.dispose();
-    super.dispose();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -102,7 +98,7 @@ class _ComboBusquedaRecintosState<T> extends State<ComboBusquedaRecintos<T>> {
           ),
         ),
       ),
-      popupProps:PopupPropsMultiSelection.dialog(
+      popupProps:PopupProps.dialog(
         showSelectedItems:true,
         disableFilter:false,
         showSearchBox:true,
@@ -171,10 +167,21 @@ class _ComboBusquedaRecintosState<T> extends State<ComboBusquedaRecintos<T>> {
       },
       dropdownBuilder:(context,selectedItem)=>_customDropDownExample(context,selectedItem),
       items:(filter,infiniteScrollProps)=>widget.datos,
-      onChanged:(value){
-        print("cambiaa");
-        if(widget.complete!=null){
-          widget.complete!(value);
+      onSelected: (value) {
+        _userEditTextController.clear();
+
+        final bool nuevoEstado = _tieneSeleccion(value);
+
+        if (showX != nuevoEstado && mounted) {
+          setState(() {
+            showX = nuevoEstado;
+          });
+        }
+
+        widget.complete?.call(value);
+
+        if (value != null) {
+          widget.onChanged?.call(value);
         }
       },
     );
@@ -585,5 +592,27 @@ class _ComboBusquedaRecintosState<T> extends State<ComboBusquedaRecintos<T>> {
       ),
       child:wg,
     );
+  }
+
+  bool _tieneSeleccion(T? item) {
+    if (item == null) {
+      return false;
+    }
+
+    return _getDisplayText(item).trim().isNotEmpty;
+  }
+
+  String _getDisplayText(T item) {
+    if (widget.displayField != null) {
+      return widget.displayField!(item);
+    }
+
+    return item.toString();
+  }
+
+  @override
+  void dispose() {
+    _userEditTextController.dispose();
+    super.dispose();
   }
 }

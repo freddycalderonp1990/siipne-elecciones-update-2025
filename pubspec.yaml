@@ -53,7 +53,7 @@ dependencies:
   flutter_dotenv: ^6.0.0 #leer .env
   image_picker: ^1.2.1 #Obtener img de la camara o galeria
   flutter_pdfview: ^1.4.4 #Visaulizar PDF
-  dropdown_search: ^6.0.2 #Combo con busqueda
+  dropdown_search: ^7.0.0 #Combo con busqueda
   #url_launcher: ^6.3.1 # Abrir Urls - lo trae desde el paquete de mi upp
   #share_plus: ^10.1.1 # Compartir archivos - lo trae desde el paquete de mi upp
   #awesome_dialog: ^3.2.1 #Dialogos - lo trae desde el paquete de mi upp
@@ -74,18 +74,18 @@ dependencies:
 
 
   # NECESARIOS QR
-  qr_code_scanner_plus: ^2.1.1 #Qr Scan reemplaza a qr_code_scanner: ^1.0.1
+  qr_code_scanner_plus: ^2.2.0 #Qr Scan reemplaza a qr_code_scanner: ^1.0.1
   zxing2: ^0.2.4 #Leer data de qr desde Galeria
   qr_flutter: ^4.1.0 #Generar Qr
   # END QR
 
 
-  syncfusion_flutter_gauges: ^32.2.8 #Diseño de clave digital
+  syncfusion_flutter_gauges: ^34.2.6 #Diseño de clave digital
 
   #NOTIFICACIONES PUSH
   firebase_core: ^4.7.0
   firebase_messaging: ^16.2.0
-  flutter_local_notifications: ^19.4.1
+  flutter_local_notifications: ^22.3.0
 
 
 
@@ -112,7 +112,7 @@ dependencies:
   app_mi_upc:
     git:
       url: https://github.com/freddycalderonp1990/app_mi_upc.git
-      ref: v4.0.1
+      ref: v5.0.1
 
 
 dev_dependencies:
