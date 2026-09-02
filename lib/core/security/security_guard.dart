@@ -1,4 +1,4 @@
-import 'package:advanced_root_detection/advanced_root_detection.dart';
+
 
 class SecurityGuard {
   SecurityGuard._();
@@ -45,5 +45,29 @@ class SecurityGuard {
     }
 
     return 'El dispositivo cumple con las validaciones de seguridad.';
+  }
+}
+
+class ThreatReport {
+  bool get isClean => false;
+
+  bool get isPrivilegedAccess => false;
+
+  bool get isRuntimeManipulated => false;
+
+  get isDebuggerAttached => false;
+
+  get isAnalysisEnvironment => false;
+
+  get isIntegrityViolated => null;
+
+  get hasCriticalThreat => null;
+
+  get detectedThreats => null;
+}
+
+class AdvanceRootDetection {
+  Future<ThreatReport> performCheck() async {
+    return ThreatReport();
   }
 }

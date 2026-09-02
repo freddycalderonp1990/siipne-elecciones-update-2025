@@ -4,3 +4,6 @@
 SizedBox(
 height: MediaQuery.of(context).padding.bottom,
 ),
+
+
+# IMPORTANTE SOLUCION A advanceRootDetectionPlugin

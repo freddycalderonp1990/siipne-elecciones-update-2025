@@ -97,7 +97,7 @@ class AlgoritmoTOTPCenso {
     return res;
   }
 
-  static bool esNumero(var valor) {
+  static bool esNumero( valor) {
     // Intenta analizar el valor como un número
     return num.tryParse(valor.toString()) != null;
   }

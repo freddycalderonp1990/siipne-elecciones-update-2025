@@ -1,29 +1,18 @@
 name: siipnemovil2
 description: "A new Flutter project."
-# Actualizacion 31 octubre del 2025
-# Flutter 3.35.5 • channel stable • https://github.com/flutter/flutter.git
-#Framework • revision ac4e799d23 (5 weeks ago) • 2025-09-26 12:05:09 -0700
-#Engine • hash 0274ead41f6265309f36e9d74bc8c559becd5345 (revision d3d45dcf25) (1
-#months ago) • 2025-09-26 16:45:18.000Z
-#Tools • Dart 3.9.2 • DevTools 2.48.0
+# Flutter 3.47.2 • channel stable • https://github.com/flutter/flutter.git
+#Framework • revision d3b14c8769 (7 days ago) • 2026-08-26 16:07:51 -0700
+#Engine • hash 1cf1c4773fb941c4c74a7f8bb144a8837596c0f4 (revision a804b26164) (6
+#days ago) • 2026-08-26 18:46:13.000Z
+#Tools • Dart 3.13.2 • DevTools 2.60.0
+
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
-# build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as versionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
-# Read more about iOS versioning at
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-# In Windows, build-name is used as the major, minor, and patch parts
-# of the product and file versions while build-number is used as the build suffix.
+
 version: 2.2.1+44
 
 environment:
-  sdk: ^3.9.2
+  sdk: ^3.13.2
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -40,6 +29,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+
   # Para actualizar los paquetes solo con ir al repositorio de mi upc ejemplo: https://github.com/freddycalderonp1990/app_mi_upc.git
   # ya que se esta usando la funcionalidad de mi upc automaticamente se descrag¿n de hay los paquetes
 
@@ -104,11 +94,11 @@ dependencies:
   sqflite_sqlcipher: ^3.4.1 # base de datos
   flutter_secure_storage: ^11.0.0 #reemplaza SharedPreferences
 
-  advanced_root_detection: ^0.0.5 #verificar root de app
+  advanced_root_detection: ^0.0.5 #verificar root de app - se comenta por en ios no com´pila esta libreria da error
 
 
-  #api_provider:
-    #path: /Users/policianacional/AndroidStudioProjects/paquete_api_provider
+    #api_provider:
+  #path: /Users/policianacional/AndroidStudioProjects/paquete_api_provider
 
   api_provider:
     git:
@@ -116,7 +106,7 @@ dependencies:
       ref: 1.0.5
 
 
-  #app_mi_upc:
+    #app_mi_upc:
     #path: /Users/policianacional/AndroidStudioProjects/app_mi_upc
 
   app_mi_upc:
@@ -150,9 +140,7 @@ flutter_launcher_icons:
   macos:
     generate: true
     image_path: "assets/icon/icon.jpeg"
-
-
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -174,17 +162,7 @@ flutter:
     - assets/censo/img/
     - assets/censo/icon/
     - .env
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/to/resolution-aware-images
 
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/to/asset-from-package
-
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
   fonts:
     - family: Arial
       fonts:
@@ -219,6 +197,3 @@ flutter:
           weight: 600
         - asset: assets/fonts/century_gothic_regular.ttf
           weight: 400
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/to/font-from-package

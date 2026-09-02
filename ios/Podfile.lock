@@ -1,210 +1,46 @@
 PODS:
-  - connectivity_plus (0.0.1):
+  - advanced_root_detection (0.0.1):
     - Flutter
-  - device_info_plus (0.0.1):
-    - Flutter
-  - Firebase/CoreOnly (12.12.0):
-    - FirebaseCore (~> 12.12.0)
-  - Firebase/Messaging (12.12.0):
-    - Firebase/CoreOnly
-    - FirebaseMessaging (~> 12.12.0)
-  - firebase_core (4.7.0):
-    - Firebase/CoreOnly (= 12.12.0)
-    - Flutter
-  - firebase_messaging (16.2.0):
-    - Firebase/Messaging (= 12.12.0)
-    - firebase_core
-    - Flutter
-  - FirebaseCore (12.12.1):
-    - FirebaseCoreInternal (~> 12.12.0)
-    - GoogleUtilities/Environment (~> 8.1)
-    - GoogleUtilities/Logger (~> 8.1)
-  - FirebaseCoreInternal (12.12.0):
-    - "GoogleUtilities/NSData+zlib (~> 8.1)"
-  - FirebaseInstallations (12.12.0):
-    - FirebaseCore (~> 12.12.0)
-    - GoogleUtilities/Environment (~> 8.1)
-    - GoogleUtilities/UserDefaults (~> 8.1)
-    - PromisesObjC (~> 2.4)
-  - FirebaseMessaging (12.12.0):
-    - FirebaseCore (~> 12.12.0)
-    - FirebaseInstallations (~> 12.12.0)
-    - GoogleDataTransport (~> 10.1)
-    - GoogleUtilities/AppDelegateSwizzler (~> 8.1)
-    - GoogleUtilities/Environment (~> 8.1)
-    - GoogleUtilities/Reachability (~> 8.1)
-    - GoogleUtilities/UserDefaults (~> 8.1)
-    - nanopb (~> 3.30910.0)
   - Flutter (1.0.0)
-  - flutter_local_notifications (0.0.1):
+  - FMDB/Core (2.7.12)
+  - FMDB/SQLCipher (2.7.12):
+    - FMDB/Core
+    - SQLCipher (~> 4.6)
+  - sqflite_sqlcipher (0.0.1):
     - Flutter
-  - flutter_pdfview (1.0.2):
-    - Flutter
-  - geolocator_apple (1.2.0):
-    - Flutter
-    - FlutterMacOS
-  - GoogleDataTransport (10.1.0):
-    - nanopb (~> 3.30910.0)
-    - PromisesObjC (~> 2.4)
-  - GoogleUtilities/AppDelegateSwizzler (8.1.1):
-    - GoogleUtilities/Environment
-    - GoogleUtilities/Logger
-    - GoogleUtilities/Network
-    - GoogleUtilities/Privacy
-  - GoogleUtilities/Environment (8.1.1):
-    - GoogleUtilities/Privacy
-  - GoogleUtilities/Logger (8.1.1):
-    - GoogleUtilities/Environment
-    - GoogleUtilities/Privacy
-  - GoogleUtilities/Network (8.1.1):
-    - GoogleUtilities/Logger
-    - "GoogleUtilities/NSData+zlib"
-    - GoogleUtilities/Privacy
-    - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (8.1.1)":
-    - GoogleUtilities/Privacy
-  - GoogleUtilities/Privacy (8.1.1)
-  - GoogleUtilities/Reachability (8.1.1):
-    - GoogleUtilities/Logger
-    - GoogleUtilities/Privacy
-  - GoogleUtilities/UserDefaults (8.1.1):
-    - GoogleUtilities/Logger
-    - GoogleUtilities/Privacy
-  - image_picker_ios (0.0.1):
-    - Flutter
-  - local_auth_darwin (0.0.1):
-    - Flutter
-    - FlutterMacOS
-  - nanopb (3.30910.0):
-    - nanopb/decode (= 3.30910.0)
-    - nanopb/encode (= 3.30910.0)
-  - nanopb/decode (3.30910.0)
-  - nanopb/encode (3.30910.0)
-  - network_info_plus (0.0.1):
-    - Flutter
-  - package_info_plus (0.4.5):
-    - Flutter
-  - path_provider_foundation (0.0.1):
-    - Flutter
-    - FlutterMacOS
-  - permission_handler_apple (9.3.0):
-    - Flutter
-  - PromisesObjC (2.4.1)
-  - qr_code_scanner_plus (0.2.6):
-    - Flutter
-  - rive_native (0.0.1):
-    - Flutter
-  - share_plus (0.0.1):
-    - Flutter
-  - shared_preferences_foundation (0.0.1):
-    - Flutter
-    - FlutterMacOS
-  - url_launcher_ios (0.0.1):
-    - Flutter
+    - FMDB/SQLCipher (~> 2.7.5)
+    - SQLCipher (= 4.10.0)
+  - SQLCipher (4.10.0):
+    - SQLCipher/standard (= 4.10.0)
+  - SQLCipher/common (4.10.0)
+  - SQLCipher/standard (4.10.0):
+    - SQLCipher/common
 
 DEPENDENCIES:
-  - connectivity_plus (from `.symlinks/plugins/connectivity_plus/ios`)
-  - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
-  - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
-  - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
+  - advanced_root_detection (from `.symlinks/plugins/advanced_root_detection/ios`)
   - Flutter (from `Flutter`)
-  - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
-  - flutter_pdfview (from `.symlinks/plugins/flutter_pdfview/ios`)
-  - geolocator_apple (from `.symlinks/plugins/geolocator_apple/darwin`)
-  - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
-  - local_auth_darwin (from `.symlinks/plugins/local_auth_darwin/darwin`)
-  - network_info_plus (from `.symlinks/plugins/network_info_plus/ios`)
-  - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
-  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
-  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
-  - qr_code_scanner_plus (from `.symlinks/plugins/qr_code_scanner_plus/ios`)
-  - rive_native (from `.symlinks/plugins/rive_native/ios`)
-  - share_plus (from `.symlinks/plugins/share_plus/ios`)
-  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
-  - url_launcher_ios (from `.symlinks/plugins/url_launcher_ios/ios`)
+  - sqflite_sqlcipher (from `.symlinks/plugins/sqflite_sqlcipher/ios`)
 
 SPEC REPOS:
   trunk:
-    - Firebase
-    - FirebaseCore
-    - FirebaseCoreInternal
-    - FirebaseInstallations
-    - FirebaseMessaging
-    - GoogleDataTransport
-    - GoogleUtilities
-    - nanopb
-    - PromisesObjC
+    - FMDB
+    - SQLCipher
 
 EXTERNAL SOURCES:
-  connectivity_plus:
-    :path: ".symlinks/plugins/connectivity_plus/ios"
-  device_info_plus:
-    :path: ".symlinks/plugins/device_info_plus/ios"
-  firebase_core:
-    :path: ".symlinks/plugins/firebase_core/ios"
-  firebase_messaging:
-    :path: ".symlinks/plugins/firebase_messaging/ios"
+  advanced_root_detection:
+    :path: ".symlinks/plugins/advanced_root_detection/ios"
   Flutter:
     :path: Flutter
-  flutter_local_notifications:
-    :path: ".symlinks/plugins/flutter_local_notifications/ios"
-  flutter_pdfview:
-    :path: ".symlinks/plugins/flutter_pdfview/ios"
-  geolocator_apple:
-    :path: ".symlinks/plugins/geolocator_apple/darwin"
-  image_picker_ios:
-    :path: ".symlinks/plugins/image_picker_ios/ios"
-  local_auth_darwin:
-    :path: ".symlinks/plugins/local_auth_darwin/darwin"
-  network_info_plus:
-    :path: ".symlinks/plugins/network_info_plus/ios"
-  package_info_plus:
-    :path: ".symlinks/plugins/package_info_plus/ios"
-  path_provider_foundation:
-    :path: ".symlinks/plugins/path_provider_foundation/darwin"
-  permission_handler_apple:
-    :path: ".symlinks/plugins/permission_handler_apple/ios"
-  qr_code_scanner_plus:
-    :path: ".symlinks/plugins/qr_code_scanner_plus/ios"
-  rive_native:
-    :path: ".symlinks/plugins/rive_native/ios"
-  share_plus:
-    :path: ".symlinks/plugins/share_plus/ios"
-  shared_preferences_foundation:
-    :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
-  url_launcher_ios:
-    :path: ".symlinks/plugins/url_launcher_ios/ios"
+  sqflite_sqlcipher:
+    :path: ".symlinks/plugins/sqflite_sqlcipher/ios"
 
 SPEC CHECKSUMS:
-  connectivity_plus: 2a701ffec2c0ae28a48cf7540e279787e77c447d
-  device_info_plus: bf2e3232933866d73fe290f2942f2156cdd10342
-  Firebase: aa154fee4e9b8eac17aa42344988865b3e857d33
-  firebase_core: 40bc9f4c0ee3a28fbfb1e00e2ddaed744bb86388
-  firebase_messaging: 7168ed5c5f52fc396426745be147263cfcc39ecc
-  FirebaseCore: 86241206e656f5c80c995e370e6c975913b9b284
-  FirebaseCoreInternal: 7c12fc3011d889085e765e317d7b9fd1cef97af9
-  FirebaseInstallations: 4e6e162aa4abaaeeeb01dd00179dfc5ad9c2194e
-  FirebaseMessaging: 341004946fa7ffc741344b20f1b667514fc93e31
-  Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  flutter_local_notifications: ff50f8405aaa0ccdc7dcfb9022ca192e8ad9688f
-  flutter_pdfview: 2e4d13ffb774858562ffbdfdb61b40744b191adc
-  geolocator_apple: 66b711889fd333205763b83c9dcf0a57a28c7afd
-  GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
-  GoogleUtilities: 4f2618a4a1e762a1ee134a1e2323bba9843e06da
-  image_picker_ios: 4f2f91b01abdb52842a8e277617df877e40f905b
-  local_auth_darwin: 63c73d6d28cc3e239be2b6aa460ea6e317cd5100
-  nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
-  network_info_plus: 6613d9d7cdeb0e6f366ed4dbe4b3c51c52d567a9
-  package_info_plus: c0502532a26c7662a62a356cebe2692ec5fe4ec4
-  path_provider_foundation: 0b743cbb62d8e47eab856f09262bb8c1ddcfe6ba
-  permission_handler_apple: 9878588469a2b0d0fc1e048d9f43605f92e6cec2
-  PromisesObjC: 752c3227f599e3467650e47ea36f433eeb10c273
-  qr_code_scanner_plus: 92b556a924f8e0ce42649fe27af8bdb93c3c18da
-  rive_native: b9a36ed0644fc2ed1fd46f1d2b4e5501e5948235
-  share_plus: 8b6f8b3447e494cca5317c8c3073de39b3600d1f
-  shared_preferences_foundation: 5086985c1d43c5ba4d5e69a4e8083a389e2909e6
-  url_launcher_ios: bb13df5870e8c4234ca12609d04010a21be43dfa
+  advanced_root_detection: 416977d7d565ec2d179e1092e72a012520f6a8c7
+  Flutter: 71a624a5bc0c04062bf19101d501e466baf2fb47
+  FMDB: 728731dd336af3936ce00f91d9d8495f5718a0e6
+  sqflite_sqlcipher: 1c9c7ceb30cb65dab28712cb2110fdf39b37311c
+  SQLCipher: eb79c64049cb002b4e9fcb30edb7979bf4706dfc
 
-PODFILE CHECKSUM: 16f0a6b1cd3b8b6edf82e3ecb81c728a982bb27f
+PODFILE CHECKSUM: d53e4e4a76b4b1e313fffa90312cac9f3d4158a4
 
 COCOAPODS: 1.16.2
