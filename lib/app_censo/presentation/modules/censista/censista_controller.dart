@@ -26,7 +26,6 @@ class CensistaController extends GetxController {
   int idDgpPerCenso = 0;
 
   RxBool showBtnValidarFoto = false.obs;
-
   DataMesaResponse dataMesaResponse=DataMesaResponse.empty();
 
   @override

@@ -3,165 +3,324 @@ import 'dart:math' as math;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'dart:math' as math;
+import 'package:flutter/material.dart';
+
 class FotoConEscaneo extends StatefulWidget {
   final Widget child;
+  final bool finalizado;
 
   const FotoConEscaneo({
     super.key,
     required this.child,
+    this.finalizado=false,
   });
 
   @override
   State<FotoConEscaneo> createState()=>_FotoConEscaneoState();
 }
 
-class _FotoConEscaneoState extends State<FotoConEscaneo>
-    with SingleTickerProviderStateMixin {
-
-  late AnimationController _controller;
+class _FotoConEscaneoState extends State<FotoConEscaneo> with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
 
   @override
-  void initState() {
+  void initState(){
     super.initState();
-
-    _controller=AnimationController(
-      vsync:this,
-      duration:const Duration(milliseconds:3200),
-    )..repeat();
+    _controller=AnimationController(vsync:this,duration:const Duration(milliseconds:3200));
+    if(!widget.finalizado)_controller.repeat();
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didUpdateWidget(covariant FotoConEscaneo oldWidget){
+    super.didUpdateWidget(oldWidget);
+    if(oldWidget.finalizado==widget.finalizado)return;
+    if(widget.finalizado){
+      _controller.stop();
+    }else{
+      _controller.repeat();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context){
     return LayoutBuilder(
       builder:(context,constraints){
         final double alto=constraints.maxHeight;
-
-        return Stack(
-          fit:StackFit.expand,
-          children:[
-            widget.child,
-
-            Positioned.fill(
-              child:IgnorePointer(
-                child:Container(
-                  color:const Color(0xFF071B2E).withOpacity(.025),
-                ),
-              ),
+        return AnimatedContainer(
+          duration:const Duration(milliseconds:500),
+          curve:Curves.easeOutCubic,
+          decoration:BoxDecoration(
+            borderRadius:BorderRadius.circular(14),
+            border:Border.all(
+              color:widget.finalizado
+                  ?const Color(0xFF218A61).withOpacity(.85)
+                  :const Color(0xFF69C0FF).withOpacity(.30),
+              width:widget.finalizado?2:1,
             ),
-
-            Positioned.fill(
-              child:IgnorePointer(
-                child:AnimatedBuilder(
-                  animation:_controller,
-                  builder:(context,child){
-                    return CustomPaint(
-                      painter:_FaceFramePainter(
-                        progreso:_controller.value,
+            boxShadow:[
+              BoxShadow(
+                color:widget.finalizado
+                    ?const Color(0xFF218A61).withOpacity(.20)
+                    :const Color(0xFF195496).withOpacity(.10),
+                blurRadius:widget.finalizado?14:8,
+                spreadRadius:widget.finalizado?1:0,
+              ),
+            ],
+          ),
+          child:ClipRRect(
+            borderRadius:BorderRadius.circular(12),
+            child:Stack(
+              fit:StackFit.expand,
+              children:[
+                AnimatedScale(
+                  scale:widget.finalizado?1.015:1,
+                  duration:const Duration(milliseconds:650),
+                  curve:Curves.easeOutCubic,
+                  child:widget.child,
+                ),
+                AnimatedContainer(
+                  duration:const Duration(milliseconds:500),
+                  color:widget.finalizado
+                      ?const Color(0xFF063D2B).withOpacity(.06)
+                      :const Color(0xFF071B2E).withOpacity(.025),
+                ),
+                if(!widget.finalizado)...[
+                  Positioned.fill(
+                    child:IgnorePointer(
+                      child:AnimatedBuilder(
+                        animation:_controller,
+                        builder:(context,child)=>CustomPaint(
+                          painter:_FaceFramePainter(progreso:_controller.value),
+                        ),
                       ),
-                    );
-                  },
+                    ),
+                  ),
+                  AnimatedBuilder(
+                    animation:_controller,
+                    builder:(context,child){
+                      final double recorrido=_controller.value<=.5?_controller.value*2:(1-_controller.value)*2;
+                      final double y=recorrido*(alto>3?alto-3:alto);
+                      return Positioned(
+                        left:7,
+                        right:7,
+                        top:y,
+                        child:Container(
+                          height:2,
+                          decoration:BoxDecoration(
+                            gradient:LinearGradient(
+                              colors:[
+                                Colors.transparent,
+                                const Color(0xFF5DB6FF).withOpacity(.20),
+                                const Color(0xFF8BE8FF),
+                                Colors.white.withOpacity(.95),
+                                const Color(0xFF8BE8FF),
+                                const Color(0xFF5DB6FF).withOpacity(.20),
+                                Colors.transparent,
+                              ],
+                            ),
+                            boxShadow:[
+                              BoxShadow(
+                                color:const Color(0xFF5DB6FF).withOpacity(.75),
+                                blurRadius:10,
+                                spreadRadius:1,
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+                Positioned.fill(
+                  child:IgnorePointer(
+                    child:AnimatedSwitcher(
+                      duration:const Duration(milliseconds:550),
+                      switchInCurve:Curves.easeOutCubic,
+                      switchOutCurve:Curves.easeInCubic,
+                      transitionBuilder:(child,animation){
+                        return FadeTransition(
+                          opacity:animation,
+                          child:ScaleTransition(
+                            scale:Tween<double>(
+                              begin:.96,
+                              end:1,
+                            ).animate(
+                              CurvedAnimation(
+                                parent:animation,
+                                curve:Curves.easeOutCubic,
+                              ),
+                            ),
+                            child:child,
+                          ),
+                        );
+                      },
+                      child:widget.finalizado
+                          ?const SizedBox.expand(
+                        key:ValueKey('resultado-final'),
+                        child:CustomPaint(
+                          painter:_ResultadoFacialPainter(),
+                        ),
+                      )
+                          :const SizedBox.expand(
+                        key:ValueKey('analisis-activo'),
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-            ),
-
-            AnimatedBuilder(
-              animation:_controller,
-              builder:(context,child){
-                final double recorrido=
-                _controller.value<=.5
-                    ?_controller.value*2
-                    :(1-_controller.value)*2;
-
-                final double y=
-                    recorrido*(alto>3?alto-3:alto);
-
-                return Positioned(
+                Positioned(
                   left:7,
-                  right:7,
-                  top:y,
-                  child:Container(
-                    height:2,
+                  top:7,
+                  child:AnimatedContainer(
+                    duration:const Duration(milliseconds:450),
+                    padding:const EdgeInsets.symmetric(horizontal:7,vertical:4),
                     decoration:BoxDecoration(
-                      gradient:LinearGradient(
-                        colors:[
-                          Colors.transparent,
-                          const Color(0xFF5DB6FF).withOpacity(.20),
-                          const Color(0xFF8BE8FF),
-                          Colors.white.withOpacity(.95),
-                          const Color(0xFF8BE8FF),
-                          const Color(0xFF5DB6FF).withOpacity(.20),
-                          Colors.transparent,
-                        ],
+                      color:widget.finalizado
+                          ?const Color(0xFF176B4B).withOpacity(.94)
+                          :const Color(0xFF102A43).withOpacity(.86),
+                      borderRadius:BorderRadius.circular(8),
+                      border:Border.all(
+                        color:widget.finalizado
+                            ?const Color(0xFF8DE0B9).withOpacity(.55)
+                            :const Color(0xFF69C0FF).withOpacity(.40),
                       ),
                       boxShadow:[
                         BoxShadow(
-                          color:const Color(0xFF5DB6FF).withOpacity(.75),
-                          blurRadius:10,
-                          spreadRadius:1,
+                          color:widget.finalizado
+                              ?const Color(0xFF176B4B).withOpacity(.30)
+                              :Colors.black.withOpacity(.10),
+                          blurRadius:7,
+                        ),
+                      ],
+                    ),
+                    child:Row(
+                      mainAxisSize:MainAxisSize.min,
+                      children:[
+                        Icon(
+                          widget.finalizado
+                              ?Icons.verified_rounded
+                              :Icons.center_focus_strong_rounded,
+                          color:widget.finalizado
+                              ?const Color(0xFFB8F3D3)
+                              :const Color(0xFF69C0FF),
+                          size:10,
+                        ),
+                        const SizedBox(width:4),
+                        Text(
+                          widget.finalizado?'VERIFICADO':'ANALIZANDO',
+                          style:const TextStyle(
+                            color:Colors.white,
+                            fontSize:5.7,
+                            fontWeight:FontWeight.w900,
+                            letterSpacing:.5,
+                          ),
                         ),
                       ],
                     ),
                   ),
-                );
-              },
+                ),
+
+              ],
             ),
-
-            Positioned(
-              left:7,
-              top:7,
-              child:Container(
-                padding:const EdgeInsets.symmetric(
-                  horizontal:7,
-                  vertical:4,
-                ),
-                decoration:BoxDecoration(
-                  color:const Color(0xFF102A43).withOpacity(.84),
-                  borderRadius:BorderRadius.circular(8),
-                  border:Border.all(
-                    color:const Color(0xFF69C0FF).withOpacity(.40),
-                  ),
-                  boxShadow:[
-                    BoxShadow(
-                      color:Colors.black.withOpacity(.10),
-                      blurRadius:5,
-                    ),
-                  ],
-                ),
-                child:const Row(
-                  mainAxisSize:MainAxisSize.min,
-                  children:[
-                    Icon(
-                      Icons.center_focus_strong_rounded,
-                      color:Color(0xFF69C0FF),
-                      size:10,
-                    ),
-
-                    SizedBox(width:4),
-
-                    Text(
-                      'ANALIZANDO',
-                      style:TextStyle(
-                        color:Colors.white,
-                        fontSize:5.7,
-                        fontWeight:FontWeight.w900,
-                        letterSpacing:.5,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
+          ),
         );
       },
     );
   }
 
   @override
-  void dispose() {
+  void dispose(){
     _controller.dispose();
     super.dispose();
   }
+}
+
+class _ResultadoFacialPainter extends CustomPainter {
+  const _ResultadoFacialPainter();
+
+  static const List<Offset> _puntos=[
+    Offset(.38,.31),Offset(.46,.29),Offset(.54,.29),Offset(.62,.31),
+    Offset(.40,.40),Offset(.46,.39),Offset(.54,.39),Offset(.60,.40),
+    Offset(.50,.46),Offset(.47,.53),Offset(.53,.53),
+    Offset(.42,.61),Offset(.50,.64),Offset(.58,.61),
+  ];
+
+  static const List<List<int>> _conexiones=[
+    [0,1],[1,2],[2,3],[0,4],[3,7],[4,5],[6,7],
+    [5,8],[6,8],[8,9],[8,10],[9,11],[9,12],
+    [10,12],[10,13],[11,12],[12,13],
+  ];
+
+  @override
+  void paint(Canvas canvas,Size size){
+    if(size.width<=0||size.height<=0)return;
+
+    final List<Offset> posiciones=_puntos.map((p)=>Offset(p.dx*size.width,p.dy*size.height)).toList();
+
+    final Paint marco=Paint()
+      ..color=const Color(0xFF65D49D).withOpacity(.90)
+      ..strokeWidth=1.7
+      ..style=PaintingStyle.stroke
+      ..strokeCap=StrokeCap.round;
+
+    final Paint conexion=Paint()
+      ..color=const Color(0xFF65D49D).withOpacity(.30)
+      ..strokeWidth=.75
+      ..style=PaintingStyle.stroke;
+
+    final Paint halo=Paint()
+      ..color=const Color(0xFF65D49D).withOpacity(.18)
+      ..style=PaintingStyle.fill;
+
+    final Paint punto=Paint()
+      ..color=const Color(0xFFA7F1C9)
+      ..style=PaintingStyle.fill;
+
+    final Rect rect=Rect.fromCenter(
+      center:Offset(size.width/2,size.height*.49),
+      width:size.width*.68,
+      height:size.height*.70,
+    );
+
+    const double esquina=18;
+    final Path path=Path()
+      ..moveTo(rect.left,rect.top+esquina)
+      ..lineTo(rect.left,rect.top)
+      ..lineTo(rect.left+esquina,rect.top)
+      ..moveTo(rect.right-esquina,rect.top)
+      ..lineTo(rect.right,rect.top)
+      ..lineTo(rect.right,rect.top+esquina)
+      ..moveTo(rect.right,rect.bottom-esquina)
+      ..lineTo(rect.right,rect.bottom)
+      ..lineTo(rect.right-esquina,rect.bottom)
+      ..moveTo(rect.left+esquina,rect.bottom)
+      ..lineTo(rect.left,rect.bottom)
+      ..lineTo(rect.left,rect.bottom-esquina);
+
+    canvas.drawPath(path,marco);
+
+    for(final List<int> conexionItem in _conexiones){
+      canvas.drawLine(
+        posiciones[conexionItem[0]],
+        posiciones[conexionItem[1]],
+        conexion,
+      );
+    }
+
+    for(final Offset posicion in posiciones){
+      canvas.drawCircle(posicion,4,halo);
+      canvas.drawCircle(posicion,1.55,punto);
+      canvas.drawCircle(
+        posicion,
+        .45,
+        Paint()
+          ..color=Colors.white
+          ..style=PaintingStyle.fill,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate)=>false;
 }
 
 class _FaceFramePainter extends CustomPainter {

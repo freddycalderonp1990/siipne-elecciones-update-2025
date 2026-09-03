@@ -152,7 +152,7 @@ class _ValidacionFacialVisualState extends State<ValidacionFacialVisual> {
                         color:_terminado
                             ?const Color(0xFF218A61)
                             :const Color(0xFF17365D),
-                        fontSize:9.2,
+                        fontSize:10,
                         fontWeight:FontWeight.w900,
                       ),
                     ),
@@ -163,7 +163,7 @@ class _ValidacionFacialVisualState extends State<ValidacionFacialVisual> {
                       _estado,
                       style:const TextStyle(
                         color:Color(0xFF7A8998),
-                        fontSize:7,
+                        fontSize:12,
                       ),
                     ),
                   ],
@@ -238,10 +238,10 @@ class _ValidacionFacialVisualState extends State<ValidacionFacialVisual> {
 
                   Expanded(
                     child:Text(
-                      'Análisis finalizado. Ya puede realizar la verificación visual y guardar el registro.',
+                        'Análisis finalizado. Ya puede realizar la verificación visual y guardar el registro.',
                       style:TextStyle(
                         color:Color(0xFF526474),
-                        fontSize:7,
+                        fontSize:12,
                         height:1.2,
                       ),
                     ),
