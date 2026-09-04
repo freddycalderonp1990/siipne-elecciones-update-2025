@@ -18,5 +18,5 @@ class SiipneColors{
   static const Color colorBotonesWidget = AppColors.colorAzul_10;
 
   static const Color colorBordecajas = AppColors.colorAzul_40;
-  static const Color colorIcons = Colors.black38;
+
 }

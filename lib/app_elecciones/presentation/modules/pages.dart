@@ -1,65 +1,63 @@
 
 
-
-import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../app/core/utils/utilidadesUtil.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:siipnemovil2/app/core/values/app_images.dart';
 
 import '../../../app/core/values/app_colors.dart';
-import '../../../app/presentation/routes/app_routes.dart';
 
+import '../../../app/domain/enums/enums.dart';
 import '../../../app/presentation/widgets/custom_app_widgets.dart';
 import 'package:flutter/rendering.dart';
-import '../../../app_elecciones/core/siipne_config.dart';
+
+
 import '../../../app_elecciones/presentation/modules/personal/report/local_widget/desing_personal.dart';
 
-import '../../../app_elecciones/presentation/routes/siipne_routes.dart';
-import 'package:latlong2/latlong.dart' show LatLng;
+import '../../../app_elecciones/presentation/routes/elecciones_routes.dart';
 
 import '../../../app/core/app_config.dart';
 
 
-
 import '../../../app/core/utils/photo_helper.dart';
-import '../../../app/core/values/app_images.dart';
 
 
-import '../../../app/presentation/blocs/calculadora/calculadora_bloc.dart';
-import '../../../app/presentation/blocs/gps/gps_bloc.dart';
 import '../../../app/presentation/widgets/img_perfil_redonda.dart';
 import '../../../app_elecciones//presentation/widgets/customWidgets.dart';
 
+import 'package:latlong2/latlong.dart';
 
 
 import 'package:get/get.dart';
 
 
+import '../../../feactures/gps/presentation/widgets/gps_access_screen.dart';
+import '../../../feactures/gps/presentation/widgets/my_ubicacion_widget.dart';
+
+import '../../../feactures/mapas/widgets/custom_marker.dart';
+import '../../../feactures/pushNotification/services/bloc/notifications_bloc.dart';
 import '../../core/values/siipne_colors.dart';
 import '../../core/values/siipne_images.dart';
 import '../../core/values/siipne_strings.dart';
 import '../../data/models/models.dart';
-import '../../domain/enums/enums.dart';
-import '../widgets/gps_access_screen.dart';
-import 'combo_dependiente/combo_dependiente_page.dart';
+
+
 import 'controllers.dart';
-import '../../presentation/modules/login/local_widgets/wgLogin.dart';
+
 import '../../../app/core/utils/responsiveUtil.dart';
 import 'novedades/add/validate.dart';
 import 'novedades/report/local_widget/desing_novedades.dart';
+import 'recinto_electoral/widgets/combo_busqueda_recintos.dart';
+import 'validate_recinto/local_widget/desing_mapa.dart';
+import 'validate_recinto/local_widget/registrar_recinto_widget.dart';
 
 
-
-
-part 'login/login_page.dart';
-part 'login/inicio_rapido/inicio_rapido_page.dart';
 part 'menu/menu_app_page.dart';
 part 'select_proceso_operativo/select_proceso_operativo_page.dart';
 part 'tipos_servicios_ejes/tipos_servicios_ejes_page.dart';
-part 'menu_recintos_electorales/jefe/menu_rec_elec_jefe_page.dart';
-part 'menu_recintos_electorales/integrante/menu_rec_elec_integrante_page.dart';
+part 'menu_recinto_unidades/jefe/menu_rec_elec_jefe_page.dart';
+part 'menu_recinto_unidades/integrante/menu_rec_elec_integrante_page.dart';
 
 part 'anexarse/anexarse_page.dart';
 
@@ -72,3 +70,6 @@ part 'personal/report/report_person_page.dart';
 
 part 'novedades/add/add_novedades_page.dart';
 part 'novedades/report/report_novedades_page.dart';
+part 'combo_unidades_policiales/dynamic_combo_widget.dart';
+
+part 'validate_recinto/validate_recinto_page.dart';

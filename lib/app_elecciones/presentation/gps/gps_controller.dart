@@ -39,7 +39,7 @@ class GpsController extends GetxController {
       String msj =
           "Necesitamos acceder a la ubicación del Dispositivo.\n\n Por favor active el GPS - Ubicación  de su dispositivo";
       DialogosAwesome.getWarning(
-          titleBtnOk: 'Continuar', descripcion: msj, btnOkOnPress: () {});
+          titleBtnOk: 'Continuar', descripcion: msj, );
     }
 
     if (permisoGPS && gpsActivo) {
@@ -68,7 +68,7 @@ class GpsController extends GetxController {
           btnOkOnPress: () {
             checkGpsPermisoStatus("aaa");
           },
-          btnCancelOnPress: () {});
+         );
       return msj;
     } else {
       String msj =

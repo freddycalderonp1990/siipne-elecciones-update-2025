@@ -30,6 +30,7 @@ class TituloDetalleTextWidget extends StatelessWidget {
           children: [
             Text(title,
                 style: TextStyle(
+                  color: AppColors.colorAzul,
                     fontWeight: FontWeight.bold,
                     fontSize: responsive.diagonalP(AppConfig.tamTexto))),
             SizedBox(

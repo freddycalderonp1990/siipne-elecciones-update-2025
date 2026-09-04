@@ -5,11 +5,10 @@ class EleccionesNovedadesApiProviderImpl extends EleccionesNovedadesRepository {
   Future<List<NovedadesElectorale>> getNovedadesHijas({
     required GetNovedadesHijasRequest request,
   }) async {
-    Map<String, dynamic> body =
-        HeadEleccionesRequest(
-          uri: ApiConstantes.ELECCIONES_GET_NOVEDADES_BY_ID_PADRE,
-          bodyRequest: request.toJson(),
-        ).toJson();
+    Map<String, dynamic> body = HeadEleccionesRequest(
+      uri: ApiConstantes.ELECCIONES_GET_NOVEDADES_BY_ID_PADRE,
+      bodyRequest: request.toJson(),
+    ).toJson();
 
     String json = await UrlApiProviderSiipneMovil.post(body: body);
 
@@ -39,11 +38,10 @@ class EleccionesNovedadesApiProviderImpl extends EleccionesNovedadesRepository {
   Future<List<NovedadesElectorale>> getNovedadesPadres({
     required GetNovedadesPadresRequest request,
   }) async {
-    Map<String, dynamic> body =
-        HeadEleccionesRequest(
-          uri: ApiConstantes.ELECCIONES_GET_NOVEDADES_PADRES,
-          bodyRequest: request.toJson(),
-        ).toJson();
+    Map<String, dynamic> body = HeadEleccionesRequest(
+      uri: ApiConstantes.ELECCIONES_GET_NOVEDADES_PADRES,
+      bodyRequest: request.toJson(),
+    ).toJson();
 
     String json = await UrlApiProviderSiipneMovil.post(body: body);
 
@@ -128,6 +126,53 @@ class EleccionesNovedadesApiProviderImpl extends EleccionesNovedadesRepository {
       }
       // En caso de respuesta no válida, devolver un modelo vacío
       return [];
+    });
+  }
+
+  @override
+  Future<DataNovedadesUdga> verificarNovedadesUdgaPolicialRegistradas({
+    required int idGenPersona,
+
+  }) async {
+    HeadEleccionesRequest _headEleccionesRequest = HeadEleccionesRequest(
+      uri: ApiConstantes.ELECCIONES_VERIFICA_PER_NOV_UDGA_REGISTRADAS,
+      bodyRequest: {
+        "idGenPersona": idGenPersona,
+
+      },
+    );
+
+    String json = await UrlApiProviderSiipneMovil.post(
+      body: _headEleccionesRequest.toJson(),
+    );
+
+    return await ExceptionHelper.manejarErroresParseJsonException(() async {
+      // Obtener los datos del modelo en formato String
+      return novedadesUdgaPolicialModelFromJson(json).dataNovedadesUdga;
+    });
+  }
+
+  @override
+  Future<DataNovedadesUdga> verificarNovedadesRegistradasByProcElect({
+    required int idGenPersona,
+    required int idDgoProcElec,
+  }) async{
+    HeadEleccionesRequest _headEleccionesRequest = HeadEleccionesRequest(
+      uri: ApiConstantes.ELECCIONES_VERIFICA_PER_NOV_REGISTRADAS_BY_PROCESO_ELECTORAL,
+      bodyRequest: {
+        "idGenPersona": idGenPersona,
+        "idDgoProcElec": idDgoProcElec,
+
+      },
+    );
+
+    String json = await UrlApiProviderSiipneMovil.post(
+      body: _headEleccionesRequest.toJson(),
+    );
+
+    return await ExceptionHelper.manejarErroresParseJsonException(() async {
+      // Obtener los datos del modelo en formato String
+      return novedadesUdgaPolicialModelFromJson(json).dataNovedadesUdga;
     });
   }
 }

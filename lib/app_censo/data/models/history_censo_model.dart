@@ -1,0 +1,131 @@
+part of 'models_censo.dart';
+
+HistoryCensoModel historyCensoModelFromJson(String str) => HistoryCensoModel.fromJson(json.decode(str));
+
+String historyCensoModelToJson(HistoryCensoModel data) => json.encode(data.toJson());
+
+class HistoryCensoModel {
+  final int statusCode;
+  final String message;
+  final List<DataHistoryCenso> dataHistoryCenso;
+
+  HistoryCensoModel({
+    required this.statusCode,
+    required this.message,
+    required this.dataHistoryCenso,
+  });
+
+  factory HistoryCensoModel.fromJson(Map<String, dynamic> json) => HistoryCensoModel(
+    statusCode: json["status_code"],
+    message: json["message"],
+    dataHistoryCenso: List<DataHistoryCenso>.from(json["data"].map((x) => DataHistoryCenso.fromJson(x))),
+  );
+
+  Map<String, dynamic> toJson() => {
+    "status_code": statusCode,
+    "message": message,
+    "data": List<dynamic>.from(dataHistoryCenso.map((x) => x.toJson())),
+  };
+}
+
+class DataHistoryCenso {
+  final int idProceso;
+  final String proceso;
+  final String recintoAsignado;
+  final int idDgpMesaAsignado;
+  final String mesaAsignado;
+  final int idDgpPerCenso;
+  final String lugarAsignacion;
+  final String nameCensistaAsignado;
+  final String recintoCenso;
+  final String mesaCensado;
+  final String lugarCenso;
+  final int idPerCensista;
+  final String nameCensista;
+  final int idPerCensado;
+  final String documentoCensado;
+  final String nameCensado;
+  final bool censado;
+  final String estadoCenso;
+  final String fechaRegistroCenso;
+  final double latitudCenso;
+  final double longitudCenso;
+  final String descCausaNCs;
+  final String obsNoCenso;
+
+  DataHistoryCenso({
+    required this.idProceso,
+    required this.proceso,
+    required this.recintoAsignado,
+    required this.idDgpMesaAsignado,
+    required this.mesaAsignado,
+    required this.idDgpPerCenso,
+    required this.lugarAsignacion,
+    required this.nameCensistaAsignado,
+    required this.recintoCenso,
+    required this.mesaCensado,
+    required this.lugarCenso,
+    required this.idPerCensista,
+    required this.nameCensista,
+    required this.idPerCensado,
+    required this.documentoCensado,
+    required this.nameCensado,
+    required this.censado,
+    required this.estadoCenso,
+    required this.fechaRegistroCenso,
+    required this.latitudCenso,required this.longitudCenso,required this.descCausaNCs,required this.obsNoCenso,
+
+  });
+
+  factory DataHistoryCenso.fromJson(Map<String, dynamic> json) => DataHistoryCenso(
+    idProceso: ParseModel.parseToInt(json["idProceso"]),
+    proceso: ParseModel.parseToString(json["proceso"]),
+    recintoAsignado: ParseModel.parseToString(json["recintoAsignado"]),
+    idDgpMesaAsignado: ParseModel.parseToInt(json["idDgpMesaAsignado"]),
+    mesaAsignado: ParseModel.parseToString(json["mesaAsignado"]),
+    idDgpPerCenso: ParseModel.parseToInt(json["idDgpPerCenso"]),
+    lugarAsignacion: ParseModel.parseToString(json["lugarAsignacion"]),
+    nameCensistaAsignado: ParseModel.parseToString(json["nameCensistaAsignado"]),
+    recintoCenso: ParseModel.parseToString(json["recintoCenso"]),
+    mesaCensado: ParseModel.parseToString(json["mesaCensado"]),
+    lugarCenso: ParseModel.parseToString(json["lugarCenso"]),
+    idPerCensista: ParseModel.parseToInt(json["idPerCensista"]),
+    nameCensista: ParseModel.parseToString(json["nameCensista"]),
+    idPerCensado: ParseModel.parseToInt(json["idPerCensado"]),
+    documentoCensado: ParseModel.parseToString(json["documentoCensado"]),
+    nameCensado: ParseModel.parseToString(json["nameCensado"]),
+    censado: ParseModel.parseToBool(json["censado"], valueCompareTrue: 'S'),
+    estadoCenso: ParseModel.parseToString(json["estadoCenso"]),
+    fechaRegistroCenso:
+    ParseModel.parseToString(json["fechaRegistroCenso"]),
+    latitudCenso:ParseModel.parseToDouble( json["latitudCenso"]),
+    longitudCenso: ParseModel.parseToDouble(json["longitudCenso"]),
+    descCausaNCs: ParseModel.parseToString(json["descCausaNCs"]),
+    obsNoCenso: ParseModel.parseToString(json["obsNoCenso"]),
+
+  );
+
+  Map<String, dynamic> toJson() => {
+    "idProceso": idProceso,
+    "proceso": proceso,
+    "recintoAsignado": recintoAsignado,
+    "idDgpMesaAsignado": idDgpMesaAsignado,
+    "mesaAsignado": mesaAsignado,
+    "idDgpPerCenso": idDgpPerCenso,
+    "lugarAsignacion": lugarAsignacion,
+    "nameCensistaAsignado": nameCensistaAsignado,
+    "recintoCenso": recintoCenso,
+    "mesaCensado": mesaCensado,
+    "lugarCenso": lugarCenso,
+    "nameCensista": nameCensista,
+    "documentoCensado": documentoCensado,
+    "nameCensado": nameCensado,
+    "censado": censado ? "S" : "N",
+    "estadoCenso": estadoCenso,
+    "fechaRegistroCenso": fechaRegistroCenso,
+    "latitudCenso": latitudCenso,
+    "longitudCenso": longitudCenso,
+    "descCausaNCs": descCausaNCs,
+    "obsNoCenso": obsNoCenso,
+  };
+}

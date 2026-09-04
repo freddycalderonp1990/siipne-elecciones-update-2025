@@ -7,7 +7,7 @@ import '../app/core/values/app_colors.dart';
 import '../app/presentation/routes/app_pages.dart';
 
 
-import 'presentation/routes/siipne_routes.dart';
+import 'presentation/routes/elecciones_routes.dart';
 
 class MainSiipneMovil extends StatelessWidget {
   const MainSiipneMovil({Key? key}) : super(key: key);
@@ -42,7 +42,7 @@ class MainSiipneMovil extends StatelessWidget {
       locale: Locale('es'),
       // translations will be displayed in that locale
       fallbackLocale: Locale('es'),
-      initialRoute: SiipneRoutes.SPLASH,
+      initialRoute: EleccionesRoutes.SPLASH,
       //initialBinding: DependencyInjection(),
       getPages: AppPages.getPages(),
       home: Scaffold(

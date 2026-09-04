@@ -1,18 +1,11 @@
-import 'package:app_mi_upc/app_mi_upc.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import '../app/presentation/modules/splash/local_widget/loading_splash.dart';
-import '../app/presentation/widgets/custom_app_widgets.dart';
-import '../../../../../app/dependency_injection_app.dart';
+
+import '../../../../../app/di_app.dart';
 import '../../../../../app/presentation/routes/app_routes.dart';
 
-import '../app_elecciones/core/siipne_config.dart';
-import '../app_elecciones/presentation/widgets/customWidgets.dart';
-import 'core/app_config.dart';
-import 'core/utils/responsiveUtil.dart';
-import 'core/utils/utilidadesUtil.dart';
-import 'core/values/app_colors.dart';
 import 'presentation/routes/app_pages.dart';
 
 class MainApp extends StatelessWidget {

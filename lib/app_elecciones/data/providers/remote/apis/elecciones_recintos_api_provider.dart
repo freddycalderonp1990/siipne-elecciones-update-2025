@@ -220,4 +220,25 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
       return DatosRecintoElectoralClass.empty();
     });
   }
+
+  @override
+  Future<bool> validarRecinto({required ValidarRecintoRequest request}) async {
+
+
+    Map<String, dynamic> body =
+    HeadEleccionesRequest(
+      uri: ApiConstantes.ELECCIONES_VALIDAR_RECINTO,
+      bodyRequest: request.toJson(),
+    ).toJson();
+
+
+    String json = await UrlApiProviderSiipneMovil.post(body: body);
+
+    return await ExceptionHelper.manejarErroresParseJsonException(() async {
+      // Parsear y retornar el modelo correspondiente
+      final responseData = jsonDecode(json);
+      bool resultado = responseData['data'] == true;
+      return resultado;
+    });
+  }
 }

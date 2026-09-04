@@ -31,24 +31,16 @@ class AuthModel {
 
 class DataAuth {
   final String token;
-  final String motivo;
-  final bool session;
 
   DataAuth({
     required this.token,
-    required this.motivo,
-    required this.session,
   });
 
   factory DataAuth.fromJson(Map<String, dynamic> json) => DataAuth(
-    token: ParseModel.parseToString(json["token"]),
-    motivo: ParseModel.parseToString(json["motivo"]),
-    session: ParseModel.parseToBool( json["session"]),
+    token:ParseModel.parseToString( json["token"]),
   );
 
   Map<String, dynamic> toJson() => {
     "token": token,
-    "motivo": motivo,
-    "session": session,
   };
 }

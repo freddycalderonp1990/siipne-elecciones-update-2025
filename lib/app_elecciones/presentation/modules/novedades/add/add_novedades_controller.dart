@@ -1,8 +1,11 @@
 part of '../../controllers.dart';
 
 class AddNovedadesController extends GetxController {
-  final idNovedadBoletaCaptura =
+  final idNovedadBoletaCaptura1 =
       15; //id de la base de datos que tiene registrado como Boleta de captura
+
+  final idNovedadFlagrancia1=
+  108; //id de la base de datos que tiene registrado como Boleta de captura
 
   final loginController = Get.find<LoginController>();
 
@@ -43,7 +46,7 @@ class AddNovedadesController extends GetxController {
   var controllerTelefono = new TextEditingController();
   var controllerNumBoleta = new TextEditingController();
   var controllerNumCitacion = new TextEditingController();
-  var controllerObs = new TextEditingController();
+  var controllerObservacion = new TextEditingController();
 
   var controllerOrganizacion = new TextEditingController();
   var controllerDirigente = new TextEditingController();
@@ -107,6 +110,62 @@ class AddNovedadesController extends GetxController {
 
   @override
   void onClose() {
+
+      // 🧹 Liberar todos los TextEditingController
+      controllerCedula.dispose();
+      controllerTelefono.dispose();
+      controllerNumBoleta.dispose();
+      controllerNumCitacion.dispose();
+      controllerObservacion.dispose();
+
+      controllerOrganizacion.dispose();
+      controllerDirigente.dispose();
+      controllerCantidad.dispose();
+
+      controllerNombre.dispose();
+      controllerCargo.dispose();
+      controllerGrado.dispose();
+      controllerMedioComunicacion.dispose();
+
+      controllerFuncion.dispose();
+      controllerDescripcion.dispose();
+      controllerInstalacion.dispose();
+      controllerDireccion.dispose();
+      controllerUnidad.dispose();
+
+      controllerMotivo.dispose();
+      controllerNumericoPersonal.dispose();
+      controllerNumerico.dispose();
+
+      // 🔄 Reset de observables
+      mGaleryCameraModel.value = null;
+      peticionServerState.value = false;
+      mostrarBtnGuardar.value = false;
+      mostrarFoto.value = false;
+      showVerNovedades.value = true;
+
+      // 🧽 Limpieza de datos temporales
+      datosPerson.value = DatosPer.empty();
+      selectTipoNovedad.value = NovedadesElectorale.empty();
+      selectNovedad.value = NovedadesElectorale.empty();
+      selectDelito.value = NovedadesElectorale.empty();
+
+      // 🧭 Limpieza de listas observables
+      listTipoNovedades.clear();
+      listNovedades.clear();
+      listDelito.clear();
+
+      // 🔐 Restablecer banderas de control
+      validarForm = false;
+      registrarDatosPersona = true;
+
+      // 🕓 Limpieza de selectores de hora y minuto
+      selectHora = null;
+      selectMinuto = null;
+
+      // ⚙️ Limpieza de estados auxiliares
+      cargaInicial.value = false;
+
     super.onClose();
   }
 
@@ -135,7 +194,7 @@ class AddNovedadesController extends GetxController {
 
   Future<void> getNovedadesPadres() async {
     peticionServerState(true);
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       GetNovedadesPadresRequest request = GetNovedadesPadresRequest(
         idDgoProcElec: recintosElectoralesAbiertos.idDgoProcElec,
         idDgoReciElect: recintosElectoralesAbiertos.idDgoReciElect,
@@ -160,7 +219,7 @@ class AddNovedadesController extends GetxController {
 
     List<NovedadesElectorale> novedades = [];
 
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       GetNovedadesHijasRequest request = GetNovedadesHijasRequest(
         idDgoProcElec: recintosElectoralesAbiertos.idDgoProcElec,
         idDgoReciElect: recintosElectoralesAbiertos.idDgoReciElect,
@@ -195,7 +254,7 @@ class AddNovedadesController extends GetxController {
 
   goToPageReporteNovedades() {
     Get.toNamed(
-      SiipneRoutes.REPORT_NOVEDADES,
+      EleccionesRoutes.REPORT_NOVEDADES,
       arguments: {"recintosElectoralesAbiertos": recintosElectoralesAbiertos},
     );
   }
@@ -213,7 +272,7 @@ class AddNovedadesController extends GetxController {
 
     datosHora = datos;
 
-    selectHora = DateFormat(SiipneConfig.formatoSoloHora).format(selectedDate);
+    selectHora = DateFormat(SiipneEleccionesConfig.formatoSoloHora).format(selectedDate);
     ;
   }
 
@@ -229,7 +288,7 @@ class AddNovedadesController extends GetxController {
 
     datosMinuto = datos;
     selectMinuto = DateFormat(
-      SiipneConfig.formatoSoloMinuto,
+      SiipneEleccionesConfig.formatoSoloMinuto,
     ).format(selectedDate);
   }
 
@@ -245,14 +304,14 @@ class AddNovedadesController extends GetxController {
     }
 
     peticionServerState(true);
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       datosPerson.value = await _personaApiImpl.getDatosPersona(
         usuario: user.idGenUsuario,
         cedula: controllerCedula.text,
       );
       if (datosPerson.value.idGenPersona == 0) {
         DialogosAwesome.getInformation(
-          btnOkOnPress: () {},
+
           descripcion:
               "No existe datos para el documento ${controllerCedula.text}",
         );
@@ -262,7 +321,7 @@ class AddNovedadesController extends GetxController {
       if (!datosPerson.value.poliRegistrado && permitirAll == false) {
         datosPerson.value = DatosPer.empty();
         DialogosAwesome.getInformation(
-          btnOkOnPress: () {},
+
           descripcion: 'Persona no es Servidor Policial',
         );
         return;
@@ -271,13 +330,11 @@ class AddNovedadesController extends GetxController {
     peticionServerState(false);
   }
 
-  Future<bool> guardarImagen() async {
-    bool insertImg = false;
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+  Future<DataFile> guardarImagen() async {
+    DataFile dataFile=DataFile.empty();
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       String path = dotenv.env['PATH_IMG_APP_ELECCIONES'] ?? '';
-
       String nameFile = recintosElectoralesAbiertos.descProcElecc;
-      String token = recintosElectoralesAbiertos.descProcElecc;
       FileRequest request = FileRequest(
         file: mGaleryCameraModel.value!.imageFile,
         path: path,
@@ -285,31 +342,26 @@ class AddNovedadesController extends GetxController {
       );
 
       peticionServerState(true);
-      insertImg = await _saveFileImgUseCase(request: request);
+       dataFile= await _saveFileImgUseCase(request: request);
+
       peticionServerState(false);
 
-      if (!insertImg) {
-        DialogosAwesome.getIconPolicia(
+      if (!dataFile.result) {
+        DialogosAwesome.getError(
           title: "Guardar Imagen",
           descripcion: "No se pudo guardar la Imagen",
-          btnOkOnPress: () {
-            Get.back();
-          },
-          mostrarSegungoBtn: false,
         );
       }
     });
-    peticionServerState(false);
 
 
-    return insertImg;
+    return dataFile;
   }
 
   eventoRegistrarNovedadesElectorales() async {
     bool isValid = true;
-
-    if (validarForm) {
-      isValid = formKey.currentState!.validate();
+    if (validarForm && (formKey.currentState?.validate() ?? false)) {
+      isValid = true;
     }
 
     if (!isValid && validarForm == true) {
@@ -319,7 +371,7 @@ class AddNovedadesController extends GetxController {
     if (registrarDatosPersona) {
       if (datosPerson.value.idGenPersona == 0) {
         DialogosAwesome.getInformation(
-          btnOkOnPress: () {},
+
           descripcion:
               "No ha ingresado una cédula valida...Seleccione el icono buscar para continuar.",
           title: 'Persona',
@@ -328,6 +380,7 @@ class AddNovedadesController extends GetxController {
         return;
       }
 
+      controllerCedula.text=datosPerson.value.documento;
       nombreDetenido = datosPerson.value.apenom;
       idGenPersonaD = datosPerson.value.idGenPersona;
     }
@@ -346,33 +399,40 @@ class AddNovedadesController extends GetxController {
           DialogosAwesome.getWarning(
             descripcion: "Selecione una Imagen",
             title: "Imagen",
-            btnOkOnPress: () {},
           );
         } else {
-          bool insertImg = await guardarImagen();
-
-          if (insertImg) {
+          DataFile dataFile = await guardarImagen();
+          if (dataFile.result) {
             await _RegistrarNovedades(
               idGenPersonaD: idGenPersonaD,
               nombreDetenido: nombreDetenido,
+              nacionalidad: selectedOptionNAcionalExtranjero.value,
               usuario: user.idGenUsuario,
               observacion: getObservacion(),
               idDgoPerAsigOpe: recintosElectoralesAbiertos.idDgoPerAsigOpe,
               idDgoNovedadesElect: idDgoNovedadesElect,
-              imagen: mGaleryCameraModel.value!.nombreImg,
+              imagen: dataFile.nameFile,
             );
           }
         }
       } else {
+        String imagen = "No Imagen";
+        if (nombreDetenido != null && mostrarFoto.value==true) {
+          DataFile dataFile = await guardarImagen();
+          if (dataFile.result) {
+            imagen = dataFile.nameFile;
+          }
+        }
         print('no foto');
-
         await _RegistrarNovedades(
           idGenPersonaD: idGenPersonaD,
           nombreDetenido: nombreDetenido,
+          nacionalidad: selectedOptionNAcionalExtranjero.value,
           usuario: user.idGenUsuario,
           observacion: getObservacion(),
           idDgoPerAsigOpe: recintosElectoralesAbiertos.idDgoPerAsigOpe,
           idDgoNovedadesElect: idDgoNovedadesElect,
+          imagen: imagen
         );
       }
     }
@@ -383,6 +443,7 @@ class AddNovedadesController extends GetxController {
     required int idDgoPerAsigOpe,
     required String observacion,
     required int usuario,
+    String? nacionalidad,
     String? nombreDetenido,
     int? idGenPersonaD,
     String imagen = "No Imagen",
@@ -392,12 +453,15 @@ class AddNovedadesController extends GetxController {
 
     String resultInsert = "";
     peticionServerState(true);
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
       LatLng position = await locationBloc.getCurrentPosition();
-      String ip = await DeviceInfo.getIp;
+      String ip = await DeviceInfoApp.getIp;
 
       AddNovedadesRequest request = AddNovedadesRequest(
+
+
+        idDgoCreaOpReci:recintosElectoralesAbiertos.idDgoCreaOpReci,
         idDgoPerAsigOpe: idDgoPerAsigOpe,
         usuario: usuario,
         idDgoNovedadesElect: idDgoNovedadesElect,
@@ -423,20 +487,31 @@ class AddNovedadesController extends GetxController {
       DialogosAwesome.getSucess(
         descripcion: "Registro de Novedad con éxito",
         btnOkOnPress: () {
+
           clearData();
         },
       );
     } else if (resultInsert == ApiConstantes.varExiste) {
+      if(idDgoNovedadesElect==17 || idDgoNovedadesElect==18){
+        DialogosAwesome.getWarning(
+          descripcion:
+          "Ya existe la novedad ${selectNovedad.value.descripcion} registrada ".toUpperCase(),
+
+        );
+
+        return;
+      }
+
       DialogosAwesome.getWarning(
         descripcion:
             "Ya existe una novedad registrada con este documento ${controllerCedula.text}",
-        btnOkOnPress: () {},
+
       );
     } else {
       DialogosAwesome.getError(
         descripcion:
             "No se pudo Registrar la Novedad. Vuelva a intentar o contacte con el administrador del sistema.",
-        btnOkOnPress: () {},
+
       );
     }
   }
@@ -453,7 +528,7 @@ class AddNovedadesController extends GetxController {
     controllerTelefono.clear();
     controllerNumBoleta.clear();
     controllerNumCitacion.clear();
-    controllerObs.clear();
+    controllerObservacion.clear();
 
     controllerOrganizacion.clear();
     controllerDirigente.clear();
@@ -496,6 +571,8 @@ class AddNovedadesController extends GetxController {
       case 17:
         break;
       case 18:
+        observacionModel = getJsonSaveObservacion(observacionModel);
+
         break;
       case 19:
 
@@ -522,30 +599,18 @@ class AddNovedadesController extends GetxController {
       case 22:
         //6. PRESENCIA DE MANIFESTANTES / CONCENTRACIONES / MARCHAS
 
-        observacionModel = observacionModel.copyWith(
-          organizacion: controllerOrganizacion.text,
-          dirigente: controllerDirigente.text,
-          cantidad: controllerCantidad.text,
-        );
+        observacionModel = fillOrganizacionFields(observacionModel);
         break;
       case 23:
         //7. QUEMA DE URNAS / PAPELETAS
 
-        observacionModel = observacionModel.copyWith(
-          organizacion: controllerOrganizacion.text,
-          dirigente: controllerDirigente.text,
-          cantidad: controllerCantidad.text,
-        );
+        observacionModel = fillOrganizacionFields(observacionModel);
 
         break;
       case 28:
         //8. TOMA DE RECINTOS / DELEGACIONES / BODEGAS / INSTALACIONES DEL CNE
 
-        observacionModel = observacionModel.copyWith(
-          organizacion: controllerOrganizacion.text,
-          dirigente: controllerDirigente.text,
-          cantidad: controllerCantidad.text,
-        );
+        observacionModel = fillOrganizacionFields(observacionModel);
 
         break;
       case 29:
@@ -738,6 +803,14 @@ class AddNovedadesController extends GetxController {
     return observacionModel;
   }
 
+  ObservacionModel fillOrganizacionFields(ObservacionModel model) {
+    return model.copyWith(
+      organizacion: controllerOrganizacion.text,
+      dirigente: controllerDirigente.text,
+      cantidad: controllerCantidad.text,
+    );
+  }
+
   String getObservacion() {
     if (selectTipoNovedad.value.idDgoNovedadesElect > 0) {
       String novedadesPadres = selectTipoNovedad.value.descripcion;
@@ -762,9 +835,12 @@ class AddNovedadesController extends GetxController {
           break;
 
         case "DETENIDOS":
+
+
           observacionModel = observacionModel.copyWith(
             cedula: cedula,
             numBoleta: controllerNumBoleta.text,
+            nacionalidadDetenido: selectedOptionNAcionalExtranjero.value
           );
 
           if (selectDelito.value.idDgoNovedadesElect > 0) {
@@ -784,19 +860,29 @@ class AddNovedadesController extends GetxController {
           break;
 
         case "VOTO EN CASA":
-          observacionModel = observacionModel.copyWith(
-            numCitacion: controllerObs.text,
-          );
+
+          observacionModel = getJsonSaveObservacion(observacionModel);
           break;
 
         case "NOV PPL":
-          observacionModel = observacionModel.copyWith(
-            numCitacion: controllerObs.text,
-          );
+          observacionModel = getJsonSaveObservacion(observacionModel);
           break;
       }
       return observacionModelToJson2(observacionModel);
     }
     return "null";
   }
+
+
+
+
+  getJsonSaveObservacion(ObservacionModel observacionModel){
+    return  observacionModel.copyWith(
+      observacion: controllerObservacion.text,
+    );
+
+  }
+
+
+
 }

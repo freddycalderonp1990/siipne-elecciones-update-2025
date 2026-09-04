@@ -1,8 +1,9 @@
 
 
 
-import 'package:siipnemovil2/feactures/user/domain/entities/user.dart';
 
+
+import '../entities/user.dart';
 import '../repository/user_repository.dart';
 
 class GetDataUserUseCase {
@@ -10,8 +11,8 @@ class GetDataUserUseCase {
 
   GetDataUserUseCase({required this.repository});
 
-  Future<UserEntities> call() {
+  Future<UserEntities> call({required String token, required int  idGenUsuario }) {
     //no es necesario el idGenUsuario
-    return repository.getDataUser(idGenUsuario: 0);
+    return repository.getDataUser(idGenUsuario: idGenUsuario,token: token);
   }
 }

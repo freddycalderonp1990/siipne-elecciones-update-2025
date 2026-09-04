@@ -1,25 +1,18 @@
 name: siipnemovil2
 description: "A new Flutter project."
-# The following line prevents the package from being accidentally published to
-# pub.dev using `flutter pub publish`. This is preferred for private packages.
+# Flutter 3.47.2 • channel stable • https://github.com/flutter/flutter.git
+#Framework • revision d3b14c8769 (7 days ago) • 2026-08-26 16:07:51 -0700
+#Engine • hash 1cf1c4773fb941c4c74a7f8bb144a8837596c0f4 (revision a804b26164) (6
+#days ago) • 2026-08-26 18:46:13.000Z
+#Tools • Dart 3.13.2 • DevTools 2.60.0
+
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-# The following defines the version and build number for your application.
-# A version number is three numbers separated by dots, like 1.2.43
-# followed by an optional build number separated by a +.
-# Both the version and the builder number may be overridden in flutter
-# build by specifying --build-name and --build-number, respectively.
-# In Android, build-name is used as versionName while build-number used as veflutterflutter build apk --releasersionCode.
-# Read more about Android versioning at https://developer.android.com/studio/publish/versioning
-# In iOS, build-name is used as CFBundleShortVersionString while build-number is used as CFBundleVersion.
-# Read more about iOS versioning at
-# https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-# In Windows, build-name is used as the major, minor, and patch parts
-# of the product and file versions while build-number is used as the build suffix.
-version: 2.0.0+38
+
+version: 2.2.1+44
 
 environment:
-  sdk: ^3.7.2
+  sdk: ^3.13.2
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -37,59 +30,96 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
 
-  # Necesarios para clean architecture
-  get: ^4.6.6 #manejador de estados
-  google_fonts: ^6.2.1
-  http: ^1.2.2 # Conectar con proveedor - Apis
-  path_provider: ^2.1.4 #Obtiene el directorio actual del app instalado
-  flutter_dotenv: ^5.2.1 #leer .env
-  shared_preferences: ^2.2.3 #Preferencias de usuario (Persistencias de Datos Locales)
-  package_info_plus: ^8.0.2 #obtener version code de la app
-  rxdart: ^0.28.0
-  local_auth: ^2.3.0 # Acceso Biometrico
-  url_launcher: ^6.3.0 # Abrir Urls
-  #intl: ^0.18.0 #Conversion de idiomas, enteros, fechas
-  awesome_dialog: ^3.2.1 #Dialogos
-  card_swiper: ^3.0.1 #carusel de imagenes slider/swiper
-  flutter_pdfview: ^1.3.4 #Visaulizar PDF
-  device_info_plus: ^11.2.0 #Informacion del cell,Version Sistema Operatvivo
+  # Para actualizar los paquetes solo con ir al repositorio de mi upc ejemplo: https://github.com/freddycalderonp1990/app_mi_upc.git
+  # ya que se esta usando la funcionalidad de mi upc automaticamente se descrag¿n de hay los paquetes
 
-  network_info_plus: ^6.0.1 #Obtener ip del celular (se deben asiganr permisos para IOS)
-
-  share_plus: ^10.0.2 # Compartir archivos
-  image_picker: ^1.1.2 #Obtener img de la camara o galeria
-
-  tutorial_coach_mark: ^1.2.11 #Tour app
+  #DEFAULF APP
+  #lo trae desde el paquete de mi upp
+  #get: ^4.7.2 #manejador de estados -los tra
+  #local_auth: ^2.3.0 # Acceso Biometrico
+  #end librerias del paquete mi upc
 
 
+  #Utilidades - device_info_app.dart
+  #lo trae desde el paquete de mi upp
+  #device_info_plus: ^11.4.0 #Informacion del cell,Version Sistema Operatvivo
+  #network_info_plus: ^6.1.4 #Obtener ip del celular (se deben asiganr permisos para IOS)
+  #package_info_plus: ^8.3.0 #obtener version code de la app
+  #end librerias del paquete mi upc
 
-  #GPS - MAPAS
-  permission_handler: ^11.3.1 # Solicita Permisos del dispositivo al usuario (Ubicacion,Galeria.....)
-  geolocator: ^13.0.2 #ubicacion Gps, del dispositivo #error en la actualizacion 8.0.1 No named parameter with the name 'desiredAccuracy'.
-  flutter_bloc: ^9.0.0 #Mapas
-  bloc: ^9.0.0
-  equatable: ^2.0.7
-  provider: ^6.1.2
+  #END Utilidades - device_info_app.dart
+
+
+  flutter_dotenv: ^6.0.0 #leer .env
+  image_picker: ^1.2.1 #Obtener img de la camara o galeria
+  flutter_pdfview: ^1.4.4 #Visaulizar PDF
+  dropdown_search: ^7.0.0 #Combo con busqueda
+  #url_launcher: ^6.3.1 # Abrir Urls - lo trae desde el paquete de mi upp
+  #share_plus: ^10.1.1 # Compartir archivos - lo trae desde el paquete de mi upp
+  #awesome_dialog: ^3.2.1 #Dialogos - lo trae desde el paquete de mi upp
+  #image: ^4.5.4 #Para trabajar con imagenes de la galeria - lo trae desde el paquete de mi upp
+  #shared_preferences: ^2.5.3 - lo trae desde el paquete de mi upp
+  #END DEFAULF
+
+
+  # LIBREARIAS GPS
+  flutter_bloc: ^9.1.1 #Mapas
+  bloc: ^9.2.0
+  equatable: ^2.0.8
+  #permission_handler: ^12.0.0 # Solicita Permisos del dispositivo al usuario (Ubicacion,Galeria.....) - lo trae desde el paquete de mi upp
+  geolocator: ^14.0.2 #ubicacion Gps, del dispositivo
+  flutter_map: ^8.3.0 #0.9.0 #mapas openstreetmap (TRAE latlong)
+  flutter_map_marker_popup: ^8.1.0
+  # END LIBREARIAS GPS
+
+
+  # NECESARIOS QR
+  qr_code_scanner_plus: ^2.2.0 #Qr Scan reemplaza a qr_code_scanner: ^1.0.1
+  zxing2: ^0.2.4 #Leer data de qr desde Galeria
+  qr_flutter: ^4.1.0 #Generar Qr
+  # END QR
+
+
+  syncfusion_flutter_gauges: ^34.2.6 #Diseño de clave digital
+
+  #NOTIFICACIONES PUSH
+  firebase_core: ^4.12.1
+  firebase_messaging: ^16.4.3
+  flutter_local_notifications: ^22.3.0
 
 
 
-  dropdown_search: ^6.0.2 #Combo con busqueda
+  #QLCipher permite cifrar la base de datos SQLite, protegiendo la información almacenada mediante una clave
+  # de seguridad y evitando que pueda ser consultada directamente sin autorización.
+  sqflite_sqlcipher: ^3.4.1 # base de datos
+  flutter_secure_storage: ^11.0.0 #reemplaza SharedPreferences
 
-  #elecciones
+  advanced_root_detection: ^0.0.5 #verificar root de app - se comenta por en ios no com´pila esta libreria da error
 
-  flutter_map: ^7.0.2 #0.9.0 #mapas openstreetmap
 
-  intl: ^0.19.0 #da formato a las fechas
+    #api_provider:
+  #path: /Users/policianacional/AndroidStudioProjects/paquete_api_provider
+
+  api_provider:
+    git:
+      url: https://github.com/freddycalderonp1990/paquete_api_provider.git
+      ref: 1.0.5
+
+
+    #app_mi_upc:
+    #path: /Users/policianacional/AndroidStudioProjects/app_mi_upc
 
   app_mi_upc:
     git:
       url: https://github.com/freddycalderonp1990/app_mi_upc.git
-      ref: v2.0.2 # Usa el tag o branch deseado
+      ref: v5.0.1
+
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons: ^0.14.4
+  mocktail: ^1.0.4
 
 # flutter pub run flutter_launcher_icons:main
 
@@ -110,9 +140,7 @@ flutter_launcher_icons:
   macos:
     generate: true
     image_path: "assets/icon/icon.jpeg"
-
-
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -129,20 +157,12 @@ flutter:
   assets:
     - assets/img/
     - assets/icon/
+    - assets/elecciones/img/
+    - assets/elecciones/icon/
+    - assets/censo/img/
+    - assets/censo/icon/
     - .env
-    - assets/imgs_mi_upc/img/
-    - assets/imgs_mi_upc/icon/
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/to/resolution-aware-images
 
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/to/asset-from-package
-
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
   fonts:
     - family: Arial
       fonts:
@@ -177,6 +197,3 @@ flutter:
           weight: 600
         - asset: assets/fonts/century_gothic_regular.ttf
           weight: 400
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/to/font-from-package

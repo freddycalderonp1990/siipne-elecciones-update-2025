@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "381747498680",
+    "project_id": "siipne-elecciones-y-censo",
+    "storage_bucket": "siipne-elecciones-y-censo.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:381747498680:android:9517cde8e20e0049506e4d",
+        "android_client_info": {
+          "package_name": "ecuador.policianacional.dntic.siipnemovil2"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmchOg8UyVqoe6DIZx4cmwuxG3jheXuuU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

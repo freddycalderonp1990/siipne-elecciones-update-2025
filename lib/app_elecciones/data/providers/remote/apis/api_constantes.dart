@@ -32,6 +32,8 @@ class ApiConstantes {
   static const ELECCIONES_SERVICIOS_ACTIVOS = "v1-servicios-activo"; // 1e5ce7ad42482403d3dc5b3eba80e97b
   static const ELECCIONES_RECINTO_FINALIZAR= "v1-recinto-finalizar"; // a3a6f42d152098e487e00f831a2b4772
 
+  static const ELECCIONES_VALIDAR_RECINTO = "v1-comisios-validar-recinto";
+
   //PERSONAL
   static const ELECCIONES_PERSONA_BY_CEDULA = "v1-persona-cedula"; // c996291faac0d749d702ba290948dcd8
   static const ELECCIONES_RECINTO_ADD_PERSONA = "v1-recinto-add-persona"; // 7fd3b86402efccdf476a77bf120ec3cc
@@ -47,4 +49,8 @@ class ApiConstantes {
   //************************** CONSULTAR PARA SABER SI EL USUARIO SE ENCUENTRA ASIGNADO A UN RECINTO ELECTORAL ********************************************************
   //verificar segun el idpersona para saber si se encuentra asignado a un recinto electoral  es para saber si es personal designado o es jefe
 
+  static const ELECCIONES_VERIFICA_PER_NOV_UDGA_REGISTRADAS = "v1-verifica-per-nov-udga-registradas";
+  //trae tando las novedades Udga y las registradas por el talento humano
+  // en caso de que lo inactive por No Labora, Pertenece a otro recinto,
+  static const ELECCIONES_VERIFICA_PER_NOV_REGISTRADAS_BY_PROCESO_ELECTORAL = "v1-verifica-per-nov-registradas-by-proc-elect";
 }

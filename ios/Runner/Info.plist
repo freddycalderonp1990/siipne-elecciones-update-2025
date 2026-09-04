@@ -24,22 +24,50 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
-	<key>ITSAppUsesNonExemptEncryption</key>
-	<false/>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+
 	<key>NSCameraUsageDescription</key>
-	<string>La aplicación necesita acceder a la cámara para poder tomar una fotografía, para seleccionarla y registrar una novedad.</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>¡Siempre y cuando esté en uso!. La aplicación necesita acceder a tu ubicación, para mostrar los operativos e instalaciones cercanos según la posición donde se encuentre.</string>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>¿Puedo tener ubicación siempre?. La aplicación necesita acceder a tu ubicación, para mostrar los operativos e instalaciones cercanos según la posición donde se encuentre.</string>
-	<key>NSLocationUsageDescription</key>
-	<string>La aplicación necesita acceder a tu ubicación, para mostrar los operativos e instalaciones cercanos según la posición donde se encuentre.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>La aplicación necesita acceder a tu ubicación, para mostrar los operativos e instalaciones cercanos según la posición donde se encuentre.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>La aplicación necesita acceder a la galería, para poder seleccionar una foto cuando se registre una novedad.</string>
+    <string>La aplicación necesita acceder a la cámara para poder tomar una fotografía, para seleccionarla y registrar una novedad.</string>
+    <key>NSFaceIDUsageDescription</key>
+    <string>La aplicación utiliza Face ID para brindar mayor seguridad al verificar la identidad para acceder al sistema.</string>
+    <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+    <string>¡Siempre y cuando esté en uso!. La aplicación necesita acceder a tu ubicación, para mostrar los operativos e instalaciones cercanos según la posición donde se encuentre.</string>
+    <key>NSLocationAlwaysUsageDescription</key>
+    <string>¿Puedo tener ubicación siempre?. La aplicación necesita acceder a tu ubicación, para mostrar los operativos e instalaciones cercanos según la posición donde se encuentre.</string>
+    <key>NSLocationUsageDescription</key>
+    <string>La aplicación necesita acceder a tu ubicación, para mostrar los operativos e instalaciones cercanos según la posición donde se encuentre.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>La aplicación necesita acceder a tu ubicación, para mostrar los operativos e instalaciones cercanos según la posición donde se encuentre.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>La aplicación necesita acceder a la galería, para poder seleccionar una foto cuando se registre una novedad.</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+
+
+
+
+	<key>UIApplicationSceneManifest</key>
+	<dict>
+		<key>UIApplicationSupportsMultipleScenes</key>
+		<false/>
+		<key>UISceneConfigurations</key>
+		<dict>
+			<key>UIWindowSceneSessionRoleApplication</key>
+			<array>
+				<dict>
+					<key>UISceneClassName</key>
+					<string>UIWindowScene</string>
+					<key>UISceneConfigurationName</key>
+					<string>flutter</string>
+					<key>UISceneDelegateClassName</key>
+					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
+					<key>UISceneStoryboardFile</key>
+					<string>Main</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UILaunchStoryboardName</key>

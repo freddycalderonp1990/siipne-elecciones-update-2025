@@ -63,7 +63,7 @@ class ReportNovedadesController extends GetxController {
     peticionServerState(true);
     listNovedadesElectorales.clear();
 
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       GetNovedadesRegistradasdRequest request=GetNovedadesRegistradasdRequest(
         idDgoReciElect: recintosElectoralesAbiertos.idDgoReciElect,
         idDgoProcElec: recintosElectoralesAbiertos.idDgoProcElec,
@@ -74,7 +74,7 @@ class ReportNovedadesController extends GetxController {
 
       if (datos.length == 0) {
         DialogosAwesome.getInformation(
-            descripcion: "No existen datos que mostrar", btnOkOnPress: () {});
+            descripcion: "No existen datos que mostrar");
         return;
       }
 

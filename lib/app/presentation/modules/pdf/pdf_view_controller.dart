@@ -25,28 +25,19 @@ class PdfViewController extends GetxController {
 
   _loadDatos() async {
     var data = Get.arguments;
-
-
-      if (data != null && data.containsKey('pdfBase64')&& data.containsKey('nameFile')) {
+    if (data != null  && data.containsKey('pathPdf') && data['pathPdf'] != null) {
 
       peticionServerState(true);
 
 
-      String pdfBase64=data['pdfBase64'];
-      String nameFile=data['nameFile'];
-   File file=  await createFileFromBase64(pdfBase64,nameFile);
-
-      path.value=file.path;
+      path.value=data['pathPdf'];
 
       peticionServerState(false);
     } else {
-      errorMessage.value = "Error al cargar el PDF";
-      /*DialogosAwesome.getError(
-          descripcion: "Error al cargar el PDF",
-      );*/
+      errorMessage.value = "No se recibió el parámetro 'pathPdf'. Por favor, verifique e intente nuevamente.";
+
     }
   }
-
 
 
   onRender(_pages) {
@@ -55,23 +46,20 @@ class PdfViewController extends GetxController {
   }
 
   onError(error) {
-    if (AppConfig.AmbienteUrl != Ambiente.produccion &&
-        AppConfig.AmbienteUrl != Ambiente.prueba) {
-      errorMessage.value = error.toString();
 
+    if(ApiConfig.AmbienteUrl!=Ambiente.PROD){
+      errorMessage.value = error.toString();
+      print("Error Pdf: ${errorMessage.value}");
+    }{
       errorMessage.value =
       "No se pudo cargar el archivo contacte con el administrador. Es posible que el archivo no se encuentre cargado de manera correcta.";
 
-      print("Error Pdf: ${errorMessage.value}");
-    } else {
-      errorMessage.value =
-          "No se pudo cargar el archivo contacte con el administrador. Es posible que el archivo no se encuentre cargado de manera correcta.";
     }
+
   }
 
   onPageError(page, error) {
-    if (AppConfig.AmbienteUrl != Ambiente.produccion &&
-        AppConfig.AmbienteUrl != Ambiente.prueba) {
+    if(ApiConfig.AmbienteUrl!=Ambiente.PROD){
       errorMessage.value = '$page: ${error.toString()}';
       print('$page: ${error.toString()}');
     } else {

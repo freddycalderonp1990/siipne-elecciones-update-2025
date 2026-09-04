@@ -60,7 +60,7 @@ abstract class LocalStorageRepository{
 
 
 
-
-
+  Future<int> getLastIdGenUsuario();
+  Future<void> setLastIdGenUsuario(int value);
 
 }

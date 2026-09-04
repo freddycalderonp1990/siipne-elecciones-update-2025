@@ -1,651 +1,802 @@
 part of '../../pages.dart';
 
 class AddNovedadesPage extends GetView<AddNovedadesController> {
-  const AddNovedadesPage({Key? key}) : super(key: key);
+  const AddNovedadesPage({Key? key}) : super(key:key);
 
   @override
   Widget build(BuildContext context) {
     return WorkAreaPageWidget(
-      mostrarBtnAtras: true,
-      title: "REGISTRAR NOVEDADES",
-      showGps: true,
-      contenido: getContenido(),
-      peticionServer: controller.peticionServerState,
+      mostrarBtnAtras:true,
+      title:"REGISTRAR NOVEDADES",
+      tamanoTitulo:18,
+      showGps:true,
+      contenido:getContenido(),
+      peticionServer:controller.peticionServerState,
     );
   }
 
   Widget getContenido() {
-    final responsive = ResponsiveUtil();
+    final responsive=ResponsiveUtil();
 
     return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
+      physics:const BouncingScrollPhysics(),
+      padding:const EdgeInsets.fromLTRB(8,6,8,22),
+      child:Column(
+        crossAxisAlignment:CrossAxisAlignment.stretch,
+        children:[
           Obx(
-            () =>
-                controller.showVerNovedades.value
-                    ? BtnIconWidget(
-                      icon: Icons.assignment_sharp,
-                      titulo: "VER NOVEDADES",
-                      onPressed: () => controller.goToPageReporteNovedades(),
-                    )
-                    : Container(),
+                ()=>controller.showVerNovedades.value
+                ?_btnVerNovedades()
+                :const SizedBox.shrink(),
           ),
-          getCombos(),
-          SizedBox(height: responsive.altoP(0.4)),
+
+          SizedBox(height:responsive.altoP(1)),
+
+          _cardSeleccionNovedad(),
+
+          SizedBox(height:responsive.altoP(1)),
+
           Obx(
-                () => FutureBuilder<Widget>(
-              future: wgCajasTexto(controller.selectTipoNovedad.value.descripcion),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator(); // Mientras carga
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}'); // En caso de error
-                } else {
-                  return snapshot.data ?? Container(); // Devuelve el widget construido
-                }
-              },
+                ()=>wgCajasTexto(
+              controller.selectTipoNovedad.value.descripcion,
             ),
           ),
+
           Obx(
-            () => wgCajasTextoNovedades(
+                ()=>wgCajasTextoNovedades(
               controller.selectNovedad.value.idDgoNovedadesElect,
               responsive,
             ),
           ),
 
-          Obx(() {
-            return controller.mostrarFoto.value
-                ? wgFoto(responsive)
-                : Container();
-          }),
-          SizedBox(height: responsive.altoP(3.5)),
+          Obx(
+                ()=>controller.mostrarFoto.value
+                ?Padding(
+              padding:const EdgeInsets.only(top:8),
+              child:wgFoto(responsive),
+            )
+                :const SizedBox.shrink(),
+          ),
+
+          SizedBox(height:responsive.altoP(1.5)),
+
           getBtnGuardar(),
+
+          SizedBox(height:responsive.altoP(2)),
         ],
       ),
     );
   }
 
-  Widget wgFoto(ResponsiveUtil responsive) {
-    Widget wgSolicitarFoto = Column(
-      children: [
-        controller.mGaleryCameraModel.value == null
-            ? TituloTextWidget(title: "Registre una Imagen")
-            : TituloTextWidget(title: "Cambiar la Imagen"),
-        SizedBox(height: responsive.altoP(1)),
-        Material(
-          child: InkWell(
-            onTap: () async {
-              controller
-                  .mGaleryCameraModel
-                  .value = await PhotoHelper.getDesingPictureGaleryOrCamera(
+  Widget _cabeceraRegistro() {
+    return Container(
+      width:double.infinity,
+      padding:const EdgeInsets.fromLTRB(11,10,11,10),
+      decoration:BoxDecoration(
+        color:Colors.white.withOpacity(.97),
+        borderRadius:BorderRadius.circular(16),
+        border:Border.all(
+          color:const Color(0xFF195496).withOpacity(.10),
+        ),
+        boxShadow:[
+          BoxShadow(
+            color:const Color(0xFF17365D).withOpacity(.06),
+            blurRadius:12,
+            offset:const Offset(0,4),
+          ),
+        ],
+      ),
+      child:Row(
+        children:[
+          Container(
+            width:42,
+            height:42,
+            decoration:BoxDecoration(
+              gradient:const LinearGradient(
+                begin:Alignment.topLeft,
+                end:Alignment.bottomRight,
+                colors:[
+                  Color(0xFF123F75),
+                  Color(0xFF195496),
+                  Color(0xFF2869AC),
+                ],
+              ),
+              borderRadius:BorderRadius.circular(12),
+            ),
+            child:const Icon(
+              Icons.add_alert_outlined,
+              color:Colors.white,
+              size:21,
+            ),
+          ),
 
-                initPeticion: (value){
-                  controller.peticionServerState(value);
-                },
-                titleImg:
-                    "ImgRecElectNovedades_id_${controller.selectNovedad.value.idDgoNovedadesElect}",
-              );
-            },
-            child: Container(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(20.0),
-                child: Image.asset(
-                  SiipneImages.icon_camara,
-                  width: responsive.altoP(6.0),
+          const SizedBox(width:10),
+
+          const Expanded(
+            child:Column(
+              crossAxisAlignment:CrossAxisAlignment.start,
+              children:[
+                Text(
+                  'REGISTRO DE NOVEDAD',
+                  style:TextStyle(
+                    color:Color(0xFF17365D),
+                    fontSize:12,
+                    fontWeight:FontWeight.w900,
+                  ),
                 ),
+                SizedBox(height:2),
+                Text(
+                  'Seleccione el tipo de novedad e ingrese la información requerida',
+                  style:TextStyle(
+                    color:Color(0xFF7A8998),
+                    fontSize:8,
+                    height:1.15,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _btnVerNovedades() {
+    return Center(
+      child:SizedBox(
+        width:210,
+        child:Material(
+          color:Colors.transparent,
+          borderRadius:BorderRadius.circular(13),
+          clipBehavior:Clip.antiAlias,
+          child:InkWell(
+            onTap:()=>controller.goToPageReporteNovedades(),
+            splashColor:const Color(0xFF195496).withOpacity(.08),
+            child:Ink(
+              height:44,
+              decoration:BoxDecoration(
+                color:Colors.white,
+                borderRadius:BorderRadius.circular(13),
+                border:Border.all(
+                  color:const Color(0xFFDCE4EC),
+                ),
+                boxShadow:[
+                  BoxShadow(
+                    color:const Color(0xFF17365D).withOpacity(.04),
+                    blurRadius:7,
+                    offset:const Offset(0,2),
+                  ),
+                ],
+              ),
+              child:const Row(
+                mainAxisAlignment:MainAxisAlignment.center,
+                children:[
+                  Icon(
+                    Icons.assignment_outlined,
+                    color:Color(0xFF195496),
+                    size:18,
+                  ),
+                  SizedBox(width:7),
+                  Text(
+                    'VER NOVEDADES',
+                    style:TextStyle(
+                      color:Color(0xFF195496),
+                      fontSize:9.5,
+                      fontWeight:FontWeight.w900,
+                      letterSpacing:.5,
+                    ),
+                  ),
+                  SizedBox(width:6),
+                  Icon(
+                    Icons.arrow_forward_ios_rounded,
+                    color:Color(0xFF195496),
+                    size:11,
+                  ),
+                ],
               ),
             ),
           ),
         ),
-        controller.mGaleryCameraModel.value == null
-            ? Container()
-            : ClipRRect(
-              borderRadius: BorderRadius.circular(25.0),
-              child: Image.file(
-                controller.mGaleryCameraModel.value!.imageFile,
-                fit: BoxFit.fill,
-                height: responsive.altoP(30.0),
-                width: responsive.altoP(34.0),
-              ),
-            ),
-        SizedBox(height: responsive.altoP(1)),
-      ],
+      ),
     );
-
-    Widget wg = wgSolicitarFoto;
-
-
-
-    return ContenedorDesingWidget(margin: EdgeInsets.only(top: 10), child: wg);
   }
 
-  Widget getCombos() {
-    final responsive = ResponsiveUtil();
-    return Column(
-      children: [
-        SizedBox(height: responsive.altoP(0.4)),
-        getComboTipoNovedad(),
-        SizedBox(height: responsive.altoP(0.4)),
-        getComboNovedades(),
-        SizedBox(height: responsive.altoP(0.4)),
-        getComboDelito(),
+  Widget _cardSeleccionNovedad() {
+    return Container(
+      width:double.infinity,
+      padding:const EdgeInsets.fromLTRB(11,10,11,11),
+      decoration:BoxDecoration(
+        color:Colors.white.withOpacity(.97),
+        borderRadius:BorderRadius.circular(17),
+        border:Border.all(
+          color:const Color(0xFFE0E7ED),
+        ),
+        boxShadow:[
+          BoxShadow(
+            color:const Color(0xFF17365D).withOpacity(.05),
+            blurRadius:11,
+            offset:const Offset(0,4),
+          ),
+        ],
+      ),
+      child:Column(
+        crossAxisAlignment:CrossAxisAlignment.stretch,
+        children:[
+          _tituloSeccion(
+            icon:Icons.account_tree_outlined,
+            titulo:'CLASIFICACIÓN DE NOVEDAD',
+            subtitulo:'Seleccione el tipo y detalle correspondiente',
+          ),
+
+          const SizedBox(height:10),
+
+          getComboTipoNovedad(),
+
+          getComboNovedades(),
+
+          getComboDelito(),
+        ],
+      ),
+    );
+  }
+
+  Widget _tituloSeccion({
+    required IconData icon,
+    required String titulo,
+    required String subtitulo,
+    Color color=const Color(0xFF195496),
+    Color fondo=const Color(0xFFEAF1F8),
+  }) {
+    return Row(
+      children:[
+        Container(
+          width:35,
+          height:35,
+          decoration:BoxDecoration(
+            color:fondo,
+            borderRadius:BorderRadius.circular(10),
+          ),
+          child:Icon(
+            icon,
+            color:color,
+            size:18,
+          ),
+        ),
+
+        const SizedBox(width:8),
+
+        Expanded(
+          child:Column(
+            crossAxisAlignment:CrossAxisAlignment.start,
+            children:[
+              Text(
+                titulo,
+                style:const TextStyle(
+                  color:Color(0xFF17365D),
+                  fontSize:10.5,
+                  fontWeight:FontWeight.w900,
+                ),
+              ),
+              const SizedBox(height:1),
+              Text(
+                subtitulo,
+                style:const TextStyle(
+                  color:Color(0xFF7A8998),
+                  fontSize:7.7,
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
 
   Widget getComboTipoNovedad() {
-    return ContenedorDesingWidget(
-      paddin: EdgeInsets.all(5),
-      child: Obx(()=>ComboBusqueda(
-        selectValue: controller.selectTipoNovedad.value,
+    return Container(
+      width:double.infinity,
+      padding:const EdgeInsets.fromLTRB(7,7,7,5),
+      margin:const EdgeInsets.only(bottom:8),
+      decoration:BoxDecoration(
+        color:const Color(0xFFF7F9FB),
+        borderRadius:BorderRadius.circular(12),
+        border:Border.all(
+          color:const Color(0xFFE0E7ED),
+        ),
+      ),
+      child:Obx(
+            ()=>ComboBusqueda(
+          selectValue:controller.selectTipoNovedad.value,
+          showClearButton:false,
+          datos:controller.listTipoNovedades,
+          displayField:(item)=>item.descripcion,
+          searchHint:"Tipo Novedad",
+          complete:(value){
+            controller.selectTipoNovedad.value=NovedadesElectorale.empty();
+            controller.selectNovedad.value=NovedadesElectorale.empty();
+            controller.selectDelito.value=NovedadesElectorale.empty();
 
-        showClearButton: false,
-        datos: controller.listTipoNovedades,
-        displayField:
-            (item) => item.descripcion, // Aquí decides mostrar "nombres"
-        searchHint: "Tipo Novedad",
-        complete: (value) {
-          controller.selectTipoNovedad.value = NovedadesElectorale.empty();
-          controller.selectNovedad.value = NovedadesElectorale.empty();
-          controller.selectDelito.value = NovedadesElectorale.empty();
-
-          if (value != null) {
-            controller.selectTipoNovedad.value = value;
-
-            controller.getNovedadesHijas(value.idDgoNovedadesElect);
-            return;
-          }
-        },
-        textSeleccioneUndato: "Seleccione un Tipo de Novedad",
-      )),
+            if(value!=null){
+              controller.selectTipoNovedad.value=value;
+              controller.getNovedadesHijas(value.idDgoNovedadesElect);
+              return;
+            }
+          },
+          textSeleccioneUndato:"Seleccione un Tipo de Novedad",
+        ),
+      ),
     );
   }
 
   Widget getComboNovedades() {
     return Obx(
-      () =>
-          controller.selectTipoNovedad.value.idDgoNovedadesElect > 0
-              ? ContenedorDesingWidget(
-                paddin: EdgeInsets.all(5),
-                child: ComboBusqueda(
-                  selectValue: controller.selectNovedad.value,
+          ()=>controller.selectTipoNovedad.value.idDgoNovedadesElect>0
+          ?Container(
+        width:double.infinity,
+        padding:const EdgeInsets.fromLTRB(7,7,7,5),
+        margin:const EdgeInsets.only(bottom:8),
+        decoration:BoxDecoration(
+          color:const Color(0xFFF7F9FB),
+          borderRadius:BorderRadius.circular(12),
+          border:Border.all(
+            color:const Color(0xFFE0E7ED),
+          ),
+        ),
+        child:ComboBusqueda(
+          selectValue:controller.selectNovedad.value,
+          showClearButton:false,
+          datos:controller.listNovedades,
+          displayField:(item)=>item.descripcion,
+          searchHint:
+          controller.selectTipoNovedad.value.descripcion.isNotEmpty
+              ?controller.selectTipoNovedad.value.descripcion[0].toUpperCase()+
+              controller.selectTipoNovedad.value.descripcion.substring(1).toLowerCase()
+              :'',
+          complete:(value){
+            controller.selectNovedad.value=NovedadesElectorale.empty();
+            controller.selectDelito.value=NovedadesElectorale.empty();
 
-                  showClearButton: false,
-                  datos: controller.listNovedades,
-                  displayField:
-                      (item) =>
-                          item.descripcion, // Aquí decides mostrar "nombres"
-                  searchHint: "Novedad",
-                  complete: (value) {
-                    controller.selectNovedad.value =
-                        NovedadesElectorale.empty();
-                    controller.selectDelito.value = NovedadesElectorale.empty();
+            controller.mostrarBtnGuardar(false);
 
-                    controller.mostrarBtnGuardar(false);
-                    if (value != null) {
-                      controller.selectNovedad.value = value;
+            if(value!=null){
+              controller.selectNovedad.value=value;
 
-                      if (controller.idNovedadBoletaCaptura ==
-                          value.idDgoNovedadesElect) {
-                        controller.getNovedadesDelito(
-                          value.idDgoNovedadesElect,
-                        );
-                      } else if (controller
-                              .selectNovedad
-                              .value
-                              .idDgoNovedadesElect >
-                          0) {
-                        controller.mostrarBtnGuardar(true);
-                      }
-                      return;
-                    }
-                  },
-                  textSeleccioneUndato: "Seleccione una Novedad",
-                ),
-              )
-              : Container(),
+              if(value.tieneHijos){
+                controller.getNovedadesDelito(value.idDgoNovedadesElect);
+              }else if(
+              controller.selectNovedad.value.idDgoNovedadesElect>0
+              ){
+                controller.mostrarBtnGuardar(true);
+              }
+
+              return;
+            }
+          },
+          textSeleccioneUndato:"Seleccione una Novedad",
+        ),
+      )
+          :const SizedBox.shrink(),
     );
   }
 
   Widget getComboDelito() {
     return Obx(
-      () =>
-          controller.selectNovedad.value.idDgoNovedadesElect > 0 &&
-                  controller.idNovedadBoletaCaptura ==
-                      controller.selectNovedad.value.idDgoNovedadesElect
-              ? ContenedorDesingWidget(
-                paddin: EdgeInsets.all(5),
-                child: ComboBusqueda(
-                  selectValue: controller.selectDelito.value,
+          ()=>controller.selectNovedad.value.idDgoNovedadesElect>0&&
+          controller.selectNovedad.value.tieneHijos
+          ?Container(
+        width:double.infinity,
+        padding:const EdgeInsets.fromLTRB(7,7,7,5),
+        decoration:BoxDecoration(
+          color:const Color(0xFFF7F9FB),
+          borderRadius:BorderRadius.circular(12),
+          border:Border.all(
+            color:const Color(0xFFE0E7ED),
+          ),
+        ),
+        child:ComboBusqueda(
+          selectValue:controller.selectDelito.value,
+          showClearButton:false,
+          datos:controller.listDelito,
+          displayField:(item)=>item.descripcion,
+          searchHint:
+          controller.selectNovedad.value.descripcion.isNotEmpty
+              ?controller.selectNovedad.value.descripcion[0].toUpperCase()+
+              controller.selectNovedad.value.descripcion.substring(1).toLowerCase()
+              :'',
+          complete:(value){
+            controller.selectDelito.value=NovedadesElectorale.empty();
+            controller.mostrarBtnGuardar(false);
 
-                  showClearButton: false,
-                  datos: controller.listDelito,
-                  displayField:
-                      (item) =>
-                          item.descripcion, // Aquí decides mostrar "nombres"
-                  searchHint: "Delito",
-                  complete: (value) {
-                    controller.selectDelito.value = NovedadesElectorale.empty();
-                    controller.mostrarBtnGuardar(false);
-                    if (value != null) {
-                      controller.selectDelito.value = value;
-                      if (controller.selectDelito.value.idDgoNovedadesElect >
-                          0) {
-                        controller.mostrarBtnGuardar(true);
-                      }
-                      return;
-                    }
-                  },
-                  textSeleccioneUndato: "Seleccione el Delito",
-                ),
-              )
-              : Container(),
+            if(value!=null){
+              controller.selectDelito.value=value;
+
+              if(controller.selectDelito.value.idDgoNovedadesElect>0){
+                controller.mostrarBtnGuardar(true);
+              }
+
+              return;
+            }
+          },
+          textSeleccioneUndato:"Seleccione el Delito",
+        ),
+      )
+          :const SizedBox.shrink(),
     );
   }
 
-  Future<Widget> wgCajasTexto(String novedadesPadres) async  {
-    Widget wg = Container();
-    final responsive = ResponsiveUtil();
+  Widget wgCajasTexto(String novedadesPadres) {
+    Widget wg=Container();
+    final responsive=ResponsiveUtil();
 
-    controller.validarForm = false;
+    controller.validarForm=false;
+    controller.registrarDatosPersona=false;
 
-    controller.registrarDatosPersona = false;
-
-    switch (novedadesPadres.trim().toUpperCase()) {
+    switch((novedadesPadres??'').trim().toUpperCase()){
       case "NOVEDADES":
+        controller.registrarDatosPersona=false;
         break;
 
       case "DELITOS":
-        controller.validarForm = true;
-        if (controller.selectNovedad.value.idDgoNovedadesElect > 0) {
-          print("sqqqq");
-          wg = wgTxtCedula(responsive: responsive);
-          controller.registrarDatosPersona = true;
-        }
+        controller.validarForm=true;
 
+        if(controller.selectNovedad.value.idDgoNovedadesElect>0){
+          wg=wgTxtCedula(
+            responsive:responsive,
+          );
+
+          controller.registrarDatosPersona=true;
+        }
         break;
 
       case "DETENIDOS":
-        controller.validarForm = true;
-        if (controller.selectNovedad.value.idDgoNovedadesElect > 0) {
-          wg = wgTxtCedulaBoleta(responsive);
-          controller.registrarDatosPersona = true;
+        controller.validarForm=true;
+
+        if(controller.selectNovedad.value.idDgoNovedadesElect>0){
+          wg=wgTxtCedulaBoleta(responsive);
+          controller.registrarDatosPersona=true;
         }
         break;
 
       case "CITACIONES":
-        controller.validarForm = true;
-        wg = wgTxtCedulaCitacion(responsive);
-        controller.registrarDatosPersona = true;
+        controller.validarForm=true;
+        wg=wgTxtCedulaCitacion(responsive);
+        controller.registrarDatosPersona=true;
         break;
 
       case "VOTO EN CASA":
-        controller.validarForm = true;
-        wg = wgTxtObservacion(responsive: responsive);
+        controller.validarForm=true;
+        wg=wgTxtObservacion(
+          responsive:responsive,
+        );
         break;
 
       case "NOV PPL":
-        controller.validarForm = true;
-        wg = wgTxtObservacion(responsive: responsive);
+        controller.validarForm=true;
+        wg=wgTxtObservacion(
+          responsive:responsive,
+        );
         break;
+
       case "UMO":
-        //controller.mostrarFoto = true;
-        //wg = wgTxtCedulaCitacion(responsive);
         break;
 
       default:
-        wg = Container();
+        wg=Container();
     }
 
-
-
-
-    if (wg is Container) {
+    if(wg is Container){
       return wg;
-    } else {
-      return ContenedorDesingWidget(paddin: EdgeInsets.all(5), child: wg);
     }
+
+    return _cardInformacionAdicional(
+      child:wg,
+    );
+  }
+
+  Widget _cardInformacionAdicional({
+    required Widget child,
+  }) {
+    return Container(
+      width:double.infinity,
+      margin:const EdgeInsets.only(top:8),
+      padding:const EdgeInsets.fromLTRB(11,10,11,11),
+      decoration:BoxDecoration(
+        color:Colors.white.withOpacity(.97),
+        borderRadius:BorderRadius.circular(17),
+        border:Border.all(
+          color:const Color(0xFFE0E7ED),
+        ),
+        boxShadow:[
+          BoxShadow(
+            color:const Color(0xFF17365D).withOpacity(.05),
+            blurRadius:10,
+            offset:const Offset(0,3),
+          ),
+        ],
+      ),
+      child:Column(
+        crossAxisAlignment:CrossAxisAlignment.stretch,
+        children:[
+          _tituloSeccion(
+            icon:Icons.description_outlined,
+            titulo:'INFORMACIÓN ADICIONAL',
+            subtitulo:'Complete los datos requeridos para esta novedad',
+          ),
+
+          const SizedBox(height:10),
+
+          child,
+        ],
+      ),
+    );
   }
 
   Widget wgCajasTextoNovedades(
-    int idDgoNovedadesElect,
-    ResponsiveUtil responsive,
-  ) {
-    Widget wg = Container();
-    print("suiii");
-    print(idDgoNovedadesElect);
+      int idDgoNovedadesElect,
+      ResponsiveUtil responsive,
+      ) {
+    Widget wg=Container();
 
-    bool mostrarFoto = false;
+    bool mostrarFoto=false;
 
-    switch (idDgoNovedadesElect) {
+    switch(idDgoNovedadesElect){
       case 17:
-        //1. RECINTOS ELECTORALES INSTALADOS
-        wg = Container();
+        wg=Container();
         break;
 
       case 18:
-        //2. RECINTOS ELECTORALES NO INSTALADOS
-        wg = Container();
+        controller.validarForm=true;
+        wg=wgTxtObservacion(
+          responsive:responsive,
+        );
         break;
 
       case 19:
-        //3. RECINTO ELECTORAL INSTALADO CON RETARDO POR DIFERENTES CAUSAS
-
-        wg = wgTxtHora(responsive);
-        controller.validarForm = true;
+        wg=wgTxtHora(responsive);
+        controller.validarForm=true;
         break;
 
       case 20:
-        //4. RECINTOS ELECTORALES SUSPENDIDO POR DIFERENTES CAUSAS
-        wg = wgTxtMotivo(responsive);
-        controller.validarForm = true;
-        mostrarFoto = true;
+        wg=wgTxtMotivo(responsive);
+        controller.validarForm=true;
+        mostrarFoto=true;
         break;
 
       case 21:
-        //5. AGRESIONES A SERVIDORES POLICIALES
-        wg = wgTxtCedula(responsive: responsive, title: SiipneStrings.cedulaSP);
-        controller.validarForm = true;
-        mostrarFoto = true;
+        wg=wgTxtCedula(
+          responsive:responsive,
+          title:SiipneStrings.cedulaSP,
+        );
 
-        controller.registrarDatosPersona = true;
-
+        controller.validarForm=true;
+        mostrarFoto=true;
+        controller.registrarDatosPersona=true;
         break;
 
       case 22:
-        //6. PRESENCIA DE MANIFESTANTES / CONCENTRACIONES / MARCHAS
-        wg = Column(
-          children: [
+        wg=Column(
+          children:[
             wgTxtNumeroManifestantes(responsive),
-            SizedBox(height: responsive.altoP(1)),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  getBtnColores(
-                    responsive: responsive,
-                    color: Colors.green.withOpacity(0.8),
-                    title: "1-50",
-                  ),
-                  getBtnColores(
-                    responsive: responsive,
-                    color: Colors.yellow.withOpacity(0.8),
-                    title: "51-200",
-                  ),
-                  getBtnColores(
-                    responsive: responsive,
-                    color: Colors.orange.withOpacity(0.8),
-                    title: "201-500",
-                  ),
-                  getBtnColores(
-                    responsive: responsive,
-                    color: Colors.red.withOpacity(0.8),
-                    title: "501-Más",
-                  ),
-                ],
-              ),
-            ),
+            SizedBox(height:responsive.altoP(1)),
+            _escalaCantidad(responsive),
           ],
         );
-        controller.validarForm = true;
-        mostrarFoto = true;
+
+        controller.validarForm=true;
+        mostrarFoto=true;
         break;
 
       case 23:
-        //7. QUEMA DE URNAS / PAPELETAS
-        controller.validarForm = true;
-        mostrarFoto = true;
-        wg = Column(
-          children: [
+        controller.validarForm=true;
+        mostrarFoto=true;
+
+        wg=Column(
+          children:[
             wgTxtNumeroQuemaUrnas(responsive),
-            SizedBox(height: responsive.altoP(1)),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  getBtnColores(
-                    responsive: responsive,
-                    color: Colors.green.withOpacity(0.8),
-                    title: "1-50",
-                  ),
-                  getBtnColores(
-                    responsive: responsive,
-                    color: Colors.yellow.withOpacity(0.8),
-                    title: "51-200",
-                  ),
-                  getBtnColores(
-                    responsive: responsive,
-                    color: Colors.orange.withOpacity(0.8),
-                    title: "201-500",
-                  ),
-                  getBtnColores(
-                    responsive: responsive,
-                    color: Colors.red.withOpacity(0.8),
-                    title: "501-Más",
-                  ),
-                ],
-              ),
-            ),
+            SizedBox(height:responsive.altoP(1)),
+            _escalaCantidad(responsive),
           ],
         );
         break;
 
       case 28:
-        //8. TOMA DE RECINTOS / DELEGACIONES / BODEGAS / INSTALACIONES DEL CNE
-        controller.validarForm = true;
-        mostrarFoto = true;
-        wg = Column(
-          children: [
+        controller.validarForm=true;
+        mostrarFoto=true;
+
+        wg=Column(
+          children:[
             wgTxtNumeroTomaRecintos(responsive),
-            SizedBox(height: responsive.altoP(1)),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  getBtnColores(
-                    responsive: responsive,
-                    color: Colors.green.withOpacity(0.8),
-                    title: "1-50",
-                  ),
-                  getBtnColores(
-                    responsive: responsive,
-                    color: Colors.yellow.withOpacity(0.8),
-                    title: "51-200",
-                  ),
-                  getBtnColores(
-                    responsive: responsive,
-                    color: Colors.orange.withOpacity(0.8),
-                    title: "201-500",
-                  ),
-                  getBtnColores(
-                    responsive: responsive,
-                    color: Colors.red.withOpacity(0.8),
-                    title: "501-Más",
-                  ),
-                ],
-              ),
-            ),
+            SizedBox(height:responsive.altoP(1)),
+            _escalaCantidad(responsive),
           ],
         );
         break;
 
       case 29:
-        //9. PRESENCIA DE VENTAS AMBULANTES
-        wg = Container();
-        mostrarFoto = true;
+        wg=Container();
+        mostrarFoto=true;
         break;
 
       case 30:
-        //10. ATENCIÓN MÉDICA POR DIFERENTES CAUSAS
-        controller.validarForm = true;
-        mostrarFoto = true;
-        controller.registrarDatosPersona = true;
-        wg = wgTxtCedulaTelefono(responsive: responsive);
+        controller.validarForm=true;
+        mostrarFoto=true;
+        controller.registrarDatosPersona=true;
+
+        wg=wgTxtCedulaTelefono(
+          responsive:responsive,
+        );
         break;
 
       case 31:
-        //11. SERVIDORES POLICIALES INFECTADOS (SOSPECHA/POSITIVO)
+        controller.validarForm=true;
 
-        controller.validarForm = true;
-        wg = wgTxtCedulaTelefono(
-          responsive: responsive,
-          title: SiipneStrings.cedulaSP,
+        wg=wgTxtCedulaTelefono(
+          responsive:responsive,
+          title:SiipneStrings.cedulaSP,
         );
         break;
 
       case 32:
-        //NUMÉRICO DE ACÉMILAS
-        wg = wgTxtNumerico(responsive);
-        controller.validarForm = true;
+        wg=wgTxtNumerico(responsive);
+        controller.validarForm=true;
         break;
 
-      /*********************** UMO ***************************************/
       case 33:
-        //1. NUMERICO DE PERSONAL
-        wg = wgTxtNumericoPersonal(responsive);
-        controller.validarForm = true;
-
+        wg=wgTxtNumericoPersonal(responsive);
+        controller.validarForm=true;
         break;
 
       case 34:
-        //2. PLANTONES
-        wg = wgorganizacionDirigenteCantidad(responsive);
-        controller.validarForm = true;
-
-        break;
-
       case 35:
-        //3. MARCHAS
-        wg = wgorganizacionDirigenteCantidad(responsive);
-        controller.validarForm = true;
-
-        break;
-
       case 36:
-        //4. CIERRE DE VIAS
-        wg = wgorganizacionDirigenteCantidad(responsive);
-        controller.validarForm = true;
-
-        break;
-
       case 37:
-        //5. TOMA DE ENTIDADES
-        wg = wgorganizacionDirigenteCantidad(responsive);
-        controller.validarForm = true;
-
+        wg=wgorganizacionDirigenteCantidad(responsive);
+        controller.validarForm=true;
         break;
 
-      /************************AEREOPOLCIAL*************************************/
       case 45:
-        //1. DESPLAZAMIENTO DE AUTORIDADES
-        wg = wgTxtDesplazamientosAutoridades(responsive);
-        controller.validarForm = true;
-        break;
-
       case 46:
-        //2. DESPLAZAMIENTO DE SERVIDORES PÚBLICOS
-        wg = wgTxtDesplazamientosAutoridades(responsive);
-        controller.validarForm = true;
+        wg=wgTxtDesplazamientosAutoridades(responsive);
+        controller.validarForm=true;
         break;
 
       case 47:
-        //3. APOYO AÉREO A MEDIOS DE COMUNICACIÓN
-        wg = wgTxtApoyoMediosComunicacion(responsive);
-        controller.validarForm = true;
+        wg=wgTxtApoyoMediosComunicacion(responsive);
+        controller.validarForm=true;
         break;
-      /************************GOE - GIR*************************************/
+
       case 41:
-        //1. SEGURIDAD DE PERSONAS IMPORTANTES
-        wg = wgTxtSeguridadPersonasImportantes(responsive);
-        controller.validarForm = true;
+        wg=wgTxtSeguridadPersonasImportantes(responsive);
+        controller.validarForm=true;
         break;
 
       case 42:
-        //2. SEGURIDAD DE INSTALACIONES
-        wg = wgTxtSeguridadInstalaciones(responsive);
-        controller.validarForm = true;
-        mostrarFoto = true;
+        wg=wgTxtSeguridadInstalaciones(responsive);
+        controller.validarForm=true;
+        mostrarFoto=true;
         break;
 
       case 43:
-        //3. REGISTRO DE EXPLOSIVOS
-        wg = wgTxtExplosivos(responsive);
-        controller.validarForm = true;
-        mostrarFoto = true;
+        wg=wgTxtExplosivos(responsive);
+        controller.validarForm=true;
+        mostrarFoto=true;
         break;
 
       case 44:
-        //4. APOYO A UNIDADES POLICIALES
-        wg = wgTxtApoyoUnidadesPoliciales(responsive);
-        controller.validarForm = true;
+        wg=wgTxtApoyoUnidadesPoliciales(responsive);
+        controller.validarForm=true;
         break;
 
-      /************************CARCK - UMO - UER*************************************/
       case 49:
-        //AGLOMERACIONES
-        wg = wgTxtNumerico(responsive);
-        controller.validarForm = true;
-        break;
-
       case 50:
-        //NUMÉRICO DE ACÉMILAS
-        wg = wgTxtNumerico(responsive);
-        controller.validarForm = true;
-        break;
-
       case 51:
-        //NUMÉRICO DE CANES
-        wg = wgTxtNumerico(responsive);
-        controller.validarForm = true;
-        break;
-
       case 52:
-        //PERSONAL ESTÁTICO
-        wg = wgTxtNumerico(responsive);
-        controller.validarForm = true;
-        break;
-
       case 53:
-        //PERSONAL MÓVIL
-        wg = wgTxtNumerico(responsive);
-        controller.validarForm = true;
+        wg=wgTxtNumerico(responsive);
+        controller.validarForm=true;
         break;
 
       case 54:
-        //INICIA SERVICIO
-        wg = wgTxtHora(responsive);
-        controller.validarForm = true;
-        break;
-
       case 55:
-        //FINALIZA SERVICIO
-        wg = wgTxtHora(responsive);
-        controller.validarForm = true;
+        wg=wgTxtHora(responsive);
+        controller.validarForm=true;
         break;
 
       default:
-        mostrarFoto = false;
-        wg = Container();
+        mostrarFoto=false;
+        wg=Container();
     }
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      print("mostrar fotooooo ${mostrarFoto}");
-      controller.mostrarFoto.value = mostrarFoto;
-    });
+    if(controller.mostrarFoto.value!=mostrarFoto){
+      WidgetsBinding.instance.addPostFrameCallback((_){
+        controller.mostrarFoto.value=mostrarFoto;
+      });
+    }
 
     print("asigno registrarDatosPersona ${controller.registrarDatosPersona}");
     print("wgCajasTextoNovedades validarForm ${controller.validarForm}");
 
-    if (wg is Container) {
+    if(wg is Container){
       return wg;
-    } else {
-      return ContenedorDesingWidget(paddin: EdgeInsets.all(5), child: wg);
     }
+
+    return _cardInformacionAdicional(
+      child:wg,
+    );
+  }
+
+  Widget _escalaCantidad(
+      ResponsiveUtil responsive,
+      ) {
+    return Container(
+      width:double.infinity,
+      padding:const EdgeInsets.all(9),
+      decoration:BoxDecoration(
+        color:const Color(0xFFF7F9FB),
+        borderRadius:BorderRadius.circular(12),
+        border:Border.all(
+          color:const Color(0xFFE1E7ED),
+        ),
+      ),
+      child:Column(
+        crossAxisAlignment:CrossAxisAlignment.start,
+        children:[
+          const Text(
+            'ESCALA DE REFERENCIA',
+            style:TextStyle(
+              color:Color(0xFF68798A),
+              fontSize:7,
+              fontWeight:FontWeight.w900,
+              letterSpacing:.4,
+            ),
+          ),
+
+          const SizedBox(height:7),
+
+          Row(
+            children:[
+              Expanded(
+                child:getBtnColores(
+                  responsive:responsive,
+                  color:Colors.green.withOpacity(.8),
+                  title:"1-50",
+                ),
+              ),
+
+              const SizedBox(width:5),
+
+              Expanded(
+                child:getBtnColores(
+                  responsive:responsive,
+                  color:Colors.yellow.withOpacity(.8),
+                  title:"51-200",
+                ),
+              ),
+
+              const SizedBox(width:5),
+
+              Expanded(
+                child:getBtnColores(
+                  responsive:responsive,
+                  color:Colors.orange.withOpacity(.8),
+                  title:"201-500",
+                ),
+              ),
+
+              const SizedBox(width:5),
+
+              Expanded(
+                child:getBtnColores(
+                  responsive:responsive,
+                  color:Colors.red.withOpacity(.8),
+                  title:"501-Más",
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   Widget getBtnColores({
@@ -654,113 +805,348 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
     required Color color,
   }) {
     return Container(
-      child: Text(
-        title,
-        textAlign: TextAlign.center,
-        style: TextStyle(color: Colors.black),
+      height:30,
+      alignment:Alignment.center,
+      decoration:BoxDecoration(
+        color:color,
+        borderRadius:BorderRadius.circular(9),
+        border:Border.all(
+          color:Colors.black.withOpacity(.06),
+        ),
       ),
-      width: responsive.anchoP(20),
-      height: responsive.altoP(2),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(AppConfig.radioBordecajas),
-        boxShadow: [
+      child:Text(
+        title,
+        textAlign:TextAlign.center,
+        style:const TextStyle(
+          color:Color(0xFF263238),
+          fontSize:7.5,
+          fontWeight:FontWeight.w800,
+        ),
+      ),
+    );
+  }
+
+  Widget wgorganizacionDirigenteCantidad(
+      ResponsiveUtil responsive,
+      ) {
+    return Column(
+      children:[
+        wgTxtNumeroManifestantes(responsive),
+
+        SizedBox(height:responsive.altoP(1)),
+
+        _escalaCantidad(responsive),
+      ],
+    );
+  }
+
+  Widget wgFoto(
+      ResponsiveUtil responsive,
+      ) {
+    return Container(
+      width:double.infinity,
+      padding:const EdgeInsets.fromLTRB(11,10,11,11),
+      decoration:BoxDecoration(
+        color:Colors.white,
+        borderRadius:BorderRadius.circular(17),
+        border:Border.all(
+          color:const Color(0xFFE0E7ED),
+        ),
+        boxShadow:[
           BoxShadow(
-            color: SiipneColors.colorBordecajas,
-            blurRadius: AppConfig.sobraBordecajas,
+            color:const Color(0xFF17365D).withOpacity(.05),
+            blurRadius:10,
+            offset:const Offset(0,3),
+          ),
+        ],
+      ),
+      child:Column(
+        crossAxisAlignment:CrossAxisAlignment.stretch,
+        children:[
+          _tituloSeccion(
+            icon:Icons.photo_camera_outlined,
+            titulo:'EVIDENCIA FOTOGRÁFICA',
+            subtitulo:'Adjunte una imagen relacionada con la novedad',
+            color:const Color(0xFFD68A1F),
+            fondo:const Color(0xFFFFF3E4),
+          ),
+
+          const SizedBox(height:11),
+
+          Obx(
+                ()=>controller.mGaleryCameraModel.value==null
+                ?_btnTomarFoto(responsive)
+                :Column(
+              children:[
+                ClipRRect(
+                  borderRadius:BorderRadius.circular(14),
+                  child:Image.file(
+                    controller.mGaleryCameraModel.value!.imageFile,
+                    fit:BoxFit.cover,
+                    width:double.infinity,
+                    height:responsive.altoP(26),
+                  ),
+                ),
+
+                const SizedBox(height:8),
+
+                Center(
+                  child:SizedBox(
+                    width:180,
+                    child:_btnCambiarFoto(),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget wgorganizacionDirigenteCantidad(ResponsiveUtil responsive) {
-    return Column(
-      children: [
-        wgTxtNumeroManifestantes(responsive),
-        SizedBox(height: responsive.altoP(1)),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              getBtnColores(
-                responsive: responsive,
-                color: Colors.green.withOpacity(0.8),
-                title: "1-50",
+  Widget _btnTomarFoto(
+      ResponsiveUtil responsive,
+      ) {
+    return Material(
+      color:Colors.transparent,
+      borderRadius:BorderRadius.circular(13),
+      clipBehavior:Clip.antiAlias,
+      child:InkWell(
+        onTap:() async {
+          controller.mGaleryCameraModel.value=
+          await PhotoHelper.getDesingPictureGaleryOrCamera(
+            initPeticion:(value){
+              controller.peticionServerState(value);
+            },
+            titleImg:
+            "ImgRecElectNovedades_id_${controller.selectNovedad.value.idDgoNovedadesElect}",
+          );
+        },
+        child:Ink(
+          height:74,
+          decoration:BoxDecoration(
+            color:const Color(0xFFF7F9FB),
+            borderRadius:BorderRadius.circular(13),
+            border:Border.all(
+              color:const Color(0xFFDCE4EC),
+            ),
+          ),
+          child:Row(
+            mainAxisAlignment:MainAxisAlignment.center,
+            children:[
+              Container(
+                width:42,
+                height:42,
+                decoration:BoxDecoration(
+                  color:const Color(0xFFEAF1F8),
+                  borderRadius:BorderRadius.circular(11),
+                ),
+                child:const Icon(
+                  Icons.add_a_photo_outlined,
+                  color:Color(0xFF195496),
+                  size:21,
+                ),
               ),
-              getBtnColores(
-                responsive: responsive,
-                color: Colors.yellow.withOpacity(0.8),
-                title: "51-200",
-              ),
-              getBtnColores(
-                responsive: responsive,
-                color: Colors.orange.withOpacity(0.8),
-                title: "201-500",
-              ),
-              getBtnColores(
-                responsive: responsive,
-                color: Colors.red.withOpacity(0.8),
-                title: "501-Más",
+
+              const SizedBox(width:9),
+
+              const Column(
+                mainAxisAlignment:MainAxisAlignment.center,
+                crossAxisAlignment:CrossAxisAlignment.start,
+                children:[
+                  Text(
+                    'REGISTRAR IMAGEN',
+                    style:TextStyle(
+                      color:Color(0xFF17365D),
+                      fontSize:9.5,
+                      fontWeight:FontWeight.w900,
+                    ),
+                  ),
+                  SizedBox(height:2),
+                  Text(
+                    'Cámara o galería',
+                    style:TextStyle(
+                      color:Color(0xFF7A8998),
+                      fontSize:7.4,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
         ),
-      ],
+      ),
+    );
+  }
+
+  Widget _btnCambiarFoto() {
+    return Material(
+      color:Colors.transparent,
+      borderRadius:BorderRadius.circular(11),
+      clipBehavior:Clip.antiAlias,
+      child:InkWell(
+        onTap:() async {
+          controller.mGaleryCameraModel.value=
+          await PhotoHelper.getDesingPictureGaleryOrCamera(
+            initPeticion:(value){
+              controller.peticionServerState(value);
+            },
+            titleImg:
+            "ImgRecElectNovedades_id_${controller.selectNovedad.value.idDgoNovedadesElect}",
+          );
+        },
+        child:Ink(
+          height:39,
+          decoration:BoxDecoration(
+            color:const Color(0xFFEAF1F8),
+            borderRadius:BorderRadius.circular(11),
+          ),
+          child:const Row(
+            mainAxisAlignment:MainAxisAlignment.center,
+            children:[
+              Icon(
+                Icons.refresh_rounded,
+                color:Color(0xFF195496),
+                size:16,
+              ),
+              SizedBox(width:6),
+              Text(
+                'CAMBIAR IMAGEN',
+                style:TextStyle(
+                  color:Color(0xFF195496),
+                  fontSize:8,
+                  fontWeight:FontWeight.w900,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
   Widget getBtnGuardar() {
     return Obx(
-      () =>
-          controller.mostrarBtnGuardar.value
-              ? BtnIconWidget(
-                icon: Icons.save,
-                titulo: "GUARDAR",
-                onPressed: () {
-                  String descripcion =
-                      controller.selectNovedad.value.descripcion;
-                  if (controller.selectDelito.value.idDgoNovedadesElect > 0) {
-                    descripcion = controller.selectDelito.value.descripcion;
-                  }
+          ()=>controller.mostrarBtnGuardar.value&&
+          controller.selectTipoNovedad.value.idDgoNovedadesElect>0
+          ?Center(
+        child:SizedBox(
+          width:215,
+          child:Material(
+            color:Colors.transparent,
+            borderRadius:BorderRadius.circular(14),
+            clipBehavior:Clip.antiAlias,
+            child:InkWell(
+              onTap:(){
+                String descripcion=
+                    controller.selectNovedad.value.descripcion;
 
-                  DialogosAwesome.getWarningSiNo(
-                    title: '¿Desea continuar con el registro?',
-                    descripcion: 'Registro de Novedad:\n\n${descripcion}',
-                    btnCancelOnPress: () {},
-                    btnOkOnPress: () {
-                      controller.eventoRegistrarNovedadesElectorales();
-                    },
-                  );
-                },
-              )
-              : Container(),
+                if(controller.selectDelito.value.idDgoNovedadesElect>0){
+                  descripcion=
+                      controller.selectDelito.value.descripcion;
+                }
+
+                DialogosAwesome.getWarningSiNo(
+                  title:'¿Desea continuar con el registro?',
+                  descripcion:
+                  'Registro de Novedad:\n\n• ${descripcion.capitalizeFirst}',
+                  btnOkOnPress:(){
+                    controller.eventoRegistrarNovedadesElectorales();
+                  },
+                );
+              },
+              splashColor:Colors.white.withOpacity(.15),
+              child:Ink(
+                height:49,
+                decoration:BoxDecoration(
+                  gradient:const LinearGradient(
+                    begin:Alignment.topLeft,
+                    end:Alignment.bottomRight,
+                    colors:[
+                      Color(0xFF123F75),
+                      Color(0xFF195496),
+                      Color(0xFF2869AC),
+                    ],
+                  ),
+                  borderRadius:BorderRadius.circular(14),
+                  boxShadow:[
+                    BoxShadow(
+                      color:const Color(0xFF195496).withOpacity(.22),
+                      blurRadius:10,
+                      offset:const Offset(0,4),
+                    ),
+                  ],
+                ),
+                child:const Row(
+                  mainAxisAlignment:MainAxisAlignment.center,
+                  children:[
+                    Icon(
+                      Icons.save_outlined,
+                      color:Colors.white,
+                      size:18,
+                    ),
+                    SizedBox(width:8),
+                    Text(
+                      'GUARDAR NOVEDAD',
+                      style:TextStyle(
+                        color:Colors.white,
+                        fontSize:10,
+                        fontWeight:FontWeight.w900,
+                        letterSpacing:.6,
+                      ),
+                    ),
+                    SizedBox(width:7),
+                    Icon(
+                      Icons.arrow_forward_rounded,
+                      color:Colors.white,
+                      size:15,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
+      )
+          :const SizedBox.shrink(),
     );
   }
 
-  //+++++++++++++++++++++++++++ TXT +++++++++++++++++++++++++++++
+  // ==================== FORM ====================
 
-  Widget getForm({required Widget child}) {
-    return Form(key: controller.formKey, child: child);
+  Widget getForm({
+    required Widget child,
+  }) {
+    return Form(
+      key:controller.formKey,
+      child:child,
+    );
   }
 
   Widget wgTxtCedula({
     required ResponsiveUtil responsive,
-    String title = SiipneStrings.cedula,
+    String title=SiipneStrings.cedula,
   }) {
-    return getForm(child: Column(children: [getWgCedulaWithFind(responsive)]));
+    return getForm(
+      child:Column(
+        children:[
+          getWgCedulaWithFind(responsive),
+        ],
+      ),
+    );
   }
 
   Widget wgTxtCedulaTelefono({
     required ResponsiveUtil responsive,
-    String title = SiipneStrings.cedula,
+    String title=SiipneStrings.cedula,
   }) {
     return getForm(
-      child: Column(
-        children: [
+      child:Column(
+        children:[
           getWgCedulaWithFind(responsive),
-          WgTxtTelefono(controllerTelefono: controller.controllerTelefono),
+          WgTxtTelefono(
+            controllerTelefono:controller.controllerTelefono,
+          ),
         ],
       ),
     );
@@ -768,664 +1154,790 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
 
   Widget wgTxtObservacion({
     required ResponsiveUtil responsive,
-    String title = SiipneStrings.cedula,
+    String title=SiipneStrings.cedula,
   }) {
     return getForm(
-      child: Column(
-        children: [
-          Container(
-            child: Text(
-              "Observación",
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                fontSize: responsive.diagonalP(1.5),
-                fontWeight: FontWeight.w700,
-                color: Colors.black,
-              ),
+      child:Column(
+        crossAxisAlignment:CrossAxisAlignment.stretch,
+        children:[
+          const Text(
+            'OBSERVACIÓN',
+            style:TextStyle(
+              color:Color(0xFF17365D),
+              fontSize:8.5,
+              fontWeight:FontWeight.w900,
             ),
           ),
-          Column(
-            children: <Widget>[
-              Card(
-                color: Colors.white54,
-                child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: TextField(
-                    controller: controller.controllerObs,
-                    maxLength: 100,
-                    maxLines: 4, //or null
-                    decoration: InputDecoration.collapsed(
-                      hintText: "Ingrese la Observación",
+
+          const SizedBox(height:7),
+
+          MyTextAreaWidget(
+            hintText:"Ingrese la Observación",
+            maxLength:100,
+            controller:controller.controllerObservacion,
+            onChanged:(texto){},
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget getSelectNacionalExtranjero() {
+    return Obx(
+          ()=>RadioGroup<String>(
+        groupValue:controller.selectedOptionNAcionalExtranjero.value,
+        onChanged:(String? value){
+          if(value!=null){
+            controller.selectedOptionNAcionalExtranjero.value=value;
+          }
+        },
+        child:Container(
+          margin:const EdgeInsets.only(bottom:8),
+          padding:const EdgeInsets.all(6),
+          decoration:BoxDecoration(
+            color:const Color(0xFFF7F9FB),
+            borderRadius:BorderRadius.circular(12),
+            border:Border.all(
+              color:const Color(0xFFE1E7ED),
+            ),
+          ),
+          child:Row(
+            children:[
+              Expanded(
+                child:ListTile(
+                  dense:true,
+                  contentPadding:const EdgeInsets.symmetric(horizontal:4),
+                  title:const Text(
+                    'Nacional',
+                    style:TextStyle(
+                      color:Color(0xFF17365D),
+                      fontSize:8.5,
+                      fontWeight:FontWeight.w700,
                     ),
+                  ),
+                  leading:const Radio<String>(
+                    value:'Nacional',
+                  ),
+                ),
+              ),
+
+              Expanded(
+                child:ListTile(
+                  dense:true,
+                  contentPadding:const EdgeInsets.symmetric(horizontal:4),
+                  title:const Text(
+                    'Extranjero',
+                    style:TextStyle(
+                      color:Color(0xFF17365D),
+                      fontSize:8.5,
+                      fontWeight:FontWeight.w700,
+                    ),
+                  ),
+                  leading:const Radio<String>(
+                    value:'Extranjero',
                   ),
                 ),
               ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }
 
-  //Widget para detenidos
-
-  Widget getSelectNacionalExtranjero() {
-    return Obx(
-      () => Row(
-        children: [
-          Flexible(
-            child: ListTile(
-              title: TituloTextWidget(title: "Nacional"),
-              leading: Radio<String>(
-                value: 'Nacional',
-                groupValue: controller.selectedOptionNAcionalExtranjero.value,
-                onChanged: (String? value) {
-                  if (value != null) {
-                    controller.selectedOptionNAcionalExtranjero.value = value;
-                  }
-                },
-              ),
-            ),
-          ),
-          Flexible(
-            child: ListTile(
-              title: TituloTextWidget(title: "Extranjero"),
-              leading: Radio<String>(
-                value: 'Extranjero',
-                groupValue: controller.selectedOptionNAcionalExtranjero.value,
-                onChanged: (String? value) {
-                  if (value != null) {
-                    controller.selectedOptionNAcionalExtranjero.value = value;
-                  }
-                },
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget wgTxtCedulaBoleta(ResponsiveUtil responsive) {
+  Widget wgTxtCedulaBoleta(
+      ResponsiveUtil responsive,
+      ) {
     return getForm(
-      child: Column(
-        children: [
+      child:Column(
+        children:[
+          wgFoto(responsive),
+
           getSelectNacionalExtranjero(),
+
           ImputTextWidget(
-            keyboardType: TextInputType.text,
-            controller: controller.controllerNumBoleta,
-            icono: Icon(
+            keyboardType:TextInputType.text,
+            controller:controller.controllerNumBoleta,
+            icono:Icon(
               Icons.assignment_sharp,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
+              color:AppColors.colorIcons,
+              size:controller.sizeIcons,
             ),
-            label: SiipneStrings.numBoleta,
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateNumBoleta,
+            label:SiipneStrings.numBoleta,
+            fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+            validar:Validate.validateNumBoleta,
           ),
+
           getWgCedulaWithFind(responsive),
         ],
       ),
     );
   }
 
-  Widget getWgCedulaWithFind(ResponsiveUtil responsive, {bool validar = true}) {
+  Widget getWgCedulaWithFind(
+      ResponsiveUtil responsive,{
+        bool validar=true,
+      }) {
     return Column(
-      children: [
+      children:[
         Row(
-          children: [
+          crossAxisAlignment:CrossAxisAlignment.start,
+          children:[
             Expanded(
-              flex: 3,
-              child: ImputTextWidget(
-                keyboardType: TextInputType.number,
-                controller: controller.controllerCedula,
-                icono: Icon(
+              child:ImputTextWidget(
+                keyboardType:TextInputType.number,
+                controller:controller.controllerCedula,
+                icono:Icon(
                   Icons.assignment_sharp,
-                  color: AppColors.colorIcons,
-                  size: controller.sizeIcons,
+                  color:AppColors.colorIcons,
+                  size:controller.sizeIcons,
                 ),
-                label: SiipneStrings.cedula,
-                fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
+                label:SiipneStrings.cedula,
+                fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
                 validar:
-                    controller.selectedOptionNAcionalExtranjero == "Nacional"
-                        ? Validate.validateCedula
-                        : null,
+                controller.selectedOptionNAcionalExtranjero=="Nacional"
+                    ?Validate.validateCedula
+                    :null,
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                padding: EdgeInsets.all(10),
-                child: BtnIconWidget(
-                  onPressed: () {
-                    bool validar =
-                        controller.selectedOptionNAcionalExtranjero ==
-                                "Nacional"
-                            ? true
-                            : false;
 
-                    if (controller.selectTipoNovedad.value.descripcion !=
-                        "DETENIDOS") {
-                      validar = false;
-                    }
+            const SizedBox(width:8),
 
-                    // controller.validarForm = validar;
+            Material(
+              color:Colors.transparent,
+              borderRadius:BorderRadius.circular(12),
+              clipBehavior:Clip.antiAlias,
+              child:InkWell(
+                onTap:(){
+                  bool validar=
+                  controller.selectedOptionNAcionalExtranjero=="Nacional"
+                      ?true
+                      :false;
 
-                    controller.getDatosPersona(permitirAll: true);
-                  },
-                  icon: Icons.search,
-                  colorTxt: Colors.white,
-                  colorIcon: Colors.white,
+                  if(controller.selectTipoNovedad.value.descripcion!="DETENIDOS"){
+                    validar=false;
+                  }
+
+                  controller.getDatosPersona(
+                    permitirAll:true,
+                  );
+                },
+                child:Ink(
+                  width:47,
+                  height:47,
+                  decoration:BoxDecoration(
+                    gradient:const LinearGradient(
+                      begin:Alignment.topLeft,
+                      end:Alignment.bottomRight,
+                      colors:[
+                        Color(0xFF123F75),
+                        Color(0xFF195496),
+                        Color(0xFF2869AC),
+                      ],
+                    ),
+                    borderRadius:BorderRadius.circular(12),
+                  ),
+                  child:const Icon(
+                    Icons.search_rounded,
+                    color:Colors.white,
+                    size:20,
+                  ),
                 ),
               ),
             ),
           ],
         ),
-        SizedBox(height: responsive.altoP(1)),
+
+        SizedBox(height:responsive.altoP(1)),
+
         wgDatosPersona(),
       ],
     );
   }
 
-  Widget wgTxtCedulaCitacion(ResponsiveUtil responsive) {
+  Widget wgTxtCedulaCitacion(
+      ResponsiveUtil responsive,
+      ) {
     return getForm(
-      child: Column(
-        children: [
+      child:Column(
+        children:[
           ImputTextWidget(
-            keyboardType: TextInputType.text,
-            controller: controller.controllerNumCitacion,
-            icono: Icon(
+            keyboardType:TextInputType.text,
+            controller:controller.controllerNumCitacion,
+            icono:Icon(
               Icons.assignment_sharp,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
+              color:AppColors.colorIcons,
+              size:controller.sizeIcons,
             ),
-            label: SiipneStrings.numCitacion,
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateNumCitacion,
+            label:SiipneStrings.numCitacion,
+            fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+            validar:Validate.validateNumCitacion,
           ),
+
           getWgCedulaWithFind(responsive),
         ],
       ),
     );
   }
 
-  Widget wgTxtMotivo(ResponsiveUtil responsive) {
+  Widget wgTxtMotivo(
+      ResponsiveUtil responsive,
+      ) {
     return getForm(
-      child: Column(
-        children: [
-          ImputTextWidget(
-            keyboardType: TextInputType.text,
-            controller: controller.controllerMotivo,
-            icono: Icon(
-              Icons.assignment_sharp,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
-            ),
-            label: "Motivo",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateNumCitacion,
-          ),
-        ],
+      child:ImputTextWidget(
+        keyboardType:TextInputType.text,
+        controller:controller.controllerMotivo,
+        icono:Icon(
+          Icons.assignment_sharp,
+          color:AppColors.colorIcons,
+          size:controller.sizeIcons,
+        ),
+        label:"Motivo",
+        fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+        validar:Validate.validateMotivo,
       ),
     );
   }
 
-  Widget wgTxtNumericoPersonal(ResponsiveUtil responsive) {
+  Widget wgTxtNumericoPersonal(
+      ResponsiveUtil responsive,
+      ) {
     return getForm(
-      child: Column(
-        children: [
-          ImputTextWidget(
-            keyboardType: TextInputType.number,
-            controller: controller.controllerNumericoPersonal,
-            icono: Icon(
-              Icons.assignment_sharp,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
-            ),
-            label: "Númerico del Personal",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateNumPersonal,
-          ),
-        ],
+      child:ImputTextWidget(
+        keyboardType:TextInputType.number,
+        controller:controller.controllerNumericoPersonal,
+        icono:Icon(
+          Icons.assignment_sharp,
+          color:AppColors.colorIcons,
+          size:controller.sizeIcons,
+        ),
+        label:"Númerico del Personal",
+        fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+        validar:Validate.validateNumPersonal,
       ),
     );
   }
 
-  Widget wgTxtNumeroManifestantes(responsive) {
+  Widget wgTxtNumeroManifestantes(
+      responsive,
+      ) {
     return getForm(
-      child: Column(
-        children: [
+      child:Column(
+        children:[
           ImputTextWidget(
-            keyboardType: TextInputType.text,
-            controller: controller.controllerOrganizacion,
-            icono: Icon(
+            keyboardType:TextInputType.text,
+            controller:controller.controllerOrganizacion,
+            icono:Icon(
               Icons.category,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
+              color:AppColors.colorIcons,
+              size:controller.sizeIcons,
             ),
-            label: "Organización Social o Política",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateOrganizacion,
+            label:"Organización Social o Política",
+            fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+            validar:Validate.validateOrganizacion,
           ),
+
           ImputTextWidget(
-            keyboardType: TextInputType.text,
-            controller: controller.controllerDirigente,
-            icono: Icon(
+            keyboardType:TextInputType.text,
+            controller:controller.controllerDirigente,
+            icono:Icon(
               Icons.category,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
+              color:AppColors.colorIcons,
+              size:controller.sizeIcons,
             ),
-            label: "Dirigente",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateDirigente,
+            label:"Dirigente",
+            fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+            validar:Validate.validateDirigente,
           ),
+
           ImputTextWidget(
-            keyboardType: TextInputType.number,
-            controller: controller.controllerCantidad,
-            onChanged: (valor) {
-              if (valor != null) {
-                if (int.parse(valor) > 100) {}
+            keyboardType:TextInputType.number,
+            controller:controller.controllerCantidad,
+            onChanged:(valor){
+              if(valor!=null){
+                if(int.parse(valor)>100){}
               }
             },
-            icono: Icon(
+            icono:Icon(
               Icons.assignment_sharp,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
+              color:AppColors.colorIcons,
+              size:controller.sizeIcons,
             ),
-            label: "Cantidad",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateCantidad,
+            label:"Cantidad",
+            fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+            validar:Validate.validateCantidad,
           ),
         ],
       ),
     );
   }
 
-  Widget wgTxtNumeroQuemaUrnas(responsive) {
+  Widget wgTxtNumeroQuemaUrnas(
+      responsive,
+      ) {
     return getForm(
-      child: Column(
-        children: [
+      child:Column(
+        children:[
           ImputTextWidget(
-            keyboardType: TextInputType.text,
-            controller: controller.controllerOrganizacion,
-            icono: Icon(
+            keyboardType:TextInputType.text,
+            controller:controller.controllerOrganizacion,
+            icono:Icon(
               Icons.category,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
+              color:AppColors.colorIcons,
+              size:controller.sizeIcons,
             ),
-            label: "Organización Social o Política",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateOrganizacion,
+            label:"Organización Social o Política",
+            fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+            validar:Validate.validateOrganizacion,
           ),
+
           ImputTextWidget(
-            keyboardType: TextInputType.text,
-            controller: controller.controllerDirigente,
-            icono: Icon(
+            keyboardType:TextInputType.text,
+            controller:controller.controllerDirigente,
+            icono:Icon(
               Icons.category,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
+              color:AppColors.colorIcons,
+              size:controller.sizeIcons,
             ),
-            label: "Dirigente",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateDirigente,
+            label:"Dirigente",
+            fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+            validar:Validate.validateDirigente,
           ),
+
           ImputTextWidget(
-            keyboardType: TextInputType.number,
-            controller: controller.controllerCantidad,
-            icono: Icon(
+            keyboardType:TextInputType.number,
+            controller:controller.controllerCantidad,
+            icono:Icon(
               Icons.assignment_sharp,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
+              color:AppColors.colorIcons,
+              size:controller.sizeIcons,
             ),
-            label: "Cantidad",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateCantidad,
+            label:"Cantidad",
+            fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+            validar:Validate.validateCantidad,
           ),
         ],
       ),
     );
   }
 
-  Widget wgTxtNumeroTomaRecintos(responsive) {
+  Widget wgTxtNumeroTomaRecintos(
+      responsive,
+      ) {
     return getForm(
-      child: Column(
-        children: [
+      child:Column(
+        children:[
           ImputTextWidget(
-            keyboardType: TextInputType.text,
-            controller: controller.controllerOrganizacion,
-            icono: Icon(
+            keyboardType:TextInputType.text,
+            controller:controller.controllerOrganizacion,
+            icono:Icon(
               Icons.category,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
+              color:AppColors.colorIcons,
+              size:controller.sizeIcons,
             ),
-            label: "Organización Social o Política",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateOrganizacion,
+            label:"Organización Social o Política",
+            fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+            validar:Validate.validateOrganizacion,
           ),
+
           ImputTextWidget(
-            keyboardType: TextInputType.text,
-            controller: controller.controllerDirigente,
-            icono: Icon(
+            keyboardType:TextInputType.text,
+            controller:controller.controllerDirigente,
+            icono:Icon(
               Icons.category,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
+              color:AppColors.colorIcons,
+              size:controller.sizeIcons,
             ),
-            label: "Dirigente",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateDirigente,
+            label:"Dirigente",
+            fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+            validar:Validate.validateDirigente,
           ),
+
           ImputTextWidget(
-            keyboardType: TextInputType.number,
-            controller: controller.controllerCantidad,
-            icono: Icon(
+            keyboardType:TextInputType.number,
+            controller:controller.controllerCantidad,
+            icono:Icon(
               Icons.assignment_sharp,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
+              color:AppColors.colorIcons,
+              size:controller.sizeIcons,
             ),
-            label: "Cantidad",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateCantidad,
+            label:"Cantidad",
+            fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+            validar:Validate.validateCantidad,
           ),
         ],
       ),
     );
   }
 
-  Widget wgTxtDesplazamientosAutoridades(responsive) {
+  Widget wgTxtDesplazamientosAutoridades(
+      responsive,
+      ) {
     return getForm(
-      child: Column(
-        children: [
+      child:Column(
+        children:[
           ImputTextWidget(
-            keyboardType: TextInputType.text,
-            controller: controller.controllerNombre,
-            icono: Icon(
+            keyboardType:TextInputType.text,
+            controller:controller.controllerNombre,
+            icono:Icon(
               Icons.assignment_sharp,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
+              color:AppColors.colorIcons,
+              size:controller.sizeIcons,
             ),
-            label: "Nombre",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateNombre,
+            label:"Nombre",
+            fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+            validar:Validate.validateNombre,
           ),
+
           ImputTextWidget(
-            keyboardType: TextInputType.text,
-            controller: controller.controllerCargo,
-            icono: Icon(
+            keyboardType:TextInputType.text,
+            controller:controller.controllerCargo,
+            icono:Icon(
               Icons.category,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
+              color:AppColors.colorIcons,
+              size:controller.sizeIcons,
             ),
-            label: "Cargo/Función",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateCargo,
+            label:"Cargo/Función",
+            fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+            validar:Validate.validateCargo,
           ),
+
           ImputTextWidget(
-            keyboardType: TextInputType.text,
-            controller: controller.controllerGrado,
-            icono: Icon(
+            keyboardType:TextInputType.text,
+            controller:controller.controllerGrado,
+            icono:Icon(
               Icons.assignment_sharp,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
+              color:AppColors.colorIcons,
+              size:controller.sizeIcons,
             ),
-            label: "Grado (Opcional)",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
+            label:"Grado (Opcional)",
+            fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
           ),
         ],
       ),
     );
   }
 
-  Widget wgTxtApoyoMediosComunicacion(responsive) {
+  Widget wgTxtApoyoMediosComunicacion(
+      responsive,
+      ) {
     return getForm(
-      child: Column(
-        children: [
+      child:Column(
+        children:[
           ImputTextWidget(
-            keyboardType: TextInputType.text,
-            controller: controller.controllerNombre,
-            icono: Icon(
+            keyboardType:TextInputType.text,
+            controller:controller.controllerNombre,
+            icono:Icon(
               Icons.assignment_sharp,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
+              color:AppColors.colorIcons,
+              size:controller.sizeIcons,
             ),
-            label: "Nombre",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateNombre,
+            label:"Nombre",
+            fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+            validar:Validate.validateNombre,
           ),
+
           ImputTextWidget(
-            keyboardType: TextInputType.text,
-            controller: controller.controllerMedioComunicacion,
-            icono: Icon(
+            keyboardType:TextInputType.text,
+            controller:controller.controllerMedioComunicacion,
+            icono:Icon(
               Icons.category,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
+              color:AppColors.colorIcons,
+              size:controller.sizeIcons,
             ),
-            label: "Medio de Comunicación",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateMedioComunicacion,
+            label:"Medio de Comunicación",
+            fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+            validar:Validate.validateMedioComunicacion,
           ),
         ],
       ),
     );
   }
 
-  Widget wgTxtSeguridadPersonasImportantes(responsive) {
+  Widget wgTxtSeguridadPersonasImportantes(
+      responsive,
+      ) {
     return getForm(
-      child: Column(
-        children: [
+      child:Column(
+        children:[
           ImputTextWidget(
-            keyboardType: TextInputType.text,
-            controller: controller.controllerFuncion,
-            icono: Icon(
+            keyboardType:TextInputType.text,
+            controller:controller.controllerFuncion,
+            icono:Icon(
               Icons.assignment_sharp,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
+              color:AppColors.colorIcons,
+              size:controller.sizeIcons,
             ),
-            label: "Función",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateFuncion,
+            label:"Función",
+            fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+            validar:Validate.validateFuncion,
           ),
-          ImputTextWidget(
-            keyboardType: TextInputType.text,
-            controller: controller.controllerNombre,
-            icono: Icon(
-              Icons.assignment_sharp,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
-            ),
-            label: "Nombres",
 
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateNombre,
+          ImputTextWidget(
+            keyboardType:TextInputType.text,
+            controller:controller.controllerNombre,
+            icono:Icon(
+              Icons.assignment_sharp,
+              color:AppColors.colorIcons,
+              size:controller.sizeIcons,
+            ),
+            label:"Nombres",
+            fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+            validar:Validate.validateNombre,
           ),
         ],
       ),
     );
   }
 
-  Widget wgTxtSeguridadInstalaciones(responsive) {
+  Widget wgTxtSeguridadInstalaciones(
+      responsive,
+      ) {
     return getForm(
-      child: Column(
-        children: [
+      child:Column(
+        children:[
           ImputTextWidget(
-            keyboardType: TextInputType.text,
-            controller: controller.controllerInstalacion,
-            icono: Icon(
+            keyboardType:TextInputType.text,
+            controller:controller.controllerInstalacion,
+            icono:Icon(
               Icons.assignment_sharp,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
+              color:AppColors.colorIcons,
+              size:controller.sizeIcons,
             ),
-            label: "Nombre Instalación",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateInstalacion,
+            label:"Nombre Instalación",
+            fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+            validar:Validate.validateInstalacion,
           ),
+
           ImputTextWidget(
-            keyboardType: TextInputType.text,
-            controller: controller.controllerDescripcion,
-            icono: Icon(
+            keyboardType:TextInputType.text,
+            controller:controller.controllerDescripcion,
+            icono:Icon(
               Icons.assignment_sharp,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
+              color:AppColors.colorIcons,
+              size:controller.sizeIcons,
             ),
-            label: "Descripción",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateDescripcion,
+            label:"Descripción",
+            fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+            validar:Validate.validateDescripcion,
           ),
         ],
       ),
     );
   }
 
-  Widget wgTxtExplosivos(responsive) {
+  Widget wgTxtExplosivos(
+      responsive,
+      ) {
     return getForm(
-      child: Column(
-        children: [
+      child:Column(
+        children:[
           ImputTextWidget(
-            keyboardType: TextInputType.text,
-            controller: controller.controllerDireccion,
-            icono: Icon(
+            keyboardType:TextInputType.text,
+            controller:controller.controllerDireccion,
+            icono:Icon(
               Icons.assignment_sharp,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
+              color:AppColors.colorIcons,
+              size:controller.sizeIcons,
             ),
-            label: "Dirección",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateDireccion,
+            label:"Dirección",
+            fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+            validar:Validate.validateDireccion,
           ),
+
           ImputTextWidget(
-            keyboardType: TextInputType.text,
-            controller: controller.controllerDescripcion,
-            icono: Icon(
+            keyboardType:TextInputType.text,
+            controller:controller.controllerDescripcion,
+            icono:Icon(
               Icons.assignment_sharp,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
+              color:AppColors.colorIcons,
+              size:controller.sizeIcons,
             ),
-            label: "Descripción",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateDescripcion,
+            label:"Descripción",
+            fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+            validar:Validate.validateDescripcion,
           ),
         ],
       ),
     );
   }
 
-  Widget wgTxtApoyoUnidadesPoliciales(responsive) {
+  Widget wgTxtApoyoUnidadesPoliciales(
+      responsive,
+      ) {
     return getForm(
-      child: Column(
-        children: [
-          ImputTextWidget(
-            keyboardType: TextInputType.text,
-            controller: controller.controllerUnidad,
-            icono: Icon(
-              Icons.assignment_sharp,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
-            ),
-            label: "Unidad",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateUnidad,
+      child:ImputTextWidget(
+        keyboardType:TextInputType.text,
+        controller:controller.controllerUnidad,
+        icono:Icon(
+          Icons.assignment_sharp,
+          color:AppColors.colorIcons,
+          size:controller.sizeIcons,
+        ),
+        label:"Unidad",
+        fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+        validar:Validate.validateUnidad,
+      ),
+    );
+  }
+
+  Widget wgTxtHora(
+      ResponsiveUtil responsive,
+      ) {
+    return getForm(
+      child:Row(
+        children:[
+          Expanded(
+            child:getComboHora(responsive),
+          ),
+
+          const SizedBox(width:8),
+
+          Expanded(
+            child:getComboMinuto(responsive),
           ),
         ],
       ),
     );
   }
 
-  Widget wgTxtHora(ResponsiveUtil responsive) {
-    return getForm(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(height: responsive.altoP(1)),
-          getComboHora(responsive),
-          getComboMinuto(responsive),
-        ],
-      ),
-    );
-  }
-
-  Widget getComboHora(ResponsiveUtil responsive) {
-    List<String> datos = controller.datosHora;
+  Widget getComboHora(
+      ResponsiveUtil responsive,
+      ) {
+    List<String> datos=controller.datosHora;
 
     return ComboBusqueda(
-      selectValue: controller.selectHora,
-
-      showClearButton: false,
-      datos: datos,
-      displayField: (item) => item, // Aquí decides mostrar "nombres"
-      searchHint: "Hora",
-      complete: (value) {
-        if (value != null) {
-          controller.selectHora = value;
+      selectValue:controller.selectHora,
+      showClearButton:false,
+      datos:datos,
+      displayField:(item)=>item,
+      searchHint:"Hora",
+      complete:(value){
+        if(value!=null){
+          controller.selectHora=value;
           return;
         }
       },
-      textSeleccioneUndato: "Seleccione la Hora",
+      textSeleccioneUndato:"Seleccione la Hora",
     );
   }
 
-  Widget getComboMinuto(ResponsiveUtil responsive) {
-    List<String> datos = controller.datosMinuto;
+  Widget getComboMinuto(
+      ResponsiveUtil responsive,
+      ) {
+    List<String> datos=controller.datosMinuto;
 
     return ComboBusqueda(
-      selectValue: controller.selectMinuto,
-
-      showClearButton: false,
-      datos: datos,
-      displayField: (item) => item, // Aquí decides mostrar "nombres"
-      searchHint: "Minuto",
-      complete: (value) {
-        if (value != null) {
-          controller.selectMinuto = value;
-
+      selectValue:controller.selectMinuto,
+      showClearButton:false,
+      datos:datos,
+      displayField:(item)=>item,
+      searchHint:"Minuto",
+      complete:(value){
+        if(value!=null){
+          controller.selectMinuto=value;
           return;
         }
       },
-      textSeleccioneUndato: "Seleccione Minuto",
+      textSeleccioneUndato:"Seleccione Minuto",
     );
   }
 
-  Widget wgTxtNumerico(responsive) {
+  Widget wgTxtNumerico(
+      responsive,
+      ) {
     return getForm(
-      child: Column(
-        children: [
-          ImputTextWidget(
-            keyboardType: TextInputType.number,
-            controller: controller.controllerNumerico,
-            icono: Icon(
-              Icons.assignment_sharp,
-              color: AppColors.colorIcons,
-              size: controller.sizeIcons,
-            ),
-            label: "Numérico",
-            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
-            validar: Validate.validateNumerico,
-          ),
-        ],
+      child:ImputTextWidget(
+        keyboardType:TextInputType.number,
+        controller:controller.controllerNumerico,
+        icono:Icon(
+          Icons.assignment_sharp,
+          color:AppColors.colorIcons,
+          size:controller.sizeIcons,
+        ),
+        label:"Numérico",
+        fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
+        validar:Validate.validateNumerico,
       ),
     );
   }
-
-  //+++++++++++++++++++++++++++ TXT +++++++++++++++++++++++++++++
 
   Widget wgDatosPersona() {
     return Obx(
-      () =>
-          controller.datosPerson.value.idGenPersona > 0
-              ? Container(
-                padding: EdgeInsets.all(5),
-                child: TituloDetalleTextWidget(
-                  margin: EdgeInsets.all(0),
-                  padding: EdgeInsets.all(8),
-                  title: "Nombres",
-                  detalle:
-                      controller.datosPerson.value.siglas.length > 0
-                          ? controller.datosPerson.value.siglas +
-                              "." +
-                              controller.datosPerson.value.apenom
-                          : controller.datosPerson.value.apenom,
+          ()=>controller.datosPerson.value.idGenPersona>0
+          ?Container(
+        width:double.infinity,
+        padding:const EdgeInsets.all(10),
+        decoration:BoxDecoration(
+          color:const Color(0xFFF0F5FB),
+          borderRadius:BorderRadius.circular(13),
+          border:Border.all(
+            color:const Color(0xFF195496).withOpacity(.18),
+          ),
+        ),
+        child:Row(
+          children:[
+            Container(
+              width:39,
+              height:39,
+              decoration:BoxDecoration(
+                color:Colors.white,
+                shape:BoxShape.circle,
+                border:Border.all(
+                  color:const Color(0xFF195496).withOpacity(.16),
                 ),
-              )
-              : Container(),
+              ),
+              child:const Icon(
+                Icons.person_rounded,
+                color:Color(0xFF195496),
+                size:19,
+              ),
+            ),
+
+            const SizedBox(width:8),
+
+            Expanded(
+              child:Column(
+                crossAxisAlignment:CrossAxisAlignment.start,
+                children:[
+                  const Text(
+                    'PERSONA IDENTIFICADA',
+                    style:TextStyle(
+                      color:Color(0xFF195496),
+                      fontSize:6.5,
+                      fontWeight:FontWeight.w900,
+                      letterSpacing:.4,
+                    ),
+                  ),
+
+                  const SizedBox(height:3),
+
+                  Text(
+                    controller.datosPerson.value.siglas.length>0
+                        ?"${controller.datosPerson.value.siglas}.${controller.datosPerson.value.apenom}"
+                        :controller.datosPerson.value.apenom,
+                    maxLines:3,
+                    overflow:TextOverflow.ellipsis,
+                    style:const TextStyle(
+                      color:Color(0xFF17365D),
+                      fontSize:9.5,
+                      fontWeight:FontWeight.w900,
+                      height:1.10,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const Icon(
+              Icons.verified_rounded,
+              color:Color(0xFF218A61),
+              size:19,
+            ),
+          ],
+        ),
+      )
+          :const SizedBox.shrink(),
     );
   }
 }

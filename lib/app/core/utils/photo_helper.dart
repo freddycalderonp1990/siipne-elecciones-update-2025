@@ -20,6 +20,7 @@ import '../../../../../app/core/utils/utilidadesUtil.dart';
 import '../../../../../app_elecciones/core/values/siipne_images.dart';
 import '../../../../../app_elecciones/presentation/widgets/customWidgets.dart';
 
+import '../../presentation/widgets/custom_app_widgets.dart';
 import '../app_config.dart';
 import '../values/app_colors.dart';
 import '../values/app_images.dart';
@@ -28,8 +29,15 @@ class PhotoHelper {
   static Future<GaleryCameraModel?> getDesingPictureGaleryOrCamera({
     required String titleImg,
     required ValueChanged<bool> initPeticion,
+    bool onlyCamera=false,
+
   }) async {
     final Completer<GaleryCameraModel?> completer = Completer();
+
+    String msj="Seleccione una Imagen o Tome una Fotografía";
+    if(onlyCamera){
+      msj="Tome una Fotografía";
+    }
 
     AwesomeDialog(
       dismissOnTouchOutside: false,
@@ -37,10 +45,25 @@ class PhotoHelper {
       context: Get.context!,
       dialogType: DialogType.info,
       headerAnimationLoop: false,
-      customHeader: Container(child: Image.asset(SiipneImages.imgIconD)),
+      customHeader: Container(
+        width: 80,
+        height: 80,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(color: AppColors.colorAzul, width: 3),
+        ),
+        child: Center(
+          child: Image.asset(
+            AppImages.escudopolicia,
+            width: 60, // Ajusta el tamaño para que no se recorte
+            height: 60,
+            fit: BoxFit.contain, // Mantiene proporciones
+          ),
+        ),
+      ),
       animType: AnimType.scale,
       title: "Registre una Fotografia",
-      btnCancel: BtnIconWidget(
+      btnCancel:onlyCamera?null: BtnIconWidget(
         onPressed: () async {
           Get.back();
           initPeticion(true);
@@ -62,7 +85,7 @@ class PhotoHelper {
         },
         titulo: "Cámara",
       ),
-      desc: "Seleccione una Imagen o Tome una Fotografía",
+      desc: msj,
       showCloseIcon: true,
     ).show();
 
@@ -213,12 +236,12 @@ class PhotoHelper {
 
     String nameImg =
         "image_" +
-        title +
-        "_" +
-        rand.toString() +
-        "_" +
-        MyDate.getFechaActual.replaceAll(" ", "_") +
-        ".jpg";
+            title +
+            "_" +
+            rand.toString() +
+            "_" +
+            MyDate.getFechaActual.replaceAll(" ", "_") +
+            ".jpg";
     File compressImg = new File("$path/$nameImg")
       ..writeAsBytesSync(Img.encodeJpg(smallerImg, quality: 100));
 

@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:latlong2/latlong.dart';
 
-import '../../../app_elecciones/presentation/widgets/customWidgets.dart';
+
 import '../../presentation/widgets/custom_app_widgets.dart';
 import '../app_config.dart';
 
@@ -24,8 +24,6 @@ class MyGps {
   }
 
   static Future<bool> verificarGPS() async {
-    cancelarSeguimiento();
-    AppConfig.ubicacionLista.value = false;
 
     final status = await Permission.location.request();
     if (status == PermissionStatus.permanentlyDenied) {
@@ -39,7 +37,7 @@ class MyGps {
           btnOkOnPress: () async {
             await  openAppSettings();
           },
-          btnCancelOnPress: () {});
+    );
       return false;
     }
 
@@ -71,9 +69,7 @@ class MyGps {
           "Necesitamos acceder a la ubicación del Dispositivo.\n\n Por favor active el GPS - Ubicación  de su dispositivo";
       DialogosAwesome.getWarning(
           descripcion: msj,
-          btnOkOnPress: () {
-            Get.back();
-          });
+        );
       return false;
     }
 
@@ -124,35 +120,7 @@ class MyGps {
     return result;
   }
 
-  static Future iniciarSeguimiento() async {
-    bool gpsListo = await verificarGPS();
-    if (!gpsListo) {
-      return;
-    }
 
-    if (AppConfig.positionSubscription == null) {
-      print("iniciarSeguimiento");
-
-      final positionStream = myGeolocator.Geolocator.getPositionStream(
-          locationSettings: MyGps.getConfig);
-      AppConfig.positionSubscription = positionStream.handleError((error) {
-        print("tcambia ubicacion ${error}");
-        AppConfig.positionSubscription!.cancel();
-        AppConfig.positionSubscription = null;
-      }).listen((position) {
-       /* AppConfig.ubicacion.value =
-            LatLng(position.latitude, position.longitude);
-        print(
-            "cambia ubicacion ${AppConfig.ubicacion.value.latitude}, ${AppConfig.ubicacion.value.longitude}");*/
-        AppConfig.ubicacionLista.value = true;
-      });
-    }
-  }
-
-  static void cancelarSeguimiento() {
-    AppConfig.positionSubscription?.cancel();
-    AppConfig.positionSubscription = null;
-  }
 }
 
 class DesingPermisosGps extends StatefulWidget {

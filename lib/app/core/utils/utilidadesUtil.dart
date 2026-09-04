@@ -15,12 +15,18 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/material.dart';
 
 
-
-
-
-import '../../../app_elecciones/presentation/widgets/customWidgets.dart';
+import '../../presentation/widgets/custom_app_widgets.dart';
 
 class UtilidadesUtil {
+
+  static compartirPdf(String archivo) async {
+    try {
+      await Share.shareXFiles([XFile(archivo)], text: "PDF's");
+      //  await Share.shareFiles([archivo], text: 'Your PDF!');;
+    } catch (e) {
+      DialogosAwesome.getWarning(descripcion: "No se pudo cargar la página");
+    }
+  }
 
   static Future<Uint8List>  captureToImg(GlobalKey keyWidgetShared) async {
 

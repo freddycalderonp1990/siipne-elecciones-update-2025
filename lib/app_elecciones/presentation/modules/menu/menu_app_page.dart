@@ -1,80 +1,348 @@
 part of '../pages.dart';
 
-class MenuAppPage extends GetView<MenuAppController> {
-  const MenuAppPage({Key? key}) : super(key: key);
+class MenuAppEleccionesPage extends GetView<MenuAppEleccionesController> {
+  const MenuAppEleccionesPage({Key? key}) : super(key:key);
 
   @override
   Widget build(BuildContext context) {
-    return WorkAreaPageWidget(
-      title: "MENÚ PRINCIPAL",
-      contenido:  getContenido(),
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<NotificationsBloc>().requestPermission(appName:NamApps.Elecciones,idGenUsuario:controller.user.idGenUsuario);
+    });
 
-      peticionServer: controller.peticionServerState,
+    return WorkAreaPageWidget(
+      showBtnNotificacione:false,
+      mostrarDatosServidor:true,
+      title:"MÓDULO ELECCIONES",
+      imgPerfil:controller.user.foto,
+      nombresServidor:controller.user.nombres?.toString(),
+      sexoServidor:controller.user.sexo?.toString(),
+      contenido:getContenido(),
+      peticionServer:controller.peticionServerState,
     );
   }
 
   Widget getContenido() {
-    final responsive = ResponsiveUtil();
+    final responsive=ResponsiveUtil();
 
     return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(height: responsive.altoP(2)),
-          imgPerfilRedonda(size: 27, img: controller.user.foto),
-          SizedBox(height: responsive.altoP(2)),
-          DesingTextNameUser(
-            sexo: controller.user.sexo,
-            text: controller.user.nombres,
-          ),
-          SizedBox(height: responsive.altoP(2                                                     )),
-          Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                SizedBox(height: responsive.altoP(2)),
-                _getMenu(responsive),
+      physics:const AlwaysScrollableScrollPhysics(),
+      padding:const EdgeInsets.fromLTRB(8,8,8,20),
+      child:Column(
+        crossAxisAlignment:CrossAxisAlignment.stretch,
+        children:[
+          _cabeceraModulo(),
+          SizedBox(height:responsive.altoP(1.4)),
+          _getMenu(responsive),
+          SizedBox(height:responsive.altoP(2.5)),
+          _botonSalir(),
+        ],
+      ),
+    );
+  }
+
+  Widget _cabeceraModulo() {
+    return Padding(
+      padding:const EdgeInsets.symmetric(horizontal:2),
+      child:Row(
+        children:[
+          Container(width:3,height:28,decoration:BoxDecoration(color:const Color(0xFF195496),borderRadius:BorderRadius.circular(20))),
+          const SizedBox(width:8),
+          const Expanded(
+            child:Column(
+              crossAxisAlignment:CrossAxisAlignment.start,
+              children:[
+                Text('Servicios electorales',style:TextStyle(color:Color(0xFF17365D),fontSize:14,fontWeight:FontWeight.w800)),
+                SizedBox(height:1),
+                Text('Seleccione la operación que desea realizar',style:TextStyle(color:Color(0xFF7A8998),fontSize:9)),
               ],
             ),
           ),
-
-          SizedBox(height: responsive.altoP(3)),
-          BtnIconWidget(
-            icon: Icons.exit_to_app,
-            titulo: "SALIR",
-            onPressed: () => controller.cerrarSession(),
+          Container(
+            width:31,
+            height:31,
+            decoration:const BoxDecoration(color:Color(0xFFEAF1F8),borderRadius:BorderRadius.all(Radius.circular(9))),
+            child:const Icon(Icons.how_to_vote_outlined,color:Color(0xFF195496),size:17),
           ),
         ],
       ),
     );
   }
 
-  _getMenu(ResponsiveUtil responsive) {
-    double separacionBtnMenu = 1.5;
+  Widget _getMenu(ResponsiveUtil responsive) {
+    return Obx(() {
+      final List<Widget> botones=[];
 
-    return Row(
-      children: [
-        Flexible(
-          child: BtnMenuWidget(
-            horizontal: true,
-            colorFondo: Colors.white,
-            img: SiipneImages.icon_abrir_rec_elec,
-            title: SiipneStrings.CREARCODIGO,
-            onTap: () => Get.toNamed(SiipneRoutes.SELECT_PROCESO_OPERATIVOS),
+      if(controller.selectProcesosOperativo.value.permitirCrearCodigos){
+        botones.add(
+          _moduloElecciones(
+            img:SiipneEleccionesImages.icon_abrir_rec_elec,
+            title:SiipneStrings.CREARCODIGO,
+            subtitle:'Crear Código',
+            icon:Icons.add_box_outlined,
+            onTap:()=>Get.toNamed(EleccionesRoutes.SELECT_PROCESO_OPERATIVOS),
+          ),
+        );
+
+        botones.add(
+          _moduloElecciones(
+            img:SiipneEleccionesImages.icon_anexarse_rec_elec,
+            title:SiipneStrings.ANEXARSE,
+            subtitle:'Anexarse',
+            icon:Icons.group_add_outlined,
+            onTap:()=>Get.toNamed(EleccionesRoutes.ANEXARSE),
+          ),
+        );
+      }
+
+      if(controller.selectProcesosOperativo.value.validarRecinto){
+        botones.add(
+          _moduloElecciones(
+            img:SiipneEleccionesImages.ic_validar_recinto,
+            title:SiipneStrings.VALIDAR_RECINTO,
+            subtitle:'Validación de recinto',
+            icon:Icons.verified_outlined,
+            onTap:()=>Get.toNamed(
+              EleccionesRoutes.VALIDAR_RECINTO,
+              arguments:{
+                "selectProcesosOperativo":controller.selectProcesosOperativo.value,
+              },
+            ),
+          ),
+        );
+      }
+
+      return _gridBotones(botones);
+    });
+  }
+
+  Widget _gridBotones(List<Widget> botones) {
+    if(botones.isEmpty)return const SizedBox.shrink();
+
+    return LayoutBuilder(
+      builder:(context,constraints){
+        const double separacionHorizontal=10;
+        const double separacionVertical=10;
+
+        final double anchoBoton=(constraints.maxWidth-separacionHorizontal)/2;
+        final List<Widget> filas=[];
+
+        for(int i=0;i<botones.length;i+=2){
+          final bool tieneSegundo=i+1<botones.length;
+
+          if(tieneSegundo){
+            filas.add(
+              Row(
+                crossAxisAlignment:CrossAxisAlignment.start,
+                children:[
+                  SizedBox(
+                    width:anchoBoton,
+                    child:botones[i],
+                  ),
+                  const SizedBox(width:separacionHorizontal),
+                  SizedBox(
+                    width:anchoBoton,
+                    child:botones[i+1],
+                  ),
+                ],
+              ),
+            );
+          }else{
+            filas.add(
+              Center(
+                child:SizedBox(
+                  width:anchoBoton,
+                  child:botones[i],
+                ),
+              ),
+            );
+          }
+
+          if(i+2<botones.length){
+            filas.add(const SizedBox(height:separacionVertical));
+          }
+        }
+
+        return Column(children:filas);
+      },
+    );
+  }
+
+  Widget _moduloElecciones({
+    required String img,
+    required String title,
+    required String subtitle,
+    required IconData icon,
+    required VoidCallback onTap,
+  }) {
+    return Container(
+      decoration:BoxDecoration(
+        borderRadius:BorderRadius.circular(17),
+        boxShadow:[
+          BoxShadow(
+            color:const Color(0xFF17365D).withOpacity(.07),
+            blurRadius:13,
+            offset:const Offset(0,5),
+          ),
+        ],
+      ),
+      child:Material(
+        color:Colors.transparent,
+        borderRadius:BorderRadius.circular(17),
+        clipBehavior:Clip.antiAlias,
+        child:InkWell(
+          onTap:onTap,
+          splashColor:const Color(0xFF195496).withOpacity(.07),
+          highlightColor:const Color(0xFF195496).withOpacity(.03),
+          child:Ink(
+            height:145,
+            decoration:BoxDecoration(
+              color:Colors.white.withOpacity(.97),
+              borderRadius:BorderRadius.circular(17),
+              border:Border.all(color:const Color(0xFFDCE4EC)),
+            ),
+            child:Stack(
+              children:[
+                Positioned(
+                  top:-38,
+                  right:-36,
+                  child:Container(
+                    width:100,
+                    height:100,
+                    decoration:BoxDecoration(
+                      shape:BoxShape.circle,
+                      color:const Color(0xFF195496).withOpacity(.045),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding:const EdgeInsets.fromLTRB(10,10,10,10),
+                  child:Column(
+                    crossAxisAlignment:CrossAxisAlignment.center,
+                    children:[
+                      Row(
+                        mainAxisAlignment:MainAxisAlignment.spaceBetween,
+                        children:[
+                          Container(
+                            padding:const EdgeInsets.symmetric(horizontal:6,vertical:3),
+                            decoration:BoxDecoration(
+                              color:const Color(0xFF195496).withOpacity(.06),
+                              borderRadius:BorderRadius.circular(20),
+                            ),
+                            child:const Text(
+                              'SERVICIO',
+                              style:TextStyle(
+                                color:Color(0xFF195496),
+                                fontSize:6.3,
+                                fontWeight:FontWeight.w900,
+                                letterSpacing:.7,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width:27,
+                            height:27,
+                            decoration:BoxDecoration(
+                              gradient:const LinearGradient(
+                                begin:Alignment.topLeft,
+                                end:Alignment.bottomRight,
+                                colors:[Color(0xFF123F75),Color(0xFF2869AC)],
+                              ),
+                              borderRadius:BorderRadius.circular(8),
+                            ),
+                            child:const Icon(Icons.arrow_forward_rounded,color:Colors.white,size:14),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height:4),
+                      Expanded(
+                        child:Container(
+                          width:62,
+                          padding:const EdgeInsets.all(7),
+                          decoration:BoxDecoration(
+                            color:const Color(0xFFF2F6FA),
+                            borderRadius:BorderRadius.circular(14),
+                            border:Border.all(color:const Color(0xFF195496).withOpacity(.06)),
+                          ),
+                          child:Image.asset(
+                            img,
+                            fit:BoxFit.contain,
+                            errorBuilder:(context,error,stackTrace)=>Icon(icon,color:const Color(0xFF195496),size:30),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height:6),
+                      Text(
+                        title,
+                        textAlign:TextAlign.center,
+                        maxLines:2,
+                        overflow:TextOverflow.ellipsis,
+                        style:const TextStyle(
+                          color:Color(0xFF17365D),
+                          fontSize:10.5,
+                          fontWeight:FontWeight.w900,
+                          height:1.05,
+                          letterSpacing:.1,
+                        ),
+                      ),
+                      const SizedBox(height:2),
+                      Text(
+                        subtitle,
+                        textAlign:TextAlign.center,
+                        maxLines:1,
+                        overflow:TextOverflow.ellipsis,
+                        style:const TextStyle(
+                          color:Color(0xFF758596),
+                          fontSize:7.6,
+                          fontWeight:FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-        SizedBox(width: responsive.anchoP(2)),
-        Flexible(
-          child: BtnMenuWidget(
-            horizontal: true,
-            colorFondo: Colors.white,
-            img: SiipneImages.icon_registrarse_rec_elect,
-            title: SiipneStrings.ANEXARSE,
-            onTap: () => Get.toNamed(SiipneRoutes.ANEXARSE),
+      ),
+    );
+  }
+
+  Widget _botonSalir() {
+    return Align(
+      alignment:Alignment.center,
+      child:Material(
+        color:Colors.transparent,
+        borderRadius:BorderRadius.circular(12),
+        clipBehavior:Clip.antiAlias,
+        child:InkWell(
+          onTap:()=>controller.cerrarSession(),
+          splashColor:const Color(0xFFC34A4A).withOpacity(.08),
+          child:Ink(
+            padding:const EdgeInsets.symmetric(horizontal:17,vertical:9),
+            decoration:BoxDecoration(
+              color:const Color(0xFFF9F4F4),
+              borderRadius:BorderRadius.circular(12),
+              border:Border.all(color:const Color(0xFFE8DADA)),
+            ),
+            child:const Row(
+              mainAxisSize:MainAxisSize.min,
+              children:[
+                Icon(Icons.logout_rounded,color:Color(0xFFA84A4A),size:16),
+                SizedBox(width:7),
+                Text(
+                  'CERRAR SESIÓN',
+                  style:TextStyle(
+                    color:Color(0xFF9D4646),
+                    fontSize:9.5,
+                    fontWeight:FontWeight.w800,
+                    letterSpacing:.5,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
-      ],
+      ),
     );
   }
 }

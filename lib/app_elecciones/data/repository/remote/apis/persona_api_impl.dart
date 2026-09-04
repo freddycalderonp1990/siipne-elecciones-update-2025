@@ -19,6 +19,7 @@ class PersonaApiImpl extends PersonaRepository {
         request: request);
   }
 
+
   @override
   Future<List<PersonalRecintoElectoral>>
       consultarDatosPersonalAsignadoRecintoElectoral({

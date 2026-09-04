@@ -82,13 +82,13 @@ class AddPersonController extends GetxController {
     }
 
     peticionServerState(true);
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       datosPerson.value = await _personaApiImpl.getDatosPersona(
         idDgoProcElec: recintosElectoralesAbiertos.idDgoProcElec,
           usuario: user.idGenUsuario, cedula: controllerDocumento.text);
       if (datosPerson.value.idGenPersona == 0) {
         DialogosAwesome.getInformation(
-            btnOkOnPress: () {},
+
             descripcion:
                 "No existe datos para el documento ${controllerDocumento.text}");
         return;
@@ -97,7 +97,7 @@ class AddPersonController extends GetxController {
       if (!datosPerson.value.poliRegistrado) {
         datosPerson.value = DatosPer.empty();
         DialogosAwesome.getInformation(
-          btnOkOnPress: () {},
+
           descripcion: 'Persona no es Servidor Policial',
         );
         return;
@@ -108,7 +108,7 @@ class AddPersonController extends GetxController {
 
   Future<void> getSubsistemas() async {
     peticionServerState(true);
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       listSubsistema.value = await _eleccionesTipoEjesApiImpl
           .getUnidadesPoliciales(usuario: user.idGenUsuario);
       if (listSubsistema.length == 0) {
@@ -125,7 +125,7 @@ class AddPersonController extends GetxController {
     print("consultando");
     peticionServerState(true);
     List<UnidadesPoliciale> list = [];
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       list = await _eleccionesTipoEjesApiImpl.getTipoEjePorIdPadre(
           usuario: user.idGenUsuario, idDgoTipoEje: idDgoTipoEje);
     });
@@ -154,10 +154,10 @@ class AddPersonController extends GetxController {
   Future<void> addPersona() async {
     peticionServerState(true);
 
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
       LatLng position = await locationBloc.getCurrentPosition();
-      String ip = await DeviceInfo.getIp;
+      String ip = await DeviceInfoApp.getIp;
       AddPersonalRequest request = AddPersonalRequest(
           idDgoCreaOpReci: recintosElectoralesAbiertos.idDgoCreaOpReci,
           idDgoProcElec: recintosElectoralesAbiertos.idDgoProcElec,
@@ -176,8 +176,8 @@ class AddPersonController extends GetxController {
 
       if (result.idDgoPerAsigOpe == 0) {
         DialogosAwesome.getWarning(
-            descripcion: "No se pudo completar el registro",
-            btnOkOnPress: () {});
+            descripcion: "No se pudo completar el registro. Debe estar dentro de la zona permitida.",
+            );
         return;
       }
 
@@ -189,7 +189,9 @@ class AddPersonController extends GetxController {
           (recintosElectoralesAbiertos.codigoRecinto == result.codigoRecinto)) {
         DialogosAwesome.getSucess(
             descripcion: "Registro realizado con éxito!.",
-            btnOkOnPress: () => cleardatos());
+            btnOkOnPress: () {
+              cleardatos();
+            });
         return;
       } else {
         DialogosAwesome.getWarning(
@@ -197,7 +199,7 @@ class AddPersonController extends GetxController {
                 "${datosPerson.value.siglas}.${datosPerson.value.apenom} "
                 "\n\nya se encuentra asignado a \n${result.nomRecintoElec}"
                 " \n\n Para poder ser asignado abandone el recinto anterior y vuelva a intentar",
-            btnOkOnPress: () {});
+            );
         return;
       }
     });
@@ -218,7 +220,7 @@ class AddPersonController extends GetxController {
   }
 
   goToPageReportePersonal() {
-    Get.toNamed(SiipneRoutes.REPORT_PERSONAL, arguments: {
+    Get.toNamed(EleccionesRoutes.REPORT_PERSONAL, arguments: {
       "recintosElectoralesAbiertos": recintosElectoralesAbiertos
     });
   }

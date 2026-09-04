@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import '../../../../../../app/core/values/app_colors.dart';
 import '../../../../../../app/core/values/app_images.dart';
+import '../../../../../../app/presentation/widgets/custom_app_widgets.dart';
 import '../../../../../../app_elecciones/core/values/siipne_images.dart';
 
 import '../../../../../../app/core/app_config.dart';
@@ -39,7 +40,7 @@ class DisingPersonal extends StatelessWidget {
               width: responsive.altoP(1),
             ),
             Image.asset(
-              SiipneImages.icon_agregar_personal,
+              SiipneEleccionesImages.icon_agregar_personal,
               width: responsive.anchoP(5),
               height: responsive.anchoP(5),
             ),

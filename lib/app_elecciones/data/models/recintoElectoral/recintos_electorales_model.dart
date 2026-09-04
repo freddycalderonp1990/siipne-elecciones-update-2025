@@ -36,42 +36,47 @@ class RecintosElectoralsModel {
 
 class RecintosElectoral {
   RecintosElectoral({
+    this.idDgoComisios=0,
+    this.apenomValida="",
     this.nomRecintoElecOnly='',
-    this.numElectores = 0,
-    this.numJuntMascu = 0,
-    this.numJuntFeme = 0,
+
+
+
     this.idDgoReciElect = 0,
-    this.idGenGeoSenplades = 0,
-    this.idGenDivPolitica = 0,
+
+
     this.codRecintoElec = '',
     this.nomRecintoElec = '',
     this.direcRecintoElec = '',
-    this.latitud = '',
-    this.longitud = '',
-    this.usuario = 0,
-    this.fecha = '',
+    this.latitud = 0,
+    this.longitud = 0,
+
+
     this.idDgoTipoEje = 0,
-    this.ip = '',
+
     this.distance = '0',
+    this.validado=false
   });
 
-  int numElectores;
-  int numJuntMascu;
-  int numJuntFeme;
+
+
   int idDgoReciElect;
-  int idGenGeoSenplades;
-  int idGenDivPolitica;
+  int idDgoComisios;
+
+
   String codRecintoElec;
   String nomRecintoElec;
   String nomRecintoElecOnly;
   String direcRecintoElec;
-  String latitud;
-  String longitud;
-  int usuario;
+  double latitud;
+  double longitud;
+
   int idDgoTipoEje;
-  String fecha;
-  String ip;
+
   String distance;
+  bool validado;
+
+  String apenomValida;
 
   factory RecintosElectoral.fromJson(Map<String, dynamic> json) {
     String nomRecinto =
@@ -83,42 +88,35 @@ class RecintosElectoral {
     nomRecinto = nomRecinto + dist;
 
     return RecintosElectoral(
-      numElectores: ParseModel.parseToInt(json["numElectores"] ),
-      numJuntMascu: ParseModel.parseToInt(json["numJuntMascu"] ),
-      numJuntFeme: ParseModel.parseToInt(json["numJuntFeme"] ),
+      idDgoComisios: ParseModel.parseToInt(json["idDgoComisios"]),
+      apenomValida: ParseModel.parseToString(json["apenomValida"]),
+
       idDgoReciElect: ParseModel.parseToInt(json["idDgoReciElect"]),
-      idGenGeoSenplades: ParseModel.parseToInt(json["idGenGeoSenplades"]),
-      idGenDivPolitica: ParseModel.parseToInt(json["idGenDivPolitica"]),
+
       codRecintoElec: ParseModel.parseToString(json["codRecintoElec"]),
       nomRecintoElec: nomRecinto,
       nomRecintoElecOnly:       ParseModel.parseToString(json["nomRecintoElec"]),
       direcRecintoElec: ParseModel.parseToString(json["direcRecintoElec"] ),
-      latitud: ParseModel.parseToString(json["latitud"] ),
-      longitud: ParseModel.parseToString(json["longitud"] ),
-      usuario: ParseModel.parseToInt(json["usuario"]),
-      fecha: ParseModel.parseToString(json["fecha"]),
-      ip: ParseModel.parseToString(json["ip"] ),
+      latitud: ParseModel.parseToDouble(json["latitud"] ),
+      longitud: ParseModel.parseToDouble(json["longitud"] ),
+
       idDgoTipoEje:  ParseModel.parseToInt(json["idDgoTipoEje"]),
       distance:  ParseModel.parseToString(json["distance"]),
+      validado: ParseModel.parseToBool(json["estadoRegistro"],valueCompareTrue: "VALIDADO")
     );
   }
 
   Map<String, dynamic> toJson() => {
-        "numElectores": numElectores == null ? null : numElectores,
-        "numJuntMascu": numJuntMascu == null ? null : numJuntMascu,
-        "numJuntFeme": numJuntFeme == null ? null : numJuntFeme,
+
         "idDgoReciElect": idDgoReciElect == null ? null : idDgoReciElect,
-        "idGenGeoSenplades": idGenGeoSenplades,
-        "idGenDivPolitica": idGenDivPolitica,
+
         "codRecintoElec": codRecintoElec == null ? null : codRecintoElec,
         "nomRecintoElec": nomRecintoElec == null ? null : nomRecintoElec,
         "direcRecintoElec": direcRecintoElec == null ? null : direcRecintoElec,
         "latitud": latitud == null ? null : latitud,
         "longitud": longitud == null ? null : longitud,
         "idDgoTipoEje": idDgoTipoEje == null ? null : idDgoTipoEje,
-        "usuario": usuario == null ? null : usuario,
-        "fecha": fecha == null ? null : fecha,
-        "ip": ip == null ? null : ip,
+
         "distance": distance == null ? null : distance,
       };
 }

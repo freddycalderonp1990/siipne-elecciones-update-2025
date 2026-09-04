@@ -3,8 +3,7 @@ part of '../controllers.dart';
 class AnexarseController extends GetxController {
   final loginController = Get.find<LoginController>();
 
-
-  final comboDependienteController=Get.find<ComboDependienteController>();
+  final dynamicComboUnidadesPoliciales = Get.put(DynamicComboController());
 
   final EleccionesRecintosApiImpl _eleccionesRecintosApiImpl =
       Get.find<EleccionesRecintosApiImpl>();
@@ -30,10 +29,10 @@ class AnexarseController extends GetxController {
   RxBool peticionServerState = false.obs;
   int idDgoCreaOpReci = 0;
 
-  RxInt select_save_IdDgoTipoEje=0.obs;
   @override
   void onInit() async {
     user = loginController.user.value;
+
     super.onInit();
   }
 
@@ -59,10 +58,6 @@ class AnexarseController extends GetxController {
 
     selectUnidadPolicial = DatosUnidadesId.empty().obs;
 
-   comboDependienteController.selectUnidadPolicial = UnidadesPoliciale.empty().obs;
-    comboDependienteController.selectUnidadPolicial.refresh();
-
-
     String text = controllerCodigoRecinto.text;
     int? codigoRecinto = int.tryParse(text);
 
@@ -71,106 +66,98 @@ class AnexarseController extends GetxController {
     }
     peticionServerState(true);
 
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       datosEncargado.value = await _eleccionesRecintosApiImpl
           .consultarDatosEncargadoRecintoPoridCreaRecinto(
-              idDgoCreaOpReci: idDgoCreaOpReci);
+            idDgoCreaOpReci: idDgoCreaOpReci,
+          );
 
       peticionServerState(false);
 
-
-
       if (datosEncargado.value.idDgoReciElect == 0) {
         DialogosAwesome.getWarning(
-            btnOkOnPress: () {},
-            title: "Anexarse",
-            descripcion: "No existen Operativos con este Código");
+          title: "Anexarse",
+          descripcion: "No existen Operativos con este Código",
+        );
         return;
       }
 
-      select_save_IdDgoTipoEje.value=0;
-      if(datosEncargado.value.idDgoTipoEje==1){
-
+      if (datosEncargado.value.idDgoTipoEje == 1) {
         getSubsistemas();
-      }else{
-
-
+      } else {
         getUnidadesPolicialesById(datosEncargado.value.idDgoTipoEje);
       }
-
     });
 
     peticionServerState(false);
   }
 
   Future<void> getUnidadesPolicialesById(int idDgoTipoEje) async {
-    peticionServerState(true);
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
-      listUnidadesPoliciales.value = await _eleccionesTipoEjesApiImpl
-          .getUnidadesPolicialesById(idDgoTipoEje: idDgoTipoEje);
-    });
-    peticionServerState(false);
+    await dynamicComboUnidadesPoliciales.init(
+      idGenUsuario: user.idGenUsuario,
+      idDgoTipoEje: idDgoTipoEje,
+    );
+    // 👇 sincroniza el RxBool externo
+    dynamicComboUnidadesPoliciales.peticionServerStateExterna =
+        peticionServerState;
+  }
+
+  Future<void> getSubsistemas() async {
+    await dynamicComboUnidadesPoliciales.init(idGenUsuario: user.idGenUsuario);
+
+    // 👇 sincroniza el RxBool externo
+    dynamicComboUnidadesPoliciales.peticionServerStateExterna =
+        peticionServerState;
   }
 
   Future<void> registrarse() async {
     peticionServerState(true);
 
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
       LatLng position = await locationBloc.getCurrentPosition();
-      String ip = await DeviceInfo.getIp;
+      String ip = await DeviceInfoApp.getIp;
+
+      //se realiza esta validacion ya que en la web si  el idDgoTipoEje es = 1, se considera que este dentro del rango
+
+      final ultimo = dynamicComboUnidadesPoliciales.seleccionados.lastWhere(
+        (e) => e.idDgoTipoEje > 0,
+        orElse: () => UnidadesPoliciale.empty(),
+      );
 
       AddPersonalRequest request = AddPersonalRequest(
-          idDgoCreaOpReci: idDgoCreaOpReci,
-          idDgoProcElec: datosEncargado.value.idDgoProcElec,
-          idGenPersona: user.idGenPersona,
-          usuario: user.idGenUsuario,
-          latitud: position.latitude,
-          longitud: position.longitude,
-          idDgoReciElect: datosEncargado.value.idDgoReciElect,
-          idDgoTipoEje: select_save_IdDgoTipoEje.value,
-          idDgpGrado: user.idDgpGrado,
-          ip: ip);
+        idDgoCreaOpReci: idDgoCreaOpReci,
+        idDgoProcElec: datosEncargado.value.idDgoProcElec,
+        idGenPersona: user.idGenPersona,
+        usuario: user.idGenUsuario,
+        latitud: position.latitude,
+        longitud: position.longitude,
+        idDgoReciElect: datosEncargado.value.idDgoReciElect,
+        idDgoTipoEje: ultimo.idDgoTipoEje,
+        idDgpGrado: user.idDgpGrado,
+        ip: ip,
+      );
 
       ResgistroPersEnRecElectoral result = await _personaApiImpl
           .asignarPersonalEnRecintoElectoral(request: request);
 
+
+
       if (result.idDgoPerAsigOpe == 0) {
         DialogosAwesome.getWarning(
-            descripcion: "No se pudo completar el registro",
-            btnOkOnPress: () {});
+          descripcion: "No se pudo completar el registro. Debe estar dentro de la zona permitida.",
+        );
         return;
       }
-
       //validacion 1- cuando la persona no esta registrada solo devuelve idDgoPerAsigOpe
       // es un regsitro nuevo
-
       DialogosAwesome.getSucess(
-          descripcion: "¡Proceso realizado con éxito!", btnOkOnPress: () {
-        Get.offAllNamed(SiipneRoutes.MENU_APP);
-      });
+        descripcion: "¡Proceso realizado con éxito!",
+        btnOkOnPress: () {
+          Get.offAllNamed(EleccionesRoutes.MENU_APP);
+        },
+      );
     });
-    peticionServerState(false);
-  }
-
-
-  Future<void> getSubsistemas() async {
-    peticionServerState(true);
-
-    await comboDependienteController.getSubsistemas(idGenUsuario: user.idGenUsuario);
-    peticionServerState(false);
-
-  }
-
-  Future<void> getEjesDireccionesPoliciales(int idDgoTipoEje) async {
-    peticionServerState(true);
-    await  comboDependienteController.getEjesDireccionesPoliciales(idDgoTipoEje: idDgoTipoEje, idGenUsuario:user. idGenUsuario);
-    peticionServerState(false);
-  }
-
-  Future<void> getEjesUnidadesPoliciales(int idDgoTipoEje) async {
-    peticionServerState(true);
-    await comboDependienteController.getEjesUnidadesPoliciales(idDgoTipoEje: idDgoTipoEje, idGenUsuario:user. idGenUsuario);
     peticionServerState(false);
   }
 }

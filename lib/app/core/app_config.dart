@@ -1,18 +1,56 @@
 import 'dart:async';
 
 
+
+import 'package:api_provider/core/api_config.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:geolocator/geolocator.dart' as myGeolocator;
 import 'package:get/get.dart';
 
-import '../../app_elecciones/domain/enums/enums.dart';
+
+import '../../app_elecciones/presentation/routes/elecciones_routes.dart';
+import '../presentation/routes/app_routes.dart';
+
+
+
+
+
 
 class AppConfig {
-  static var AmbienteUrl=getAmbiente( dotenv.env['AMBIENTE']??'DEV');
-  static final AmbienteUrlAnterior=AmbienteUrl;
+
+  static init(){
+
+    ApiConfig.AmbienteUrl=ApiConfig.setAmbiente( ambiente: dotenv.env['AMBIENTE']??'DEV');
+    ApiConfig.AmbienteUrlAnterior=ApiConfig.AmbienteUrl;
+
+  }
+
+  static  String key_securiry_qr= dotenv.env['SECRET_KEY_SECURITY_QR']??"*dG@p5Yh%j6BwTEGO"; // no modificar ya que este coincide con el del server
+
+  //CONFIGUARA QUE PAGUINA MUESTRA LUEGO DEL LOGIN
+  static const String showPageBeforeLogin= AppRoutes.MENU_APP;
+
+
+ // static var AmbienteUrl=ApiConfig.AmbienteUrl;
+
+
+  static const int intentosFallidosLogin=3;
+
+  static String userAgentPackageNameAndroid=
+  "ecuador.policianacional.dntic.siipnemovil2";
+  static String userAgentPackageNameIos=
+      "ecuador.policianacional.dntic.siipnemovil";
+
+
+
+  static  String linkAppAndroid =dotenv.env['LINK_APP_SIIPNE_ELECCIONES_ANDROID'] ??
+      "https://play.google.com/store/apps/details?id=ecuador.policianacional.dntic.siipnemovil2";
+  static  String linkAppIos =dotenv.env['LINK_APP_SIIPNE_ELECCIONES_IOS'] ??
+      "https://apps.apple.com/ec/app/siipnemovil-2/id1552944115";
 
   static bool isUserGoogleOrIos=false;
   static bool activarMocks=false;
+
   static int secondsTimeout=8;
 
   static  int duracionQRDay =  3; //duracion en minutos que dura el QR tanto al compartir como el web 1 hora
@@ -22,7 +60,7 @@ class AppConfig {
   static  String formatoHora =  'HH:mm';
 
   static const String nameAppSiipne3w="SIIPNE-3W";
-  static const String key_securiry_qr="*dG@p5Yh%j6BwTEGO";
+
 
   static const double radioBotones = 15.0;
 
@@ -80,17 +118,7 @@ class AppConfig {
   static bool isAdLoadedOnceBanner = false; // Bandera para controlar si el anuncio se cargó
 
 
-  static getAmbiente(String ambiente){
-    if(ambiente=='DEV'){
-      return Ambiente.desarrollo;
-    }
-    else if(ambiente=='TEST'){
-      return Ambiente.prueba;
-    }
-    else if(ambiente=='PROD'){
-      return Ambiente.produccion;
-    }
-  }
+
 
 
 }

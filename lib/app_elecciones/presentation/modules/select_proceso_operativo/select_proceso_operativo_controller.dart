@@ -43,7 +43,7 @@ class SelectProcesoOperativoController extends GetxController {
     peticionServerState(true);
     cargaInicial.value=true;
 
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
       LatLng position = await locationBloc.getCurrentPosition();
 
@@ -73,6 +73,6 @@ class SelectProcesoOperativoController extends GetxController {
 
 
   goToPageTipoServicio(){
-    Get.toNamed(SiipneRoutes.TIPOS_SERVICIOS_EJES);
+    Get.toNamed(EleccionesRoutes.TIPOS_SERVICIOS_EJES);
   }
 }

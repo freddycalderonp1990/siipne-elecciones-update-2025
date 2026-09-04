@@ -1,5 +1,23 @@
+# Pasos Notificaciones push 
+link: https://firebase.google.com/docs/flutter/setup?utm_source=chatgpt.com&hl=es-419&platform=ios
+
+1. para salir del login
+
+firebase logout
+
+2. iniciar login
+firebase login
+
+3. flutterfire configure
+4. flutter pub add firebase_core
+5. flutterfire configure
+6. 
+
+
 # siipnemovil2
 
+actualiza las librerias
+flutter pub upgrade --major-versions
 
 
 Flutter 3.29.2 • channel stable • https://github.com/flutter/flutter.git
@@ -8,10 +26,36 @@ Engine • revision 18b71d647a
 Tools • Dart 3.7.2 • DevTools 2.42.3
 
 
+##apuntar al git
+-antes 31 de octubre del 2025
+api_provider:
+git:
+url: https://github.com/freddycalderonp1990/paquete_api_provider.git
+ref: v1.0.3
+
+app_mi_upc:
+git:
+url: https://github.com/freddycalderonp1990/app_mi_upc.git
+ref: v3.0.0 # Usa el tag o branch deseado
+
+##apuntar al local
+
+api_provider:
+path: /Users/policianacional/AndroidStudioProjects/paquete_api_provider
+
+app_mi_upc:
+path: /Users/policianacional/AndroidStudioProjects/app_mi_upc
+
+
+
 # Proyecto Flutter
 
 Bienvenido a este proyecto Flutter. Consulta el [Changelog](CHANGELOG.md) para ver los cambios recientes.
 
+## AL USAR EL BIOMETRICO SE DEBE AGREGAR EN EL INFO.LITS DE  IOS
+
+	<key>NSFaceIDUsageDescription</key>
+	<string>La aplicación utiliza Face ID para brindar mayor seguridad al verificar la identidad al generar los códigos temporales.</string>
 
 
 ## Getting Started
@@ -176,5 +220,10 @@ Get.putAsync<ProfileController>(() async => ProfileController(await fetchUserPro
 ```
 
 
+
+api_provider:
+git:
+url: https://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@github.com/freddycalderonp1990/paquete_api_provider.git
+ref: v1.0.1 # Usa el tag o branch deseado
 
 

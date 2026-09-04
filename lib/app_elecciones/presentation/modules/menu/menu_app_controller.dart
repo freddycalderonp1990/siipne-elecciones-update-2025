@@ -1,98 +1,143 @@
 part of '../controllers.dart';
 
-class MenuAppController extends GetxController {
-  final loginController = Get.find<LoginController>();
-  final EleccionesProcesosApiImpl _eleccionesProcesosApiImpl =
-      Get.find<EleccionesProcesosApiImpl>();
+class MenuAppEleccionesController extends GetxController {
+  final loginController=Get.find<LoginController>();
 
-  final EleccionesRecintosApiImpl _eleccionesRecintosApiImpl =
-      Get.find<EleccionesRecintosApiImpl>();
+  final EleccionesProcesosApiImpl _eleccionesProcesosApiImpl=Get.find<EleccionesProcesosApiImpl>();
+  final EleccionesRecintosApiImpl _eleccionesRecintosApiImpl=Get.find<EleccionesRecintosApiImpl>();
+  final EleccionesNovedadesApiImpl _eleccionesNovedadesApiImpl=Get.find<EleccionesNovedadesApiImpl>();
 
+  Rx<ProcesosOperativo> selectProcesosOperativo=ProcesosOperativo.empty().obs;
+  RxBool showValidarRecinto1=false.obs;
 
- RecintosElectoralesAbiertos recintosElectoralesAbiertos =
-      RecintosElectoralesAbiertos.empty();
+  RecintosElectoralesAbiertos recintosElectoralesAbiertos=RecintosElectoralesAbiertos.empty();
 
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> formKey=GlobalKey<FormState>();
 
-  late UserEntities  user;
+  late UserEntities user;
 
-  RxBool peticionServerState = false.obs;
+  RxBool peticionServerState=true.obs;
+
   @override
-  void onInit() async {
-    user=loginController.user.value;
-   await getImgProceso();
-    verificarperAsignadoRecElectoral();
-
+  void onInit(){
     super.onInit();
+    user=loginController.user.value;
+    _inicializarModulo();
   }
 
   @override
-  void onReady() {
-    // TODO: Donde la vista ya se presento
+  void onReady(){
     super.onReady();
   }
 
   @override
-  void onClose() {
-    // TODO: implement onClose
-
+  void onClose(){
     super.onClose();
   }
 
-  Future<void> verificarperAsignadoRecElectoral() async {
+  Future<void> _inicializarModulo() async {
     peticionServerState(true);
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
-      int idGenPersona = user.idGenPersona;
-      recintosElectoralesAbiertos = await _eleccionesRecintosApiImpl
-          .verificarperAsignadoRecElectoral(idGenPersona: idGenPersona);
+
+    try{
+      final locationBloc=BlocProvider.of<LocationBloc>(Get.context!);
+
+      LatLng position=await locationBloc.getCurrentPosition();
+
+      await getProcesos(position);
+
+      bool puedeContinuar=await verificarNovedadesRegistradasProcElect(position);
+
+      if(!puedeContinuar)return;
+
+      await verificarperAsignadoRecElectoral();
+    }catch(e){
+      print("Error inicializando módulo elecciones: $e");
+    }finally{
+      peticionServerState(false);
+    }
+  }
+
+  Future<void> verificarperAsignadoRecElectoral() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
+      int idGenPersona=user.idGenPersona;
+
+      recintosElectoralesAbiertos=await _eleccionesRecintosApiImpl.verificarperAsignadoRecElectoral(
+        idGenPersona:idGenPersona,
+      );
     });
-    peticionServerState(false);
+
     print("a ${recintosElectoralesAbiertos.codigoRecinto}");
 
     if(recintosElectoralesAbiertos.idDgoCreaOpReci==0){
-
       print("No tengo codigo me quedo en la misma pantalla");
       return;
     }
 
-
-      if (recintosElectoralesAbiertos.isJefe) {
-        //Menu Recintos Electorales
-        print('Menu Recintos Electorales');
-        goToPage(SiipneRoutes.MENU_RECINTOS_ELECTORALES_JEFE,);
-
-      } else {
-        //Menu Unidades Policiales u Otros
-        goToPage(SiipneRoutes.MENU_RECINTOS_ELECTORALES_INTEGRANTE,);
-      }
-
+    if(recintosElectoralesAbiertos.isJefe){
+      print('Menu Recintos Electorales');
+      goToPage(EleccionesRoutes.MENU_RECINTOS_ELECTORALES_JEFE);
+    }else{
+      goToPage(EleccionesRoutes.MENU_RECINTOS_ELECTORALES_INTEGRANTE);
+    }
   }
 
-  Future<void> getImgProceso() async {
-    peticionServerState(true);
+  void goToPage(String name){
+    Get.offAllNamed(
+      name,
+      arguments:{
+        "recintosElectoralesAbiertos":recintosElectoralesAbiertos,
+      },
+    );
+  }
 
-    List<DatosProcesoImg> listDatosProcesoImg = <DatosProcesoImg>[];
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
-      listDatosProcesoImg =
-          await _eleccionesProcesosApiImpl.getProcesoActivoImgs();
+  void cerrarSession(){
+    Get.toNamed(AppRoutes.SPLASH_APP);
+  }
+
+  Future<void> getProcesos(LatLng position) async {
+    List<ProcesosOperativo> listProcesos=<ProcesosOperativo>[];
+
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
+      listProcesos=await _eleccionesProcesosApiImpl.getProcesosOperativos(
+        latitud:position.latitude,
+        longitud:position.longitude,
+      );
     });
 
-    if (listDatosProcesoImg.length > 0) {
-      SiipneImages.imgCabeceraProceso.value = listDatosProcesoImg[0].imgBase64;
+    if(listProcesos.isNotEmpty){
+      if(listProcesos.length==1){
+        print("valida recinto ${listProcesos[0].validarRecinto}");
+
+        selectProcesosOperativo.value=listProcesos[0];
+      }
     }
-
-    peticionServerState(false);
   }
 
+  Future<bool> verificarNovedadesRegistradasProcElect(LatLng position) async {
+    bool puedeContinuar=true;
 
-  goToPage(String name){
-    Get.offAllNamed(name,arguments:{"recintosElectoralesAbiertos":recintosElectoralesAbiertos} );
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
+      DataNovedadesUdga data=await _eleccionesNovedadesApiImpl.verificarNovedadesRegistradasByProcElect(
+        idGenPersona:user.idGenPersona,
+        idDgoProcElec:selectProcesosOperativo.value.idDgoProcElec,
+      );
 
+      if(data.session==false){
+        puedeContinuar=false;
 
-  }
+        String msj=data.motivo.replaceAll("No Puede iniciar Session","");
 
+        DialogosAwesome.getError(
+          title:"Acción no permitida",
+          descripcion:msj,
+          btnOkOnPress:(){
+            Get.back();
+            Get.back();
+          },
+        );
+      }
+    });
 
-  cerrarSession() {
-    Get.toNamed(AppRoutes.SPLASH_APP);
+    return puedeContinuar;
   }
 }

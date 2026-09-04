@@ -18,6 +18,9 @@ class ReportPersonController extends GetxController {
 
   RxBool peticionServerState = false.obs;
 
+  GlobalKey<FormState> formKeyPass = GlobalKey<FormState>();
+  var controllerPass = new TextEditingController();
+
   @override
   void onInit() async {
     user = loginController.user.value;
@@ -63,8 +66,8 @@ class ReportPersonController extends GetxController {
   Future<void> removePersonalOperativo(PersonalRecintoElectoral data) async {
     peticionServerState(true);
 
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
-      String ip = await DeviceInfo.getIp;
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
+      String ip = await DeviceInfoApp.getIp;
       final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
       LatLng position = await locationBloc.getCurrentPosition();
 
@@ -85,14 +88,14 @@ class ReportPersonController extends GetxController {
 
       if (result) {
         DialogosAwesome.getSucess(
-            descripcion: "Proceso realizado con éxito!", btnOkOnPress: () {});
+            descripcion: "Proceso realizado con éxito!");
         reportPersona();
         return;
       }
 
       DialogosAwesome.getWarning(
           descripcion: "Ocurrio un error vuelva a intentar",
-          btnOkOnPress: () {});
+          );
     });
     peticionServerState(false);
   }
@@ -101,7 +104,7 @@ class ReportPersonController extends GetxController {
     peticionServerState(true);
     listPersonalActivo.clear();
 
-    await ExceptionHelper.manejarErroresShowDialogo(() async {
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
       List<PersonalRecintoElectoral> datos =
           await _personaApiImpl.consultarDatosPersonalAsignadoRecintoElectoral(
             idDgoReciElect: recintosElectoralesAbiertos.idDgoReciElect,
@@ -111,7 +114,7 @@ class ReportPersonController extends GetxController {
 
       if (datos.length == 0) {
         DialogosAwesome.getInformation(
-            descripcion: "No existen datos que mostrar", btnOkOnPress: () {});
+            descripcion: "No existen datos que mostrar", );
         return;
       }
 

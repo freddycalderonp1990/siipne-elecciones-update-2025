@@ -8,4 +8,6 @@ part 'splash/splash_binding.dart';
 part 'bienvenido/bienvenido_binding.dart';
 part 'home/home_binding.dart';
 part 'pdf/pdf_view_binding.dart';
+part 'menu/menu_app_binding.dart';
+part 'showNotification/show_notification_binding.dart';
 

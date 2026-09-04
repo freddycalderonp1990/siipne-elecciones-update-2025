@@ -1,0 +1,73 @@
+Tabla: movilPushTokens
+
+Almacena los tokens de Firebase Cloud Messaging (FCM) asociados a los usuarios de las aplicaciones móviles institucionales. Permite identificar el dispositivo y la plataforma (Android o iOS) para el envío de notificaciones push.
+
+Reglas de negocio:
+
+Un usuario puede tener registrado un único dispositivo por aplicación y plataforma.
+La combinación (idGenUsuario, appName, plataforma) es única para evitar registros duplicados.
+Si un usuario cambia de dispositivo o Firebase renueva el token, el registro existente debe actualizarse mediante INSERT ... ON DUPLICATE KEY UPDATE.
+Un usuario puede tener simultáneamente un dispositivo Android y un dispositivo iOS para una misma aplicación.
+La tabla soporta múltiples aplicaciones móviles institucionales mediante el campo appName.
+El estado del registro es controlado mediante idGenEstado.
+El borrado de registros se realiza de forma lógica mediante el campo delLog.
+Se mantiene trazabilidad de auditoría mediante los campos fecha, usuario e ip.
+
+
+
+CREATE TABLE movilPushTokens (
+
+    idMovilPushTokens INT AUTO_INCREMENT PRIMARY KEY
+        COMMENT 'Identificador único del registro',
+
+    idGenUsuario INT NOT NULL
+        COMMENT 'Identificador del usuario',
+
+    idGenEstado INT NOT NULL
+        COMMENT 'Estado del registro',
+
+    appName VARCHAR(50) NOT NULL
+        COMMENT 'Nombre de la aplicación móvil',
+
+    plataforma ENUM('android','ios') NOT NULL
+        COMMENT 'Sistema operativo del dispositivo',
+
+    tokenFcm TEXT NOT NULL
+        COMMENT 'Token generado por Firebase Cloud Messaging',
+
+    fechaRegistro DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+        COMMENT 'Fecha de creación del registro',
+
+    fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+        ON UPDATE CURRENT_TIMESTAMP
+        COMMENT 'Fecha de la última transacción',
+
+    usuario VARCHAR(50) NOT NULL
+        COMMENT 'Usuario que realizó la última transacción',
+
+    ip VARCHAR(45) NOT NULL
+        COMMENT 'Dirección IP de la última transacción',
+
+    delLog CHAR(1) NOT NULL DEFAULT 'N'
+        COMMENT 'Borrado lógico: N=No, S=Sí',
+
+    UNIQUE KEY ukUsuarioAppPlataforma (
+        idGenUsuario,
+        appName,
+        plataforma
+    ),
+
+    INDEX idxUsuario (idGenUsuario),
+    INDEX idxAppName (appName),
+    INDEX idxEstado (idGenEstado),
+    INDEX idxDelLog (delLog),
+
+    CONSTRAINT fkMovilPushTokensUsuario
+        FOREIGN KEY (idGenUsuario)
+        REFERENCES genUsuario(idGenUsuario),
+
+    CONSTRAINT fkMovilPushTokensEstado
+        FOREIGN KEY (idGenEstado)
+        REFERENCES genEstado(idGenEstado)
+
+);

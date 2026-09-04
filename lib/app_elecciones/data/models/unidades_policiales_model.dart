@@ -33,19 +33,22 @@ class UnidadesPoliciale {
     required this.idDgoTipoEje,
     required this.dgoIdDgoTipoEje,
     required this.descripcion,
+    required this.tieneHijos
   });
 
   int idDgoTipoEje;
   int dgoIdDgoTipoEje;
   String descripcion;
+  bool tieneHijos;
 
-  factory UnidadesPoliciale.empty()=>UnidadesPoliciale(idDgoTipoEje: 0,dgoIdDgoTipoEje: 0,descripcion: "");
+  factory UnidadesPoliciale.empty()=>UnidadesPoliciale(idDgoTipoEje: 0,dgoIdDgoTipoEje: 0,descripcion: "",tieneHijos: false);
 
   factory UnidadesPoliciale.fromJson(Map<String, dynamic> json) =>
       UnidadesPoliciale(
         idDgoTipoEje: ParseModel.parseToInt(json["idDgoTipoEje"]),
         dgoIdDgoTipoEje: ParseModel.parseToInt(json["dgo_idDgoTipoEje"]),
         descripcion: ParseModel.parseToString(json["descripcion"]),
+        tieneHijos: ParseModel.parseToBool(json["tieneHijos"],valueCompareTrue: 'SI')
       );
 
   Map<String, dynamic> toJson() => {
