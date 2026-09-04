@@ -2,7 +2,6 @@ part of '../pages.dart';
 
 class CensistaPage extends GetView<CensistaController> {
   const CensistaPage({Key? key}) : super(key:key);
-
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -955,11 +954,13 @@ class CensistaPage extends GetView<CensistaController> {
                     subtitulo:'Capturada actualmente',
                     icon:Icons.photo_camera_outlined,
                     child:FotoConEscaneo(
+                      finalizado:controller.validacionFacialCompleta.value,
                       child:Image.file(
                         controller.mGaleryCameraModel.value!.imageFile,
                         fit:BoxFit.cover,
                         width:double.infinity,
                         height:double.infinity,
+
                       ),
                     ),
                   ),
@@ -974,6 +975,7 @@ class CensistaPage extends GetView<CensistaController> {
                     icon:Icons.badge_outlined,
                     child:imgMemory!=null
                         ?FotoConEscaneo(
+                      finalizado:controller.validacionFacialCompleta.value,
                       child:Image.memory(
                         imgMemory,
                         fit:BoxFit.cover,
@@ -1117,7 +1119,7 @@ class CensistaPage extends GetView<CensistaController> {
                   'VALIDACIÓN VISUAL ASISTIDA',
                   style:TextStyle(
                     color:Color(0xFF17365D),
-                    fontSize:10.5,
+                    fontSize:12.5,
                     fontWeight:FontWeight.w900,
                   ),
                 ),
@@ -1128,7 +1130,7 @@ class CensistaPage extends GetView<CensistaController> {
                   'Compare ambas fotografías antes de finalizar el censo',
                   style:TextStyle(
                     color:Colors.black,
-                    fontSize:7.5,
+                    fontSize:10,
                     height:1.15,
                   ),
                 ),
@@ -1298,7 +1300,7 @@ class CensistaPage extends GetView<CensistaController> {
                   'VERIFICACIÓN VISUAL',
                   style:TextStyle(
                     color:Color(0xFF7A8998),
-                    fontSize:5.8,
+                    fontSize:11,
                     fontWeight:FontWeight.w800,
                     letterSpacing:.3,
                   ),
