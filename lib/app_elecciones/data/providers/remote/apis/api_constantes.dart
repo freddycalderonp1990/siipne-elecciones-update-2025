@@ -33,6 +33,7 @@ class ApiConstantes {
   static const ELECCIONES_RECINTO_FINALIZAR= "v1-recinto-finalizar"; // a3a6f42d152098e487e00f831a2b4772
 
   static const ELECCIONES_VALIDAR_RECINTO = "v1-comisios-validar-recinto";
+  static const ELECCIONES_CREAR_RECINTO_TEMPORAL = "v1-crear-recinto-temporal";
 
   //PERSONAL
   static const ELECCIONES_PERSONA_BY_CEDULA = "v1-persona-cedula"; // c996291faac0d749d702ba290948dcd8

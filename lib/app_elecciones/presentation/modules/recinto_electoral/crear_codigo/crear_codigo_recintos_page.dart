@@ -285,9 +285,10 @@ class CrearCodigoRecintosPage extends GetView<CrearCodigoRecintosController> {
       contenido:RegistrarRecintoWidget(
         formKey:controller.formKeyRegRecinto,
         controllerNombreRecinto:controller.controllerNombreRecinto,
-        foto:controller.mGaleryCameraModel,
+        foto:controller.mGaleryCameraModelRecintoNew,
         onGuardar:(){
-          ///Guardar recinto
+
+         controller.crearRecintoElectTemp();
         },
       ),
     );

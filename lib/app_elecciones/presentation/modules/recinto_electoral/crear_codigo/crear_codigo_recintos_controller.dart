@@ -2,14 +2,16 @@ part of '../../controllers.dart';
 
 class CrearCodigoRecintosController extends GetxController {
   final loginController = Get.find<LoginController>();
-  final selectProcesoOperativoController = Get.find<SelectProcesoOperativoController>();
+  final selectProcesoOperativoController =
+      Get.find<SelectProcesoOperativoController>();
 
   final EleccionesRecintosApiImpl _eleccionesRecintosApiImpl =
-  Get.find<EleccionesRecintosApiImpl>();
+      Get.find<EleccionesRecintosApiImpl>();
+
+
+  final SaveFileImgUseCase _saveFileImgUseCase = Get.find();
 
   final dynamicComboUnidadesPoliciales = Get.put(DynamicComboController());
-
-
 
   late UserEntities user;
   RxBool peticionServerState = false.obs;
@@ -21,9 +23,7 @@ class CrearCodigoRecintosController extends GetxController {
 
   final formKeyRegRecinto = GlobalKey<FormState>();
   var controllerNombreRecinto = TextEditingController();
-  Rx<GaleryCameraModel?> mGaleryCameraModel = Rx<GaleryCameraModel?>(null);
-
-
+  Rx<GaleryCameraModel?> mGaleryCameraModelRecintoNew = Rx<GaleryCameraModel?>(null);
 
   var controllerTelefono = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -35,7 +35,8 @@ class CrearCodigoRecintosController extends GetxController {
     await dynamicComboUnidadesPoliciales.init(idGenUsuario: user.idGenUsuario);
 
     // 👇 sincroniza el RxBool externo
-    dynamicComboUnidadesPoliciales.peticionServerStateExterna = peticionServerState;
+    dynamicComboUnidadesPoliciales.peticionServerStateExterna =
+        peticionServerState;
     getDatos();
     super.onInit();
   }
@@ -43,10 +44,7 @@ class CrearCodigoRecintosController extends GetxController {
   // 🔹 Cargar datos iniciales
   Future<void> getDatos() async {
     peticionServerState(true);
-    await Future.wait([
-      getRecintosElectorales(),
-
-    ]);
+    await Future.wait([getRecintosElectorales()]);
     peticionServerState(false);
   }
 
@@ -60,15 +58,16 @@ class CrearCodigoRecintosController extends GetxController {
         onlyValidados: false,
         latitud: pos.latitude,
         longitud: pos.longitude,
-        idDgoProcElec:
-        selectProcesoOperativoController.selectProcesosOperativo.value.idDgoProcElec,
+        idDgoProcElec: selectProcesoOperativoController
+            .selectProcesosOperativo
+            .value
+            .idDgoProcElec,
         idDgoTipoEje: 1,
       );
-      listRecintosElectorales.value =
-      await _eleccionesRecintosApiImpl.getRecintosElectoralesCercanos(request: req);
+      listRecintosElectorales.value = await _eleccionesRecintosApiImpl
+          .getRecintosElectoralesCercanos(request: req);
     });
   }
-
 
   msjCrearCodigo({required VoidCallback onPressed}) {
     print("siiii");
@@ -100,8 +99,10 @@ class CrearCodigoRecintosController extends GetxController {
       LatLng pos = await locationBloc.getCurrentPosition();
       String ip = await DeviceInfoApp.getIp;
 
-      final ultimo = dynamicComboUnidadesPoliciales. seleccionados.lastWhere((e) => e.idDgoTipoEje > 0,
-          orElse: () => UnidadesPoliciale.empty());
+      final ultimo = dynamicComboUnidadesPoliciales.seleccionados.lastWhere(
+        (e) => e.idDgoTipoEje > 0,
+        orElse: () => UnidadesPoliciale.empty(),
+      );
 
       CreateCodeRecintoRequest req = CreateCodeRecintoRequest(
         usuario: user.idGenUsuario,
@@ -109,8 +110,10 @@ class CrearCodigoRecintosController extends GetxController {
         idDgoReciElect: selectRecintosElectoral.value.idDgoReciElect,
         latitud: pos.latitude,
         longitud: pos.longitude,
-        idDgoProcElec:
-        selectProcesoOperativoController.selectProcesosOperativo.value.idDgoProcElec,
+        idDgoProcElec: selectProcesoOperativoController
+            .selectProcesosOperativo
+            .value
+            .idDgoProcElec,
         idDgoReciUnidadPolicial: selectRecintosElectoral.value.idDgoReciElect,
         telefono: controllerTelefono.text,
         ip: ip,
@@ -118,29 +121,28 @@ class CrearCodigoRecintosController extends GetxController {
         idDgoTipoEje: ultimo.idDgoTipoEje,
       );
 
-      _abrirRecintoElectoral =
-      await _eleccionesRecintosApiImpl.crearCodigo(request: req);
+      _abrirRecintoElectoral = await _eleccionesRecintosApiImpl.crearCodigo(
+        request: req,
+      );
     });
     peticionServerState(false);
-
-
 
     if (_abrirRecintoElectoral.idDgoCreaOpReci == 0) {
       DialogosAwesome.getWarning(
         descripcion:
-        "No se pudo completar la acción. Por favor, inténtelo nuevamente.",
+            "No se pudo completar la acción. Por favor, inténtelo nuevamente.",
       );
       return;
     }
 
     if (_abrirRecintoElectoral.estado == "A") {
-      String msj = user.nombres +
+      String msj =
+          user.nombres +
           "\n\nYa existe un código (${_abrirRecintoElectoral.idDgoCreaOpReci}) asignado a:\n" +
           selectRecintosElectoral.value.nomRecintoElec +
           "\nFECHA DE INICIO: " +
           _abrirRecintoElectoral.fechaIni +
           "\n\nSi usted necesita abrir el código en este Recinto, comuníquese con: \n[${_abrirRecintoElectoral.apenom}] para que lo elimine o finalice.";
-
 
       DialogosAwesome.showIconPolicia(
         colorBtnSi: AppColors.colorVerde_80,
@@ -161,26 +163,27 @@ class CrearCodigoRecintosController extends GetxController {
             content: SingleChildScrollView(
               // Permite que el contenido se ajuste automáticamente
               child: getDesingCompartirCodigo(
-                  _abrirRecintoElectoral.idDgoCreaOpReci),
+                _abrirRecintoElectoral.idDgoCreaOpReci,
+              ),
             ),
           ),
         ),
         barrierDismissible:
-        false, // Evita que se cierre al tocar fuera del diálogo
+            false, // Evita que se cierre al tocar fuera del diálogo
       );
     }
   }
-
 
   getDesingCompartirCodigo(int idDgoCreaOpReci) {
     final responsive = ResponsiveUtil();
     return Column(
       mainAxisSize:
-      MainAxisSize.min, // Ajusta el tamaño del diálogo al contenido
+          MainAxisSize.min, // Ajusta el tamaño del diálogo al contenido
       children: [
         TextLineasWidget(
-            title: "INFORMACIÓN",
-            sizeTxt: responsive.diagonalP(AppConfig.tamTextoTitulo)),
+          title: "INFORMACIÓN",
+          sizeTxt: responsive.diagonalP(AppConfig.tamTextoTitulo),
+        ),
         Container(
           height: 100,
           width: 100,
@@ -194,19 +197,101 @@ class CrearCodigoRecintosController extends GetxController {
           title: "${idDgoCreaOpReci}",
           sizeTxt: responsive.diagonalP(AppConfig.tamTextoTitulo + 1.5),
         ),
-        SizedBox(
-          height: responsive.altoP(2),
-        ),
+        SizedBox(height: responsive.altoP(2)),
         BtnIconWidget(
-            icon: Icons.check_circle,
-            titulo: "Aceptar",
-            onPressed: () {
-              Get.offAllNamed(EleccionesRoutes.MENU_APP);
-            })
+          icon: Icons.check_circle,
+          titulo: "Aceptar",
+          onPressed: () {
+            Get.offAllNamed(EleccionesRoutes.MENU_APP);
+          },
+        ),
       ],
     );
   }
 
+  Future<void> crearRecintoElectTemp() async {
+    bool isValid = formKeyRegRecinto.currentState!.validate();
+
+    if (!isValid) return;
+
+    if(mGaleryCameraModelRecintoNew.value==null){
+      DialogosAwesome.getWarning(
+        title: "Guardar Imagen",
+        descripcion: "Seleccione la Imagen",
+      );
+      return;
+    }
+
+    Get.back();
+    peticionServerState(true);
 
 
+    DataFile dataFile=DataFile.empty();
+    //guardar imagen
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
+      String path = dotenv.env['PATH_IMG_APP_ELECCIONES'] ?? '';
+
+      String nameFile = controllerNombreRecinto.text;
+
+
+      FileRequest request = FileRequest(
+        file: mGaleryCameraModelRecintoNew.value!.imageFile,
+        path: path,
+        nameFile: nameFile,
+      );
+
+
+      dataFile= await _saveFileImgUseCase(request: request);
+
+
+
+    });
+
+    if (!dataFile.result) {
+      peticionServerState(false);
+      DialogosAwesome.getError(
+        title: "Guardar Imagen",
+        descripcion: "No se pudo guardar la Imagen",
+      );
+      return;
+    }
+
+    await ExceptionDialogos.manejarErroresShowDialogo(() async {
+      String ip = await DeviceInfoApp.getIp;
+      final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
+      LatLng ubicacion = await locationBloc.getCurrentPosition();
+
+      CreateRecintoElectTempRequest request = CreateRecintoElectTempRequest(
+        usuario: user.idGenUsuario,
+        latitud: ubicacion.latitude,
+        longitud: ubicacion.longitude,
+
+        ip: ip,
+        nomRecintoElec: controllerNombreRecinto.text,
+        direcRecintoElec: 'SN',
+        fotografia: dataFile.nameFile,
+      );
+
+      bool result = await _eleccionesRecintosApiImpl.crearRecintoTemporal(
+        request: request,
+      );
+      if (!result) {
+        DialogosAwesome.getWarning(
+          descripcion: "No se pudo completar el registro",
+        );
+        return;
+      }
+
+      DialogosAwesome.getInformation(
+        descripcion: "El recinto fue creado correctamente y se encuentra pendiente de validación.",
+        btnOkOnPress: () {
+          controllerNombreRecinto.clear();
+
+
+        },
+      );
+    });
+
+    peticionServerState(false);
+  }
 }

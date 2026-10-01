@@ -38,4 +38,10 @@ abstract class EleccionesRecintosRepository {
   });
 
 
+  Future<bool> crearRecintoTemporal({
+    required CreateRecintoElectTempRequest request,
+  });
+
+
+
 }

@@ -8,7 +8,6 @@ import '../../../../../app/core/values/app_colors.dart';
 import '../../../../../app/core/values/app_images.dart';
 import '../../../../../app/presentation/widgets/custom_app_widgets.dart';
 
-
 class RegistrarRecintoWidget extends StatelessWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController controllerNombreRecinto;
@@ -47,14 +46,9 @@ class RegistrarRecintoWidget extends StatelessWidget {
             maxLength: 200,
             keyboardType: TextInputType.multiline,
             controller: controllerNombreRecinto,
-            icono: const Icon(
-              Icons.edit,
-              color: AppColors.colorIcons,
-            ),
+            icono: const Icon(Icons.edit, color: AppColors.colorIcons),
             label: "Nombre del recinto",
-            fonSize: responsive.diagonalP(
-              AppConfig.tamTextoTitulo,
-            ),
+            fonSize: responsive.diagonalP(AppConfig.tamTextoTitulo),
             validar: (value) {
               if (value == null || value.trim().length < 5) {
                 return "Ingrese el nombre del recinto";
@@ -88,10 +82,7 @@ class RegistrarRecintoWidget extends StatelessWidget {
         color: const Color(0xFFF3F8FF),
         borderRadius: BorderRadius.circular(15),
         border: const Border(
-          left: BorderSide(
-            color: AppColors.colorAzul,
-            width: 5,
-          ),
+          left: BorderSide(color: AppColors.colorAzul, width: 5),
         ),
       ),
       child: Row(
@@ -100,10 +91,7 @@ class RegistrarRecintoWidget extends StatelessWidget {
           const CircleAvatar(
             radius: 18,
             backgroundColor: AppColors.colorAzul,
-            child: Icon(
-              Icons.info_outline,
-              color: Colors.white,
-            ),
+            child: Icon(Icons.info_outline, color: Colors.white),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -124,8 +112,7 @@ class RegistrarRecintoWidget extends StatelessWidget {
                     ),
                   ),
                   TextSpan(
-                    text:
-                    "Tome una fotografía del afiche oficial del recinto electoral donde se visualice claramente el nombre del recinto.",
+                    text: "Tome una fotografía del afiche oficial del recinto electoral donde se visualice claramente el nombre del recinto.",
                   ),
                 ],
               ),
@@ -150,18 +137,7 @@ class RegistrarRecintoWidget extends StatelessWidget {
 
           InkWell(
             onTap: () async {
-              final ahora = DateTime.now();
-
-              String dosDigitos(int n) => n.toString().padLeft(2, '0');
-
-              final nombre =
-                  "ImgRecinto_${ahora.year}"
-                  "${dosDigitos(ahora.month)}"
-                  "${dosDigitos(ahora.day)}_"
-                  "${dosDigitos(ahora.hour)}"
-                  "${dosDigitos(ahora.minute)}"
-                  "${dosDigitos(ahora.second)}.jpg";
-
+              String nombre = "NewRecinto";
               foto.value = await PhotoHelper.getDesingPictureGaleryOrCamera(
                 titleImg: nombre,
                 initPeticion: (_) {},

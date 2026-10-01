@@ -241,4 +241,23 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
       return resultado;
     });
   }
+
+  @override
+  Future<bool> crearRecintoTemporal({required CreateRecintoElectTempRequest request}) async {
+    Map<String, dynamic> body =
+    HeadEleccionesRequest(
+      uri: ApiConstantes.ELECCIONES_CREAR_RECINTO_TEMPORAL,
+      bodyRequest: request.toJson(),
+    ).toJson();
+
+
+    String json = await UrlApiProviderSiipneMovil.post(body: body);
+
+    return await ExceptionHelper.manejarErroresParseJsonException(() async {
+      // Parsear y retornar el modelo correspondiente
+      final responseData = jsonDecode(json);
+      bool resultado = responseData['data'] == true;
+      return resultado;
+    });
+  }
 }

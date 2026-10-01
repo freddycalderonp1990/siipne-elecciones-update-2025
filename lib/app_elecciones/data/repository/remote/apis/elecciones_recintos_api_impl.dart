@@ -75,4 +75,13 @@ class EleccionesRecintosApiImpl extends EleccionesRecintosRepository {
       request: request,
     );
   }
+
+  @override
+  Future<bool> crearRecintoTemporal({
+    required CreateRecintoElectTempRequest request,
+  }) async {
+    return await _EleccionesRecintosApiProviderImpl.crearRecintoTemporal(
+      request: request,
+    );
+  }
 }
