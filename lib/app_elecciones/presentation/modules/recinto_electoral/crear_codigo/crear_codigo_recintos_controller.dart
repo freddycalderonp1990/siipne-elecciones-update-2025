@@ -8,7 +8,6 @@ class CrearCodigoRecintosController extends GetxController {
   final EleccionesRecintosApiImpl _eleccionesRecintosApiImpl =
       Get.find<EleccionesRecintosApiImpl>();
 
-
   final SaveFileImgUseCase _saveFileImgUseCase = Get.find();
 
   final dynamicComboUnidadesPoliciales = Get.put(DynamicComboController());
@@ -23,7 +22,9 @@ class CrearCodigoRecintosController extends GetxController {
 
   final formKeyRegRecinto = GlobalKey<FormState>();
   var controllerNombreRecinto = TextEditingController();
-  Rx<GaleryCameraModel?> mGaleryCameraModelRecintoNew = Rx<GaleryCameraModel?>(null);
+  Rx<GaleryCameraModel?> mGaleryCameraModelRecintoNew = Rx<GaleryCameraModel?>(
+    null,
+  );
 
   var controllerTelefono = TextEditingController();
   final formKey = GlobalKey<FormState>();
@@ -66,6 +67,8 @@ class CrearCodigoRecintosController extends GetxController {
       );
       listRecintosElectorales.value = await _eleccionesRecintosApiImpl
           .getRecintosElectoralesCercanos(request: req);
+
+      await getRecintoElectoralTemporalByIdUsuario();
     });
   }
 
@@ -214,7 +217,7 @@ class CrearCodigoRecintosController extends GetxController {
 
     if (!isValid) return;
 
-    if(mGaleryCameraModelRecintoNew.value==null){
+    if (mGaleryCameraModelRecintoNew.value == null) {
       DialogosAwesome.getWarning(
         title: "Guardar Imagen",
         descripcion: "Seleccione la Imagen",
@@ -225,14 +228,12 @@ class CrearCodigoRecintosController extends GetxController {
     Get.back();
     peticionServerState(true);
 
-
-    DataFile dataFile=DataFile.empty();
+    DataFile dataFile = DataFile.empty();
     //guardar imagen
     await ExceptionDialogos.manejarErroresShowDialogo(() async {
       String path = dotenv.env['PATH_IMG_APP_ELECCIONES'] ?? '';
 
       String nameFile = controllerNombreRecinto.text;
-
 
       FileRequest request = FileRequest(
         file: mGaleryCameraModelRecintoNew.value!.imageFile,
@@ -240,11 +241,7 @@ class CrearCodigoRecintosController extends GetxController {
         nameFile: nameFile,
       );
 
-
-      dataFile= await _saveFileImgUseCase(request: request);
-
-
-
+      dataFile = await _saveFileImgUseCase(request: request);
     });
 
     if (!dataFile.result) {
@@ -282,16 +279,66 @@ class CrearCodigoRecintosController extends GetxController {
         return;
       }
 
+      await getRecintoElectoralTemporalByIdUsuario();
+
+
+
       DialogosAwesome.getInformation(
         descripcion: "El recinto fue creado correctamente y se encuentra pendiente de validación.",
         btnOkOnPress: () {
           controllerNombreRecinto.clear();
-
-
         },
       );
     });
 
     peticionServerState(false);
   }
+
+
+  Future<void> getRecintoElectoralTemporalByIdUsuario() async {
+
+
+   try {
+     final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
+     LatLng ubicacion = await locationBloc.getCurrentPosition();
+
+     GetRecintoElectTempByUserRequest request =
+     GetRecintoElectTempByUserRequest(
+       usuario: user.idGenUsuario,
+       latitud: ubicacion.latitude,
+       longitud: ubicacion.longitude,
+     );
+
+     RecintoTempModel result = await _eleccionesRecintosApiImpl
+         .getRecintoElectoralTemporalByIdUsuario(
+       request: request,
+     );
+
+     listRecintosElectorales.removeWhere(
+           (recinto) => recinto.idDgoReciElectTemp > 0,
+     );
+
+
+     final recintosTemporales = result.dataRecintotemp.map((recintoTemp) {
+       return RecintosElectoral(
+         idDgoReciElectTemp: recintoTemp.idDgoReciElectTemp,
+         nomRecintoElec: recintoTemp.nomRecintoElec,
+         direcRecintoElec: recintoTemp.direcRecintoElec,
+         listoCrearCodigo: false,
+       );
+     }).toList();
+
+     listRecintosElectorales.insertAll(0, recintosTemporales);
+   } catch (e, stackTrace) {
+     print(
+       "Error en getRecintoElectoralTemporalByIdUsuario: $e",
+     );
+    // print(stackTrace);
+   }
+
+
+  }
+
+
+
 }

@@ -7,11 +7,10 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
   }) async {
     Map<String, dynamic> request = {"idGenPersona": idGenPersona};
 
-    Map<String, dynamic> body =
-        HeadEleccionesRequest(
-          uri: ApiConstantes.ELECCIONES_VERIFICA_PER_ASIGNADO_REC_ELECT,
-          bodyRequest: request,
-        ).toJson();
+    Map<String, dynamic> body = HeadEleccionesRequest(
+      uri: ApiConstantes.ELECCIONES_VERIFICA_PER_ASIGNADO_REC_ELECT,
+      bodyRequest: request,
+    ).toJson();
 
     String json = await UrlApiProviderSiipneMovil.post(body: body);
 
@@ -28,9 +27,8 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
         // Obtener los datos del modelo en formato String
         String datosJson = getDatosModelFromString(json, titleJson);
         // Parsear y retornar el modelo correspondiente
-        return recintosElectoralesAbiertosModelFromJson(
-          datosJson,
-        ).recintosElectoralesAbiertos;
+        return recintosElectoralesAbiertosModelFromJson(datosJson)
+            .recintosElectoralesAbiertos;
       }
       // En caso de respuesta no válida, devolver un modelo vacío
       return RecintosElectoralesAbiertos.empty();
@@ -41,11 +39,10 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
   Future<List<RecintosElectoral>> getRecintosElectoralesCercanos({
     required RecintoCercanosRequest request,
   }) async {
-    Map<String, dynamic> body =
-        HeadEleccionesRequest(
-          uri: ApiConstantes.ELECCIONES_RECINTOS_ELECTORALES,
-          bodyRequest: request.toJson(),
-        ).toJson();
+    Map<String, dynamic> body = HeadEleccionesRequest(
+      uri: ApiConstantes.ELECCIONES_RECINTOS_ELECTORALES,
+      bodyRequest: request.toJson(),
+    ).toJson();
 
     String json = await UrlApiProviderSiipneMovil.post(body: body);
 
@@ -73,11 +70,10 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
   Future<AbrirRecintoElectoral> crearCodigo({
     required CreateCodeRecintoRequest request,
   }) async {
-    Map<String, dynamic> body =
-        HeadEleccionesRequest(
-          uri: ApiConstantes.ELECCIONES_CREAR_CODIGO,
-          bodyRequest: request.toJson(),
-        ).toJson();
+    Map<String, dynamic> body = HeadEleccionesRequest(
+      uri: ApiConstantes.ELECCIONES_CREAR_CODIGO,
+      bodyRequest: request.toJson(),
+    ).toJson();
 
     String json = await UrlApiProviderSiipneMovil.post(body: body);
 
@@ -94,9 +90,8 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
         // Obtener los datos del modelo en formato String
         String datosJson = getDatosModelFromString(json, titleJson);
         // Parsear y retornar el modelo correspondiente
-        return abrirRecintoElectoralModelFromJson(
-          datosJson,
-        ).abrirRecintoElectoral;
+        return abrirRecintoElectoralModelFromJson(datosJson)
+            .abrirRecintoElectoral;
       }
       // En caso de respuesta no válida, devolver un modelo vacío
       return AbrirRecintoElectoral.empty();
@@ -107,11 +102,10 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
   Future<bool> abandonarRecintoElectoral({
     required AbandonarRecintoRequest request,
   }) async {
-    Map<String, dynamic> body =
-        HeadEleccionesRequest(
-          uri: ApiConstantes.ELECCIONES_RECINTO_ABANDONAR_PERSONAL,
-          bodyRequest: request.toJson(),
-        ).toJson();
+    Map<String, dynamic> body = HeadEleccionesRequest(
+      uri: ApiConstantes.ELECCIONES_RECINTO_ABANDONAR_PERSONAL,
+      bodyRequest: request.toJson(),
+    ).toJson();
 
     String json = await UrlApiProviderSiipneMovil.put(body: body);
 
@@ -136,11 +130,10 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
   Future<String> eliminarRecintoElectoralAbierto({
     required EliminarRecintoRequest request,
   }) async {
-    Map<String, dynamic> body =
-        HeadEleccionesRequest(
-          uri: ApiConstantes.ELECCIONES_RECINTO_ELIMINAR,
-          bodyRequest: request.toJson(),
-        ).toJson();
+    Map<String, dynamic> body = HeadEleccionesRequest(
+      uri: ApiConstantes.ELECCIONES_RECINTO_ELIMINAR,
+      bodyRequest: request.toJson(),
+    ).toJson();
 
     String json = await UrlApiProviderSiipneMovil.delete(body: body);
     String titleJson = "eliminarRecintoElectoral";
@@ -159,11 +152,10 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
   Future<datosFinalizarProceso> finalizarRecintoElectoral({
     required FinalizarRecintoRequest request,
   }) async {
-    Map<String, dynamic> body =
-        HeadEleccionesRequest(
-          uri: ApiConstantes.ELECCIONES_RECINTO_FINALIZAR,
-          bodyRequest: request.toJson(),
-        ).toJson();
+    Map<String, dynamic> body = HeadEleccionesRequest(
+      uri: ApiConstantes.ELECCIONES_RECINTO_FINALIZAR,
+      bodyRequest: request.toJson(),
+    ).toJson();
 
     String json = await UrlApiProviderSiipneMovil.post(body: body);
     String titleJson = "finalizarRecintoElectoral";
@@ -186,9 +178,9 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
       // Parsear y retornar el modelo correspondiente
 
       print("datosJson ${datosJson}");
-      return FinalizarProcesoElectoralModel.fromJson(
-        json,
-      ).finalizarRecintoElectoral.datos;
+      return FinalizarProcesoElectoralModel.fromJson(json)
+          .finalizarRecintoElectoral
+          .datos;
     });
   }
 
@@ -199,11 +191,10 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
   }) async {
     Map<String, dynamic> request = {"idDgoCreaOpReci": idDgoCreaOpReci};
 
-    Map<String, dynamic> body =
-        HeadEleccionesRequest(
-          uri: ApiConstantes.ELECCIONES_RECINTO_ENCARGADO,
-          bodyRequest: request,
-        ).toJson();
+    Map<String, dynamic> body = HeadEleccionesRequest(
+      uri: ApiConstantes.ELECCIONES_RECINTO_ENCARGADO,
+      bodyRequest: request,
+    ).toJson();
 
     String json = await UrlApiProviderSiipneMovil.post(body: body);
     String titleJson = "datosRecintoElectoral";
@@ -223,14 +214,10 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
 
   @override
   Future<bool> validarRecinto({required ValidarRecintoRequest request}) async {
-
-
-    Map<String, dynamic> body =
-    HeadEleccionesRequest(
+    Map<String, dynamic> body = HeadEleccionesRequest(
       uri: ApiConstantes.ELECCIONES_VALIDAR_RECINTO,
       bodyRequest: request.toJson(),
     ).toJson();
-
 
     String json = await UrlApiProviderSiipneMovil.post(body: body);
 
@@ -243,13 +230,13 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
   }
 
   @override
-  Future<bool> crearRecintoTemporal({required CreateRecintoElectTempRequest request}) async {
-    Map<String, dynamic> body =
-    HeadEleccionesRequest(
+  Future<bool> crearRecintoTemporal({
+    required CreateRecintoElectTempRequest request,
+  }) async {
+    Map<String, dynamic> body = HeadEleccionesRequest(
       uri: ApiConstantes.ELECCIONES_CREAR_RECINTO_TEMPORAL,
       bodyRequest: request.toJson(),
     ).toJson();
-
 
     String json = await UrlApiProviderSiipneMovil.post(body: body);
 
@@ -258,6 +245,22 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
       final responseData = jsonDecode(json);
       bool resultado = responseData['data'] == true;
       return resultado;
+    });
+  }
+
+  @override
+  Future<RecintoTempModel> getRecintoElectoralTemporalByIdUsuario({
+    required GetRecintoElectTempByUserRequest request,
+  }) async {
+    Map<String, dynamic> body = HeadEleccionesRequest(
+      uri: ApiConstantes.ELECCIONES_GET_RECINTO_TEMPORAL_BY_ID_USUARIO,
+      bodyRequest: request.toJson(),
+    ).toJson();
+
+    String json = await UrlApiProviderSiipneMovil.post(body: body);
+
+    return await ExceptionHelper.manejarErroresParseJsonException(() async {
+      return recintoTempModelFromJson(json);
     });
   }
 }

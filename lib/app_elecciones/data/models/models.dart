@@ -43,6 +43,7 @@ part 'recintoElectoral/personal_recinto_electoral_model.dart';
 part 'recintoElectoral/novedadesElectoralesDetalleModel.dart';
 part 'recintoElectoral/observacion_model.dart';
 part 'recintoElectoral/finalizar_proceso_electoral_model.dart';
+part 'recintoElectoral/recinto_temp_model.dart';
 
 
 

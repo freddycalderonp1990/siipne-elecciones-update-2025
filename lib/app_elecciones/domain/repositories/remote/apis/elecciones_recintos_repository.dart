@@ -43,5 +43,10 @@ abstract class EleccionesRecintosRepository {
   });
 
 
+  Future<RecintoTempModel> getRecintoElectoralTemporalByIdUsuario({
+    required GetRecintoElectTempByUserRequest request,
+  });
+
+
 
 }

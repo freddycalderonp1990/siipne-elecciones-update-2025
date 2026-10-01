@@ -36,38 +36,31 @@ class RecintosElectoralsModel {
 
 class RecintosElectoral {
   RecintosElectoral({
-    this.idDgoComisios=0,
-    this.apenomValida="",
-    this.nomRecintoElecOnly='',
-
-
-
+    this.idDgoComisios = 0,
+    this.apenomValida = "",
+    this.nomRecintoElecOnly = '',
     this.idDgoReciElect = 0,
-
-
+    this.idDgoReciElectTemp = 0,
     this.codRecintoElec = '',
     this.nomRecintoElec = '',
     this.direcRecintoElec = '',
     this.latitud = 0,
     this.longitud = 0,
-
-
     this.idDgoTipoEje = 0,
-
     this.distance = '0',
-    this.validado=false
+    this.validado = false,
+    this.listoCrearCodigo=true,
   });
 
-
-
   int idDgoReciElect;
+  int idDgoReciElectTemp;
   int idDgoComisios;
-
 
   String codRecintoElec;
   String nomRecintoElec;
   String nomRecintoElecOnly;
   String direcRecintoElec;
+
   double latitud;
   double longitud;
 
@@ -75,16 +68,20 @@ class RecintosElectoral {
 
   String distance;
   bool validado;
+  bool listoCrearCodigo;
 
   String apenomValida;
 
   factory RecintosElectoral.fromJson(Map<String, dynamic> json) {
     String nomRecinto =
-        json["nomRecintoElec"] == null ? null : json["nomRecintoElec"];
+    json["nomRecintoElec"] == null ? '' : json["nomRecintoElec"];
 
-    String dist = ParseModel.parseToString(json["distance"]) == null ? '' : "\nDistancia:" + ParseModel.parseToString(json["distance"])+ "m";
+    String dist = ParseModel.parseToString(json["distance"]) == null
+        ? ''
+        : "\nDistancia:${ParseModel.parseToString(json["distance"])}m";
 
     print("dis=${ParseModel.parseToInt(json["distance"])}");
+
     nomRecinto = nomRecinto + dist;
 
     return RecintosElectoral(
@@ -93,30 +90,68 @@ class RecintosElectoral {
 
       idDgoReciElect: ParseModel.parseToInt(json["idDgoReciElect"]),
 
-      codRecintoElec: ParseModel.parseToString(json["codRecintoElec"]),
-      nomRecintoElec: nomRecinto,
-      nomRecintoElecOnly:       ParseModel.parseToString(json["nomRecintoElec"]),
-      direcRecintoElec: ParseModel.parseToString(json["direcRecintoElec"] ),
-      latitud: ParseModel.parseToDouble(json["latitud"] ),
-      longitud: ParseModel.parseToDouble(json["longitud"] ),
+      // NUEVO
+      idDgoReciElectTemp:
+      ParseModel.parseToInt(json["idDgoReciElectTemp"]),
 
-      idDgoTipoEje:  ParseModel.parseToInt(json["idDgoTipoEje"]),
-      distance:  ParseModel.parseToString(json["distance"]),
-      validado: ParseModel.parseToBool(json["estadoRegistro"],valueCompareTrue: "VALIDADO")
+      codRecintoElec:
+      ParseModel.parseToString(json["codRecintoElec"]),
+
+      nomRecintoElec: nomRecinto,
+
+      nomRecintoElecOnly:
+      ParseModel.parseToString(json["nomRecintoElec"]),
+
+      direcRecintoElec:
+      ParseModel.parseToString(json["direcRecintoElec"]),
+
+      latitud:
+      ParseModel.parseToDouble(json["latitud"]),
+
+      longitud:
+      ParseModel.parseToDouble(json["longitud"]),
+
+      idDgoTipoEje:
+      ParseModel.parseToInt(json["idDgoTipoEje"]),
+
+      distance:
+      ParseModel.parseToString(json["distance"]),
+
+      validado:
+      ParseModel.parseToBool(
+        json["estadoRegistro"],
+        valueCompareTrue: "VALIDADO",
+      ),
     );
   }
 
   Map<String, dynamic> toJson() => {
+    "idDgoReciElect":
+    idDgoReciElect,
 
-        "idDgoReciElect": idDgoReciElect == null ? null : idDgoReciElect,
+    // NUEVO
+    "idDgoReciElectTemp":
+    idDgoReciElectTemp,
 
-        "codRecintoElec": codRecintoElec == null ? null : codRecintoElec,
-        "nomRecintoElec": nomRecintoElec == null ? null : nomRecintoElec,
-        "direcRecintoElec": direcRecintoElec == null ? null : direcRecintoElec,
-        "latitud": latitud == null ? null : latitud,
-        "longitud": longitud == null ? null : longitud,
-        "idDgoTipoEje": idDgoTipoEje == null ? null : idDgoTipoEje,
+    "codRecintoElec":
+    codRecintoElec,
 
-        "distance": distance == null ? null : distance,
-      };
+    "nomRecintoElec":
+    nomRecintoElec,
+
+    "direcRecintoElec":
+    direcRecintoElec,
+
+    "latitud":
+    latitud,
+
+    "longitud":
+    longitud,
+
+    "idDgoTipoEje":
+    idDgoTipoEje,
+
+    "distance":
+    distance,
+  };
 }
