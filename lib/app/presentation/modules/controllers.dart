@@ -17,8 +17,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:get/get.dart';
-
-
 import '../../../app/core/utils/utilidadesUtil.dart';
 import '../../../app/presentation/widgets/custom_app_widgets.dart';
 import 'package:path_provider/path_provider.dart';

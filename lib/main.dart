@@ -127,7 +127,7 @@ void main() async {
     FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler);
 
     // Inicializar notificaciones locales
-    await LocalNotification.initializeLocalNotifications();
+   // await LocalNotification.initializeLocalNotifications();
 
     // === Solicitar permisos de notificación (iOS + Android 13+) 👇
    // await LocalNotification.requestPermissionLocalNotifications();

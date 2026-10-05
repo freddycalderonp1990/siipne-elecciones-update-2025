@@ -50,12 +50,9 @@ class MenuAppController extends GetxController {
     await ExceptionDialogos.manejarErroresShowDialogo(
           () async {
             dataMenuApp.value = await getMenuAppUseCase();
-
-
             if(dataMenuApp.value.siipneElecciones){
               showMenuElecciones.value=true;
               showMenuCenso.value=false;
-
             }
             else  {
               showMenuElecciones.value=false;
@@ -65,12 +62,12 @@ class MenuAppController extends GetxController {
             }
 
             //todo: Comentado para mostra los dos menus
-
             //cambiar borara estas lineas
             showMenuElecciones.value=true;
             showMenuCenso.value=true;
       },
     );
+
     peticionServerState(false);
   }
 
@@ -78,13 +75,9 @@ class MenuAppController extends GetxController {
 
   Future<void> verificarNovedadesUdgaPolicialRegistradas() async {
     peticionServerState(true);
-
-
     await ExceptionDialogos.manejarErroresShowDialogo(() async {
-
       DataNovedadesUdga data =
       await _eleccionesNovedadesApiImpl.verificarNovedadesUdgaPolicialRegistradas(idGenPersona: user.idGenPersona,);
-
       if (data.session == false) {
         String msj=data.motivo.replaceAll("No Puede iniciar Session", "");
         msj="No puede continuar, ya que tiene registrado lo siguiente:\n${msj}";
@@ -93,8 +86,6 @@ class MenuAppController extends GetxController {
             descripcion: msj);
         return;
       }
-
-
       Get.toNamed(AppCensoRoutes.MENU_APP);
 
 
