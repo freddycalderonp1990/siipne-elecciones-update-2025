@@ -50,6 +50,8 @@ class RecintosElectoral {
     this.distance = '0',
     this.validado = false,
     this.listoCrearCodigo=true,
+    this.estado="",
+    this.observacion=""
   });
 
   int idDgoReciElect;
@@ -71,6 +73,9 @@ class RecintosElectoral {
   bool listoCrearCodigo;
 
   String apenomValida;
+
+  String observacion;
+  String estado;
 
   factory RecintosElectoral.fromJson(Map<String, dynamic> json) {
     String nomRecinto =

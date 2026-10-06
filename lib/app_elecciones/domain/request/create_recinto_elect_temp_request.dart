@@ -8,6 +8,7 @@ class CreateRecintoElectTempRequest {
   final String fotografia;
   final int usuario;
   final String ip;
+  final int idDgoProcElec;
 
   CreateRecintoElectTempRequest({
     required this.nomRecintoElec,
@@ -17,6 +18,7 @@ class CreateRecintoElectTempRequest {
     required this.fotografia,
     required this.usuario,
     required this.ip,
+    required this.idDgoProcElec
   });
 
   /// Método para convertir el objeto a JSON
@@ -29,6 +31,7 @@ class CreateRecintoElectTempRequest {
       "fotografia": fotografia,
       "usuario": usuario,
       "ip": ip,
+      "idDgoProcElec":idDgoProcElec
     };
   }
 }

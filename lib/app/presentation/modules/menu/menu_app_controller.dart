@@ -63,8 +63,8 @@ class MenuAppController extends GetxController {
 
             //todo: Comentado para mostra los dos menus
             //cambiar borara estas lineas
-            showMenuElecciones.value=true;
-            showMenuCenso.value=true;
+           // showMenuElecciones.value=true;
+           // showMenuCenso.value=true;
       },
     );
 

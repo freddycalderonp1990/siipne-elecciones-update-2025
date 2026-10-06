@@ -37,11 +37,15 @@ class DataRecintotemp {
   final int idDgoReciElectTemp;
   final String nomRecintoElec;
   final String direcRecintoElec;
+  final String observacion;
+  final String estado;
 
   DataRecintotemp({
     required this.idDgoReciElectTemp,
     required this.nomRecintoElec,
     required this.direcRecintoElec,
+    required this.observacion,
+    required this.estado,
   });
 
   factory DataRecintotemp.fromJson(Map<String, dynamic> json) =>
@@ -49,6 +53,8 @@ class DataRecintotemp {
         idDgoReciElectTemp: ParseModel.parseToInt(json["idDgoReciElectTemp"]),
         nomRecintoElec: ParseModel.parseToString(json["nomRecintoElec"]),
         direcRecintoElec: ParseModel.parseToString(json["direcRecintoElec"]),
+        observacion: ParseModel.parseToString(json["observacion"]),
+        estado: ParseModel.parseToString(json["estado"]),
       );
 
   Map<String, dynamic> toJson() => {

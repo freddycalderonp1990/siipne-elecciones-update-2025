@@ -233,6 +233,7 @@ class EleccionesRecintosApiProviderImpl extends EleccionesRecintosRepository {
   Future<bool> crearRecintoTemporal({
     required CreateRecintoElectTempRequest request,
   }) async {
+
     Map<String, dynamic> body = HeadEleccionesRequest(
       uri: ApiConstantes.ELECCIONES_CREAR_RECINTO_TEMPORAL,
       bodyRequest: request.toJson(),

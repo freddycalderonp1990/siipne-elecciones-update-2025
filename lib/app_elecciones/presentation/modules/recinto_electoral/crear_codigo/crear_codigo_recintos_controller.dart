@@ -263,6 +263,10 @@ class CrearCodigoRecintosController extends GetxController {
         latitud: ubicacion.latitude,
         longitud: ubicacion.longitude,
 
+        idDgoProcElec: selectProcesoOperativoController
+            .selectProcesosOperativo
+            .value
+            .idDgoProcElec,
         ip: ip,
         nomRecintoElec: controllerNombreRecinto.text,
         direcRecintoElec: 'SN',
@@ -281,8 +285,6 @@ class CrearCodigoRecintosController extends GetxController {
 
       await getRecintoElectoralTemporalByIdUsuario();
 
-
-
       DialogosAwesome.getInformation(
         descripcion: "El recinto fue creado correctamente y se encuentra pendiente de validación.",
         btnOkOnPress: () {
@@ -294,51 +296,45 @@ class CrearCodigoRecintosController extends GetxController {
     peticionServerState(false);
   }
 
-
   Future<void> getRecintoElectoralTemporalByIdUsuario() async {
+    try {
+      final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
+      LatLng ubicacion = await locationBloc.getCurrentPosition();
 
+      GetRecintoElectTempByUserRequest request =
+          GetRecintoElectTempByUserRequest(
+            usuario: user.idGenUsuario,
+            latitud: ubicacion.latitude,
+            longitud: ubicacion.longitude,
+            idDgoProcElec: selectProcesoOperativoController
+                .selectProcesosOperativo
+                .value
+                .idDgoProcElec,
+          );
 
-   try {
-     final locationBloc = BlocProvider.of<LocationBloc>(Get.context!);
-     LatLng ubicacion = await locationBloc.getCurrentPosition();
+      RecintoTempModel result = await _eleccionesRecintosApiImpl
+          .getRecintoElectoralTemporalByIdUsuario(request: request);
 
-     GetRecintoElectTempByUserRequest request =
-     GetRecintoElectTempByUserRequest(
-       usuario: user.idGenUsuario,
-       latitud: ubicacion.latitude,
-       longitud: ubicacion.longitude,
-     );
+      listRecintosElectorales.removeWhere(
+        (recinto) => recinto.idDgoReciElectTemp > 0,
+      );
 
-     RecintoTempModel result = await _eleccionesRecintosApiImpl
-         .getRecintoElectoralTemporalByIdUsuario(
-       request: request,
-     );
+      final recintosTemporales = result.dataRecintotemp.map((recintoTemp) {
+        return RecintosElectoral(
+          idDgoReciElectTemp: recintoTemp.idDgoReciElectTemp,
+          nomRecintoElec: recintoTemp.nomRecintoElec,
+          direcRecintoElec: recintoTemp.direcRecintoElec,
+          listoCrearCodigo: false,
+          observacion: recintoTemp.observacion,
+          estado: recintoTemp.estado
 
-     listRecintosElectorales.removeWhere(
-           (recinto) => recinto.idDgoReciElectTemp > 0,
-     );
+        );
+      }).toList();
 
-
-     final recintosTemporales = result.dataRecintotemp.map((recintoTemp) {
-       return RecintosElectoral(
-         idDgoReciElectTemp: recintoTemp.idDgoReciElectTemp,
-         nomRecintoElec: recintoTemp.nomRecintoElec,
-         direcRecintoElec: recintoTemp.direcRecintoElec,
-         listoCrearCodigo: false,
-       );
-     }).toList();
-
-     listRecintosElectorales.insertAll(0, recintosTemporales);
-   } catch (e, stackTrace) {
-     print(
-       "Error en getRecintoElectoralTemporalByIdUsuario: $e",
-     );
-    // print(stackTrace);
-   }
-
-
+      listRecintosElectorales.insertAll(0, recintosTemporales);
+    } catch (e, stackTrace) {
+      print("Error en getRecintoElectoralTemporalByIdUsuario: $e");
+      // print(stackTrace);
+    }
   }
-
-
-
 }

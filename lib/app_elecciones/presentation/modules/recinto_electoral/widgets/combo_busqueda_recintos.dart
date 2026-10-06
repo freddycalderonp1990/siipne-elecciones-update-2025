@@ -122,10 +122,9 @@ class _ComboBusquedaRecintosState<T> extends State<ComboBusquedaRecintos<T>> {
                 Expanded(
                   child:popupWidget,
                 ),
-
                 if(
                 widget.showNoEncuentroRecinto &&
-                    _getCantidadPendientes() <= 1
+                    _getCantidadPendientes() < 4
                 )
                   Container(
                     width:double.infinity,
@@ -336,20 +335,32 @@ class _ComboBusquedaRecintosState<T> extends State<ComboBusquedaRecintos<T>> {
   }
 
   Widget _buildPendientesValidacion() {
-    final pendientes = widget.datos.where((item) {
+    final pendientes = widget.datos.where((item) =>
+    item is RecintosElectoral &&
+        item.estado.trim().toLowerCase() == 'pendiente').length;
+
+    final aprobados = widget.datos.where((item) =>
+    item is RecintosElectoral &&
+        item.estado.trim().toLowerCase() == 'aprobado').length;
+
+    final rechazados = widget.datos.where((item) =>
+    item is RecintosElectoral &&
+        item.estado.trim().toLowerCase() == 'rechazado').length;
+
+    final duplicados = widget.datos.where((item) =>
+    item is RecintosElectoral &&
+        item.estado.trim().toLowerCase() == 'duplicado').length;
+
+    final pendientesR = widget.datos.where((item) {
       return item is RecintosElectoral &&
           !item.listoCrearCodigo;
+
     }).toList();
 
-    if (pendientes.isEmpty) {
-      return const SizedBox.shrink();
-    }
-
-    final total = pendientes.length;
 
     return InkWell(
       onTap: () {
-        _mostrarPendientesValidacion(pendientes);
+        _mostrarPendientesValidacion(pendientesR);
       },
       child: Container(
         width:double.infinity,
@@ -387,15 +398,60 @@ class _ComboBusquedaRecintosState<T> extends State<ComboBusquedaRecintos<T>> {
               child:Column(
                 crossAxisAlignment:CrossAxisAlignment.start,
                 children:[
-                  Text(
-                    total == 1
-                        ? '1 recinto pendiente de validación'
-                        : '$total recintos pendientes de validación',
-                    style:const TextStyle(
-                      color:Color(0xFF17365D),
-                      fontSize:11.5,
-                      fontWeight:FontWeight.w800,
-                    ),
+
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        pendientes == 1
+                            ? '1 recinto pendiente de validación'
+                            : '$pendientes recintos pendientes de validación',
+                        style: const TextStyle(
+                          color: Color(0xFFE39A2D),
+                          fontSize: 11.5,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+
+                      const SizedBox(height: 4),
+
+                      Text(
+                        aprobados == 1
+                            ? '1 recinto aprobado'
+                            : '$aprobados recintos aprobados',
+                        style: const TextStyle(
+                          color: Color(0xFF218A61),
+                          fontSize: 11.5,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+
+                      const SizedBox(height: 4),
+
+                      Text(
+                        rechazados == 1
+                            ? '1 recinto rechazado'
+                            : '$rechazados recintos rechazados',
+                        style: const TextStyle(
+                          color: Color(0xFFC65353),
+                          fontSize: 11.5,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+
+                      const SizedBox(height: 4),
+
+                      Text(
+                        duplicados == 1
+                            ? '1 recinto duplicado'
+                            : '$duplicados recintos duplicados',
+                        style: const TextStyle(
+                          color: Color(0xFF7B61A8),
+                          fontSize: 11.5,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ],
                   ),
 
                   const SizedBox(height:3),
@@ -423,179 +479,217 @@ class _ComboBusquedaRecintosState<T> extends State<ComboBusquedaRecintos<T>> {
     );
   }
 
+  Color _colorEstado(String estado) {
+    switch (estado.trim().toLowerCase()) {
+      case 'aprobado':
+        return const Color(0xFF218A61);
+
+      case 'rechazado':
+        return const Color(0xFFC65353);
+
+      case 'duplicado':
+        return const Color(0xFF7B61A8);
+
+      case 'pendiente':
+      default:
+        return const Color(0xFFE39A2D);
+    }
+  }
+
+  IconData _iconoEstado(String estado) {
+    switch (estado.trim().toLowerCase()) {
+      case 'aprobado':
+        return Icons.check_circle_outline;
+
+      case 'rechazado':
+        return Icons.cancel_outlined;
+
+      case 'duplicado':
+        return Icons.content_copy_outlined;
+
+      case 'pendiente':
+      default:
+        return Icons.pending_outlined;
+    }
+  }
+
   void _mostrarPendientesValidacion(List<T> pendientes) {
     showDialog(
-      context:context,
-      builder:(context){
+      context: context,
+      builder: (context) {
         return Dialog(
-          backgroundColor:Colors.white,
-          shape:RoundedRectangleBorder(
-            borderRadius:BorderRadius.circular(18),
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18),
           ),
-          child:Container(
-            constraints:const BoxConstraints(
-              maxHeight:520,
+          child: Container(
+            constraints: const BoxConstraints(
+              maxHeight: 520,
             ),
-            padding:const EdgeInsets.all(16),
-            child:Column(
-              mainAxisSize:MainAxisSize.min,
-              children:[
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
                 Row(
-                  children:[
+                  children: [
                     Container(
-                      width:38,
-                      height:38,
-                      decoration:BoxDecoration(
-                        color:const Color(0xFFFFF0F0),
-                        borderRadius:BorderRadius.circular(10),
+                      width: 38,
+                      height: 38,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFEAF1F8),
+                        borderRadius: BorderRadius.circular(10),
                       ),
-                      child:const Icon(
-                        Icons.pending_outlined,
-                        color:Color(0xFFC65353),
-                        size:21,
+                      child: const Icon(
+                        Icons.home_work_outlined,
+                        color: Color(0xFF195496),
+                        size: 21,
                       ),
                     ),
 
-                    const SizedBox(width:10),
+                    const SizedBox(width: 10),
 
                     const Expanded(
-                      child:Text(
-                        'Recintos pendientes',
-                        style:TextStyle(
-                          color:Color(0xFF17365D),
-                          fontSize:15,
-                          fontWeight:FontWeight.w800,
+                      child: Text(
+                        'Estado de recintos',
+                        style: TextStyle(
+                          color: Color(0xFF17365D),
+                          fontSize: 15,
+                          fontWeight: FontWeight.w800,
                         ),
                       ),
                     ),
 
                     IconButton(
-                      onPressed:(){
+                      onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon:const Icon(
+                      icon: const Icon(
                         Icons.close_rounded,
-                        color:Color(0xFF8B99A7),
+                        color: Color(0xFF8B99A7),
                       ),
                     ),
                   ],
                 ),
 
-                const SizedBox(height:5),
+                const SizedBox(height: 5),
 
                 Align(
-                  alignment:Alignment.centerLeft,
-                  child:Text(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
                     pendientes.length == 1
-                        ? '1 recinto se encuentra pendiente de validación.'
-                        : '${pendientes.length} recintos se encuentran pendientes de validación.',
-                    style:const TextStyle(
-                      color:Color(0xFF667789),
-                      fontSize:11,
+                        ? '1 recinto encontrado.'
+                        : '${pendientes.length} recintos encontrados.',
+                    style: const TextStyle(
+                      color: Color(0xFF667789),
+                      fontSize: 11,
                     ),
                   ),
                 ),
 
-                const SizedBox(height:12),
+                const SizedBox(height: 12),
 
                 Flexible(
-                  child:ListView.separated(
-                    shrinkWrap:true,
-                    itemCount:pendientes.length,
-                    separatorBuilder:(_,__) =>
-                    const SizedBox(height:7),
-                    itemBuilder:(context,index){
-
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: pendientes.length,
+                    separatorBuilder: (_, __) =>
+                    const SizedBox(height: 7),
+                    itemBuilder: (context, index) {
                       final recinto =
-                      pendientes[index]
-                      as RecintosElectoral;
+                      pendientes[index] as RecintosElectoral;
+
+                      final colorEstado =
+                      _colorEstado(recinto.estado);
+
+
+                      final iconoEstado =
+                      _iconoEstado(recinto.estado);
 
                       return Container(
-                        padding:const EdgeInsets.all(11),
-                        decoration:BoxDecoration(
-                          color:const Color(0xFFFFF8F8),
-                          borderRadius:BorderRadius.circular(12),
-                          border:Border.all(
-                            color:const Color(0xFFF0CCCC),
+                        padding: const EdgeInsets.all(11),
+                        decoration: BoxDecoration(
+                          color: colorEstado.withOpacity(0.04),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: colorEstado.withOpacity(0.20),
                           ),
                         ),
-                        child:Row(
+                        child: Row(
                           crossAxisAlignment:
                           CrossAxisAlignment.start,
-                          children:[
+                          children: [
                             Container(
-                              width:32,
-                              height:32,
-                              decoration:BoxDecoration(
-                                color:const Color(0xFFC65353)
-                                    .withOpacity(.08),
+                              width: 32,
+                              height: 32,
+                              decoration: BoxDecoration(
+                                color: colorEstado.withOpacity(0.08),
                                 borderRadius:
                                 BorderRadius.circular(8),
                               ),
-                              child:const Icon(
+                              child: Icon(
                                 Icons.home_work_outlined,
-                                color:Color(0xFFC65353),
-                                size:18,
+                                color: colorEstado,
+                                size: 18,
                               ),
                             ),
 
-                            const SizedBox(width:9),
+                            const SizedBox(width: 9),
 
                             Expanded(
-                              child:Column(
+                              child: Column(
                                 crossAxisAlignment:
                                 CrossAxisAlignment.start,
-                                children:[
+                                children: [
                                   Text(
                                     recinto.nomRecintoElecOnly
                                         .isNotEmpty
-                                        ? recinto
-                                        .nomRecintoElecOnly
-                                        : recinto
-                                        .nomRecintoElec,
-                                    maxLines:2,
+                                        ? recinto.nomRecintoElecOnly
+                                        : recinto.nomRecintoElec,
+                                    maxLines: 2,
                                     overflow:
                                     TextOverflow.ellipsis,
-                                    style:const TextStyle(
-                                      color:Color(0xFF17365D),
-                                      fontSize:11,
-                                      fontWeight:FontWeight.w800,
+                                    style: const TextStyle(
+                                      color: Color(0xFF17365D),
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w800,
                                     ),
                                   ),
 
-                                  if(recinto
+                                  if (recinto
                                       .direcRecintoElec
-                                      .isNotEmpty)...[
-                                    const SizedBox(height:4),
+                                      .isNotEmpty) ...[
+                                    const SizedBox(height: 4),
 
                                     Text(
-                                      recinto.direcRecintoElec,
-                                      maxLines:3,
+                                      recinto.observacion,
+                                      maxLines: 3,
                                       overflow:
                                       TextOverflow.ellipsis,
-                                      style:const TextStyle(
-                                        color:Color(0xFF667789),
-                                        fontSize:9.5,
-                                        height:1.2,
+                                      style: const TextStyle(
+                                        color: Color(0xFF667789),
+                                        fontSize: 9.5,
+                                        height: 1.2,
                                       ),
                                     ),
                                   ],
 
-                                  const SizedBox(height:5),
+                                  const SizedBox(height: 5),
 
-                                  const Row(
-                                    children:[
+                                  Row(
+                                    children: [
                                       Icon(
-                                        Icons.pending_outlined,
-                                        size:12,
-                                        color:Color(0xFFC65353),
+                                        iconoEstado,
+                                        size: 12,
+                                        color: colorEstado,
                                       ),
-                                      SizedBox(width:4),
+
+                                      const SizedBox(width: 4),
+
                                       Text(
-                                        'Pendiente de validación',
-                                        style:TextStyle(
-                                          color:Color(0xFFC65353),
-                                          fontSize:9,
+                                        recinto.estado,
+                                        style: TextStyle(
+                                          color: colorEstado,
+                                          fontSize: 9,
                                           fontWeight:
                                           FontWeight.w700,
                                         ),
@@ -612,32 +706,32 @@ class _ComboBusquedaRecintosState<T> extends State<ComboBusquedaRecintos<T>> {
                   ),
                 ),
 
-                const SizedBox(height:12),
+                const SizedBox(height: 12),
 
                 SizedBox(
-                  width:double.infinity,
-                  child:ElevatedButton(
-                    onPressed:(){
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
                       Navigator.pop(context);
                     },
-                    style:ElevatedButton.styleFrom(
+                    style: ElevatedButton.styleFrom(
                       backgroundColor:
                       const Color(0xFF195496),
-                      foregroundColor:Colors.white,
-                      elevation:0,
-                      padding:const EdgeInsets.symmetric(
-                        vertical:12,
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 12,
                       ),
-                      shape:RoundedRectangleBorder(
+                      shape: RoundedRectangleBorder(
                         borderRadius:
                         BorderRadius.circular(11),
                       ),
                     ),
-                    child:const Text(
+                    child: const Text(
                       'Entendido',
-                      style:TextStyle(
-                        fontSize:11,
-                        fontWeight:FontWeight.w800,
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w800,
                       ),
                     ),
                   ),
@@ -649,6 +743,9 @@ class _ComboBusquedaRecintosState<T> extends State<ComboBusquedaRecintos<T>> {
       },
     );
   }
+
+
+
 
   TextFieldProps getBusquedaPopup() {
     return TextFieldProps(
