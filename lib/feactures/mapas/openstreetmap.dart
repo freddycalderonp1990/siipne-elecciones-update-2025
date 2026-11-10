@@ -13,7 +13,7 @@ class Openstreetmap {
   static const String _userAgent='SIIPNE-ELECCIONES/1.0';
 
   static TileLayer getMapa({
-    TipoMapa tipoMapa=TipoMapa.voyager,
+    TipoMapa tipoMapa=TipoMapa.openStreetMap,
     bool retina=true,
     bool mostrarErrores=true,
   }) {

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../../../../../app/core/utils/responsiveUtil.dart';
 import '../../../../../app/core/values/app_colors.dart';
 import '../../../../../app/presentation/widgets/custom_app_widgets.dart';
+import '../../../../data/models/models.dart';
 
 class ComboBusquedaRecintos<T> extends StatefulWidget {
   final VoidCallback? onNoEncuentroRecinto;
@@ -115,15 +116,25 @@ class _ComboBusquedaRecintosState<T> extends State<ComboBusquedaRecintos<T>> {
             child:Column(
               children:[
                 _cabeceraPopup(),
-                Expanded(child:popupWidget),
-                if(widget.showNoEncuentroRecinto)
+
+                _buildPendientesValidacion(),
+
+                Expanded(
+                  child:popupWidget,
+                ),
+                if(
+                widget.showNoEncuentroRecinto &&
+                    _getCantidadPendientes() < 4
+                )
                   Container(
                     width:double.infinity,
                     padding:const EdgeInsets.fromLTRB(12,8,12,12),
                     decoration:const BoxDecoration(
                       color:Color(0xFFF7F9FB),
                       border:Border(
-                        top:BorderSide(color:Color(0xFFE1E7ED)),
+                        top:BorderSide(
+                          color:Color(0xFFE1E7ED),
+                        ),
                       ),
                     ),
                     child:OutlinedButton.icon(
@@ -142,8 +153,12 @@ class _ComboBusquedaRecintosState<T> extends State<ComboBusquedaRecintos<T>> {
                       ),
                       style:OutlinedButton.styleFrom(
                         backgroundColor:Colors.white,
-                        padding:const EdgeInsets.symmetric(vertical:13),
-                        side:const BorderSide(color:Color(0xFF195496)),
+                        padding:const EdgeInsets.symmetric(
+                          vertical:13,
+                        ),
+                        side:const BorderSide(
+                          color:Color(0xFF195496),
+                        ),
                         shape:RoundedRectangleBorder(
                           borderRadius:BorderRadius.circular(12),
                         ),
@@ -165,24 +180,46 @@ class _ComboBusquedaRecintosState<T> extends State<ComboBusquedaRecintos<T>> {
         }
         return '';
       },
+
       dropdownBuilder:(context,selectedItem)=>_customDropDownExample(context,selectedItem),
-      items:(filter,infiniteScrollProps)=>widget.datos,
-      onSelected: (value) {
+      items: (filter, infiniteScrollProps) {
+        return widget.datos.where((item) {
+          return !(item is RecintosElectoral &&
+              !item.listoCrearCodigo);
+        }).toList();
+      },
+      onSelected:(value){
         _userEditTextController.clear();
 
-        final bool nuevoEstado = _tieneSeleccion(value);
+        if(value is RecintosElectoral &&
+            !value.listoCrearCodigo){
+          return;
+        }
 
-        if (showX != nuevoEstado && mounted) {
-          setState(() {
+        final bool nuevoEstado =
+        _tieneSeleccion(value);
+
+        if(showX != nuevoEstado && mounted){
+          setState((){
             showX = nuevoEstado;
           });
         }
 
         widget.complete?.call(value);
 
-        if (value != null) {
+        if(value != null){
           widget.onChanged?.call(value);
         }
+      },
+
+      onBeforeChange: (selectedItem, newItem) async {
+        if (newItem is RecintosElectoral && !newItem.listoCrearCodigo) {
+          DialogosAwesome.getWarning(descripcion: "Este recinto se encuentra pendiente de validación y no puede ser seleccionado.");
+
+          return false;
+        }
+
+        return true;
       },
     );
 
@@ -223,6 +260,13 @@ class _ComboBusquedaRecintosState<T> extends State<ComboBusquedaRecintos<T>> {
         wgComboBusquedaRecintos,
       ],
     );
+  }
+
+  int _getCantidadPendientes() {
+    return widget.datos.where((item) {
+      return item is RecintosElectoral &&
+          !item.listoCrearCodigo;
+    }).length;
   }
 
   Widget _cabeceraPopup() {
@@ -289,6 +333,419 @@ class _ComboBusquedaRecintosState<T> extends State<ComboBusquedaRecintos<T>> {
       ),
     );
   }
+
+  Widget _buildPendientesValidacion() {
+    final pendientes = widget.datos.where((item) =>
+    item is RecintosElectoral &&
+        item.estado.trim().toLowerCase() == 'pendiente').length;
+
+    final aprobados = widget.datos.where((item) =>
+    item is RecintosElectoral &&
+        item.estado.trim().toLowerCase() == 'aprobado').length;
+
+    final rechazados = widget.datos.where((item) =>
+    item is RecintosElectoral &&
+        item.estado.trim().toLowerCase() == 'rechazado').length;
+
+    final duplicados = widget.datos.where((item) =>
+    item is RecintosElectoral &&
+        item.estado.trim().toLowerCase() == 'duplicado').length;
+
+    final pendientesR = widget.datos.where((item) {
+      return item is RecintosElectoral &&
+          !item.listoCrearCodigo;
+
+    }).toList();
+
+
+    return InkWell(
+      onTap: () {
+        _mostrarPendientesValidacion(pendientesR);
+      },
+      child: Container(
+        width:double.infinity,
+        margin:const EdgeInsets.fromLTRB(10,8,10,4),
+        padding:const EdgeInsets.symmetric(
+          horizontal:12,
+          vertical:10,
+        ),
+        decoration:BoxDecoration(
+          color:const Color(0xFFFFF5F5),
+          borderRadius:BorderRadius.circular(13),
+          border:Border.all(
+            color:const Color(0xFFF0CCCC),
+          ),
+        ),
+        child:Row(
+          children:[
+            Container(
+              width:36,
+              height:36,
+              decoration:BoxDecoration(
+                color:const Color(0xFFC65353).withOpacity(.08),
+                borderRadius:BorderRadius.circular(9),
+              ),
+              child:const Icon(
+                Icons.pending_outlined,
+                color:Color(0xFFC65353),
+                size:20,
+              ),
+            ),
+
+            const SizedBox(width:10),
+
+            Expanded(
+              child:Column(
+                crossAxisAlignment:CrossAxisAlignment.start,
+                children:[
+
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        pendientes == 1
+                            ? '1 recinto pendiente de validación'
+                            : '$pendientes recintos pendientes de validación',
+                        style: const TextStyle(
+                          color: Color(0xFFE39A2D),
+                          fontSize: 11.5,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+
+                      const SizedBox(height: 4),
+
+                      Text(
+                        aprobados == 1
+                            ? '1 recinto aprobado'
+                            : '$aprobados recintos aprobados',
+                        style: const TextStyle(
+                          color: Color(0xFF218A61),
+                          fontSize: 11.5,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+
+                      const SizedBox(height: 4),
+
+                      Text(
+                        rechazados == 1
+                            ? '1 recinto rechazado'
+                            : '$rechazados recintos rechazados',
+                        style: const TextStyle(
+                          color: Color(0xFFC65353),
+                          fontSize: 11.5,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+
+                      const SizedBox(height: 4),
+
+                      Text(
+                        duplicados == 1
+                            ? '1 recinto duplicado'
+                            : '$duplicados recintos duplicados',
+                        style: const TextStyle(
+                          color: Color(0xFF7B61A8),
+                          fontSize: 11.5,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height:3),
+
+                  const Text(
+                    'Toque para ver los recintos',
+                    style:TextStyle(
+                      color:Color(0xFF8B99A7),
+                      fontSize:9.5,
+                      fontWeight:FontWeight.w500,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            const Icon(
+              Icons.arrow_forward_ios_rounded,
+              color:Color(0xFFC65353),
+              size:14,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Color _colorEstado(String estado) {
+    switch (estado.trim().toLowerCase()) {
+      case 'aprobado':
+        return const Color(0xFF218A61);
+
+      case 'rechazado':
+        return const Color(0xFFC65353);
+
+      case 'duplicado':
+        return const Color(0xFF7B61A8);
+
+      case 'pendiente':
+      default:
+        return const Color(0xFFE39A2D);
+    }
+  }
+
+  IconData _iconoEstado(String estado) {
+    switch (estado.trim().toLowerCase()) {
+      case 'aprobado':
+        return Icons.check_circle_outline;
+
+      case 'rechazado':
+        return Icons.cancel_outlined;
+
+      case 'duplicado':
+        return Icons.content_copy_outlined;
+
+      case 'pendiente':
+      default:
+        return Icons.pending_outlined;
+    }
+  }
+
+  void _mostrarPendientesValidacion(List<T> pendientes) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18),
+          ),
+          child: Container(
+            constraints: const BoxConstraints(
+              maxHeight: 520,
+            ),
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 38,
+                      height: 38,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFFEAF1F8),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: const Icon(
+                        Icons.home_work_outlined,
+                        color: Color(0xFF195496),
+                        size: 21,
+                      ),
+                    ),
+
+                    const SizedBox(width: 10),
+
+                    const Expanded(
+                      child: Text(
+                        'Estado de recintos',
+                        style: TextStyle(
+                          color: Color(0xFF17365D),
+                          fontSize: 15,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                    ),
+
+                    IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: const Icon(
+                        Icons.close_rounded,
+                        color: Color(0xFF8B99A7),
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 5),
+
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    pendientes.length == 1
+                        ? '1 recinto encontrado.'
+                        : '${pendientes.length} recintos encontrados.',
+                    style: const TextStyle(
+                      color: Color(0xFF667789),
+                      fontSize: 11,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 12),
+
+                Flexible(
+                  child: ListView.separated(
+                    shrinkWrap: true,
+                    itemCount: pendientes.length,
+                    separatorBuilder: (_, __) =>
+                    const SizedBox(height: 7),
+                    itemBuilder: (context, index) {
+                      final recinto =
+                      pendientes[index] as RecintosElectoral;
+
+                      final colorEstado =
+                      _colorEstado(recinto.estado);
+
+
+                      final iconoEstado =
+                      _iconoEstado(recinto.estado);
+
+                      return Container(
+                        padding: const EdgeInsets.all(11),
+                        decoration: BoxDecoration(
+                          color: colorEstado.withOpacity(0.04),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: colorEstado.withOpacity(0.20),
+                          ),
+                        ),
+                        child: Row(
+                          crossAxisAlignment:
+                          CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 32,
+                              height: 32,
+                              decoration: BoxDecoration(
+                                color: colorEstado.withOpacity(0.08),
+                                borderRadius:
+                                BorderRadius.circular(8),
+                              ),
+                              child: Icon(
+                                Icons.home_work_outlined,
+                                color: colorEstado,
+                                size: 18,
+                              ),
+                            ),
+
+                            const SizedBox(width: 9),
+
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment:
+                                CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    recinto.nomRecintoElecOnly
+                                        .isNotEmpty
+                                        ? recinto.nomRecintoElecOnly
+                                        : recinto.nomRecintoElec,
+                                    maxLines: 2,
+                                    overflow:
+                                    TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      color: Color(0xFF17365D),
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                                  ),
+
+                                  if (recinto
+                                      .direcRecintoElec
+                                      .isNotEmpty) ...[
+                                    const SizedBox(height: 4),
+
+                                    Text(
+                                      recinto.observacion,
+                                      maxLines: 3,
+                                      overflow:
+                                      TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        color: Color(0xFF667789),
+                                        fontSize: 9.5,
+                                        height: 1.2,
+                                      ),
+                                    ),
+                                  ],
+
+                                  const SizedBox(height: 5),
+
+                                  Row(
+                                    children: [
+                                      Icon(
+                                        iconoEstado,
+                                        size: 12,
+                                        color: colorEstado,
+                                      ),
+
+                                      const SizedBox(width: 4),
+
+                                      Text(
+                                        recinto.estado,
+                                        style: TextStyle(
+                                          color: colorEstado,
+                                          fontSize: 9,
+                                          fontWeight:
+                                          FontWeight.w700,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+
+                const SizedBox(height: 12),
+
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor:
+                      const Color(0xFF195496),
+                      foregroundColor: Colors.white,
+                      elevation: 0,
+                      padding: const EdgeInsets.symmetric(
+                        vertical: 12,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius:
+                        BorderRadius.circular(11),
+                      ),
+                    ),
+                    child: const Text(
+                      'Entendido',
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+
+
 
   TextFieldProps getBusquedaPopup() {
     return TextFieldProps(
@@ -440,62 +897,149 @@ class _ComboBusquedaRecintosState<T> extends State<ComboBusquedaRecintos<T>> {
     );
   }
 
-  Widget _customDesingDataPopop(BuildContext context,T? item,bool v,bool isSelected) {
-    final responsive=ResponsiveUtil();
+  Widget _customDesingDataPopop(
+      BuildContext context,
+      T? item,
+      bool v,
+      bool isSelected,
+      ) {
+    final responsive = ResponsiveUtil();
 
-    print("isSelected $isSelected ybb= $v");
-
-    Widget msjSelectDato=Container(
-      width:double.infinity,
-      padding:const EdgeInsets.all(10),
-      child:Text(
-        widget.textSeleccioneUndato??"Seleccione un dato",
-        style:TextStyle(
-          color:const Color(0xFFB74949),
-          fontSize:responsive.diagonalP(1),
-          fontWeight:FontWeight.w700,
+    if (item == null) {
+      return Container(
+        width: double.infinity,
+        padding: const EdgeInsets.all(10),
+        child: Text(
+          widget.textSeleccioneUndato ?? "Seleccione un dato",
+          style: TextStyle(
+            color: const Color(0xFFB74949),
+            fontSize: responsive.diagonalP(1),
+            fontWeight: FontWeight.w700,
+          ),
         ),
-      ),
-    );
+      );
+    }
 
-    if(item==null)return msjSelectDato;
-    if(widget.displayField==null||widget.displayField!(item).isEmpty)return msjSelectDato;
+    if (widget.displayField == null ||
+        widget.displayField!(item).isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final recinto = item as RecintosElectoral;
+
+    final bool esValidado = recinto.validado;
+    final bool pendienteValidacion = !recinto.listoCrearCodigo;
+
+    Color colorFondo = Colors.white;
+    Color colorBorde = const Color(0xFFE0E7ED);
+    Color colorEstado = const Color(0xFF195496);
+    IconData iconEstado = Icons.home_work_outlined;
+    String? textoEstado;
+
+    if (esValidado) {
+      colorFondo = const Color(0xFFF1F7FC);
+      colorBorde = const Color(0xFFC9DFF2);
+      colorEstado = const Color(0xFF2878B8);
+      iconEstado = Icons.verified_rounded;
+      textoEstado = "Validado";
+    } else if (pendienteValidacion) {
+      colorFondo = const Color(0xFFFFF5F5);
+      colorBorde = const Color(0xFFF0CCCC);
+      colorEstado = const Color(0xFFC65353);
+      iconEstado = Icons.pending_outlined;
+      textoEstado = "Pendiente de validación";
+    }
 
     return Container(
-      margin:const EdgeInsets.symmetric(
-        horizontal:10,
-        vertical:4,
+      margin: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 4,
       ),
-      padding:const EdgeInsets.symmetric(
-        horizontal:9,
-        vertical:8,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 9,
       ),
-      decoration:BoxDecoration(
-        color:isSelected
-            ?const Color(0xFF195496)
-            :Colors.white,
-        borderRadius:BorderRadius.circular(13),
-        border:Border.all(
-          color:isSelected
-              ?const Color(0xFF195496)
-              :const Color(0xFFE0E7ED),
+      decoration: BoxDecoration(
+        color: isSelected
+            ? const Color(0xFF195496)
+            : colorFondo,
+        borderRadius: BorderRadius.circular(13),
+        border: Border.all(
+          color: isSelected
+              ? const Color(0xFF195496)
+              : colorBorde,
         ),
-        boxShadow:isSelected
-            ?[
-          BoxShadow(
-            color:const Color(0xFF195496).withOpacity(.16),
-            blurRadius:9,
-            offset:const Offset(0,3),
-          ),
-        ]
-            :[],
       ),
-      child:getDesing(
-        colorTexto:isSelected?Colors.white:const Color(0xFF17365D),
-        titulo:widget.displayField!(item),
-        icon:widget.icon,
-        iconUrl:widget.imgUrl,
-        isSelect:isSelected,
+      child: Row(
+        children: [
+          Container(
+            width: 34,
+            height: 34,
+            decoration: BoxDecoration(
+              color: isSelected
+                  ? Colors.white.withOpacity(.12)
+                  : colorEstado.withOpacity(.08),
+              borderRadius: BorderRadius.circular(9),
+            ),
+            child: Icon(
+              isSelected
+                  ? Icons.check_circle_rounded
+                  : iconEstado,
+              color: isSelected
+                  ? Colors.white
+                  : colorEstado,
+              size: 20,
+            ),
+          ),
+
+          const SizedBox(width: 9),
+
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.displayField!(item),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: isSelected
+                        ? Colors.white
+                        : const Color(0xFF17365D),
+                    fontSize: responsive.diagonalP(1.08),
+                    fontWeight: FontWeight.w700,
+                    height: 1.12,
+                  ),
+                ),
+
+                if (!isSelected && textoEstado != null) ...[
+                  const SizedBox(height: 4),
+
+                  Row(
+                    children: [
+                      Icon(
+                        iconEstado,
+                        size: 13,
+                        color: colorEstado,
+                      ),
+
+                      const SizedBox(width: 4),
+
+                      Text(
+                        textoEstado,
+                        style: TextStyle(
+                          color: colorEstado,
+                          fontSize: responsive.diagonalP(.85),
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }

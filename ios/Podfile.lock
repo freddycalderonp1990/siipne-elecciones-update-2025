@@ -35,12 +35,12 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/sqflite_sqlcipher/ios"
 
 SPEC CHECKSUMS:
-  advanced_root_detection: 416977d7d565ec2d179e1092e72a012520f6a8c7
+  advanced_root_detection: df5637c467b932bd67fb59f2990a080d7d107881
   Flutter: 71a624a5bc0c04062bf19101d501e466baf2fb47
   FMDB: 728731dd336af3936ce00f91d9d8495f5718a0e6
-  sqflite_sqlcipher: 1c9c7ceb30cb65dab28712cb2110fdf39b37311c
+  sqflite_sqlcipher: 8e5bdaae6b2c254f8a277a564f07bc4e2a8642a3
   SQLCipher: eb79c64049cb002b4e9fcb30edb7979bf4706dfc
 
-PODFILE CHECKSUM: d53e4e4a76b4b1e313fffa90312cac9f3d4158a4
+PODFILE CHECKSUM: 1df128af521a421ce1c024840f8d10e885f9dde6
 
 COCOAPODS: 1.16.2

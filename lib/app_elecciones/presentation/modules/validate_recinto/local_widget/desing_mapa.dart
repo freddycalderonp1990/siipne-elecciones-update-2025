@@ -63,7 +63,7 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
 
   bool tieneRecintoValidado=false;
 
-  TipoMapa tipoMapaSeleccionado=TipoMapa.voyager;
+  TipoMapa tipoMapaSeleccionado=TipoMapa.openStreetMap;
 
   Rx<GaleryCameraModel?> mGaleryCameraModel=Rx<GaleryCameraModel?>(null);
 
@@ -1576,12 +1576,7 @@ class _DesingMapaRecintoState extends State<DesingMapaRecinto> {
                   n.toString().padLeft(2,'0');
 
               String nameRecintoImg=
-                  "ImgRecinto_${ahora.year}"
-                  "${dosDigitos(ahora.month)}"
-                  "${dosDigitos(ahora.day)}_"
-                  "${dosDigitos(ahora.hour)}"
-                  "${dosDigitos(ahora.minute)}"
-                  "${dosDigitos(ahora.second)}.jpg";
+                  "NewRecinto_";
 
               mGaleryCameraModel.value=
               await PhotoHelper

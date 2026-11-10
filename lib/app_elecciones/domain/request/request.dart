@@ -16,3 +16,5 @@ part 'finalizar_recinto_request.dart';
 part 'get_novedades_hijas_request.dart';
 part 'get_novedades_padres_request.dart';
 part 'validar_recinto_request.dart';
+part 'create_recinto_elect_temp_request.dart';
+part 'get_recinto_elect_temp_by_user_request.dart';
