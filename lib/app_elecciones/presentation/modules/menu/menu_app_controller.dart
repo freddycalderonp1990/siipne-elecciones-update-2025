@@ -8,7 +8,7 @@ class MenuAppEleccionesController extends GetxController {
   final EleccionesNovedadesApiImpl _eleccionesNovedadesApiImpl=Get.find<EleccionesNovedadesApiImpl>();
 
   Rx<ProcesosOperativo> selectProcesosOperativo=ProcesosOperativo.empty().obs;
-  RxBool showValidarRecinto1=false.obs;
+
 
   RecintosElectoralesAbiertos recintosElectoralesAbiertos=RecintosElectoralesAbiertos.empty();
 
@@ -22,7 +22,7 @@ class MenuAppEleccionesController extends GetxController {
   void onInit(){
     super.onInit();
     user=loginController.user.value;
-    _inicializarModulo();
+    inicializarModulo();
   }
 
   @override
@@ -35,7 +35,7 @@ class MenuAppEleccionesController extends GetxController {
     super.onClose();
   }
 
-  Future<void> _inicializarModulo() async {
+  Future<void> inicializarModulo() async {
     peticionServerState(true);
 
     try{
@@ -95,6 +95,7 @@ class MenuAppEleccionesController extends GetxController {
   }
 
   Future<void> getProcesos(LatLng position) async {
+    print("get procesos");
     List<ProcesosOperativo> listProcesos=<ProcesosOperativo>[];
 
     await ExceptionDialogos.manejarErroresShowDialogo(() async {

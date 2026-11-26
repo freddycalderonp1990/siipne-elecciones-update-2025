@@ -12,6 +12,7 @@ class MenuAppEleccionesPage extends GetView<MenuAppEleccionesController> {
     return WorkAreaPageWidget(
       showBtnNotificacione:false,
       mostrarDatosServidor:true,
+      showGps: true,
       title:"MÓDULO ELECCIONES",
       imgPerfil:controller.user.foto,
       nombresServidor:controller.user.nombres?.toString(),
@@ -22,11 +23,24 @@ class MenuAppEleccionesPage extends GetView<MenuAppEleccionesController> {
   }
 
   Widget getContenido() {
+
     final responsive=ResponsiveUtil();
 
-    return SingleChildScrollView(
+    return RefreshIndicator(
+        color: const Color(0xFF195496),
+        backgroundColor: Colors.white,
+        strokeWidth: 2.5,
+
+        onRefresh: () async {
+          await controller.inicializarModulo();
+        },
+
+        child: SingleChildScrollView(
       physics:const AlwaysScrollableScrollPhysics(),
       padding:const EdgeInsets.fromLTRB(8,8,8,20),
+
+
+
       child:Column(
         crossAxisAlignment:CrossAxisAlignment.stretch,
         children:[
@@ -37,7 +51,7 @@ class MenuAppEleccionesPage extends GetView<MenuAppEleccionesController> {
           _botonSalir(),
         ],
       ),
-    );
+    ));
   }
 
   Widget _cabeceraModulo() {
@@ -68,7 +82,168 @@ class MenuAppEleccionesPage extends GetView<MenuAppEleccionesController> {
     );
   }
 
+
   Widget _getMenu(ResponsiveUtil responsive) {
+
+    return Obx(() {
+      final List<Widget> botones = [];
+
+      if (controller.selectProcesosOperativo.value.permitirCrearCodigos) {
+        botones.add(
+          _moduloElecciones(
+            img: SiipneEleccionesImages.icon_abrir_rec_elec,
+            title: SiipneStrings.CREARCODIGO,
+            subtitle: 'Crear Código',
+            icon: Icons.add_box_outlined,
+            onTap: () => Get.toNamed(EleccionesRoutes.SELECT_PROCESO_OPERATIVOS),
+          ),
+        );
+
+        botones.add(
+          _moduloElecciones(
+            img: SiipneEleccionesImages.icon_anexarse_rec_elec,
+            title: SiipneStrings.ANEXARSE,
+            subtitle: 'Anexarse',
+            icon: Icons.group_add_outlined,
+            onTap: () => Get.toNamed(EleccionesRoutes.ANEXARSE),
+          ),
+        );
+      }
+
+      if (controller.selectProcesosOperativo.value.validarRecinto) {
+        botones.add(
+          _moduloElecciones(
+            img: SiipneEleccionesImages.ic_validar_recinto,
+            title: SiipneStrings.VALIDAR_RECINTO,
+            subtitle: 'Validación de recinto',
+            icon: Icons.verified_outlined,
+            onTap: () => Get.toNamed(
+              EleccionesRoutes.VALIDAR_RECINTO,
+              arguments: {
+                "selectProcesosOperativo":
+                controller.selectProcesosOperativo.value,
+              },
+            ),
+          ),
+        );
+      }
+
+      // Si no existen opciones, mostrar volver a intentar
+      if (botones.isEmpty) {
+        return _estadoSinMenu();
+      }
+
+      return _gridBotones(botones);
+    });
+  }
+
+  Widget _estadoSinMenu() {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 25),
+      decoration: BoxDecoration(
+        color: Colors.white.withOpacity(.97),
+        borderRadius: BorderRadius.circular(17),
+        border: Border.all(
+          color: const Color(0xFFDCE4EC),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: const Color(0xFF17365D).withOpacity(.06),
+            blurRadius: 13,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Container(
+            width: 55,
+            height: 55,
+            decoration: BoxDecoration(
+              color: const Color(0xFFEAF1F8),
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: const Icon(
+              Icons.cloud_off_outlined,
+              color: Color(0xFF195496),
+              size: 29,
+            ),
+          ),
+
+          const SizedBox(height: 13),
+
+          const Text(
+            'No se encontraron servicios disponibles',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Color(0xFF17365D),
+              fontSize: 13,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+
+          const SizedBox(height: 5),
+
+          const Text(
+            'No fue posible obtener los procesos electorales. '
+                'Verifique su conexión a internet o contacte al administrador del sistema.',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Color(0xFF758596),
+              fontSize: 10,
+              height: 1.4,
+            ),
+          ),
+
+          const SizedBox(height: 18),
+
+          Material(
+            color: Colors.transparent,
+            borderRadius: BorderRadius.circular(12),
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              onTap: () => controller.inicializarModulo(),
+              splashColor: const Color(0xFF195496).withOpacity(.08),
+              child: Ink(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 11,
+                ),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF195496),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.refresh_rounded,
+                      color: Colors.white,
+                      size: 17,
+                    ),
+                    SizedBox(width: 8),
+                    Text(
+                      'VOLVER A INTENTAR',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: .5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _getMenuOLD(ResponsiveUtil responsive) {
+
     return Obx(() {
       final List<Widget> botones=[];
 

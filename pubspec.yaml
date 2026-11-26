@@ -9,7 +9,7 @@ description: "A new Flutter project."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 
-version: 2.2.3+47
+version: 2.3.0+48
 
 environment:
   sdk: ^3.13.2
@@ -97,8 +97,8 @@ dependencies:
   advanced_root_detection: ^0.0.5 #verificar root de app - se comenta por en ios no com´pila esta libreria da error
 
 
-    #api_provider:
-  #path: /Users/policianacional/AndroidStudioProjects/paquete_api_provider
+  #api_provider:
+   # path: /Users/policianacional/AndroidStudioProjects/paquete_api_provider
 
   api_provider:
     git:

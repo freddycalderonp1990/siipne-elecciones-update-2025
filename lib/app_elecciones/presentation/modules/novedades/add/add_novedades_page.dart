@@ -1259,7 +1259,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             keyboardType:TextInputType.text,
             controller:controller.controllerNumBoleta,
             icono:Icon(
-              Icons.assignment_sharp,
+               Icons.receipt_long_outlined,
               color:AppColors.colorIcons,
               size:controller.sizeIcons,
             ),
@@ -1268,15 +1268,18 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
             validar:Validate.validateNumBoleta,
           ),
 
-          getWgCedulaWithFind(responsive),
+          getWgCedulaWithFind(responsive,label: "Cédula del Detenido"),
         ],
       ),
     );
   }
 
+
+
   Widget getWgCedulaWithFind(
       ResponsiveUtil responsive,{
         bool validar=true,
+        String label=SiipneStrings.cedula
       }) {
     return Column(
       children:[
@@ -1288,11 +1291,11 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
                 keyboardType:TextInputType.number,
                 controller:controller.controllerCedula,
                 icono:Icon(
-                  Icons.assignment_sharp,
+                   Icons.badge_outlined,
                   color:AppColors.colorIcons,
                   size:controller.sizeIcons,
                 ),
-                label:SiipneStrings.cedula,
+                label:label,
                 fonSize:responsive.diagonalP(AppConfig.tamTextoTitulo),
                 validar:
                 controller.selectedOptionNAcionalExtranjero=="Nacional"
