@@ -1273,6 +1273,7 @@ class AddNovedadesPage extends GetView<AddNovedadesController> {
       ),
     );
   }
+  //ok
 
 
 
