@@ -20,6 +20,7 @@ class MenuRecElecIntegrantePage extends GetView<MenuRecElecIntegranteController>
   }
 
   Widget getContenido() {
+
     final responsive=ResponsiveUtil();
 
     return SingleChildScrollView(
@@ -211,6 +212,33 @@ class MenuRecElecIntegrantePage extends GetView<MenuRecElecIntegranteController>
           );
         },
       ),
+
+
+     /* controller.user.idGenUsuario==55948?
+
+
+      BtnMenuWidget(
+          horizontal: true,
+          img: SiipneEleccionesImages.icon_abandonar_rec_elec,
+          title: "ABANDONAR CÓDIGO",
+          onTap: () {
+            DialogosAwesome.getWarningSiNo(
+                title: "ABANDONAR CÓDIGO",
+                descripcion:
+                "¿Está seguro/a que desea abandonar el Operativo.?\n\n"
+                    "Si abandona, no será considerado para el justificativo ante el CNE."
+                    "\nDeberá anexarse a un nuevo código y no abandonar, ya que esta acción es automática al finalizar el proceso electoral"
+                    "\n\n¿ESTÁ SEGURO/A?",
+
+                btnOkOnPress: () {
+
+                  Get.back();
+                  controller.removePersonalOperativo();
+
+
+                });
+          }):SizedBox()*/
+
     ];
 
     return _gridBotones(botones);

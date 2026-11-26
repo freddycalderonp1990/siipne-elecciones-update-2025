@@ -9,7 +9,7 @@ description: "A new Flutter project."
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
 
-version: 2.2.4+48
+version: 2.3.0+49
 
 environment:
   sdk: ^3.13.2
@@ -94,7 +94,7 @@ dependencies:
   sqflite_sqlcipher: ^3.4.1 # base de datos
   flutter_secure_storage: ^11.0.0 #reemplaza SharedPreferences
 
-  advanced_root_detection: ^0.0.5 #verificar root de app - se comenta por en ios no com´pila esta libreria da error
+  #advanced_root_detection: ^0.0.5 #verificar root de app - se comenta por en ios no com´pila esta libreria da error
 
 
     #api_provider:

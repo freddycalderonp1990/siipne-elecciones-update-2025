@@ -57,7 +57,7 @@ class ProcesosOperativo {
     fechaFin: "",
     validarRecinto: false,
     tipo: "",
-    permitirCrearCodigos: true,
+    permitirCrearCodigos: false,
     permitirAgregarRecintos: false,
   );
 
